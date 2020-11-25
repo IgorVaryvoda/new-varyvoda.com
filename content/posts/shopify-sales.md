@@ -258,8 +258,6 @@ High-ticket product merchants aren’t the only ones who can benefit from 360 sp
 Easily add 360 spins to your Shopify store by following <a href="https://sirv.com/help/articles/add-360-spins-shopify/
 ">these instructions</a>.
 
-[cta]
-
 <h4>Product videos</h4>
 There's no single formula for a product video that works for every Shopify store. Customers' expectations differ greatly depending on the products you sell.
 
