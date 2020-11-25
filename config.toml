@@ -1,0 +1,77 @@
+baseurl = "https://www.varyvoda.com"
+title = "Sensible Marketing by Igor Varyvoda"
+theme = "hugo-coder"
+languagecode = "en"
+defaultcontentlanguage = "en"
+
+paginate = 20
+
+pygmentsstyle = "bw"
+pygmentscodefences = true
+pygmentscodefencesguesssyntax = true
+
+disqusShortname = "varyvoda"
+[markup.goldmark.renderer]
+  unsafe= true
+[params]
+  author = "Igor Varyvoda"
+  info = "Digital Strategist "
+  description = "Sensible marketing blog by Igor Varyvoda."
+  keywords = "blog,developer,personal"
+  avatarurl = "https://iantiark.sirv.com/pic.jpg?w=300"
+  #gravatar = "igor@varyvoda.com"
+
+  favicon_32 = "/img/favicon-32x32.png"
+  favicon_16 = "/img/favicon-16x16.png"
+
+  footercontent = ""
+  hideFooter = false
+  hideCredits = false
+  hideCopyright = false
+  since = 1988
+
+  enableTwemoji = true
+
+  colorsheme = "auto"
+  hidecolorschemetoggle = true
+
+  customCSS = []
+  customSCSS = []
+  customJS = []
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"
+  author = "authors"
+
+# Social links
+[[params.social]]
+  name = "Twitter"
+  icon = "fa fa-twitter fa-2x"
+  weight = 3
+  url = "https://twitter.com/igorvaryvoda"
+[[params.social]]
+    name = "LinkedIn"
+    icon = "fa fa-linkedin"
+    weight = 4
+    url = "https://www.linkedin.com/in/igorvaryvoda/"
+[[params.social]]
+  name = "Github"
+  icon = "fa fa-github fa-2x"
+  weight = 1
+  url = "https://github.com/igorvaryvoda/"
+
+# Menu links
+[[menu.main]]
+  name = "Blog"
+  weight = 1
+  url  = "posts/"
+[[menu.main]]
+  name = "About"
+  weight = 2
+  url = "about/"
+[[menu.main]]
+  name = "Projects"
+  weight = 3
+  url = "projects/"
