@@ -15,14 +15,11 @@ disqusShortname = "varyvoda"
   unsafe= true
 [params]
   author = "Igor Varyvoda"
-  info = "Digital Strategist "
+  info = "Digital Strategist"
   description = "Sensible marketing blog by Igor Varyvoda."
   keywords = "blog,developer,personal"
   avatarurl = "https://iantiark.sirv.com/pic.jpg?w=300"
   #gravatar = "igor@varyvoda.com"
-
-  favicon_32 = "/img/favicon-32x32.png"
-  favicon_16 = "/img/favicon-16x16.png"
 
   footercontent = ""
   hideFooter = false
@@ -33,7 +30,7 @@ disqusShortname = "varyvoda"
   enableTwemoji = true
 
   colorsheme = "auto"
-  hidecolorschemetoggle = true
+  hidecolorschemetoggle = false
 
   customCSS = []
   customSCSS = []
