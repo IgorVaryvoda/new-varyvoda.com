@@ -4,7 +4,8 @@ title: About me
 slug: about
 draft: false
 ---
-Hello👋, my name is Igor and I do marketing, coding, occasional writing (looking at this website you can see that "occasional" is a huge exaggeration).
+Hello👋, thanks for stopping by. My name is Igor Varyvoda and I enjoy marketing, coding and writing.
 
-I like to do cool stuff on the internet like running businesses, creating interesting projects (even if they don't make any money) and learning new stuff.
+I'm currently working as a Digital Strategist at [Sirv](https://sirv.com), an image management and delivery platform.
 
+[Drop us a line](https://sirv.com/contact/) if you're interested in collaborating.

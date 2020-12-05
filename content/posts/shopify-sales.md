@@ -6,7 +6,7 @@ canonicalUrl: "https://sirv.com/blog/increase-shopify-sales/"
 ---
 <img src="https://sirv.sirv.com/blog/Shopify%20Sales/online_shopping.svg" alt="Increase Shopify sales - graphic">
 
-### The original article was posted on [Sirv's blog](https://sirv.com/blog/tips-increase-shopify-sales/)
+### The original article was posted on [Sirv's blog](https://sirv.com/blog/increase-shopify-sales/)
 
 <p>In 2020, e‐commerce has become more important than ever; thousands of businesses had to transition to selling online simply to survive. The platform that embraced most of them was Shopify.</p>
 
