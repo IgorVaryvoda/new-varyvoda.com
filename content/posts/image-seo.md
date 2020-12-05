@@ -232,17 +232,25 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 <p>Examples:</p>
 
 <h5>Bad (missing alt text):</h5>
-<pre class="prettyprint"><img src="shoe.jpg" alt="" /></pre>
 
+```html
+<img src="shoe.jpg" alt="" />
+```
 <h5>Bad (keyword stuffing):</h5>
-<pre class="prettyprint"><img src="shoe.jpg" alt="adidas shoe for sale adidas shoes for sale adidas shoes for men adidas shoes - originals sale"/></pre>
 
+```html
+<img src="shoe.jpg" alt="adidas shoe for sale adidas shoes for sale adidas shoes for men adidas shoes - originals sale"/>
+```
 <h5>Better:</h5>
-<pre class="prettyprint"><img src="shoe.jpg" alt="Adidas shoe"/></pre>
 
+```html
+<img src="shoe.jpg" alt="Adidas shoe"/>
+```
 <h5>Best:</h5>
-<pre class="prettyprint"><img src="adidas-shoe.jpg" alt="White Men's Adidas Superstar Shoe"/></pre>
 
+```html
+<img src="adidas-shoe.jpg" alt="White Men's Adidas Superstar Shoe"/>
+```
 <p>If you're interested in a more in-depth guide to alt text writing intricacies, I recommend reading this <a href="https://blog.hubspot.com/marketing/image-alt-text" target="_blank" rel="noopener noreferrer">nice article</a> by Hubspot.</p>
 
 
@@ -318,13 +326,11 @@ At Sirv, we've spent hundreds of hours defining perfect image compression settin
 <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/image-format-comparison.png" alt="image format compression comparison"/>
 
 The three most popular image formats on the web can hardly be called <i>modern</i>.
-
-    <ul>
-    <li>JPEG was released in 1992.</li>
-    <li>PNG emerged in 1996.</li>
-    <li>GIF is 1 year younger than yours truly, created in 1989.</li>
-    </ul>
-
+<ul>
+<li>JPEG was released in 1992.</li>
+<li>PNG emerged in 1996.</li>
+<li>GIF is 1 year younger than yours truly, created in 1989.</li>
+</ul>
 <p>There are some that are worthy of the "next-gen" title though: WebP, JPEG XR and JPEG 2000 are all wildly superior to the previous generation of image formats. They're doing a much better job at both lossy and lossless image compression.</p>
 
 <div class="protip"><strong>Info</strong>
@@ -343,7 +349,8 @@ The three most popular image formats on the web can hardly be called <i>modern</
 <li><a href="https://caniuse.com/#feat=jpegxr" target="_blank" rel="noopener noreferrer">JPEG XR (4.87%)</a></li>
 </ul>
 
-[caption width="800" align="aligncenter"]<img class="Sirv" data-src="https://sirv.sirv.com/blog/WebP%20Article/WebP-Browser-Share.png" alt="WebP browser support"/>WebP browser support[/caption]
+<img class="Sirv" data-src="https://sirv.sirv.com/blog/WebP%20Article/WebP-Browser-Share.png" alt="WebP browser support"/>
+WebP browser support
 
 <p>WebP is the clear winner here with ~80% browser support. All the major players - Google (they created WebP), Mozilla and Microsoft all support WebP. Smaller browsers like Opera, Vivaldi and Brave are all using the rendering engine that powers Chrome, making them support WebP by default. It's currently unclear whether the last remaining player in the browser market - Apple - jumps on the WebP bandwagon or not.</p>
 
@@ -399,10 +406,9 @@ The three most popular image formats on the web can hardly be called <i>modern</
 <p>Mobile devices come in different shapes and sizes, some with HIDPI displays with pixel density as high as 3x (ultra retina displays). This means we have to serve individually scaled images to each and every device to achieve the best performance.</p>
 
 <p>The old-school solution would be to use the <a href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Multimedia_and_embedding/Responsive_images" target="_blank" rel="noopener noreferrer">SRCSET</a> tag. This means you have to:</p>
-
-    <ul>
-    <li>Generate images in different sizes.</li>
-    <li>Include all of them in your SRCSET tag.</li>
+<ul>
+  <li>Generate images in different sizes.</li>
+  <li>Include all of them in your SRCSET tag.</li>
 </ul>
 
 <p>The markup looks something like this:</p>
@@ -429,7 +435,8 @@ What it does is detect the browser and the viewport (the size of the browser win
 <h3>Lazy load images</h3>
 
 <div class="wp-caption aligncenter">
-<video autoplay loop muted=""><source src="https://sirv-cdn.sirv.com/blog/image%20seo/lazy-lazy-loading.mp4"><p class="warning">Your browser does not support HTML5 video.</p></video><p class="wp-caption-text">Lazy loading in action</p>
+<video autoplay loop muted="" style="max-width:100%;">
+<source src="https://sirv-cdn.sirv.com/blog/image%20seo/lazy-lazy-loading.mp4"><p class="warning">Your browser does not support HTML5 video.</p></video><p class="wp-caption-text">Lazy loading in action</p>
 </div>
 
 <p>Lazy loading is a technique where only above-the-fold images are loaded, while those out of sight are loaded on-demand. This can dramatically improve your page loading speed.</p>
@@ -493,7 +500,10 @@ Lazy loading is on by default when you utilize Sirv's <a href="https://sirv.com/
 <em>Credits:</em>
 <em>Header image <a rel="nofollow" href="http://www.freepik.com">designed by katemangostar / Freepik</a>.</em>
 <em>360 spin by <a href="https://www.karlmartini.com/">Karl Martini</a>.</em>
-[cta]
+<h3>Start a free trial with Sirv</h3>
+
+Get 5 GB of storage to test it out. [Get started today!](https://sirv.com)
+
 <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>
 <script>
 var SirvOptions = {

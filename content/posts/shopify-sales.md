@@ -26,9 +26,7 @@ canonicalUrl: "https://sirv.com/blog/increase-shopify-sales/"
     <li><a href="#social-proof">Utilize social proof</a></li>
     <li><a href="#checkout">Reduce friction at checkout</a></li>
     </ol>
-<p>Want to read this post later? Enter your email below and we'll send you a PDF.</p>
-<form id="subscribe" class="js-cm-form" method="post" action="https://magictoolbox.createsend.com/t/y/s/etjyut/" method="post" data-id="191722FC90141D02184CB1B62AB3DC26BE7C3144AD9B9B27B4ECEAC1AB51C0E30DBF2BABB2572D03F2414DE79B267AE00155337E45A4FFE15D1B7A606434591B" onsubmit="ga('send', 'event', { eventCategory: 'links', eventAction: 'subscribe'})"><input name="cm-etjyut-etjyut" type="email" name="email" id="email" placeholder="Enter your email"><button id="submit">Send me the PDF</button></form></div>
-
+</div>
 <h3>Start with Measurable Goals</h3>
 Before we get started, it’s important to have a plan in place to determine what your goals are. You can’t manage what you can’t measure, and your goals should be actionable and measurable.
 
@@ -187,7 +185,7 @@ Here are some crucial elements you need on a product detail page:
 </ul>
 <div class="imgwide">
     <div class="full-image__content">
-<video width="1212" height="902" autoplay loop muted preload="metadata" poster="https://sirv.sirv.com/blog/Shopify%20Sales/Harry's%20checkout.mp4?thumbnail=1212">
+<video width="100%" autoplay loop muted preload="metadata" poster="https://sirv.sirv.com/blog/Shopify%20Sales/Harry's%20checkout.mp4?thumbnail=1212">
     <source src="https://sirv.sirv.com/blog/Shopify%20Sales/Harry's%20checkout.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
@@ -257,7 +255,9 @@ High-ticket product merchants aren’t the only ones who can benefit from 360 sp
 Easily add 360 spins to your Shopify store by following <a href="https://sirv.com/help/articles/add-360-spins-shopify/
 ">these instructions</a>.
 
-[cta]
+<h3>Start a free trial with Sirv</h3>
+
+Get 5 GB of storage to test it out. [Get started today!](https://sirv.com)
 
 <h4>Product videos</h4>
 There's no single formula for a product video that works for every Shopify store. Customers' expectations differ greatly depending on the products you sell.
