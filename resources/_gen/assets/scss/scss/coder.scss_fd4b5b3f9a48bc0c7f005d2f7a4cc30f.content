@@ -184,6 +184,9 @@ img.emoji {
   margin: 0 .05em 0 .1em;
   vertical-align: -0.1em; }
 
+.navigation .navigation-list {
+  list-style: none; }
+
 .content {
   flex: 1;
   display: flex;
@@ -332,9 +335,6 @@ img.emoji {
     color: #212121; }
   .navigation a:hover, .navigation a:focus {
     color: #1565c0; }
-  .navigation .navigation-title {
-    letter-spacing: 0.1rem;
-    text-transform: uppercase; }
   .navigation .navigation-list {
     float: right;
     list-style: none;
