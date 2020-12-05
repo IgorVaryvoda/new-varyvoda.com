@@ -210,7 +210,7 @@ img.emoji {
       .content article footer .see-also h3 {
         margin: 3.2rem 0; }
   .content article p {
-    text-align: justify;
+    text-align: left;
     text-justify: auto;
     hyphens: auto; }
   .content .post .post-title {
