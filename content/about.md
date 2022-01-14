@@ -8,4 +8,4 @@ Hello👋, thanks for stopping by. My name is Igor Varyvoda and I enjoy marketin
 
 I'm currently working as a Digital Strategist at [Sirv](https://sirv.com), an image management and delivery platform.
 
-[Drop us a line](https://sirv.com/contact/) if you're interested in collaborating.
+Give it a try, it's awesome.

@@ -72,3 +72,7 @@ disqusShortname = "varyvoda"
   name = "Projects"
   weight = 3
   url = "projects/"
+[[menu.main]]
+  name = "Contact me"
+  weight = 3
+  url = "contact/"
