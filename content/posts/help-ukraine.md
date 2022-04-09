@@ -69,7 +69,7 @@ Boycott brands still doign business with Russia, funding their atrocities.
 
 
 ## For developers
-You can make a difference. Check out these cool tools that you can use on your websites, github repos etc. to reach a wide audience:
+You can make a difference. Check out these cool tools that you can use on your websites, github repos etc. to show your support for Ukraine:
 - [Resources for developers](https://www.uahelp.me/help/#for-developers)
 
 ## Other great 'mega lists'
