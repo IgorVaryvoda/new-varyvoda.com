@@ -8,9 +8,9 @@ Russia is waging an unprovoked and vicious war against Ukraine. Millions of peop
 
 Barbaric Russian occupiers are facing fierce resistance from Ukrainians, who are not willing to lose their independence, culture, national identity and their lives to pathetic Russian imperialism.
 
-I, like millions of other Ukrainians, cannot stay idle in this situation. There are so many ways you can help that some people could experience 'choice paralysis'. Checking credibility is also a huge issue.
+I, like millions of other Ukrainians, cannot stay idle in this situation.
 
-That's why I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to help Ukraine and it's people. Here's how you can help Ukraine:
+I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to help Ukraine and it's people. Here's how you can help Ukraine:
 
 ## QR codes for quick donation
 ![QR codes to help Ukraine!](https://cdn.earthroulette.com/help-ukraine/QR.png)
