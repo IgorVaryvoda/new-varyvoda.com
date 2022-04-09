@@ -10,7 +10,7 @@ Barbaric Russian occupiers are facing fierce resistance from Ukrainians, who are
 
 I, like millions of other Ukrainians, cannot stay idle in this situation.
 
-I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to help Ukraine and it's people. Here's how you can help Ukraine:
+I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to help Ukraine and its people. Here's how you can help Ukraine:
 
 ## QR codes for quick donation
 ![QR codes to help Ukraine!](https://cdn.earthroulette.com/help-ukraine/QR.png)
