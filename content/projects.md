@@ -21,3 +21,7 @@ A random travel destination generator. It's a pretty fun project which I thourou
 
 Track crypto currency prices. Simple, yet good looking. Set it as a homepage. [Visit CryptoTracker](https://cryptotracker.xyz)
 
+## Viddl
+<a href="https://viddl.me" target="_blank"><img src="https://cdn.earthroulette.com/viddl/viddl.png"></a>
+
+Download YouTube, Twitter & Facebook videos. I got tired of ad-ridden services, so here it is. No ads = 😍
