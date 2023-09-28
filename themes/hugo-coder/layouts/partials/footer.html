@@ -14,7 +14,8 @@
       {{ end }}
       {{ if not .Site.Params.hideCredits }}
         {{ if not .Site.Params.hideCopyright }} · {{ end }}
-        {{ i18n "powered_by" }} <a href="https://gohugo.io/">Hugo</a>.
+        {{ i18n "powered_by" }} <a href="https://gohugo.io/">Hugo</a>. <br><br>
+      Images stored and delivered by <a href="https://sirv.com">Sirv</a>.
       {{ end }}
       {{ if .Site.Params.commit }}
         {{ if .GitInfo }}
