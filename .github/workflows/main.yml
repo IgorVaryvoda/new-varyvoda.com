@@ -32,7 +32,7 @@ jobs:
         type = sftp
         host = ${{ secrets.SFTP_HOST }}
         user = ${{ secrets.SFTP_USER }}
-        port = ${{ secrets.SFTP_PORT }}  # Add this line for the custom port
+        port = ${{ secrets.SFTP_PORT }}
         pass = ${{ secrets.SFTP_PASS }}" > ~/.config/rclone/rclone.conf
 
     - name: Sync public directory to server
