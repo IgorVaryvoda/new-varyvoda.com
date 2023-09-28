@@ -1,10 +1,10 @@
 baseurl = "https://www.varyvoda.com"
-title = "Sensible Marketing by Igor Varyvoda"
+title = "Igor Varyvoda's Website"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
 
-paginate = 20
+paginate = 10
 
 pygmentsstyle = "bw"
 pygmentscodefences = true
