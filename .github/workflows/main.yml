@@ -27,6 +27,7 @@ jobs:
 
     - name: Configure rclone
       run: |
+        mkdir -p ~/.config/rclone
         echo "[sftp]
         type = sftp
         host = ${{ secrets.SFTP_HOST }}
