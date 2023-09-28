@@ -1,0 +1,38 @@
+name: Deploy Hugo Site
+
+on:
+  push:
+    branches:
+      - main  # Adjust with your branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup Hugo
+      uses: peaceiris/actions-hugo@v2
+      with:
+        hugo-version: 'latest'
+        extended: true
+
+    - name: Build
+      run: hugo --gc --minify
+
+    - name: Install rclone
+      run: |
+        curl https://rclone.org/install.sh | sudo bash
+
+    - name: Configure rclone
+      run: |
+        echo "[sftp]
+        type = sftp
+        host = ${{ secrets.SFTP_HOST }}
+        user = ${{ secrets.SFTP_USER }}
+        port = ${{ secrets.SFTP_PORT }}  # Add this line for the custom port
+        pass = ${{ secrets.SFTP_PASS }}" > ~/.config/rclone/rclone.conf
+
+    - name: Sync public directory to server
+      run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
