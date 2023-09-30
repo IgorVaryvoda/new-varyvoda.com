@@ -13,6 +13,9 @@ pygmentscodefencesguesssyntax = true
 disqusShortname = "varyvoda"
 [markup.goldmark.renderer]
   unsafe= true
+[markup.highlight]
+  style = "github-dark"
+
 [params]
   author = "Igor Varyvoda"
   info = "Digital Strategist"
