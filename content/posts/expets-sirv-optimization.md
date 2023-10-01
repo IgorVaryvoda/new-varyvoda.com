@@ -34,7 +34,7 @@ And a 99% score on LightHouse. Yeah, we're working on accessibility right now, I
 ## Image optimization and lazy loading
 The first two problems might look pretty time-consuming, but Sirv has a solution for them out of the box. [Automatic responsive images](https://sirv.com/help/articles/responsive-images-smv/) basically covers all that we needed. The images are lazy loaded, served in the optimal format and size, on-the-fly. 
 
-Sirv achieves this by grabbing the master image and converting + resizing it based on the users' device, which requires the Sirv.js script. We've tried to just load it in the head section of nuxt.config.js, but later figured out it's more efficient to load it only on pages that need it in using a simple method call in the mounted hook.
+Sirv achieves this by grabbing the master image and converting + resizing it based on the users' device, which requires the Sirv.js script. We've tried to just load it in the head section of nuxt.config.js, but later figured out it's more efficient to load it only on pages that need it by using a simple method call in the mounted hook.
 ```js
 //components/footer.vue
 getSirv()
