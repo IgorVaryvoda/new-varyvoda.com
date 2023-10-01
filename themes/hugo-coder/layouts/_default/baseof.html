@@ -8,11 +8,16 @@
 
     {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
     <meta name="description" content="{{ .Description | default (.Summary | default .Site.Params.description ) }}">
-    <meta name="keywords" content="{{ (delimit .Keywords ",") | default .Site.Params.keywords }}">
+    <meta name="keywords" content="{{ (delimit .Keywords ',') | default .Site.Params.keywords }}">
     {{ if .Params.canonicalUrl }}
       <link rel="canonical" href="{{ .Params.canonicalUrl }}">
     {{ else }}
       <link rel="canonical" href="{{ .Permalink }}">
+    {{ end }}
+    {{ if .Params.ogImage }}
+    <meta property="og:image" content="{{ .Params.ogImage }}">
+    {{ else }}
+    <meta property="og:image" content="https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900" />
     {{ end }}
     {{ template "_internal/twitter_cards.html" . }}
     {{ template "_internal/opengraph.html" . }}
