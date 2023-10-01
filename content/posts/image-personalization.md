@@ -7,7 +7,7 @@ canonicalUrl: "https://sirv.com/blog/image-personalization-examples/"
 <div class="full-image__container">
     <div class="full-image--center">
 <img
-sizes="(max-width: 2048px) 100vw, 2048px"
+sizes="(max-width: 2048px) 100vw, 2048spx"
 srcset="
 https://sirv.sirv.com/blog/Personalization/Main_image.png?w=480 480w,
 https://sirv.sirv.com/blog/Personalization/Main_image.png?w=827 827w,

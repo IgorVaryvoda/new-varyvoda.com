@@ -17,6 +17,7 @@ It's a perfect project to test Sirv's performance and see how it can be optimize
 We've compiled a list of things that we need to optimize for the project, and it's quite a list:
 - Optimizing images, serving them in the optimal format and size on the fly
 - Lazy loading images
+- Improving first contentful paint & reducing layout shift
 - Hosting static assets on a CDN
 - Showcasing experts' portfolios consisting of various media like images, videos, 360 spins and 3D models
 
