@@ -130,6 +130,8 @@ The code for this gallery is simple and self-explanatory:
  <div data-src="https://demo.sirv.com/demo/Switch/switch-oled.jpg" data-type="zoom"></div>
 </div>
 ```
-Clean and simple. 
+Clean and simple.
+We have a really nice [lib for Vue3](https://github.com/Mefistosss/vue-js-sirv-viewer),
+to make working with SMV a breeze.
 
 <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>
