@@ -14,7 +14,7 @@ disqusShortname = "varyvoda"
 [markup.goldmark.renderer]
   unsafe= true
 [markup.highlight]
-  style = "github-dark"
+  style = "catppuccin-mocha"
 
 [params]
   author = "Igor Varyvoda"
