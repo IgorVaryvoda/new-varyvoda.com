@@ -131,7 +131,9 @@ The code for this gallery is simple and self-explanatory:
 </div>
 ```
 Clean and simple.
-We have a really nice [lib for Vue3](https://github.com/Mefistosss/vue-js-sirv-viewer),
+We have a really nice [lib for Vue3](https://github.com/Mefistosss/vue-js-sirv-viewer)
 to make working with SMV a breeze.
+
+UPD: I've recently written an [integration with Nuxt Image](https://image.nuxt.com/providers/sirv), which makes working with Sirv images in Nuxt freaking amazing.
 
 <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>
