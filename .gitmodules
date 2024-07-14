@@ -1,0 +1,3 @@
+[submodule "bak/themes/hugo-coder"]
+	path = bak/themes/hugo-coder
+	url = https://github.com/luizdepra/hugo-coder.git

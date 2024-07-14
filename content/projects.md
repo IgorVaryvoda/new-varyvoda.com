@@ -4,7 +4,17 @@ title: Projects by Igor Varyvoda
 slug: projects
 draft: false
 ---
+## Travel Bot AI assistant
+<a target="_blank" href="https://www.travelbot.me">
+<img class="Sirv" data-src="https://cdn.earthroulette.com/travelbot/travelbot.png" alt="travelbot screenshot"/>
+</a>
+
+A fun chatbot that will sort all of your travel needs. It's connected to Earth Roulette's API for destination information and has some other cool tricks.
+
+<a href="https://www.travelbot.me">Visit Travel Bot</a>
+
 ## Sirv Experts
+
 <a href="https://experts.sirv.com" target="_blank"><img class="Sirv" data-src="https://cdn.earthroulette.com/varyvoda/experts.png" src="https://cdn.earthroulette.com/varyvoda/experts.png?q=10" alt="Sirv Experts screenshot"></a>
 
 [Sirv Experts Directory](https://experts.sirv.com) - A place where you can easily find the best experts (360 product photography, web dev, 3D modelling etc.) near you.
