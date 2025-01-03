@@ -3,36 +3,22 @@
   <section class="container">
     {{ with .Site.Params.footerContent | safeHTML }}
     <p>{{ . }}</p>
-    {{ end }}
-    {{ if not .Site.Params.hideCopyright }}
-    ©
-    {{ if (and (.Site.Params.since) (lt .Site.Params.since now.Year)) }}
-    {{ .Site.Params.since }} -
-    {{ end }}
-    {{ now.Year }}
-    {{ with .Site.Params.author }} {{ . }} {{ end }}
-    {{ end }}
-    {{ if not .Site.Params.hideCredits }}
-    {{ if not .Site.Params.hideCopyright }} · {{ end }}
-    {{ i18n "powered_by" }} <a href="https://gohugo.io/">Hugo</a>. <br><br>
-    Images stored and delivered by <a href="https://sirv.com">Sirv</a>.
-    {{ end }}
-    {{ if .Site.Params.commit }}
-    {{ if .GitInfo }}
-    [<a href="{{ .Site.Params.commit }}/{{ .GitInfo.Hash }}">{{ .GitInfo.AbbreviatedHash }}</a>]
-    {{ end }}
-    {{ end }}
+    {{ end }} {{ if not .Site.Params.hideCopyright }} © {{ if (and
+    (.Site.Params.since) (lt .Site.Params.since now.Year)) }} {{
+    .Site.Params.since }} - {{ end }} {{ now.Year }} {{ with .Site.Params.author
+    }} {{ . }} {{ end }} {{ end }} {{ if not .Site.Params.hideCredits }} {{ if
+    not .Site.Params.hideCopyright }} · {{ end }} {{ i18n "powered_by" }}
+    <a href="https://gohugo.io/">Hugo</a>. <br /><br />
+    Images stored and delivered by <a href="https://sirv.com">Sirv</a>. {{ end
+    }} {{ if .Site.Params.commit }} {{ if .GitInfo }} [<a
+      href="{{ .Site.Params.commit }}/{{ .GitInfo.Hash }}"
+      >{{ .GitInfo.AbbreviatedHash }}</a
+    >] {{ end }} {{ end }}
   </section>
 </footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-33572265-1"></script> -->
-<!-- <script> -->
-<!--   window.dataLayer = window.dataLayer || []; -->
-<!--   function gtag(){dataLayer.push(arguments);} -->
-<!--   gtag('js', new Date()); -->
-<!---->
-<!--   gtag('config', 'UA-33572265-1'); -->
-<!-- </script> -->
-<!---->
-<script defer data-domain="varyvoda.com" src="https://stats.varyvoda.com/js/script.js"></script>
+<script
+  defer
+  data-domain="varyvoda.com"
+  src="https://stats.varyvoda.com/js/script.js"
+></script>
 {{ end }}
