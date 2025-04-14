@@ -3,9 +3,6 @@ title = "Igor Varyvoda's Website"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
-
-paginate = 10
-
 pygmentsstyle = "bw"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true

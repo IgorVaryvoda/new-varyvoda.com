@@ -25,7 +25,7 @@
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fork-awesome/1.1.7/css/fork-awesome.min.css" integrity="sha512-9QjPqX/aCNwEQDyMqqMluNOSsHxTwOJNO3d4m5aUeNbyOPm8RcBA5hCUhvGmKFtSmQYGajqPopGtD60FWiWUwg==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
-    {{ if .Site.IsServer }}
+    {{ if hugo.IsServer }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true ) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
       <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -36,7 +36,7 @@
     {{ end }}
 
     {{ if .Site.Params.rtl }}
-      {{ if .Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" "enableSourceMap" true ) }}
         {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -56,7 +56,7 @@
 
     {{ range .Site.Params.customSCSS }}
       {{/* We don't change the targetPath to because it's transparent to users */}}
-      {{ if $.Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $cssOpts := (dict "enableSourceMap" true ) }}
         {{ $styles := resources.Get . | toCSS $cssOpts }}
         <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
@@ -90,7 +90,7 @@
     {{ $csClass = "colorscheme-auto" }}
   {{ end }}
   <body class="{{ $csClass }}{{ if .Site.Params.rtl }} rtl{{ end }}"
-        onload="{{ if .Site.Params.enableTwemoji }} twemoji.parse(document.body); {{ end }}"
+        {{ if .Site.Params.enableTwemoji }}onload='twemoji.parse(document.body)'{{ end }}
   >
     {{ partial "float" . }}
     <main class="wrapper">
@@ -104,7 +104,7 @@
     </main>
 
     {{ if not .Site.Params.hideColorSchemeToggle }}
-      {{ if .Site.IsServer }}
+      {{ if hugo.IsServer }}
         {{ $script := resources.Get "js/dark-mode.js" }}
         <script src="{{ $script.RelPermalink }}"></script>
       {{ else }}
