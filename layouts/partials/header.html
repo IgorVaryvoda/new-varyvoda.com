@@ -1,0 +1,251 @@
+<nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="{{ .Site.BaseURL | relLangURL }}">
+      <span class="logo-bracket">[</span><span class="logo-text">varyvoda</span><span class="logo-bracket">]</span>
+    </a>
+    {{ if or .Site.Menus.main (len .Site.Languages | gt 1) }}
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </label>
+      <ul class="navigation-list">
+        {{ with .Site.Menus.main}}
+          {{ range sort . }}
+            <li class="navigation-item">
+              <a class="navigation-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+            </li>
+          {{ end }}
+        {{ end }}
+        {{ if gt (len .Site.Languages) 1 }}
+          {{ $node := . }}
+          {{ $node.Scratch.Set "separator" true }}
+          {{ range (default .Site.Home.AllTranslations .Translations) }}
+            {{ if ne $.Site.Language .Language }}
+              {{ if $node.Scratch.Get "separator" }}
+                <li class="navigation-item menu-separator">
+                  <span>|</span>
+                </li>
+                {{ $node.Scratch.Set "separator" false }}
+              {{ end }}
+              <li class="navigation-item">
+                <a href="{{ .Permalink }}">{{ .Language.LanguageName }}</a>
+              </li>
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      </ul>
+    {{ end }}
+  </section>
+</nav>
+
+<style>
+/* Modern Navigation Overrides */
+.navigation {
+  backdrop-filter: blur(10px);
+  background-color: rgba(36, 40, 59, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+
+.navigation .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.navigation-title {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: 1.8rem !important;
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  transition: all 0.3s ease;
+  text-decoration: none !important;
+}
+
+.logo-bracket {
+  color: #66d9ef;
+  font-weight: 700;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.logo-text {
+  background: linear-gradient(135deg, #66d9ef 0%, #a6e3a1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+}
+
+.navigation-title:hover .logo-bracket {
+  opacity: 1;
+  transform: scaleX(1.1);
+}
+
+.navigation-list {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation-item {
+  list-style: none;
+  margin: 0;
+}
+
+.navigation-link {
+  position: relative;
+  padding: 0.5rem 1.2rem !important;
+  margin: 0 !important;
+  border-radius: 0.5rem;
+  font-size: 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.85;
+  text-decoration: none !important;
+}
+
+.navigation-link:hover {
+  opacity: 1;
+  background-color: rgba(102, 217, 239, 0.1);
+  transform: translateY(-1px);
+  text-decoration: none !important;
+}
+
+/* Hamburger Menu */
+.menu-button {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 1rem;
+  margin: 0 !important;
+  z-index: 101;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background-color: #e0e0e0;
+  border-radius: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
+}
+
+#menu-toggle:checked + .menu-button .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+#menu-toggle:checked + .menu-button .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+#menu-toggle:checked + .menu-button .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Mobile Responsive */
+@media only screen and (max-width: 768px) {
+  .menu-button {
+    display: flex;
+  }
+
+  .navigation {
+    background-color: rgba(36, 40, 59, 0.95);
+  }
+
+  .navigation-list {
+    position: fixed;
+    top: 6rem;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0;
+    background-color: rgba(36, 40, 59, 0.98);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 0;
+    max-height: 0;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #menu-toggle:checked ~ .navigation-list {
+    max-height: 500px;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .navigation-item {
+    width: 100%;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  #menu-toggle:checked ~ .navigation-list .navigation-item {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #menu-toggle:checked ~ .navigation-list .navigation-item:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+
+  #menu-toggle:checked ~ .navigation-list .navigation-item:nth-child(2) {
+    transition-delay: 0.15s;
+  }
+
+  #menu-toggle:checked ~ .navigation-list .navigation-item:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+
+  #menu-toggle:checked ~ .navigation-list .navigation-item:nth-child(4) {
+    transition-delay: 0.25s;
+  }
+
+  .navigation-link {
+    display: block;
+    padding: 1.2rem 2rem !important;
+    font-size: 1.6rem !important;
+    width: 100%;
+    text-decoration: none !important;
+  }
+
+  .navigation-link:hover {
+    background-color: rgba(102, 217, 239, 0.15);
+    transform: none;
+    text-decoration: none !important;
+  }
+
+  .menu-separator {
+    margin: 0.5rem 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .menu-separator span {
+    display: none;
+  }
+}
+
+/* Extra smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+</style>
