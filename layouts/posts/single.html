@@ -92,8 +92,14 @@
   </section>
 
   <style>
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
   .breadcrumbs {
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
+    animation: fadeIn 0.4s ease-out;
   }
 
   .breadcrumbs ol {
@@ -102,8 +108,8 @@
     margin: 0;
     display: flex;
     align-items: center;
-    font-size: 1.4rem;
-    color: #888;
+    font-size: 1.3rem;
+    color: #666;
   }
 
   .breadcrumbs li {
@@ -113,20 +119,157 @@
   .breadcrumbs a {
     color: #888;
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
   }
 
   .breadcrumbs a:hover {
     color: #fff;
+    background: rgba(255, 255, 255, 0.05);
     text-decoration: none;
   }
 
   .breadcrumbs .separator {
-    margin: 0 0.75rem;
+    margin: 0 0.5rem;
+    color: #444;
   }
 
   .breadcrumbs .current {
+    color: #ccc;
+    font-weight: 500;
+  }
+
+  .post-title {
+    animation: fadeIn 0.5s ease-out 0.1s backwards;
+  }
+
+  .post-title h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .post-meta {
+    animation: fadeIn 0.5s ease-out 0.2s backwards;
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .post-meta .date {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #888;
+  }
+
+  .post-meta .posted-on,
+  .post-meta .reading-time {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .post-meta i {
+    color: #666;
+  }
+
+  article > div {
+    animation: fadeIn 0.6s ease-out 0.3s backwards;
+    font-size: 1.7rem;
+    line-height: 1.8;
+    color: #ccc;
+  }
+
+  article > div p {
+    margin-bottom: 1.8rem;
+  }
+
+  article > div h2,
+  article > div h3,
+  article > div h4 {
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
     color: #fff;
+  }
+
+  article > div h2 {
+    font-size: 2.8rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.8rem;
+  }
+
+  article > div h3 {
+    font-size: 2.2rem;
+  }
+
+  article > div a {
+    color: #fff;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.3);
+    text-underline-offset: 3px;
+    transition: all 0.2s ease;
+  }
+
+  article > div a:hover {
+    text-decoration-color: rgba(255, 255, 255, 0.8);
+  }
+
+  article > div code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #fff;
+  }
+
+  article > div pre {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 2rem 0;
+  }
+
+  article > div img {
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    margin: 2rem 0;
+  }
+
+  article > div blockquote {
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+    padding-left: 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #999;
+  }
+
+  @media (max-width: 768px) {
+    .post-title h1 {
+      font-size: 2.5rem;
+    }
+
+    article > div {
+      font-size: 1.5rem;
+    }
+
+    article > div h2 {
+      font-size: 2.2rem;
+    }
+
+    article > div h3 {
+      font-size: 1.8rem;
+    }
   }
   </style>
 {{ end }}

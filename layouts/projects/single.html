@@ -57,6 +57,11 @@
 
         <div class="post-title">
           <h1 class="title">{{ .Title }}</h1>
+          {{ with .Params.project_url }}
+          <a href="{{ . }}" target="_blank" class="project-url">
+            <i class="fa fa-external-link" aria-hidden="true"></i> Visit Project
+          </a>
+          {{ end }}
         </div>
 
         {{ with .Params.image }}
@@ -73,11 +78,6 @@
 
         <div class="project-meta">
           <div class="meta-row">
-            {{ with .Params.project_url }}
-            <a href="{{ . }}" target="_blank" class="project-url">
-              <i class="fa fa-external-link" aria-hidden="true"></i> Visit Project
-            </a>
-            {{ end }}
             {{ with .Params.status }}
             <span class="project-status status-{{ . }}">{{ . | humanize }}</span>
             {{ end }}
@@ -151,6 +151,39 @@
     color: #fff;
   }
 
+  .post-title {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .post-title h1 {
+    margin: 0;
+  }
+
+  .project-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.4rem;
+    transition: all 0.2s ease;
+  }
+
+  .project-url:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
   .project-meta {
     margin: 2rem 0;
     padding: 1.5rem;
@@ -163,23 +196,6 @@
     gap: 1.5rem;
     align-items: center;
     margin-bottom: 1rem;
-  }
-
-  .project-url {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 1.2rem;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-  }
-
-  .project-url:hover {
-    background: rgba(255, 255, 255, 0.15);
-    text-decoration: none;
   }
 
   .project-status {
