@@ -7,6 +7,7 @@ project_url: "https://www.uahelp.me"
 image: "https://cdn.earthroulette.com/varyvoda/uahelp.png"
 description: "A curated list of resources to help Ukraine. After 3 years of war it is still desperately needed."
 tech_stack: ["Vue", "Charity"]
+github_url: "https://github.com/IgorVaryvoda/Help-Ukraine"
 status: "active"
 highlights:
   - "Curated charity resources"

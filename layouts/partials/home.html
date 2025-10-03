@@ -114,12 +114,27 @@
 
 /* Hero Section */
 .hero-section {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  background:
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at bottom left, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+    rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 3rem 2rem;
   margin-bottom: 4rem;
   animation: fadeIn 0.8s ease-out;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
 }
 
 .hero {

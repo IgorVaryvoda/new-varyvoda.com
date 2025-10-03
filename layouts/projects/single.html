@@ -63,6 +63,11 @@
               <i class="fa fa-external-link" aria-hidden="true"></i> Visit Project
             </a>
             {{ end }}
+            {{ with .Params.github_url }}
+            <a href="{{ . }}" target="_blank" class="project-url github">
+              <i class="fa fa-github" aria-hidden="true"></i> GitHub
+            </a>
+            {{ end }}
             {{ with .Params.app_store_url }}
             <a href="{{ . }}" target="_blank" class="project-url app-store">
               <i class="fa fa-apple" aria-hidden="true"></i> iOS
