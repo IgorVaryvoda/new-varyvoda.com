@@ -3,14 +3,18 @@ title: "Travel Bot AI Assistant"
 date: 2025-03-15
 draft: false
 featured: true
-description: "A fun chatbot that will sort all of your travel needs."
-tags: ["ai", "travel", "chatbot"]
+project_url: "https://www.travelbot.me"
+image: "https://cdn.earthroulette.com/travelbot/travelbot.png"
+description: "A fun chatbot that will sort all of your travel needs. It's connected to Earth Roulette's API for destination information and has some other cool tricks."
+tech_stack: ["AI", "Chatbot", "Travel API"]
+status: "active"
+highlights:
+  - "Connected to Earth Roulette API"
+  - "AI-powered travel recommendations"
+  - "Interactive travel planning"
 weight: 2
 ---
 
-<a target="_blank" href="https://www.travelbot.me">
-<img class="Sirv" data-src="https://cdn.earthroulette.com/travelbot/travelbot.png" alt="travelbot screenshot"/>
-</a>
 
 A fun chatbot that will sort all of your travel needs. It's connected to Earth Roulette's API for destination information and has some other cool tricks.
 

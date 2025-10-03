@@ -58,20 +58,57 @@
         <div class="post-title">
           <h1 class="title">{{ .Title }}</h1>
         </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
-              <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
-                {{ .Date.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}
-              </time>
-            </span>
+
+        {{ with .Params.image }}
+        <div class="project-image">
+          {{ with $.Params.project_url }}
+          <a href="{{ . }}" target="_blank">
+            <img class="Sirv" data-src="{{ $.Params.image }}" src="{{ $.Params.image }}?q=10" alt="{{ $.Title }} screenshot"/>
+          </a>
+          {{ else }}
+          <img class="Sirv" data-src="{{ $.Params.image }}" src="{{ $.Params.image }}?q=10" alt="{{ $.Title }} screenshot"/>
+          {{ end }}
+        </div>
+        {{ end }}
+
+        <div class="project-meta">
+          <div class="meta-row">
+            {{ with .Params.project_url }}
+            <a href="{{ . }}" target="_blank" class="project-url">
+              <i class="fa fa-external-link" aria-hidden="true"></i> Visit Project
+            </a>
+            {{ end }}
+            {{ with .Params.status }}
+            <span class="project-status status-{{ . }}">{{ . | humanize }}</span>
+            {{ end }}
           </div>
+
+          {{ with .Params.tech_stack }}
+          <div class="tech-stack">
+            <i class="fa fa-code" aria-hidden="true"></i>
+            {{ range . }}
+              <span class="tech-tag">{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
         </div>
       </header>
 
-      <div>
-        {{ .Content }}
+      <div class="project-content">
+        {{ with .Params.highlights }}
+        <div class="project-highlights">
+          <h3>Key Features</h3>
+          <ul>
+            {{ range . }}
+            <li>{{ . }}</li>
+            {{ end }}
+          </ul>
+        </div>
+        {{ end }}
+
+        <div class="project-description">
+          {{ .Params.description }}
+        </div>
       </div>
     </article>
   </section>
@@ -113,5 +150,128 @@
   .breadcrumbs .current {
     color: #fff;
   }
+
+  .project-meta {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .project-url {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+
+  .project-url:hover {
+    background: rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+  }
+
+  .project-status {
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+
+  .status-active {
+    background: rgba(46, 204, 113, 0.2);
+    color: #2ecc71;
+  }
+
+  .status-archived {
+    background: rgba(149, 165, 166, 0.2);
+    color: #95a5a6;
+  }
+
+  .status-wip {
+    background: rgba(241, 196, 15, 0.2);
+    color: #f1c40f;
+  }
+
+  .tech-stack {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .tech-tag {
+    display: inline-block;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    font-size: 1.2rem;
+  }
+
+  .project-image {
+    margin: 2rem 0;
+  }
+
+  .project-image a {
+    display: block;
+  }
+
+  .project-image img {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.2s ease;
+  }
+
+  .project-image a:hover img {
+    opacity: 0.9;
+  }
+
+  .project-highlights {
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-left: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+  }
+
+  .project-highlights h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+    opacity: 0.9;
+  }
+
+  .project-highlights ul {
+    margin: 0;
+    padding-left: 2rem;
+  }
+
+  .project-highlights li {
+    margin-bottom: 0.6rem;
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+
+  .project-description {
+    font-size: 1.6rem;
+    line-height: 1.8;
+    color: #ccc;
+    margin: 2rem 0;
+  }
   </style>
+  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>
 {{ end }}

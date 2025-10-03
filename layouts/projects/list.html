@@ -5,13 +5,134 @@
   <section class="container list">
     <h1 class="title"> {{ title (i18n (lower .Title)) | default .Title }} </h1>
     {{ .Content }}
-    <ul>
+    <ul class="project-grid">
       {{- range .Pages.ByParam "weight" -}}
-        <li>
-          <span class="date">{{ .Date.Format "January 2, 2006" }}</span>
-          <a class="title" href="{{ .RelPermalink }}">{{ .Title }}</a>
+        <li class="project-card">
+          <a href="{{ .RelPermalink }}" class="project-link">
+            {{ with .Params.image }}
+            <div class="project-thumbnail">
+              <img class="Sirv" src="{{ . }}?w=600" alt="{{ $.Title }} thumbnail"/>
+            </div>
+            {{ end }}
+            <div class="project-info">
+              <span class="project-title">{{ .Title }}</span>
+              <span class="project-description">{{ .Params.description }}</span>
+              {{ with .Params.tech_stack }}
+              <div class="project-tech">
+                {{ range first 3 . }}
+                  <span class="tech-badge">{{ . }}</span>
+                {{ end }}
+              </div>
+              {{ end }}
+            </div>
+          </a>
         </li>
       {{- end -}}
     </ul>
   </section>
+
+  <style>
+  .project-grid {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    margin: 0;
+    width: 100%;
+  }
+
+  .project-link {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.02);
+    height: 100%;
+  }
+
+  .project-link:hover {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+  }
+
+  .project-thumbnail {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  .project-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .project-link:hover .project-thumbnail img {
+    transform: scale(1.05);
+  }
+
+  .project-info {
+    padding: 1.2rem;
+  }
+
+  .project-title {
+    display: block;
+    font-size: 1.6rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-description {
+    display: block;
+    color: #999;
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-tech {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 768px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .project-title {
+      font-size: 1.4rem;
+    }
+
+    .project-description {
+      font-size: 1.1rem;
+    }
+  }
+  </style>
+  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>
 {{ end }}

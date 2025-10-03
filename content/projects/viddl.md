@@ -3,12 +3,18 @@ title: "Viddl"
 date: 2020-05-01
 draft: false
 featured: false
-description: "Download YouTube, Twitter & Facebook videos. No ads."
-tags: ["video", "web", "tool"]
+project_url: "https://viddl.me"
+image: "https://cdn.earthroulette.com/viddl/viddl.png"
+description: "Download YouTube, Twitter & Facebook videos. No ads. Not maintained anymore since dealing with Youtube and other social media sites is a huge pain in the butt"
+tech_stack: ["Video", "API", "Tool"]
+status: "archived"
+highlights:
+  - "Ad-free experience"
+  - "Multi-platform support"
+  - "YouTube, Twitter, Facebook"
 weight: 7
 ---
 
-<a href="https://viddl.me" target="_blank"><img class="Sirv" data-src="https://cdn.earthroulette.com/viddl/viddl.png" src="https://cdn.earthroulette.com/viddl/viddl.png?q=10"></a>
 
 <a href="https://viddl.me" target="_blank">Download YouTube, Twitter & Facebook videos</a>. I got tired of ad-ridden services, so here it is. No ads = 😍
 
