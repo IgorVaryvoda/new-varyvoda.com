@@ -1,44 +1,46 @@
 <section class="container centered">
-  <div class="hero">
-    {{ if and (isset .Site.Params "avatarurl") (not (isset .Site.Params "gravatar")) }}
-      {{ with .Site.Params.avatarURL }}
-        <div class="avatar"><img src="{{ . | relURL }}" alt="Igor Varyvoda's avatar"></div>
-      {{ end }}
-    {{ end }}
-    {{ with .Site.Params.gravatar }}
-      <div class="avatar"><img src="https://www.gravatar.com/avatar/{{md5 .}}?s=240&d=mp" alt="gravatar"></div>
-    {{ end }}
-    <h1 class="hero-title">{{ .Site.Params.author }}</h1>
-    <p class="hero-subtitle">{{ .Site.Params.info }}</p>
-    <p class="hero-tagline">Building digital products & sharing insights on marketing, code, and design</p>
-
-    <nav class="hero-nav">
-      <a href="/posts/" class="nav-link">Blog</a>
-      <span class="nav-separator">·</span>
-      <a href="/projects/" class="nav-link">Projects</a>
-      <span class="nav-separator">·</span>
-      <a href="/about/" class="nav-link">About</a>
-      <span class="nav-separator">·</span>
-      <a href="/contact/" class="nav-link">Contact</a>
-    </nav>
-
-    {{ with .Site.Params.social }}
-    <ul class="social-links">
-      {{ range sort . "weight" }}
-        {{ if .icon }}
-          <li>
-            <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }} class="social-link">
-              <i class="{{ .icon }}" aria-hidden="true"></i>
-            </a>
-          </li>
-        {{ else }}
-          <li>
-            <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} class="social-link">{{ .name }}</a>
-          </li>
+  <div class="hero-section">
+    <div class="hero">
+      {{ if and (isset .Site.Params "avatarurl") (not (isset .Site.Params "gravatar")) }}
+        {{ with .Site.Params.avatarURL }}
+          <div class="avatar"><img src="{{ . | relURL }}" alt="Igor Varyvoda's avatar"></div>
         {{ end }}
       {{ end }}
-    </ul>
-    {{ end }}
+      {{ with .Site.Params.gravatar }}
+        <div class="avatar"><img src="https://www.gravatar.com/avatar/{{md5 .}}?s=240&d=mp" alt="gravatar"></div>
+      {{ end }}
+      <h1 class="hero-title">{{ .Site.Params.author }}</h1>
+      <p class="hero-subtitle">{{ .Site.Params.info }}</p>
+      <p class="hero-tagline">Building digital products & sharing insights on marketing, code, and design</p>
+
+      <nav class="hero-nav">
+        <a href="/posts/" class="nav-link">Blog</a>
+        <span class="nav-separator">·</span>
+        <a href="/projects/" class="nav-link">Projects</a>
+        <span class="nav-separator">·</span>
+        <a href="/about/" class="nav-link">About</a>
+        <span class="nav-separator">·</span>
+        <a href="/contact/" class="nav-link">Contact</a>
+      </nav>
+
+      {{ with .Site.Params.social }}
+      <ul class="social-links">
+        {{ range sort . "weight" }}
+          {{ if .icon }}
+            <li>
+              <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }} class="social-link">
+                <i class="{{ .icon }}" aria-hidden="true"></i>
+              </a>
+            </li>
+          {{ else }}
+            <li>
+              <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} class="social-link">{{ .name }}</a>
+            </li>
+          {{ end }}
+        {{ end }}
+      </ul>
+      {{ end }}
+    </div>
   </div>
 
   <div class="home-content">
@@ -111,10 +113,17 @@
 }
 
 /* Hero Section */
+.hero-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  margin-bottom: 4rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
 .hero {
   text-align: center;
-  padding: 4rem 0;
-  animation: fadeIn 0.8s ease-out;
 }
 
 .hero .avatar {
