@@ -1,0 +1,117 @@
+{{ define "title" }}
+  {{ .Title }} · {{ .Site.Title }}
+{{ end }}
+{{ define "content" }}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "{{ .Site.BaseURL }}"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Projects",
+        "item": "{{ .Site.BaseURL }}projects/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "{{ .Title }}",
+        "item": "{{ .Permalink }}"
+      }
+    ]
+  }
+  </script>
+
+  <section class="container post">
+    <article>
+      <header>
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a itemprop="item" href="/">
+                <span itemprop="name">Home</span>
+              </a>
+              <meta itemprop="position" content="1" />
+            </li>
+            <span class="separator">→</span>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <a itemprop="item" href="/projects/">
+                <span itemprop="name">Projects</span>
+              </a>
+              <meta itemprop="position" content="2" />
+            </li>
+            <span class="separator">→</span>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+              <span itemprop="name" class="current">{{ .Title }}</span>
+              <meta itemprop="position" content="3" />
+            </li>
+          </ol>
+        </nav>
+
+        <div class="post-title">
+          <h1 class="title">{{ .Title }}</h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
+                {{ .Date.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}
+              </time>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div>
+        {{ .Content }}
+      </div>
+    </article>
+  </section>
+
+  <style>
+  .breadcrumbs {
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    font-size: 1.4rem;
+    color: #888;
+  }
+
+  .breadcrumbs li {
+    display: inline;
+  }
+
+  .breadcrumbs a {
+    color: #888;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .breadcrumbs a:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .breadcrumbs .separator {
+    margin: 0 0.75rem;
+  }
+
+  .breadcrumbs .current {
+    color: #fff;
+  }
+  </style>
+{{ end }}

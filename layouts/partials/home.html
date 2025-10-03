@@ -1,0 +1,208 @@
+<section class="container centered">
+  <div class="about">
+    {{ if and (isset .Site.Params "avatarurl") (not (isset .Site.Params "gravatar")) }}
+      {{ with .Site.Params.avatarURL }}
+        <div class="avatar"><img src="{{ . | relURL }}" alt="Igor Varyvoda's avatar"></div>
+      {{ end }}
+    {{ end }}
+    {{ with .Site.Params.gravatar }}
+      <div class="avatar"><img src="https://www.gravatar.com/avatar/{{md5 .}}?s=240&d=mp" alt="gravatar"></div>
+    {{ end }}
+    <h1>{{ .Site.Params.author }}</h1>
+    <h2>{{ .Site.Params.info }}</h2>
+    {{ with .Site.Params.social }}
+    <p><a href="/posts/">Blog</a> | <a href="/about/">About</a> | <a href="/projects/">Projects</a> </p>
+    <ul>
+      {{ range sort . "weight" }}
+        {{ if .icon }}
+          <li>
+            <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }}>
+              <i class="{{ .icon }}" aria-hidden="true"></i>
+            </a>
+          </li>
+        {{ else }}
+          <li>
+            <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }}>{{ .name }}</a>
+          </li>
+        {{ end }}
+      {{ end }}
+    </ul>
+    {{ end }}
+  </div>
+
+  <div class="home-content">
+    <div class="home-section">
+      <h3>Latest Posts</h3>
+      <ul class="post-list">
+        {{ range first 5 (where .Site.RegularPages "Type" "posts") }}
+          <li class="post-item">
+            <a href="{{ .RelPermalink }}" class="post-link">
+              <span class="post-title">{{ .Title }}</span>
+              <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+      <p class="view-all"><a href="/posts/" class="view-all-link">View all posts →</a></p>
+    </div>
+
+    <div class="home-section">
+      <h3>Featured Projects</h3>
+      <ul class="project-list">
+        {{ $projects := where .Site.RegularPages "Section" "projects" }}
+        {{ range first 4 (where $projects ".Params.featured" true) }}
+          <li class="project-item">
+            <a href="{{ .RelPermalink }}" class="project-link">
+              <span class="project-title">{{ .Title }}</span>
+              <span class="project-description">{{ .Params.description }}</span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+      <p class="view-all"><a href="/projects/" class="view-all-link">View all projects →</a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+.centered {
+  display: block !important;
+}
+
+.home-content {
+  max-width: 900px;
+  margin: 3rem auto 0;
+  text-align: left;
+}
+
+.home-section {
+  margin-bottom: 4rem;
+}
+
+.home-section h3 {
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-align: center;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.post-list, .project-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-item {
+  margin-bottom: 0;
+}
+
+.post-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.8rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.post-link:hover {
+  background: rgba(255, 255, 255, 0.05);
+  padding-left: 1.2rem;
+  text-decoration: none;
+}
+
+.post-title {
+  flex: 1;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.post-date {
+  color: #888;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  margin-left: 1.5rem;
+  opacity: 0.7;
+}
+
+.project-item {
+  margin-bottom: 0.8rem;
+}
+
+.project-link {
+  display: block;
+  padding: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.project-link:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+.project-title {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.project-description {
+  display: block;
+  color: #999;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+
+.view-all {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.view-all-link {
+  font-size: 1.3rem;
+  font-weight: 400;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.view-all-link:hover {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .post-link {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-date {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  .home-section h3 {
+    font-size: 1.6rem;
+  }
+
+  .post-title {
+    font-size: 1.3rem;
+  }
+
+  .project-title {
+    font-size: 1.4rem;
+  }
+
+  .project-description {
+    font-size: 1.1rem;
+  }
+}
+</style>
