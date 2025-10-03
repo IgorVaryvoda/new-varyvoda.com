@@ -4,6 +4,8 @@ date: 2023-08-01
 draft: false
 featured: false
 project_url: "https://experts.sirv.com"
+app_store_url: "https://apps.apple.com/us/app/sirv-experts/id6451147499"
+play_store_url: "https://play.google.com/store/apps/details?id=com.sirv.experts.twa"
 image: "https://cdn.earthroulette.com/varyvoda/experts.png"
 description: "A place where you can easily find the best experts (360 product photography, web dev, 3D modelling etc.) near you."
 tech_stack: ["Directory", "Search", "Maps"]
