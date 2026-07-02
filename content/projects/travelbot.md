@@ -1,7 +1,7 @@
 ---
 title: "Travel Bot AI Assistant"
 date: 2025-03-15
-draft: false
+draft: true
 featured: true
 project_url: "https://www.travelbot.me"
 app_store_url: "https://apps.apple.com/app/travel-bot-assistant/id6504498653"

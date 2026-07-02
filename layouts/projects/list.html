@@ -5,13 +5,45 @@
   <section class="container list">
     <h1 class="title"> {{ title (i18n (lower .Title)) | default .Title }} </h1>
     {{ .Content }}
+
+    {{ $pages := .Pages.ByParam "weight" }}
+    {{ range $pages }}
+      {{ if .Params.hero }}
+      <a href="{{ .RelPermalink }}" class="hero-card">
+        {{ if .Params.image }}
+        <div class="hero-thumbnail">
+          <img class="Sirv" src="{{ .Params.image }}?w=900" alt="{{ .Title }} screenshot"/>
+        </div>
+        {{ end }}
+        <div class="hero-info">
+          <span class="hero-eyebrow">Featured project</span>
+          <span class="hero-card-title">{{ .Title }}</span>
+          <p class="hero-description">{{ .Params.description }}</p>
+          {{ with .Params.hero_note }}
+          <p class="hero-note">{{ . }}</p>
+          {{ end }}
+          {{ with .Params.tech_stack }}
+          <div class="project-tech">
+            {{ range . }}
+              <span class="tech-badge">{{ . }}</span>
+            {{ end }}
+          </div>
+          {{ end }}
+          <span class="hero-cta">Read the build story →</span>
+        </div>
+      </a>
+      {{ end }}
+    {{ end }}
+
+    <h2 class="other-heading">Other things I've built</h2>
     <ul class="project-grid">
-      {{- range .Pages.ByParam "weight" -}}
+      {{- range $pages -}}
+        {{- if not .Params.hero -}}
         <li class="project-card">
           <a href="{{ .RelPermalink }}" class="project-link">
-            {{ with .Params.image }}
+            {{ if .Params.image }}
             <div class="project-thumbnail">
-              <img class="Sirv" src="{{ . }}?w=600" alt="{{ $.Title }} thumbnail"/>
+              <img class="Sirv" src="{{ .Params.image }}?w=600" alt="{{ .Title }} thumbnail"/>
             </div>
             {{ end }}
             <div class="project-info">
@@ -27,6 +59,7 @@
             </div>
           </a>
         </li>
+        {{- end -}}
       {{- end -}}
     </ul>
   </section>
@@ -54,10 +87,124 @@
     animation: fadeInUp 0.5s ease-out;
   }
 
+  .hero-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    margin: 3rem 0 1rem;
+    border: 1px solid rgba(102, 217, 239, 0.25);
+    border-radius: 16px;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top right, rgba(102, 217, 239, 0.06) 0%, transparent 55%),
+      rgba(255, 255, 255, 0.03);
+    text-decoration: none;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.5s ease-out backwards;
+  }
+
+  .hero-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #66d9ef, transparent);
+  }
+
+  .hero-card:hover {
+    border-color: rgba(102, 217, 239, 0.45);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(102, 217, 239, 0.1);
+    text-decoration: none;
+  }
+
+  .hero-thumbnail {
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.4);
+    min-height: 340px;
+  }
+
+  .hero-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-card:hover .hero-thumbnail img {
+    transform: scale(1.05);
+  }
+
+  .hero-info {
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #66d9ef;
+  }
+
+  .hero-card-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #fff;
+  }
+
+  .hero-description {
+    color: #c8c8d8;
+    font-size: 1.5rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .hero-note {
+    color: #9a9aac;
+    font-size: 1.35rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .hero-cta {
+    margin-top: auto;
+    padding-top: 1rem;
+    color: #66d9ef;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .other-heading {
+    margin: 5rem 0 0;
+    font-size: 2.2rem;
+    font-weight: 700;
+    opacity: 0.95;
+    position: relative;
+    padding-bottom: 1rem;
+  }
+
+  .other-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #66d9ef, transparent);
+    border-radius: 2px;
+  }
+
   .project-grid {
     list-style: none;
     padding: 0;
-    margin: 3rem 0;
+    margin: 2rem 0 3rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
@@ -199,6 +346,27 @@
   @media (max-width: 768px) {
     .list h1 {
       font-size: 2.5rem;
+    }
+
+    .hero-card {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-thumbnail {
+      min-height: 0;
+      height: 220px;
+    }
+
+    .hero-info {
+      padding: 2rem;
+    }
+
+    .hero-card-title {
+      font-size: 2.2rem;
+    }
+
+    .other-heading {
+      margin-top: 4rem;
     }
 
     .project-grid {

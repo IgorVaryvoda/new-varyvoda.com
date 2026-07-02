@@ -1,7 +1,7 @@
 ---
 title: "LowTax Guide"
 date: 2025-01-17
-draft: false
+draft: true
 featured: true
 project_url: "https://www.lowtax.guide"
 image: "https://cdn.earthroulette.com/varyvoda/lowtaxguide.png"

@@ -14,7 +14,7 @@ highlights:
   - "Random destination discovery"
   - "Built from scratch"
   - "Travel inspiration tool"
-weight: 5
+weight: 4
 ---
 
 

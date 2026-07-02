@@ -13,7 +13,7 @@ highlights:
   - "Smart financial recommendations"
   - "Household budget management"
   - "Used daily by myself"
-weight: 1
+weight: 2
 ---
 
 
