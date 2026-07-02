@@ -38,7 +38,7 @@
     <h2 class="other-heading">Other things I've built</h2>
     <ul class="project-grid">
       {{- range $pages -}}
-        {{- if not .Params.hero -}}
+        {{- if and (not .Params.hero) (not .Params.hidden) -}}
         <li class="project-card">
           <a href="{{ .RelPermalink }}" class="project-link">
             {{ if .Params.image }}

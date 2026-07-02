@@ -13,6 +13,12 @@
       <p class="hero-subtitle">{{ .Site.Params.info }}</p>
       <p class="hero-tagline">Building digital products & sharing insights on marketing, code, and design</p>
 
+      <a href="/projects/sirv-studio/" class="featured-cta">
+        <span class="featured-cta-badge">Featured build</span>
+        <span class="featured-cta-text">Sirv AI Studio — how I built an AI product-content platform for e-commerce</span>
+        <span class="featured-cta-arrow">→</span>
+      </a>
+
       <nav class="hero-nav">
         <a href="/posts/" class="nav-link">Blog</a>
         <span class="nav-separator">·</span>
@@ -186,6 +192,58 @@
   margin: 0 auto 2.5rem;
   line-height: 1.6;
   animation: fadeInUp 0.6s ease-out 0.3s backwards;
+}
+
+.featured-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.8rem;
+  margin-bottom: 3rem;
+  border-radius: 999px;
+  border: 1px solid rgba(102, 217, 239, 0.35);
+  background: linear-gradient(135deg, rgba(102, 217, 239, 0.1) 0%, rgba(102, 217, 239, 0.02) 100%);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out 0.35s backwards;
+}
+
+.featured-cta:hover {
+  border-color: rgba(102, 217, 239, 0.65);
+  background: linear-gradient(135deg, rgba(102, 217, 239, 0.16) 0%, rgba(102, 217, 239, 0.04) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(102, 217, 239, 0.15);
+  text-decoration: none;
+}
+
+.featured-cta-badge {
+  flex-shrink: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0b0b12;
+  background: #66d9ef;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+}
+
+.featured-cta-text {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #e8e8f0;
+}
+
+.featured-cta-arrow {
+  flex-shrink: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #66d9ef;
+  transition: transform 0.3s ease;
+}
+
+.featured-cta:hover .featured-cta-arrow {
+  transform: translateX(4px);
 }
 
 .hero-nav {
@@ -495,6 +553,19 @@
 
   .hero-tagline {
     font-size: 1.2rem;
+  }
+
+  .featured-cta {
+    flex-direction: column;
+    gap: 0.8rem;
+    border-radius: 16px;
+    padding: 1.4rem 1.6rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .featured-cta-text {
+    font-size: 1.3rem;
   }
 
   .hero-nav {
