@@ -416,7 +416,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
       <span>search by image</span><span>semantic search</span><span>find similar</span><span>duplicate detection</span><span>auto-tagging</span><span>smart collections</span><span>saved views</span><span>license tracking · publish gates</span><span>license alerts</span><span>watermark templates</span><span>asset &amp; search analytics</span>
     </div>
   </div>
-  <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter.</figcaption>
+  <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter. The interface all of this lives in runs on the internal design system and virtualized data grid built by Max Wish.</figcaption>
 </figure>
 
 ![Sirv AI Studio products view with per-product readiness scores](/images/studio/studio-products.webp)
