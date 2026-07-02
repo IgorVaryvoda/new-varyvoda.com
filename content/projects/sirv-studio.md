@@ -502,7 +502,7 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
 Two teammates own critical pieces of this: Max Wish built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
 
 ![Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table](/images/studio/studio-assets-grid.webp)
-*The assets table, running on the in-house virtualized data grid (built by Max Wish) — hundreds of rows of live thumbnails, statuses, and tags.*
+*The assets table, running on the in-house virtualized data grid built by Max Wish — live thumbnails, sortable metadata, virtualized rows. And near the top: `Herceg-Novi-bg.jpg`, the town where the bet was made.*
 
 Three problems were harder than the rest.
 
@@ -561,10 +561,10 @@ Last quarter — March 23 to July 2 — the Studio team was three people, and we
 
 Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** And the fleet has real infrastructure, not vibes:
 
-- **VibeQueue** — a task queue we built as a standalone product — is the fleet's control plane. Agents claim work from it over MCP, check for duplicate tasks before opening new ones, and maintain todo checklists inside each task, the way an engineer works a ticket.
+- **VibeQueue** — a task queue I built as a standalone product, with Veniamin adding its QA lanes — is the fleet's control plane. Agents claim work from it over MCP, check for duplicate tasks before opening new ones, and maintain todo checklists inside each task, the way an engineer works a ticket.
 - **The clanker army** (yes, that's the internal name) turns a reviewed plan into isolated worker worktrees, runs them in supervised batches, and converges the results — with a terminal dashboard, a supervisor for detached workers, and an autopilot that keeps pulling eligible tasks off the queue.
 - **The agent roles live in the repo with written charters** — qa-lead, qa-explorer, qa-security-lead, perf-reviewer — the way a real team has job descriptions.
-- **Sirvant**, our Slack-facing work partner, takes a bug report in plain English and dispatches disposable workers to reproduce and fix it. Slack is the cockpit; VibeQueue is the ledger.
+- **Sirvant**, the fleet's Slack-facing work partner, takes a bug report in plain English and dispatches disposable workers to reproduce and fix it. Slack is the cockpit; VibeQueue is the ledger.
 
 My job in that loop is editorial: specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. Architecture, judgment, taste — and standing behind every line that ships.
 
