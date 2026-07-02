@@ -566,6 +566,9 @@ Commit volume is not value. But output with that shape needs explaining, and the
 - **The agent roles live in the repo with written charters** — qa-lead, qa-explorer, qa-security-lead, perf-reviewer — the way a real team has job descriptions.
 - **Sirvant**, the fleet's Slack-facing work partner, takes a bug report in plain English and dispatches disposable workers to reproduce and fix it. Slack is the cockpit; VibeQueue is the ledger.
 
+![VibeQueue dashboard showing who's working on what, the bug pipeline, and the coverage-matrix quality gate](/images/studio/studio-vibeq.webp)
+*VibeQueue, live: who's working on what (the 164 open tasks are mine), stalled reviews flagged for attention, the bug pipeline by priority, hotspot domains — and the coverage-matrix gate at the bottom deciding whether work is allowed to ship.*
+
 My job in that loop is editorial: specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. Architecture, judgment, taste — and standing behind every line that ships.
 
 The human layer is deliberately simple. We run daily branch ownership: one person owns the dev branch for the day and pushes to it directly — no pull requests, no review queue, no merge conflicts. A ten-minute morning sync, a handoff, and everyone stays in flow. The coordination ceremony that eats most teams' velocity simply isn't there. The internal team doc ends with the whole philosophy in six words: build fast, trust each other, ship often.
