@@ -314,6 +314,22 @@
     color: #d0d0d8;
     margin: 2rem 0;
   }
+
+  .project-description img {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .project-description img + em,
+  .project-description p:has(img) + p em {
+    display: block;
+    font-size: 1.3rem;
+    color: #8a8a9a;
+    margin-bottom: 1.5rem;
+  }
   </style>
   <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>
 {{ end }}
