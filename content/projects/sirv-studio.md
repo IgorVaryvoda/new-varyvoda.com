@@ -247,7 +247,7 @@ weight: 1
 
 Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants connect their Shopify store, scan the catalog for weak product content — missing alt text, poor images, thin descriptions — fix it in AI-powered batches, route supplier uploads through review, and publish back safely with versioning and rollback.
 
-I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and Veniamin Krachun joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
+I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
 
 ## It started over a beer
 
