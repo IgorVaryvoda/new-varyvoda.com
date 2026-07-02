@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light only">
+<title>I built Sirv AI Studio — Igor Varyvoda</title>
+<meta name="description" content="Seven months, 5,200 commits, 333k lines of production TypeScript. The build record of Sirv AI Studio, with every claim traceable to the git log.">
+<meta property="og:title" content="One person shipped this.">
+<meta property="og:description" content="The build record of Sirv AI Studio: 7 months, 5,200 commits, 333k lines of production TypeScript. Every claim traceable to the git log.">
+<meta property="og:type" content="article">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAFAF8;
+    --ink: #191613;
+    --ink-soft: #6E675C;
+    --line: #E4E0D7;
+    --ember-0: #EFEBE2;
+    --ember-1: #F3D9AE;
+    --ember-2: #EDB169;
+    --ember-3: #D97B2F;
+    --ember-4: #B34E14;
+    --ember-5: #7A2E0B;
+    --accent: #B34E14;
+    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  .wrap-wide { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+
+  .ref {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    text-transform: lowercase;
+  }
+  .ref::after { content: ""; display: block; width: 34px; height: 2px; background: var(--accent); margin-top: 10px; }
+
+  /* ---------- header ---------- */
+  header { padding: 28px 0 0; }
+  .topbar {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+  }
+  .topbar a { color: var(--ink-soft); border-bottom: none; }
+  .topbar a:hover { color: var(--accent); }
+
+  /* ---------- hero ---------- */
+  .hero { padding: 56px 0 18px; }
+  .hero h1 {
+    font-size: clamp(46px, 8.5vw, 92px);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+    max-width: 12ch;
+  }
+  .hero p.lede {
+    margin-top: 22px;
+    font-size: clamp(17px, 2.2vw, 20px);
+    max-width: 56ch;
+    color: var(--ink);
+  }
+  .hero p.lede strong { font-weight: 600; }
+
+  /* ---------- heatmap ---------- */
+  :root { --cell: 20px; --cellgap: 4px; }
+  @media (max-width: 700px) { :root { --cell: 13px; --cellgap: 3px; } }
+  .heatband { padding: 26px 0 12px; }
+  .heat-inner { width: fit-content; margin: 0 auto; max-width: 100%; }
+  .heat-meta {
+    display: flex; flex-wrap: wrap; gap: 8px 24px;
+    justify-content: space-between; align-items: baseline;
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .heat-scroll { overflow-x: auto; padding-bottom: 6px; }
+  .heatmap { display: inline-grid; grid-auto-flow: column; gap: var(--cellgap); }
+  .heat-col { display: grid; grid-template-rows: repeat(7, var(--cell)); gap: var(--cellgap); }
+  .cell {
+    width: var(--cell); height: var(--cell); border-radius: 4px;
+    background: var(--ember-0);
+  }
+  .cell.pop { animation: pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+  @keyframes pop {
+    from { opacity: 0; transform: scale(0.3); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cell.pop { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+  .heat-months {
+    display: flex; gap: 0;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  .heat-legend {
+    display: flex; align-items: center; gap: 5px;
+    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+    margin-top: 14px;
+  }
+  .heat-legend .cell { width: 11px; height: 11px; }
+  .heat-caption {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+    margin-top: 18px; max-width: 72ch;
+  }
+  .heat-caption em { font-style: normal; color: var(--ink); }
+
+  /* ---------- sections ---------- */
+  section { padding: 72px 0 0; }
+  section .body { margin-top: 26px; }
+  h2 {
+    font-size: clamp(26px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-top: 18px;
+  }
+  .prose p + p { margin-top: 16px; }
+  .prose { max-width: 60ch; }
+
+  /* ---------- ledger ---------- */
+  .ledger { width: 100%; border-collapse: collapse; margin-top: 30px; }
+  .ledger tr { border-top: 1px solid var(--line); }
+  .ledger tr:last-child { border-bottom: 1px solid var(--line); }
+  .ledger td { padding: 16px 18px 16px 0; vertical-align: baseline; }
+  .ledger .num {
+    font-family: var(--display); font-weight: 800;
+    font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em;
+    white-space: nowrap; width: 1%; padding-right: 30px;
+  }
+  .ledger .claim { font-size: 15.5px; max-width: 44ch; }
+  .ledger .src {
+    font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft);
+    text-align: right; white-space: nowrap; padding-right: 0;
+  }
+  @media (max-width: 700px) {
+    .ledger .src { display: none; }
+  }
+
+  /* ---------- loop block ---------- */
+  .loop {
+    font-family: var(--mono); font-size: 13px; line-height: 2.1;
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 22px 26px; margin-top: 26px;
+    background: #fff;
+    color: var(--ink);
+    overflow-x: auto;
+  }
+  .loop b { color: var(--accent); font-weight: 500; }
+
+  /* ---------- problems ---------- */
+  .problem { border-top: 1px solid var(--line); padding: 26px 0; }
+  .problem:last-of-type { border-bottom: 1px solid var(--line); }
+  .problem .tag {
+    font-family: var(--mono); font-size: 12px; font-weight: 500;
+    color: var(--accent); letter-spacing: 0.05em;
+  }
+  .problem h3 { font-size: 20px; font-weight: 600; margin-top: 6px; letter-spacing: -0.01em; }
+  .problem p { margin-top: 8px; font-size: 15.5px; color: var(--ink); max-width: 62ch; }
+
+  /* ---------- verify / cta ---------- */
+  .verify {
+    border: 1px solid var(--line); border-radius: 6px; background: #fff;
+    padding: 30px; margin-top: 30px;
+  }
+  .verify p { max-width: 58ch; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .btn {
+    display: inline-block; font-family: var(--mono); font-size: 13px; font-weight: 500;
+    padding: 12px 20px; border-radius: 4px; border: 1px solid var(--ink);
+    color: var(--ink); background: transparent;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); border-bottom-color: var(--ink); }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+  footer {
+    margin-top: 96px; padding: 28px 0 44px; border-top: 1px solid var(--line);
+    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+  }
+  footer .wrap-wide { display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap-wide topbar">
+    <span><a href="https://www.varyvoda.com">varyvoda.com</a> / <a href="/projects/">projects</a> / <a href="/projects/sirv-studio/">sirv-studio</a> / build-record</span>
+    <span>updated 2026-07</span>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <h1>One person shipped this.</h1>
+    <p class="lede">
+      <strong><a href="https://www.sirv.studio">Sirv AI Studio</a></strong> is an AI product-content platform for
+      e-commerce: 30+ AI tools, batch workflows, supplier intake, and safe publishing to Shopify.
+      I designed and built it. Solo for the first three and a half months, and still the author of
+      roughly 70% of every commit since. Below is the build record, straight from the git log.
+    </p>
+  </div>
+</div>
+
+<div class="wrap-wide heatband">
+  <div class="heat-inner">
+  <div class="heat-meta">
+    <span>5,200 commits by me &middot; Dec 2, 2025 &rarr; Jul 1, 2026</span>
+    <span>one cell = one day &middot; author filter: me &middot; no smoothing</span>
+  </div>
+  <div class="heat-scroll">
+    <div id="months" class="heat-months" aria-hidden="true"></div>
+    <div id="heatmap" class="heatmap" role="img" aria-label="Commit activity heatmap: 207 active days out of 212 tracked, December 2025 through July 2026, peaking at 182 commits in a single day."></div>
+  </div>
+  <div class="heat-legend">
+    <span style="margin-right:4px">fewer</span>
+    <span class="cell" style="background:var(--ember-0)"></span>
+    <span class="cell" style="background:var(--ember-1)"></span>
+    <span class="cell" style="background:var(--ember-2)"></span>
+    <span class="cell" style="background:var(--ember-3)"></span>
+    <span class="cell" style="background:var(--ember-4)"></span>
+    <span class="cell" style="background:var(--ember-5)"></span>
+    <span style="margin-left:4px">more</span>
+  </div>
+  <p class="heat-caption">
+    Rendered from real per-day commit counts. Seven months, <em>five days off</em>.
+    The hot streak from April onward is the platform hardening for production: billing,
+    entitlements, supplier portal, publish safety.
+  </p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section id="evidence">
+    <span class="ref">evidence/</span>
+    <h2>The ledger</h2>
+    <table class="ledger">
+      <tr>
+        <td class="num">Dec 2</td>
+        <td class="claim">First commit, December 2, 2025. Empty repo to production platform in seven months.</td>
+        <td class="src">git log --reverse</td>
+      </tr>
+      <tr>
+        <td class="num">7,512</td>
+        <td class="claim">Commits in the repo. 5,200 are mine, about 70%. Two engineers joined from month four.</td>
+        <td class="src">git shortlog -sn</td>
+      </tr>
+      <tr>
+        <td class="num">3.5 mo</td>
+        <td class="claim">Solo. Every commit before March 18 has one author.</td>
+        <td class="src">git log --author</td>
+      </tr>
+      <tr>
+        <td class="num">333k</td>
+        <td class="claim">Lines of production TypeScript, app and tests, plus six internal packages.</td>
+        <td class="src">wc -l src/**</td>
+      </tr>
+      <tr>
+        <td class="num">3,690</td>
+        <td class="claim">Test files behind a blocking quality gate. Velocity without tests is just typing.</td>
+        <td class="src">find . -name '*.test.*'</td>
+      </tr>
+      <tr>
+        <td class="num">39/day</td>
+        <td class="claim">My commit rate over the last 30 days. Month seven, faster than month one.</td>
+        <td class="src">git log --since='30 days'</td>
+      </tr>
+      <tr>
+        <td class="num">30+</td>
+        <td class="claim">AI tools live in production, from background removal to full workflow orchestration.</td>
+        <td class="src">sirv.studio</td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="product">
+    <span class="ref">product/</span>
+    <h2>What it does</h2>
+    <div class="body prose">
+      <p>
+        E-commerce teams get product images from suppliers, photographers, and old catalogs.
+        The content is messy, the fixes are manual, and publishing a wrong image to a live store
+        is expensive. Studio turns that into one controlled loop:
+      </p>
+      <div class="loop">scan catalog &rarr; <b>find what blocks every product</b> &rarr; fix in AI batches &rarr; review &amp; approve &rarr; <b>publish safely to Shopify</b> &rarr; version, track, roll back</div>
+      <p>
+        Under the loop: a product-linked asset library, supplier upload portals with validation
+        and SFTP intake, readiness scoring, a visual workflow builder, and an API/MCP layer so
+        AI agents can run the same operations the UI does, inside the same permission and
+        approval rules.
+      </p>
+    </div>
+  </section>
+
+  <section id="problems">
+    <span class="ref">problems/</span>
+    <h2>Four problems worth the trouble</h2>
+    <div class="body">
+      <div class="problem">
+        <span class="tag">mcp/</span>
+        <h3>An agent platform, not an endpoint</h3>
+        <p>
+          A production MCP server (45 tools, published on npm) and OpenAPI layer where AI agents
+          run real product-content workflows, and every operation respects credits, permissions,
+          review gates, and publish safety. Agents get the same rules as humans, enforced in the
+          same place.
+        </p>
+      </div>
+      <div class="problem">
+        <span class="tag">publish/</span>
+        <h3>Publishing that cannot wreck a store</h3>
+        <p>
+          Writes to live Shopify catalogs are guarded by source drift detection, idempotency keys,
+          per-product status, preserved originals, and one-click rollback. Partial failure is a
+          designed state, not a surprise.
+        </p>
+      </div>
+      <div class="problem">
+        <span class="tag">supplier/</span>
+        <h3>Supplier intake without the chaos</h3>
+        <p>
+          Suppliers get scoped upload portals and SFTP drops. Files are validated on arrival
+          against filenames, SKUs, slots, and specs, repaired by AI autofix, and held in an
+          approval queue enforced at the database layer. Supplier content cannot reach a live
+          store without a human yes.
+        </p>
+      </div>
+      <div class="problem">
+        <span class="tag">orchestrate/</span>
+        <h3>Workflows as a graph</h3>
+        <p>
+          A visual pipeline builder compiling to DAG execution over durable background jobs,
+          with 36 step types, live SSE progress, human review gates, and credit metering
+          per step.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="method">
+    <span class="ref">method/</span>
+    <h2>How one person ships like a team</h2>
+    <div class="body prose">
+      <p>
+        The honest answer: I run a fleet of AI coding agents the way a lead runs a team.
+        Test-first on every behavior change. A blocking quality gate on every stop. Adversarial
+        review agents that try to break each change before it lands. Ratchets that stop files
+        from growing back.
+      </p>
+      <p>
+        The agents type faster than I do. The architecture, the judgment, and the taste are mine,
+        and the 3,690 test files are why I can trust the throughput. In 2026 every engineer has
+        the same models. The difference is whether your system turns that speed into a product
+        or into a mess.
+      </p>
+    </div>
+  </section>
+
+  <section id="verify">
+    <span class="ref">verify/</span>
+    <h2>Check my work</h2>
+    <div class="verify">
+      <p>
+        The codebase is private, so you cannot run the commands in the ledger yourself.
+        I will happily walk through the git history live in any interview, screen shared,
+        no preparation. The product needs no permission at all:
+        <a href="https://www.sirv.studio">sirv.studio</a> is public and free to try.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://www.sirv.studio">Try Sirv AI Studio</a>
+        <a class="btn" href="/projects/sirv-studio/">Case study</a>
+        <a class="btn" href="https://github.com/igorvaryvoda">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/igorvaryvoda/">LinkedIn</a>
+        <a class="btn" href="https://x.com/igorvaryvoda">X / Twitter</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap-wide">
+    <span>Numbers as of July 1, 2026. Heatmap rendered from real per-day commit counts.</span>
+    <span>Igor Varyvoda &middot; <a href="https://www.varyvoda.com">varyvoda.com</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var DATA = [["2025-12-02",30],["2025-12-03",21],["2025-12-04",31],["2025-12-05",12],["2025-12-06",19],["2025-12-07",21],["2025-12-08",13],["2025-12-09",31],["2025-12-10",14],["2025-12-11",28],["2025-12-12",29],["2025-12-13",10],["2025-12-14",11],["2025-12-15",7],["2025-12-16",7],["2025-12-17",26],["2025-12-18",39],["2025-12-19",35],["2025-12-20",13],["2025-12-21",7],["2025-12-22",11],["2025-12-23",17],["2025-12-24",14],["2025-12-25",36],["2025-12-26",40],["2025-12-27",14],["2025-12-28",11],["2025-12-29",29],["2025-12-30",6],["2025-12-31",3],["2026-01-01",20],["2026-01-02",27],["2026-01-03",16],["2026-01-04",27],["2026-01-05",9],["2026-01-06",19],["2026-01-07",28],["2026-01-08",29],["2026-01-09",15],["2026-01-10",5],["2026-01-11",6],["2026-01-12",3],["2026-01-13",16],["2026-01-14",19],["2026-01-15",15],["2026-01-16",16],["2026-01-17",9],["2026-01-19",11],["2026-01-20",62],["2026-01-21",16],["2026-01-22",17],["2026-01-23",13],["2026-01-24",16],["2026-01-25",21],["2026-01-26",16],["2026-01-27",19],["2026-01-28",21],["2026-01-29",11],["2026-01-30",10],["2026-01-31",10],["2026-02-01",30],["2026-02-02",12],["2026-02-03",1],["2026-02-04",5],["2026-02-05",8],["2026-02-06",13],["2026-02-07",5],["2026-02-08",2],["2026-02-09",6],["2026-02-10",5],["2026-02-11",5],["2026-02-12",11],["2026-02-13",9],["2026-02-14",6],["2026-02-15",6],["2026-02-16",8],["2026-02-17",9],["2026-02-18",6],["2026-02-19",12],["2026-02-20",9],["2026-02-21",12],["2026-02-22",10],["2026-02-23",1],["2026-02-24",6],["2026-02-25",26],["2026-02-26",32],["2026-02-27",21],["2026-02-28",36],["2026-03-01",8],["2026-03-02",4],["2026-03-03",17],["2026-03-04",11],["2026-03-05",26],["2026-03-06",31],["2026-03-07",23],["2026-03-08",4],["2026-03-09",25],["2026-03-10",14],["2026-03-11",13],["2026-03-12",20],["2026-03-13",13],["2026-03-14",3],["2026-03-15",4],["2026-03-16",4],["2026-03-17",11],["2026-03-18",13],["2026-03-19",6],["2026-03-20",16],["2026-03-21",19],["2026-03-22",8],["2026-03-23",22],["2026-03-24",31],["2026-03-25",18],["2026-03-26",30],["2026-03-27",18],["2026-03-28",26],["2026-03-29",19],["2026-03-30",21],["2026-03-31",14],["2026-04-01",42],["2026-04-02",58],["2026-04-03",18],["2026-04-05",14],["2026-04-06",14],["2026-04-07",5],["2026-04-08",47],["2026-04-09",182],["2026-04-10",74],["2026-04-11",79],["2026-04-12",19],["2026-04-13",46],["2026-04-14",64],["2026-04-15",23],["2026-04-16",30],["2026-04-17",45],["2026-04-18",117],["2026-04-19",36],["2026-04-20",40],["2026-04-21",32],["2026-04-22",45],["2026-04-23",44],["2026-04-24",35],["2026-04-25",3],["2026-04-26",1],["2026-04-27",24],["2026-04-28",56],["2026-04-29",52],["2026-04-30",43],["2026-05-01",18],["2026-05-02",88],["2026-05-03",78],["2026-05-04",26],["2026-05-05",27],["2026-05-06",34],["2026-05-07",34],["2026-05-08",69],["2026-05-09",22],["2026-05-10",5],["2026-05-11",13],["2026-05-12",51],["2026-05-13",64],["2026-05-14",44],["2026-05-15",40],["2026-05-16",13],["2026-05-17",11],["2026-05-18",17],["2026-05-19",23],["2026-05-20",17],["2026-05-21",14],["2026-05-22",20],["2026-05-23",9],["2026-05-24",37],["2026-05-25",71],["2026-05-26",24],["2026-05-27",16],["2026-05-28",7],["2026-05-29",12],["2026-05-30",11],["2026-05-31",31],["2026-06-01",57],["2026-06-02",16],["2026-06-05",21],["2026-06-06",37],["2026-06-07",13],["2026-06-08",14],["2026-06-10",4],["2026-06-11",24],["2026-06-12",19],["2026-06-13",43],["2026-06-14",109],["2026-06-15",38],["2026-06-16",22],["2026-06-17",45],["2026-06-18",55],["2026-06-19",61],["2026-06-20",35],["2026-06-21",38],["2026-06-22",43],["2026-06-23",28],["2026-06-24",48],["2026-06-25",53],["2026-06-26",21],["2026-06-27",54],["2026-06-28",31],["2026-06-29",25],["2026-06-30",62],["2026-07-01",45]];
+
+  var byDate = {};
+  DATA.forEach(function (d) { byDate[d[0]] = d[1]; });
+
+  function ramp(n) {
+    if (!n) return 'var(--ember-0)';
+    if (n <= 8) return 'var(--ember-1)';
+    if (n <= 20) return 'var(--ember-2)';
+    if (n <= 40) return 'var(--ember-3)';
+    if (n <= 80) return 'var(--ember-4)';
+    return 'var(--ember-5)';
+  }
+
+  var start = new Date('2025-12-01T00:00:00');
+  var end = new Date('2026-07-01T00:00:00');
+  var map = document.getElementById('heatmap');
+  var monthsEl = document.getElementById('months');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var col = null, dayIdx = 0, cellIdx = 0;
+  var monthLabels = [];
+  var colCount = 0;
+
+  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+    var dow = (d.getDay() + 6) % 7; // Monday = 0
+    if (dow === 0 || !col) {
+      col = document.createElement('div');
+      col.className = 'heat-col';
+      map.appendChild(col);
+      colCount++;
+      if (d.getDate() <= 7) {
+        monthLabels.push({ col: colCount, label: d.toLocaleString('en', { month: 'short' }) });
+      }
+    }
+    // pad first column so Dec 1 (Mon) aligns; Dec 1 IS Monday, so no pad needed
+    var iso = d.toISOString().slice(0, 10);
+    var n = byDate[iso] || 0;
+    var cell = document.createElement('div');
+    cell.className = 'cell';
+    cell.style.background = ramp(n);
+    cell.title = iso + ' · ' + n + ' commit' + (n === 1 ? '' : 's');
+    if (!reduced) {
+      cell.classList.add('pop');
+      cell.style.animationDelay = (cellIdx * 7) + 'ms';
+    }
+    col.appendChild(cell);
+    cellIdx++;
+  }
+
+  // month labels: position by column offset (cell + gap)
+  var cs = getComputedStyle(document.documentElement);
+  var step = parseFloat(cs.getPropertyValue('--cell')) + parseFloat(cs.getPropertyValue('--cellgap'));
+  var seen = {};
+  monthLabels.forEach(function (m) {
+    if (seen[m.label]) return;
+    seen[m.label] = true;
+    var s = document.createElement('span');
+    s.textContent = m.label;
+    s.style.position = 'relative';
+    s.style.display = 'inline-block';
+    s.style.width = '0';
+    s.style.left = ((m.col - 1) * step) + 'px';
+    monthsEl.appendChild(s);
+  });
+})();
+</script>
+
+</body>
+</html>
