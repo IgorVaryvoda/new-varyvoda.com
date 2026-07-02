@@ -22,9 +22,11 @@ Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants
 
 I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way Max Wish and Veniamin Krachun joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
 
-## Day one
+## It started over a beer
 
-On December 2, 2025, at commit one, the repo was `Initial commit from Create Next App`. By the end of that same day it had auth, billing scaffolding, rate limiting, Sirv storage integration, virtual try-on, batch mode with multi-select, HEIC conversion, a database swap, and a fix for iPhone gallery uploads in Safari. Thirty commits, day one.
+Some coworkers were visiting me in Herceg Novi, Montenegro. Over a beer the conversation drifted to AI — what it could actually build now, not what the keynotes promised — and at some point I told the table: I'm going to build this in a day.
+
+The next morning I was up at six. `Initial commit from Create Next App` landed on December 2, 2025, and by noon there was a working MVP. By the end of the day the repo had auth, billing scaffolding, rate limiting, Sirv storage integration, virtual try-on, batch mode with multi-select, HEIC conversion, a database swap, and a fix for iPhone gallery uploads in Safari. Thirty commits, day one. The bet stood by lunch; the rest of this page is what happened when I kept going.
 
 That pace turned out to be the project's resting heart rate, not a launch spike. Six days in: the workflow orchestrator canvas — the drag-and-drop pipeline builder that's still the center of the product. Twelve days in: durable background jobs on Inngest. Eighteen days: an MCP server, before most people knew what MCP was. Twenty-five days: the embedded Shopify app. December closed at 602 commits, and the repo already had the skeleton of everything Studio is today.
 
