@@ -424,7 +424,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity: about $70 a month.
 
 <figure class="studio-visual studio-architecture" aria-labelledby="studio-architecture-title">
   <div class="studio-visual-head">
@@ -559,9 +559,18 @@ A two-day framework migration isn't a typing achievement. It's what happens when
 
 Last quarter — March 23 to July 2 — the Studio team was three people, and we landed **5,425 distinct commits**: non-merge, rebase and cherry-pick duplicates deduped, bot-authored commits excluded. My own count was 3,529 — thirty-nine a day, every day, in month seven of the project.
 
-Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** Specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. My job in that loop is editorial: architecture, judgment, taste, and standing behind every line that ships.
+Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** And the fleet has real infrastructure, not vibes:
 
-I wrote the broader argument behind that operating model in [Two theories of a programmer](/posts/two-theories-of-a-programmer/). This page keeps the claim grounded in the Studio evidence.
+- **VibeQueue** — a task queue we built as a standalone product — is the fleet's control plane. Agents claim work from it over MCP, check for duplicate tasks before opening new ones, and maintain todo checklists inside each task, the way an engineer works a ticket.
+- **The clanker army** (yes, that's the internal name) turns a reviewed plan into isolated worker worktrees, runs them in supervised batches, and converges the results — with a terminal dashboard, a supervisor for detached workers, and an autopilot that keeps pulling eligible tasks off the queue.
+- **The agent roles live in the repo with written charters** — qa-lead, qa-explorer, qa-security-lead, perf-reviewer — the way a real team has job descriptions.
+- **Sirvant**, our Slack-facing work partner, takes a bug report in plain English and dispatches disposable workers to reproduce and fix it. Slack is the cockpit; VibeQueue is the ledger.
+
+My job in that loop is editorial: specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. Architecture, judgment, taste — and standing behind every line that ships.
+
+The human layer is deliberately simple. We run daily branch ownership: one person owns main for the day and pushes straight to production — no pull requests, no review queue, no merge conflicts. A ten-minute morning sync, a handoff, and everyone stays in flow. The coordination ceremony that eats most teams' velocity simply isn't there. The internal team doc ends with the whole philosophy in six words: build fast, trust each other, ship often.
+
+I wrote the broader argument behind this operating model in [Two theories of a programmer](/posts/two-theories-of-a-programmer/). This page keeps the claim grounded in the Studio evidence.
 
 The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
 
