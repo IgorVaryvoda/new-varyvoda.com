@@ -100,38 +100,30 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 }
 </style>
 
-<p class="two-theories-meta">2 Jul 2026 · data: 23 Mar–2 Jul, two repos, 15 contributors</p>
+<p class="two-theories-meta">2 Jul 2026 · data: 23 Mar–2 Jul · one repo, three contributors, every commit counted</p>
 
-<p class="two-theories-standfirst">The <a href="/projects/sirv-studio/build-record/">Studio build record</a> shows one product curve. The comparison that made me write this showed two teams. What it really showed is two different answers to a question most of the industry hasn't noticed it's being asked: <strong>what is a programmer for?</strong></p>
+<p class="two-theories-standfirst">The <a href="/projects/sirv-studio/build-record/">Studio build record</a> shows a curve that doesn't look like a normal engineering chart. Understanding why it bends means answering a question most of the industry hasn't noticed it's being asked: <strong>what is a programmer for?</strong></p>
 
 ## The theories
 
 The old theory says a programmer is a person who types out the code they thought of. The new theory says a programmer is a person who exercises **editorial judgment over a fleet that types**. Every other difference in the data falls out of that one difference — the totals, the shapes, even what a "commit" means.
 
-This isn't a story about talent. Both teams in the chart are made of capable engineers. It's a story about what happens when one side changes its theory of the job while the other side changes its tooling.
+This isn't a story about talent. It's a story about what happens when you change your theory of the job, instead of only changing your tooling.
 
 ## Read the shapes, not the totals
 
-The Sirv.com curve is a metronome: thirty to fifty commits a week, team-wide, for fifteen straight weeks. That is the signature of manual work — output is linear in hours, and hours are constant. It is what nearly every engineering chart in the world has looked like for fifty years, and there is nothing wrong with it except what it can never do: bend.
+Nearly every engineering chart in the world is a metronome: a steady band of commits per week, team-wide, quarter after quarter. That is the signature of manual work — output is linear in hours, and hours are constant. Charts have looked like that for fifty years, and there is nothing wrong with it except the one thing that shape can never do: bend.
 
-The most interesting line on the Studio side isn't the founder's 3,529. It's the QA lead's ramp: nothing for two weeks, then twenty, forty, ninety — then **277, 309, 188**. A fifteen-fold personal ramp inside one quarter is biologically impossible for a typist. It isn't a person learning to type faster. It's a harness coming online — the coverage matrix, the gates, the agent workflows — and starting to pay compound interest.
+The most interesting line in the Studio data isn't the founder's 3,529. It's the QA lead's ramp: nothing for two weeks, then twenty, forty, ninety — then **277, 309, 188**. A fifteen-fold personal ramp inside one quarter is biologically impossible for a typist. It isn't a person learning to type faster. It's a harness coming online — the coverage matrix, the gates, the agent workflows — and starting to pay compound interest.
 
 <figure class="two-theories-figure">
-  <div class="two-theories-sparkpair">
-    <div>
-      <div class="two-theories-lab"><span class="two-theories-dot" style="background:#57c7b8"></span>Sirv.com, whole team, weekly</div>
-      <div class="two-theories-bars">
-        <b style="background:#57c7b8;height:63%"></b><b style="background:#57c7b8;height:60%"></b><b style="background:#57c7b8;height:88%"></b><b style="background:#57c7b8;height:48%"></b><b style="background:#57c7b8;height:46%"></b><b style="background:#57c7b8;height:43%"></b><b style="background:#57c7b8;height:100%"></b><b style="background:#57c7b8;height:49%"></b><b style="background:#57c7b8;height:55%"></b><b style="background:#57c7b8;height:42%"></b><b style="background:#57c7b8;height:49%"></b><b style="background:#57c7b8;height:57%"></b><b style="background:#57c7b8;height:76%"></b><b style="background:#57c7b8;height:42%"></b><b style="background:#57c7b8;height:43%"></b>
-      </div>
-    </div>
-    <div>
-      <div class="two-theories-lab"><span class="two-theories-dot" style="background:#54c98a"></span>One Studio engineer, QA, weekly</div>
-      <div class="two-theories-bars">
-        <b style="background:#54c98a;height:0%"></b><b style="background:#54c98a;height:0%"></b><b style="background:#54c98a;height:6%"></b><b style="background:#54c98a;height:5%"></b><b style="background:#54c98a;height:13%"></b><b style="background:#54c98a;height:13%"></b><b style="background:#54c98a;height:4%"></b><b style="background:#54c98a;height:28%"></b><b style="background:#54c98a;height:12%"></b><b style="background:#54c98a;height:17%"></b><b style="background:#54c98a;height:10%"></b><b style="background:#54c98a;height:21%"></b><b style="background:#54c98a;height:90%"></b><b style="background:#54c98a;height:100%"></b><b style="background:#54c98a;height:61%"></b>
-      </div>
+  <div>
+    <div class="two-theories-lab"><span class="two-theories-dot" style="background:#54c98a"></span>One Studio engineer, QA, weekly distinct commits</div>
+    <div class="two-theories-bars">
+      <b style="background:#54c98a;height:0%"></b><b style="background:#54c98a;height:0%"></b><b style="background:#54c98a;height:6%"></b><b style="background:#54c98a;height:5%"></b><b style="background:#54c98a;height:13%"></b><b style="background:#54c98a;height:13%"></b><b style="background:#54c98a;height:4%"></b><b style="background:#54c98a;height:28%"></b><b style="background:#54c98a;height:12%"></b><b style="background:#54c98a;height:17%"></b><b style="background:#54c98a;height:10%"></b><b style="background:#54c98a;height:21%"></b><b style="background:#54c98a;height:90%"></b><b style="background:#54c98a;height:100%"></b><b style="background:#54c98a;height:61%"></b>
     </div>
   </div>
-  <figcaption>Left: a metronome — twelve people, effort-linear, 577 distinct commits in 15 weeks. Right: a compounding curve — one person, 1,179, most of it in the last month, after the harness existed. Each panel is scaled to its own peak.</figcaption>
+  <figcaption>A compounding curve: one person, 1,179 distinct commits in the quarter, most of it in the last month — after the harness existed. Scaled to its own peak.</figcaption>
 </figure>
 
 **Manual coding scales with effort. Fleet coding scales with the infrastructure you've built for the agents** — and infrastructure compounds. That is the entire economics of the new theory in one sentence.
@@ -140,7 +132,7 @@ The most interesting line on the Studio side isn't the founder's 3,529. It's the
 
 Somewhere in this quarter, a commit quietly changed meaning. It used to be a proxy for an hour of typing. Now it is **a decision someone was willing to stand behind** — specified, reviewed, gated. When the marginal cost of producing code drops toward zero, everything scarce moves upstream: specification, verification, taste.
 
-Which is why something funny happened to the metric itself. The moment commit counts became cheap to inflate, they had to become *more* rigorous to mean anything. The comparison counted distinct non-merge commits, deduped rebase and cherry-pick copies, excluded bot authors on both sides, and disclosed that squash-merge workflows floor the other team's numbers — not because anyone demanded an audit, but because volume without an honesty apparatus is now just noise.
+Which is why something funny happened to the metric itself. The moment commit counts became cheap to inflate, they had to become *more* rigorous to mean anything. The Studio numbers count distinct non-merge commits, dedupe rebase and cherry-pick copies, and exclude bot authors — not because anyone demanded an audit, but because volume without an honesty apparatus is now just noise.
 
 ## The pretenders
 
@@ -157,20 +149,17 @@ A repository run this way grows organs a hand-coded repository never grows: skil
 ## The inversion
 
 <figure class="two-theories-figure">
-  <div class="two-theories-statpair">
-    <div class="two-theories-stat"><div class="n" style="color:#57c7b8">229</div><div class="l">Bot-authored commits on the <strong>manual</strong> team's repo this period — github-actions alone would top their human leaderboard.</div></div>
-    <div class="two-theories-stat"><div class="n" style="color:#e8b04b">32</div><div class="l">Bot-authored commits on the <strong>fleet</strong> team's repo — because the agents commit as the humans who direct them.</div></div>
-  </div>
-  <figcaption>Distinct non-merge, bot-authored commits, 23 Mar–2 Jul 2026, both repos.</figcaption>
+  <div class="two-theories-stat"><div class="n" style="color:#e8b04b">32</div><div class="l">Bot-authored commits on the Studio repo all quarter — because the agents commit as the humans who direct them.</div></div>
+  <figcaption>Distinct non-merge, bot-authored commits, 23 Mar–2 Jul 2026.</figcaption>
 </figure>
 
-Sit with that inversion for a second. The team that codes by hand has robots signing their own work. The team run by robots has a human signing all of it. The question was never whether machines write code — CI has been committing for a decade. The question is **who takes editorial responsibility for what ships**.
+Sit with that for a second. On an ordinary repository, CI bots sit near the top of the contributor leaderboard — github-actions has been committing for a decade. On the one repo where you would expect the machines to dominate the authorship, they sign almost nothing: a human stands behind every line. The question was never whether machines write code. The question is **who takes editorial responsibility for what ships**.
 
 ## What survives
 
 To be fair to the old way: volume isn't value, and ten times the commits can be ten times the entropy. The craft virtues — coherence, taste, knowing *why* — did not become obsolete. They got promoted, from the line level to the system level. The old way got coherence for free, because one mind touched every line. The new way recovers it only by writing the mind down: product soul documents, design contracts, workflow rules. That, incidentally, is why tacit, undocumented seniority does not survive contact with a fleet — and why the people who thrive in the new mode are the ones who could always say what they wanted before they typed it.
 
-In five years nobody will pretend to be AI-assisted. They'll pretend they always were. The gap in the velocity chart is not a talent gap — it's that one side changed its theory of the job while the other changed its tooling.
+In five years nobody will pretend to be AI-assisted. They'll pretend they always were. And the teams whose charts never bent won't have a tooling gap to close — they'll have a theory to change.
 
 > Tools don't bend curves. Theories do.
 
