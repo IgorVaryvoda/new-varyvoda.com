@@ -247,7 +247,7 @@ weight: 1
 
 Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants connect their Shopify store, scan the catalog for weak product content — missing alt text, poor images, thin descriptions — fix it in AI-powered batches, route supplier uploads through review, and publish back safely with versioning and rollback.
 
-I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way Max Wish and Veniamin Krachun joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
+I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and Veniamin Krachun joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
 
 ## It started over a beer
 
@@ -334,7 +334,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
       <span>search by image</span><span>semantic search</span><span>find similar</span><span>duplicate detection</span><span>auto-tagging</span><span>smart collections</span><span>saved views</span><span>license tracking · publish gates</span><span>license alerts</span><span>watermark templates</span><span>asset &amp; search analytics</span>
     </div>
   </div>
-  <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter. The interface all of this lives in runs on the internal design system and virtualized data grid built by Max Wish.</figcaption>
+  <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter. The interface all of this lives in runs on the internal design system and virtualized data grid built by <a href="https://www.linkedin.com/in/max-wish/">Max Wish</a>.</figcaption>
 </figure>
 
 ![Sirv AI Studio products view with per-product readiness scores](/images/studio/studio-products.webp)
@@ -353,10 +353,10 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
   <figcaption>The important boundary is in the middle: UI, supplier uploads, API calls, and AI agents all enter the same governed core before jobs, providers, storage, or Shopify writes happen.</figcaption>
 </figure>
 
-Two teammates own critical pieces of this: Max Wish built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
+Two teammates own critical pieces of this: [Max Wish](https://www.linkedin.com/in/max-wish/) built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
 
 ![Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table](/images/studio/studio-assets-grid.webp)
-*The assets table, running on the in-house virtualized data grid built by Max Wish — live thumbnails, sortable metadata, virtualized rows. And near the top: `Herceg-Novi-bg.jpg`, the town where the bet was made.*
+*The assets table, running on the in-house virtualized data grid built by [Max Wish](https://www.linkedin.com/in/max-wish/) — live thumbnails, sortable metadata, virtualized rows. And near the top: `Herceg-Novi-bg.jpg`, the town where the bet was made.*
 
 Three problems were harder than the rest.
 
