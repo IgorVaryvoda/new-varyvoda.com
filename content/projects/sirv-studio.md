@@ -431,8 +431,6 @@ I wrote the broader argument behind this operating model in [Two theories of a p
 
 The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
 
-My favorite detail in the whole dataset: a repo run by an agent fleet had just 32 bot-authored commits all quarter. The agents' work ships under the name of the human who directed it — reviewed, gated, and signed for. The machines don't stand behind anything here; people do.
-
 ---
 
 Studio also carries the less glamorous machinery a production platform needs: exponential-backoff retries with jitter, per-operation circuit breakers on AI providers, content-based idempotency keys, Redis-backed rate limits, and restore-drilled database backups. That layer has no screenshots, but it's why the rest works.
