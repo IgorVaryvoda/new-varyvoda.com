@@ -378,39 +378,30 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
       <rect x="64" y="92" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.45)"/>
       <text x="86" y="124" fill="#edf7fb" font-size="17" font-weight="700">TanStack UI</text>
       <text x="86" y="150" fill="#94a6b4" font-size="12">merchant app, workflows</text>
-
       <rect x="64" y="242" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.45)"/>
       <text x="86" y="274" fill="#edf7fb" font-size="17" font-weight="700">Supplier portal</text>
       <text x="86" y="300" fill="#94a6b4" font-size="12">links, SFTP, review queue</text>
-
       <rect x="64" y="392" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(203,166,247,0.45)"/>
       <text x="86" y="424" fill="#edf7fb" font-size="17" font-weight="700">MCP / API</text>
       <text x="86" y="450" fill="#94a6b4" font-size="12">45 tools for agents</text>
-
       <rect x="340" y="198" width="196" height="96" rx="12" fill="#07131c" stroke="rgba(249,201,122,0.72)" stroke-width="2"/>
       <text x="370" y="234" fill="#f9c97a" font-size="18" font-weight="800">Studio core</text>
       <text x="370" y="260" fill="#edf7fb" font-size="13">auth, org scope, credits, approvals</text>
-
       <rect x="330" y="24" width="216" height="78" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
       <text x="360" y="58" fill="#edf7fb" font-size="17" font-weight="700">Postgres + Drizzle</text>
       <text x="360" y="82" fill="#94a6b4" font-size="12">source of truth, 254 migrations</text>
-
       <rect x="330" y="414" width="216" height="82" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
       <text x="360" y="448" fill="#edf7fb" font-size="17" font-weight="700">Inngest</text>
       <text x="360" y="472" fill="#94a6b4" font-size="12">87 durable background functions</text>
-
       <rect x="630" y="116" width="168" height="88" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.44)"/>
       <text x="660" y="148" fill="#edf7fb" font-size="17" font-weight="700">AI providers</text>
       <text x="660" y="174" fill="#94a6b4" font-size="12">fal.ai, OpenAI, OpenRouter</text>
-
       <rect x="630" y="244" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.44)"/>
       <text x="660" y="276" fill="#edf7fb" font-size="17" font-weight="700">Shopify</text>
       <text x="660" y="302" fill="#94a6b4" font-size="12">safe publish, drift checks</text>
-
       <rect x="630" y="374" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(249,201,122,0.44)"/>
       <text x="660" y="406" fill="#edf7fb" font-size="17" font-weight="700">Sirv storage</text>
       <text x="660" y="432" fill="#94a6b4" font-size="12">assets, versions, rollback</text>
-
       <rect x="764" y="514" width="96" height="34" rx="17" fill="rgba(102,217,239,0.08)" stroke="rgba(102,217,239,0.24)"/>
       <text x="812" y="536" fill="#94a6b4" font-size="11" text-anchor="middle">Sentry · PostHog · Grafana</text>
     </g>
