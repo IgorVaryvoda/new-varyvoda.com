@@ -6,7 +6,7 @@ featured: true
 hero: true
 project_url: "https://www.sirv.studio"
 image: "/images/studio/studio-create-prompt.webp"
-description: "An AI product-content platform for e-commerce — I created it and built the core end to end. Merchants scan their Shopify catalog, fix product content in AI batches, route supplier uploads through review, and publish safely with versioning and rollback."
+description: "An AI product-content platform for e-commerce — I created it and built it end to end. Merchants scan their Shopify catalog, fix product content in AI batches, route supplier uploads through review, and publish safely with versioning and rollback."
 hero_note: "30+ AI tools, a workflow orchestrator, a production MCP server and API platform for AI agents, supplier portals, Stripe billing, and the reliability infrastructure underneath."
 tech_stack: ["React 19", "TanStack Start", "PostgreSQL", "Drizzle", "Inngest", "Stripe", "fal.ai"]
 status: "active"
@@ -20,7 +20,7 @@ weight: 1
 
 Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants connect their Shopify store, scan the catalog for weak product content — missing alt text, poor images, thin descriptions — fix it in AI-powered batches, route supplier uploads through review, and publish back safely with versioning and rollback.
 
-I created Studio and built it solo for its first twelve weeks, from `create-next-app` to a working platform. It's since grown into a small team effort, but the architecture and the core of the product — the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the background-job infrastructure — are my work, first commit to production. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
+I created Studio and built it, solo for the first twelve weeks and end to end since — the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, the background-job infrastructure, and the product itself, first commit to production. Two exceptions, credited below: the design system and data grid, and part of the QA suite. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
 
 ## Day one
 
@@ -46,7 +46,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android.
 
-Credit where it's due: the internal design system and the custom virtualized data grid that powers the asset and product tables were authored by my colleague Max Wish, and the E2E/QA governance suite is largely the work of Veniamin Krachun. The rest — the architecture and the systems below — is mine.
+The two exceptions: the internal design system and the custom virtualized data grid that powers the asset and product tables were authored by my colleague Max Wish, and Veniamin Krachun contributed part of the E2E/QA suite. Everything else on this page is my work.
 
 ![Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table](/images/studio/studio-assets-grid.webp)
 *The assets table, running on the in-house virtualized data grid (built by Max Wish) — hundreds of rows of live thumbnails, statuses, and tags.*
