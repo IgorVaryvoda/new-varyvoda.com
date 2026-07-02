@@ -48,7 +48,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android.
 
-Two teammates own critical pieces of this: Max Wish built the internal design system and the custom virtualized data grid that powers the asset and product tables, and Veniamin Krachun built out the E2E/QA harness that keeps the velocity you'll read about below honest.
+Two teammates own critical pieces of this: Max Wish built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
 
 ![Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table](/images/studio/studio-assets-grid.webp)
 *The assets table, running on the in-house virtualized data grid (built by Max Wish) — hundreds of rows of live thumbnails, statuses, and tags.*
