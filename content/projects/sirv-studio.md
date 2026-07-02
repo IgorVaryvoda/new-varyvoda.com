@@ -157,6 +157,48 @@ weight: 1
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
+.project-description .studio-toolwall-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.project-description .studio-toolwall-cat {
+  min-width: 0;
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 7px;
+  background: rgba(7, 16, 24, 0.72);
+}
+
+.project-description .studio-toolwall-cat > b {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: var(--sv-cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-description .studio-toolwall-cat > b.is-green { color: var(--sv-green); }
+.project-description .studio-toolwall-cat > b.is-amber { color: var(--sv-amber); }
+.project-description .studio-toolwall-cat > b.is-violet { color: var(--sv-violet); }
+
+.project-description .studio-toolwall-cat span {
+  display: inline-block;
+  margin: 0 0.35rem 0.45rem 0;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #cdd8e0;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  white-space: nowrap;
+}
+
 .project-description .studio-april-grid {
   display: grid;
   grid-template-columns: repeat(8, minmax(54px, 1fr));
@@ -237,6 +279,10 @@ weight: 1
 
   .project-description .studio-april-grid {
     grid-template-columns: repeat(4, minmax(58px, 1fr));
+  }
+
+  .project-description .studio-toolwall-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -336,7 +382,34 @@ The product is organized around one loop: **ingest → fix → validate → revi
 - **30+ AI tools** for product content — background removal and replacement, upscaling, lifestyle-shot generation, ghost mannequin, virtual try-on (image and video), alt text, product descriptions, image translation, image-to-3D, video generation — backed by 57 registered models routed through fal.ai, OpenAI, and OpenRouter.
 - **A visual workflow orchestrator**: a drag-and-drop DAG builder with 36 step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
 - **A supplier portal**: brands give their suppliers an upload link or SFTP drop. Incoming files are validated against filename/SKU/spec rules, run through AI autofix, and routed into an approval queue — so supplier content goes through review instead of straight into the catalog.
-- **Asset and product management** (DAM + PIM) underneath it all, with Stripe billing on top.
+- **Marketplace compliance built in**: an image-review tool validates against Amazon, eBay, Walmart, and Shopify listing rules — dimensions, backgrounds, watermarks, frame fill — and one-click autofix repairs what fails.
+- **Asset and product management** (DAM + PIM) underneath it all, with Stripe billing on top, and integrations out the sides: Shopify, Zapier, n8n, a REST API, and MCP for AI agents.
+
+<figure class="studio-visual studio-toolwall" aria-labelledby="studio-toolwall-title">
+  <div class="studio-visual-head">
+    <span id="studio-toolwall-title">the toolbox</span>
+    <strong>34 tool routes · 57 models · counted from the code</strong>
+  </div>
+  <div class="studio-toolwall-grid">
+    <div class="studio-toolwall-cat">
+      <b>create</b>
+      <span>image generation</span><span>SVG generation</span><span>video generation · up to 4K</span><span>image → 3D · GLB/OBJ/FBX/USDZ</span><span>AI fashion model</span><span>fashion video</span>
+    </div>
+    <div class="studio-toolwall-cat">
+      <b class="is-green">edit</b>
+      <span>background removal</span><span>background replace</span><span>object removal</span><span>prompt-based editing</span><span>upscaling · up to 8×</span><span>smart crop</span><span>shadows</span><span>ghost mannequin</span><span>color variants</span><span>depth maps</span><span>GLB optimizer</span>
+    </div>
+    <div class="studio-toolwall-cat">
+      <b class="is-amber">product content</b>
+      <span>lifestyle scenes · 44 presets</span><span>virtual try-on · image &amp; video</span><span>alt text</span><span>descriptions · 12+ languages</span><span>image translation</span><span>PDF translation</span><span>document summary</span><span>bundle composer</span><span>video captions</span>
+    </div>
+    <div class="studio-toolwall-cat">
+      <b class="is-violet">automate &amp; govern</b>
+      <span>batch · every tool, catalog-scale</span><span>orchestrator · 36 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
+    </div>
+  </div>
+  <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter.</figcaption>
+</figure>
 
 ![Sirv AI Studio products view with per-product readiness scores](/images/studio/studio-products.webp)
 *The products view: every product scored for content readiness against its channel's requirements.*
