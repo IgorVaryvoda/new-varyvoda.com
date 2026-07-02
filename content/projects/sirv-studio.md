@@ -95,28 +95,21 @@ weight: 1
 }
 
 .project-description .studio-dayone ol {
-  position: relative;
   display: grid;
-  grid-template-columns: repeat(6, minmax(112px, 1fr));
-  gap: 0.8rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
   margin: 0;
-  padding: 0.3rem 0 0;
+  padding: 0;
   list-style: none;
-}
-
-.project-description .studio-dayone ol::before {
-  content: "";
-  position: absolute;
-  top: 2.45rem;
-  left: 1.2rem;
-  right: 1.2rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--sv-cyan), var(--sv-green), var(--sv-amber));
-  opacity: 0.65;
 }
 
 .project-description .studio-dayone li {
   min-width: 0;
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid rgba(102, 217, 239, 0.2);
+  border-left: 3px solid var(--sv-cyan);
+  border-radius: 7px;
+  background: rgba(7, 16, 24, 0.72);
 }
 
 .project-description .studio-dayone time {
@@ -124,10 +117,10 @@ weight: 1
   place-items: center;
   min-width: 4.9rem;
   height: 2.4rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.7rem;
   border: 1px solid var(--sv-line-strong);
   border-radius: 999px;
-  background: #071018;
+  background: rgba(102, 217, 239, 0.1);
   color: var(--sv-cyan);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 1.1rem;
@@ -224,12 +217,8 @@ weight: 1
     margin-right: -0.4rem;
   }
 
-  .project-description .studio-dayone {
-    overflow-x: auto;
-  }
-
   .project-description .studio-dayone ol {
-    min-width: 720px;
+    grid-template-columns: 1fr;
   }
 
   .project-description .studio-april-grid {
@@ -347,7 +336,7 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
     <span id="studio-architecture-title">system map</span>
     <strong>product surfaces → governed execution → external systems</strong>
   </div>
-  <svg viewBox="0 0 920 600" role="img" aria-label="Sirv AI Studio architecture map showing TanStack app, supplier portal, MCP and API surfaces, Inngest workflows, Postgres, AI providers, Shopify, Sirv storage, and observability.">
+  <svg viewBox="0 0 920 540" role="img" aria-label="Sirv AI Studio architecture map showing product surfaces entering a governed core, then flowing to data, jobs, providers, Shopify, storage, and observability.">
     <defs>
       <marker id="studio-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
         <path d="M 0 0 L 10 5 L 0 10 z" fill="#66d9ef"/>
@@ -357,53 +346,59 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
         <stop offset="100%" stop-color="#0d141e"/>
       </linearGradient>
     </defs>
-    <rect x="24" y="22" width="872" height="556" rx="18" fill="rgba(0,0,0,0.16)" stroke="rgba(255,255,255,0.1)"/>
-    <g stroke="#66d9ef" stroke-width="2.2" fill="none" marker-end="url(#studio-arrow)" opacity="0.86">
-      <path d="M 185 135 C 260 135, 290 190, 352 220"/>
-      <path d="M 185 285 C 255 285, 292 258, 352 245"/>
-      <path d="M 185 435 C 270 435, 300 320, 352 270"/>
-      <path d="M 512 245 C 568 245, 590 188, 638 160"/>
-      <path d="M 512 245 C 570 245, 588 245, 638 245"/>
-      <path d="M 512 245 C 568 245, 590 300, 638 330"/>
-      <path d="M 512 245 C 558 245, 584 405, 638 444"/>
-      <path d="M 430 306 C 430 348, 430 374, 430 408"/>
-      <path d="M 430 184 C 430 142, 430 118, 430 92"/>
+    <rect x="34" y="28" width="852" height="486" rx="18" fill="rgba(0,0,0,0.16)" stroke="rgba(255,255,255,0.1)"/>
+    <g fill="#94a6b4" font-size="11" letter-spacing="0.08em">
+      <text x="88" y="66">SURFACES</text>
+      <text x="406" y="66" text-anchor="middle">GOVERNED CORE</text>
+      <text x="700" y="66">SYSTEMS</text>
     </g>
-    <g stroke="#a6e3a1" stroke-width="2" stroke-dasharray="7 7" fill="none" marker-end="url(#studio-arrow)" opacity="0.8">
-      <path d="M 738 444 C 786 444, 798 387, 826 334"/>
-      <path d="M 738 330 C 784 330, 800 330, 826 330"/>
-      <path d="M 738 160 C 787 160, 798 220, 826 276"/>
+    <g stroke="#66d9ef" stroke-width="2.4" fill="none" marker-end="url(#studio-arrow)" opacity="0.9">
+      <path d="M 246 146 C 294 150, 318 190, 346 226"/>
+      <path d="M 246 252 C 288 252, 316 252, 344 252"/>
+      <path d="M 246 358 C 294 354, 318 314, 346 278"/>
+      <path d="M 462 219 C 502 184, 512 130, 548 118"/>
+      <path d="M 468 252 C 502 252, 516 252, 548 252"/>
+      <path d="M 462 285 C 502 320, 512 374, 548 386"/>
+      <path d="M 406 212 C 406 174, 406 154, 406 126"/>
+      <path d="M 406 292 C 406 330, 406 350, 406 378"/>
+    </g>
+    <g stroke="#a6e3a1" stroke-width="2" fill="none" marker-end="url(#studio-arrow)" opacity="0.72">
+      <path d="M 662 118 C 700 120, 716 160, 744 218"/>
+      <path d="M 662 252 C 702 252, 716 252, 744 252"/>
+      <path d="M 662 386 C 700 384, 716 344, 744 286"/>
     </g>
     <g>
-      <rect x="64" y="92" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.45)"/>
-      <text x="86" y="124" fill="#edf7fb" font-size="17" font-weight="700">TanStack UI</text>
-      <text x="86" y="150" fill="#94a6b4" font-size="12">merchant app, workflows</text>
-      <rect x="64" y="242" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.45)"/>
-      <text x="86" y="274" fill="#edf7fb" font-size="17" font-weight="700">Supplier portal</text>
-      <text x="86" y="300" fill="#94a6b4" font-size="12">links, SFTP, review queue</text>
-      <rect x="64" y="392" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(203,166,247,0.45)"/>
-      <text x="86" y="424" fill="#edf7fb" font-size="17" font-weight="700">MCP / API</text>
-      <text x="86" y="450" fill="#94a6b4" font-size="12">45 tools for agents</text>
-      <rect x="340" y="198" width="196" height="96" rx="12" fill="#07131c" stroke="rgba(249,201,122,0.72)" stroke-width="2"/>
-      <text x="370" y="234" fill="#f9c97a" font-size="18" font-weight="800">Studio core</text>
-      <text x="370" y="260" fill="#edf7fb" font-size="13">auth, org scope, credits, approvals</text>
-      <rect x="330" y="24" width="216" height="78" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
-      <text x="360" y="58" fill="#edf7fb" font-size="17" font-weight="700">Postgres + Drizzle</text>
-      <text x="360" y="82" fill="#94a6b4" font-size="12">source of truth, 254 migrations</text>
-      <rect x="330" y="414" width="216" height="82" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
-      <text x="360" y="448" fill="#edf7fb" font-size="17" font-weight="700">Inngest</text>
-      <text x="360" y="472" fill="#94a6b4" font-size="12">87 durable background functions</text>
-      <rect x="630" y="116" width="168" height="88" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.44)"/>
-      <text x="660" y="148" fill="#edf7fb" font-size="17" font-weight="700">AI providers</text>
-      <text x="660" y="174" fill="#94a6b4" font-size="12">fal.ai, OpenAI, OpenRouter</text>
-      <rect x="630" y="244" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.44)"/>
-      <text x="660" y="276" fill="#edf7fb" font-size="17" font-weight="700">Shopify</text>
-      <text x="660" y="302" fill="#94a6b4" font-size="12">safe publish, drift checks</text>
-      <rect x="630" y="374" width="168" height="86" rx="10" fill="url(#studio-node)" stroke="rgba(249,201,122,0.44)"/>
-      <text x="660" y="406" fill="#edf7fb" font-size="17" font-weight="700">Sirv storage</text>
-      <text x="660" y="432" fill="#94a6b4" font-size="12">assets, versions, rollback</text>
-      <rect x="764" y="514" width="96" height="34" rx="17" fill="rgba(102,217,239,0.08)" stroke="rgba(102,217,239,0.24)"/>
-      <text x="812" y="536" fill="#94a6b4" font-size="11" text-anchor="middle">Sentry · PostHog · Grafana</text>
+      <rect x="74" y="108" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.45)"/>
+      <text x="98" y="140" fill="#edf7fb" font-size="17" font-weight="700">TanStack app</text>
+      <text x="98" y="163" fill="#94a6b4" font-size="12">merchant UI</text>
+      <rect x="74" y="214" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.45)"/>
+      <text x="98" y="246" fill="#edf7fb" font-size="17" font-weight="700">Supplier portal</text>
+      <text x="98" y="269" fill="#94a6b4" font-size="12">intake + review</text>
+      <rect x="74" y="320" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(203,166,247,0.45)"/>
+      <text x="98" y="352" fill="#edf7fb" font-size="17" font-weight="700">MCP + API</text>
+      <text x="98" y="375" fill="#94a6b4" font-size="12">agent operations</text>
+      <rect x="344" y="210" width="124" height="84" rx="12" fill="#07131c" stroke="rgba(249,201,122,0.72)" stroke-width="2"/>
+      <text x="406" y="244" fill="#f9c97a" font-size="18" font-weight="800" text-anchor="middle">Studio core</text>
+      <text x="406" y="270" fill="#edf7fb" font-size="12" text-anchor="middle">auth · credits</text>
+      <text x="406" y="288" fill="#edf7fb" font-size="12" text-anchor="middle">review gates</text>
+      <rect x="310" y="56" width="192" height="70" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
+      <text x="406" y="87" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Postgres</text>
+      <text x="406" y="110" fill="#94a6b4" font-size="12" text-anchor="middle">products · assets · jobs</text>
+      <rect x="310" y="378" width="192" height="70" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/>
+      <text x="406" y="409" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Inngest</text>
+      <text x="406" y="432" fill="#94a6b4" font-size="12" text-anchor="middle">durable workflows</text>
+      <rect x="548" y="80" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.44)"/>
+      <text x="572" y="112" fill="#edf7fb" font-size="17" font-weight="700">AI providers</text>
+      <text x="572" y="135" fill="#94a6b4" font-size="12">image + text models</text>
+      <rect x="548" y="214" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.44)"/>
+      <text x="572" y="246" fill="#edf7fb" font-size="17" font-weight="700">Shopify</text>
+      <text x="572" y="269" fill="#94a6b4" font-size="12">drift-safe publishing</text>
+      <rect x="548" y="348" width="172" height="76" rx="10" fill="url(#studio-node)" stroke="rgba(249,201,122,0.44)"/>
+      <text x="572" y="380" fill="#edf7fb" font-size="17" font-weight="700">Sirv storage</text>
+      <text x="572" y="403" fill="#94a6b4" font-size="12">assets + rollback</text>
+      <rect x="744" y="222" width="102" height="60" rx="30" fill="rgba(102,217,239,0.08)" stroke="rgba(102,217,239,0.24)"/>
+      <text x="795" y="246" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">observe</text>
+      <text x="795" y="266" fill="#94a6b4" font-size="10" text-anchor="middle">Sentry · Grafana</text>
     </g>
   </svg>
   <figcaption>The important boundary is in the middle: UI, supplier uploads, API calls, and AI agents all enter the same governed core before jobs, providers, storage, or Shopify writes happen.</figcaption>
