@@ -217,6 +217,20 @@ weight: 1
     margin-right: -0.4rem;
   }
 
+  .project-description .studio-architecture,
+  .project-description .studio-cumulative {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-description .studio-architecture svg {
+    min-width: 660px;
+  }
+
+  .project-description .studio-cumulative svg {
+    min-width: 560px;
+  }
+
   .project-description .studio-dayone ol {
     grid-template-columns: 1fr;
   }
@@ -250,7 +264,7 @@ The next morning I was up at six. `Initial commit from Create Next App` landed a
     <li><time>12:05</time><b>MVP merge</b><span>auth, billing, rate limits, Sirv storage</span></li>
     <li><time>17:14</time><b>cleanup pass</b><span>batch mode and compare mode were already in</span></li>
   </ol>
-  <figcaption>Six commits from the first day, pulled from the source repo history. The story sounds like a dare because it was one.</figcaption>
+  <figcaption>Six of the thirty day-one commits, timestamps straight from the repo history. The story sounds like a dare because it was one.</figcaption>
 </figure>
 
 That pace turned out to be the project's resting heart rate, not a launch spike. Six days in: the workflow orchestrator canvas — the drag-and-drop pipeline builder that's still the center of the product. Twelve days in: durable background jobs on Inngest. Eighteen days: an MCP server, before most people knew what MCP was. Twenty-five days: the embedded Shopify app. December closed at 602 commits, and the repo already had the skeleton of everything Studio is today.
@@ -300,16 +314,16 @@ The quietest month of the whole run — February, spent wiring Stripe billing, e
     </g>
     <path d="M 58.0 290.5 L 61.9 289.5 L 65.9 288.0 L 69.8 287.4 L 73.8 286.4 L 77.7 285.4 L 81.7 284.8 L 85.6 283.3 L 89.5 282.6 L 93.5 281.1 L 97.4 279.7 L 101.4 279.2 L 105.3 278.7 L 109.3 278.4 L 113.2 278.0 L 117.2 276.7 L 121.1 274.8 L 125.0 273.0 L 129.0 272.4 L 132.9 271.8 L 136.9 271.3 L 140.8 270.4 L 144.8 269.7 L 148.7 267.9 L 152.6 265.9 L 156.6 265.2 L 160.5 264.6 L 164.5 263.2 L 168.4 262.8 L 172.4 262.7 L 176.3 261.7 L 180.2 260.3 L 184.2 259.5 L 188.1 258.2 L 192.1 257.7 L 196.0 256.8 L 200.0 255.4 L 203.9 253.9 L 207.8 253.2 L 211.8 252.9 L 215.7 252.6 L 219.7 252.5 L 223.6 251.7 L 227.6 250.7 L 231.5 249.9 L 235.5 249.1 L 239.4 248.6 L 247.3 248.1 L 251.2 245.1 L 255.2 244.3 L 259.1 243.5 L 263.1 242.8 L 267.0 242.1 L 270.9 241.0 L 274.9 240.3 L 278.8 239.3 L 282.8 238.3 L 286.7 237.8 L 290.7 237.3 L 294.6 236.8 L 298.5 235.3 L 302.5 234.7 L 306.4 234.6 L 310.4 234.4 L 314.3 234.0 L 318.3 233.3 L 322.2 233.1 L 326.2 233.0 L 330.1 232.7 L 334.0 232.5 L 338.0 232.2 L 341.9 231.7 L 345.9 231.2 L 349.8 230.9 L 353.8 230.7 L 357.7 230.3 L 361.6 229.8 L 365.6 229.5 L 369.5 228.9 L 373.5 228.5 L 377.4 227.9 L 381.4 227.4 L 385.3 227.4 L 389.2 227.1 L 393.2 225.7 L 397.1 224.2 L 401.1 223.1 L 405.0 221.4 L 409.0 221.0 L 412.9 220.8 L 416.8 220.0 L 420.8 219.4 L 424.7 218.1 L 428.7 216.6 L 432.6 215.4 L 436.6 215.2 L 440.5 214.0 L 444.5 213.3 L 448.4 212.7 L 452.3 211.6 L 456.3 211.0 L 460.2 210.9 L 464.2 210.7 L 468.1 210.5 L 472.1 209.9 L 476.0 209.3 L 479.9 208.9 L 483.9 208.1 L 487.8 207.2 L 491.8 206.8 L 495.7 205.7 L 499.7 204.2 L 503.6 203.3 L 507.5 201.7 L 511.5 200.8 L 515.4 199.5 L 519.4 198.6 L 523.3 197.6 L 527.3 196.8 L 531.2 194.8 L 535.2 191.8 L 539.1 190.9 L 547.0 190.2 L 550.9 189.5 L 554.9 189.2 L 558.8 186.8 L 562.8 178.0 L 566.7 174.3 L 570.6 170.2 L 574.6 169.3 L 578.5 166.9 L 582.5 163.7 L 586.4 162.4 L 590.4 160.8 L 594.3 158.6 L 598.2 152.9 L 602.2 151.1 L 606.1 149.1 L 610.1 147.4 L 614.0 145.2 L 618.0 142.9 L 621.9 141.1 L 625.8 140.9 L 629.8 140.9 L 633.7 139.7 L 637.7 136.8 L 641.6 134.1 L 645.6 131.7 L 649.5 130.8 L 653.5 126.5 L 657.4 122.7 L 661.3 121.4 L 665.3 120.1 L 669.2 118.4 L 673.2 116.7 L 677.1 113.3 L 681.1 112.2 L 685.0 112.0 L 688.9 111.4 L 692.9 108.4 L 696.8 105.2 L 700.8 102.7 L 704.7 100.7 L 708.7 100.0 L 712.6 99.4 L 716.5 98.4 L 720.5 97.2 L 724.4 96.4 L 728.4 95.6 L 732.3 94.6 L 736.3 94.1 L 740.2 92.3 L 744.2 88.8 L 748.1 87.5 L 752.0 86.7 L 756.0 86.3 L 759.9 86.0 L 763.9 85.4 L 767.8 83.9 L 771.8 81.1 L 775.7 80.3 L 787.5 79.3 L 791.5 77.3 L 795.4 76.5 L 799.4 75.7 L 807.2 75.5 L 811.2 73.8 L 815.1 72.8 L 819.1 70.6 L 823.0 65.2 L 827.0 63.0 L 830.9 61.9 L 834.8 59.6 L 838.8 56.7 L 842.7 53.5 L 846.7 51.3 L 850.6 48.5 L 854.6 45.4 L 858.5 43.7 L 862.5 41.2 L 866.4 38.3 L 870.3 37.2 L 874.3 33.7 L 878.2 32.2 L 882.2 30.8 L 886.1 26.5 L 890.1 24.1 L 894.0 24.0" fill="none" stroke="url(#studio-curve)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#studio-glow)"/>
     <g fill="#0a1018" stroke="#66d9ef" stroke-width="2">
-      <circle cx="58.0" cy="290.5" r="5"/><circle cx="129.0" cy="272.4" r="5"/><circle cx="267.0" cy="242.1" r="5"/><circle cx="397.1" cy="224.2" r="5"/><circle cx="535.2" cy="191.8" r="5"/><circle cx="562.8" cy="178.0" r="6" stroke="#f9c97a"/><circle cx="894.0" cy="24.0" r="5" stroke="#a6e3a1"/>
+      <circle cx="58.0" cy="290.5" r="5"/><circle cx="129.0" cy="272.4" r="5"/><circle cx="330.1" cy="232.7" r="5"/><circle cx="397.1" cy="224.2" r="5"/><circle cx="535.2" cy="191.8" r="5"/><circle cx="562.8" cy="178.0" r="6" stroke="#f9c97a"/><circle cx="894.0" cy="24.0" r="5" stroke="#a6e3a1"/>
     </g>
     <g fill="#edf7fb" font-size="12" font-weight="700">
       <text x="64" y="282">MVP day</text>
       <text x="136" y="264">MCP server</text>
-      <text x="273" y="234">Stripe</text>
+      <text x="336" y="225">Stripe</text>
       <text x="404" y="216">team joins</text>
       <text x="542" y="204">supplier portal</text>
-      <text x="570" y="170">182-commit day</text>
-      <text x="886" y="42" text-anchor="end">5,500</text>
+      <text x="578" y="163">182-commit day</text>
+      <text x="876" y="56" text-anchor="end">5,500</text>
     </g>
   </svg>
   <figcaption>Generated from the same per-day commit counts as the build-record heatmap. The public number is rounded to 5,500; the embedded dataset sums to 5,501.</figcaption>
