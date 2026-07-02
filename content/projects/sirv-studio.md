@@ -146,14 +146,16 @@ weight: 1
 }
 
 .project-description .studio-architecture svg,
-.project-description .studio-cumulative svg {
+.project-description .studio-cumulative svg,
+.project-description .studio-april svg {
   display: block;
   width: 100%;
   height: auto;
 }
 
 .project-description .studio-architecture text,
-.project-description .studio-cumulative text {
+.project-description .studio-cumulative text,
+.project-description .studio-april text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
@@ -203,59 +205,6 @@ weight: 1
   white-space: nowrap;
 }
 
-.project-description .studio-april-grid {
-  display: grid;
-  grid-template-columns: repeat(8, minmax(54px, 1fr));
-  gap: 0.75rem;
-  align-items: end;
-  min-height: 230px;
-}
-
-.project-description .studio-april-day {
-  display: grid;
-  grid-template-rows: 1fr auto auto;
-  gap: 0.45rem;
-  align-items: end;
-  min-width: 0;
-  padding: 0.65rem 0.45rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.035);
-  text-align: center;
-}
-
-.project-description .studio-april-day.is-window {
-  border-color: rgba(102, 217, 239, 0.32);
-  background: rgba(102, 217, 239, 0.07);
-}
-
-.project-description .studio-april-day.is-peak {
-  border-color: rgba(249, 201, 122, 0.72);
-  background: rgba(249, 201, 122, 0.1);
-}
-
-.project-description .studio-april-bar {
-  display: block;
-  width: min(100%, 2.4rem);
-  margin: 0 auto;
-  border-radius: 5px 5px 2px 2px;
-  background: linear-gradient(180deg, var(--sv-amber), var(--sv-cyan));
-  box-shadow: 0 0 24px rgba(102, 217, 239, 0.14);
-}
-
-.project-description .studio-april-day strong {
-  color: var(--sv-text);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.25rem;
-}
-
-.project-description .studio-april-day em {
-  color: var(--sv-muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1rem;
-  font-style: normal;
-  white-space: nowrap;
-}
 
 @media (max-width: 760px) {
   .project-description .studio-visual {
@@ -281,8 +230,13 @@ weight: 1
     grid-template-columns: 1fr;
   }
 
-  .project-description .studio-april-grid {
-    grid-template-columns: repeat(4, minmax(58px, 1fr));
+  .project-description .studio-april {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-description .studio-april svg {
+    min-width: 560px;
   }
 
   .project-description .studio-toolwall-grid {
@@ -326,55 +280,19 @@ The quietest month of the whole run — February, spent wiring Stripe billing, e
     <span id="studio-cumulative-title">cumulative commits</span>
     <strong>Dec 2, 2025 → Jul 2, 2026 · per-day data</strong>
   </div>
-  <svg viewBox="0 0 920 340" role="img" aria-label="Cumulative commit curve from zero to 5,500 commits with milestones for MVP day, MCP server, Stripe, team joins, supplier portal, and the April migration spike.">
+  <svg viewBox="0 0 920 344" role="img" aria-label="Cumulative commit curve from zero to 5,500 commits with milestones for MVP day, MCP server, Stripe, team joins, supplier portal, and the 182-commit migration day.">
     <defs>
-      <linearGradient id="studio-curve" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#66d9ef"/>
-        <stop offset="55%" stop-color="#a6e3a1"/>
-        <stop offset="100%" stop-color="#f9c97a"/>
+      <linearGradient id="studio-area" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#66d9ef" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#66d9ef" stop-opacity="0"/>
       </linearGradient>
-      <filter id="studio-glow" x="-10%" y="-50%" width="120%" height="200%">
-        <feGaussianBlur stdDeviation="3" result="blur"/>
-        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-      </filter>
     </defs>
-    <g stroke="rgba(255,255,255,0.12)" stroke-width="1">
-      <line x1="58" y1="292" x2="894" y2="292"/>
-      <line x1="58" y1="238" x2="894" y2="238"/>
-      <line x1="58" y1="184" x2="894" y2="184"/>
-      <line x1="58" y1="130" x2="894" y2="130"/>
-      <line x1="58" y1="76" x2="894" y2="76"/>
-      <line x1="58" y1="24" x2="894" y2="24"/>
-    </g>
-    <g fill="#94a6b4" font-size="12">
-      <text x="14" y="296">0</text>
-      <text x="14" y="242">1.1k</text>
-      <text x="14" y="188">2.2k</text>
-      <text x="14" y="134">3.3k</text>
-      <text x="14" y="80">4.4k</text>
-      <text x="10" y="28">5.5k</text>
-      <text x="58" y="326">Dec</text>
-      <text x="176" y="326">Jan</text>
-      <text x="298" y="326">Feb</text>
-      <text x="416" y="326">Mar</text>
-      <text x="535" y="326">Apr</text>
-      <text x="653" y="326">May</text>
-      <text x="775" y="326">Jun</text>
-      <text x="890" y="326" text-anchor="end">Jul</text>
-    </g>
-    <path d="M 58.0 290.5 L 61.9 289.5 L 65.9 288.0 L 69.8 287.4 L 73.8 286.4 L 77.7 285.4 L 81.7 284.8 L 85.6 283.3 L 89.5 282.6 L 93.5 281.1 L 97.4 279.7 L 101.4 279.2 L 105.3 278.7 L 109.3 278.4 L 113.2 278.0 L 117.2 276.7 L 121.1 274.8 L 125.0 273.0 L 129.0 272.4 L 132.9 271.8 L 136.9 271.3 L 140.8 270.4 L 144.8 269.7 L 148.7 267.9 L 152.6 265.9 L 156.6 265.2 L 160.5 264.6 L 164.5 263.2 L 168.4 262.8 L 172.4 262.7 L 176.3 261.7 L 180.2 260.3 L 184.2 259.5 L 188.1 258.2 L 192.1 257.7 L 196.0 256.8 L 200.0 255.4 L 203.9 253.9 L 207.8 253.2 L 211.8 252.9 L 215.7 252.6 L 219.7 252.5 L 223.6 251.7 L 227.6 250.7 L 231.5 249.9 L 235.5 249.1 L 239.4 248.6 L 247.3 248.1 L 251.2 245.1 L 255.2 244.3 L 259.1 243.5 L 263.1 242.8 L 267.0 242.1 L 270.9 241.0 L 274.9 240.3 L 278.8 239.3 L 282.8 238.3 L 286.7 237.8 L 290.7 237.3 L 294.6 236.8 L 298.5 235.3 L 302.5 234.7 L 306.4 234.6 L 310.4 234.4 L 314.3 234.0 L 318.3 233.3 L 322.2 233.1 L 326.2 233.0 L 330.1 232.7 L 334.0 232.5 L 338.0 232.2 L 341.9 231.7 L 345.9 231.2 L 349.8 230.9 L 353.8 230.7 L 357.7 230.3 L 361.6 229.8 L 365.6 229.5 L 369.5 228.9 L 373.5 228.5 L 377.4 227.9 L 381.4 227.4 L 385.3 227.4 L 389.2 227.1 L 393.2 225.7 L 397.1 224.2 L 401.1 223.1 L 405.0 221.4 L 409.0 221.0 L 412.9 220.8 L 416.8 220.0 L 420.8 219.4 L 424.7 218.1 L 428.7 216.6 L 432.6 215.4 L 436.6 215.2 L 440.5 214.0 L 444.5 213.3 L 448.4 212.7 L 452.3 211.6 L 456.3 211.0 L 460.2 210.9 L 464.2 210.7 L 468.1 210.5 L 472.1 209.9 L 476.0 209.3 L 479.9 208.9 L 483.9 208.1 L 487.8 207.2 L 491.8 206.8 L 495.7 205.7 L 499.7 204.2 L 503.6 203.3 L 507.5 201.7 L 511.5 200.8 L 515.4 199.5 L 519.4 198.6 L 523.3 197.6 L 527.3 196.8 L 531.2 194.8 L 535.2 191.8 L 539.1 190.9 L 547.0 190.2 L 550.9 189.5 L 554.9 189.2 L 558.8 186.8 L 562.8 178.0 L 566.7 174.3 L 570.6 170.2 L 574.6 169.3 L 578.5 166.9 L 582.5 163.7 L 586.4 162.4 L 590.4 160.8 L 594.3 158.6 L 598.2 152.9 L 602.2 151.1 L 606.1 149.1 L 610.1 147.4 L 614.0 145.2 L 618.0 142.9 L 621.9 141.1 L 625.8 140.9 L 629.8 140.9 L 633.7 139.7 L 637.7 136.8 L 641.6 134.1 L 645.6 131.7 L 649.5 130.8 L 653.5 126.5 L 657.4 122.7 L 661.3 121.4 L 665.3 120.1 L 669.2 118.4 L 673.2 116.7 L 677.1 113.3 L 681.1 112.2 L 685.0 112.0 L 688.9 111.4 L 692.9 108.4 L 696.8 105.2 L 700.8 102.7 L 704.7 100.7 L 708.7 100.0 L 712.6 99.4 L 716.5 98.4 L 720.5 97.2 L 724.4 96.4 L 728.4 95.6 L 732.3 94.6 L 736.3 94.1 L 740.2 92.3 L 744.2 88.8 L 748.1 87.5 L 752.0 86.7 L 756.0 86.3 L 759.9 86.0 L 763.9 85.4 L 767.8 83.9 L 771.8 81.1 L 775.7 80.3 L 787.5 79.3 L 791.5 77.3 L 795.4 76.5 L 799.4 75.7 L 807.2 75.5 L 811.2 73.8 L 815.1 72.8 L 819.1 70.6 L 823.0 65.2 L 827.0 63.0 L 830.9 61.9 L 834.8 59.6 L 838.8 56.7 L 842.7 53.5 L 846.7 51.3 L 850.6 48.5 L 854.6 45.4 L 858.5 43.7 L 862.5 41.2 L 866.4 38.3 L 870.3 37.2 L 874.3 33.7 L 878.2 32.2 L 882.2 30.8 L 886.1 26.5 L 890.1 24.1 L 894.0 24.0" fill="none" stroke="url(#studio-curve)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" filter="url(#studio-glow)"/>
-    <g fill="#0a1018" stroke="#66d9ef" stroke-width="2">
-      <circle cx="58.0" cy="290.5" r="5"/><circle cx="129.0" cy="272.4" r="5"/><circle cx="330.1" cy="232.7" r="5"/><circle cx="397.1" cy="224.2" r="5"/><circle cx="535.2" cy="191.8" r="5"/><circle cx="562.8" cy="178.0" r="6" stroke="#f9c97a"/><circle cx="894.0" cy="24.0" r="5" stroke="#a6e3a1"/>
-    </g>
-    <g fill="#edf7fb" font-size="12" font-weight="700">
-      <text x="64" y="282">MVP day</text>
-      <text x="136" y="264">MCP server</text>
-      <text x="336" y="225">Stripe</text>
-      <text x="404" y="216">team joins</text>
-      <text x="542" y="204">supplier portal</text>
-      <text x="578" y="163">182-commit day</text>
-      <text x="876" y="56" text-anchor="end">5,500</text>
-    </g>
+    <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="70" y1="300.0" x2="894" y2="300.0"/><line x1="70" y1="252.7" x2="894" y2="252.7"/><line x1="70" y1="205.5" x2="894" y2="205.5"/><line x1="70" y1="158.2" x2="894" y2="158.2"/><line x1="70" y1="110.9" x2="894" y2="110.9"/><line x1="70" y1="63.7" x2="894" y2="63.7"/></g>
+    <g fill="#94a6b4" font-size="11.5"><text x="60" y="304.0" text-anchor="end">0</text><text x="60" y="256.7" text-anchor="end">1k</text><text x="60" y="209.5" text-anchor="end">2k</text><text x="60" y="162.2" text-anchor="end">3k</text><text x="60" y="114.9" text-anchor="end">4k</text><text x="60" y="67.7" text-anchor="end">5k</text><text x="70.0" y="330" text-anchor="middle">Dec</text><text x="186.6" y="330" text-anchor="middle">Jan</text><text x="307.1" y="330" text-anchor="middle">Feb</text><text x="415.9" y="330" text-anchor="middle">Mar</text><text x="536.4" y="330" text-anchor="middle">Apr</text><text x="653.0" y="330" text-anchor="middle">May</text><text x="773.5" y="330" text-anchor="middle">Jun</text><text x="890.1" y="330" text-anchor="middle">Jul</text></g>
+    <path d="M 70.0 298.5 L 73.9 297.5 L 77.8 296.1 L 81.7 295.5 L 85.5 294.6 L 89.4 293.6 L 93.3 293.0 L 97.2 291.5 L 101.1 290.9 L 105.0 289.5 L 108.9 288.1 L 112.8 287.6 L 116.6 287.1 L 120.5 286.8 L 124.4 286.4 L 128.3 285.2 L 132.2 283.3 L 136.1 281.6 L 140.0 281.0 L 143.8 280.4 L 147.7 279.9 L 151.6 279.1 L 155.5 278.4 L 159.4 276.6 L 163.3 274.7 L 167.2 274.1 L 171.1 273.4 L 174.9 272.0 L 178.8 271.7 L 182.7 271.5 L 186.6 270.6 L 190.5 269.3 L 194.4 268.5 L 198.3 267.2 L 202.2 266.8 L 206.0 265.9 L 209.9 264.5 L 213.8 263.1 L 217.7 262.4 L 221.6 262.1 L 225.5 261.8 L 229.4 261.7 L 233.2 260.9 L 237.1 259.9 L 241.0 259.2 L 244.9 258.4 L 248.8 257.9 L 252.7 257.9 L 256.6 257.4 L 260.5 254.5 L 264.3 253.7 L 268.2 252.9 L 272.1 252.3 L 276.0 251.6 L 279.9 250.6 L 283.8 249.8 L 287.7 248.9 L 291.5 247.9 L 295.4 247.4 L 299.3 246.9 L 303.2 246.4 L 307.1 245.0 L 311.0 244.4 L 314.9 244.4 L 318.8 244.1 L 322.6 243.8 L 326.5 243.1 L 330.4 242.9 L 334.3 242.8 L 338.2 242.5 L 342.1 242.2 L 346.0 242.0 L 349.8 241.5 L 353.7 241.1 L 357.6 240.8 L 361.5 240.5 L 365.4 240.1 L 369.3 239.7 L 373.2 239.4 L 377.1 238.8 L 380.9 238.4 L 384.8 237.8 L 388.7 237.4 L 392.6 237.3 L 396.5 237.0 L 400.4 235.7 L 404.3 234.2 L 408.2 233.2 L 412.0 231.5 L 415.9 231.1 L 419.8 230.9 L 423.7 230.1 L 427.6 229.6 L 431.5 228.3 L 435.4 226.8 L 439.2 225.7 L 443.1 225.5 L 447.0 224.3 L 450.9 223.7 L 454.8 223.1 L 458.7 222.1 L 462.6 221.4 L 466.5 221.3 L 470.3 221.1 L 474.2 220.9 L 478.1 220.4 L 482.0 219.7 L 485.9 219.4 L 489.8 218.6 L 493.7 217.7 L 497.5 217.3 L 501.4 216.3 L 505.3 214.8 L 509.2 213.9 L 513.1 212.4 L 517.0 211.5 L 520.9 210.3 L 524.8 209.4 L 528.6 208.4 L 532.5 207.7 L 536.4 205.7 L 540.3 202.8 L 544.2 201.9 L 548.1 201.9 L 552.0 201.3 L 555.8 200.6 L 559.7 200.3 L 563.6 198.0 L 567.5 189.4 L 571.4 185.8 L 575.3 181.9 L 579.2 181.0 L 583.1 178.6 L 586.9 175.5 L 590.8 174.3 L 594.7 172.8 L 598.6 170.6 L 602.5 165.1 L 606.4 163.4 L 610.3 161.4 L 614.2 159.8 L 618.0 157.6 L 621.9 155.4 L 625.8 153.6 L 629.7 153.5 L 633.6 153.4 L 637.5 152.3 L 641.4 149.4 L 645.2 146.9 L 649.1 144.5 L 653.0 143.6 L 656.9 139.4 L 660.8 135.8 L 664.7 134.5 L 668.6 133.3 L 672.5 131.6 L 676.3 130.0 L 680.2 126.7 L 684.1 125.6 L 688.0 125.4 L 691.9 124.8 L 695.8 122.0 L 699.7 118.8 L 703.5 116.4 L 707.4 114.4 L 711.3 113.7 L 715.2 113.2 L 719.1 112.2 L 723.0 111.0 L 726.9 110.2 L 730.8 109.5 L 734.6 108.5 L 738.5 108.1 L 742.4 106.3 L 746.3 102.9 L 750.2 101.7 L 754.1 100.8 L 758.0 100.5 L 761.8 100.2 L 765.7 99.6 L 769.6 98.2 L 773.5 95.4 L 777.4 94.7 L 781.3 94.7 L 785.2 94.7 L 789.1 93.6 L 792.9 91.7 L 796.8 91.0 L 800.7 90.2 L 804.6 90.2 L 808.5 90.0 L 812.4 88.4 L 816.3 87.4 L 820.2 85.2 L 824.0 80.0 L 827.9 77.9 L 831.8 76.8 L 835.7 74.6 L 839.6 71.8 L 843.5 68.7 L 847.4 66.5 L 851.2 63.8 L 855.1 60.8 L 859.0 59.1 L 862.9 56.7 L 866.8 53.9 L 870.7 52.8 L 874.6 49.5 L 878.5 48.0 L 882.3 46.7 L 886.2 42.5 L 890.1 40.2 L 894.0 40.0 L 894.0 300 L 70.0 300 Z" fill="url(#studio-area)"/>
+    <path d="M 70.0 298.5 L 73.9 297.5 L 77.8 296.1 L 81.7 295.5 L 85.5 294.6 L 89.4 293.6 L 93.3 293.0 L 97.2 291.5 L 101.1 290.9 L 105.0 289.5 L 108.9 288.1 L 112.8 287.6 L 116.6 287.1 L 120.5 286.8 L 124.4 286.4 L 128.3 285.2 L 132.2 283.3 L 136.1 281.6 L 140.0 281.0 L 143.8 280.4 L 147.7 279.9 L 151.6 279.1 L 155.5 278.4 L 159.4 276.6 L 163.3 274.7 L 167.2 274.1 L 171.1 273.4 L 174.9 272.0 L 178.8 271.7 L 182.7 271.5 L 186.6 270.6 L 190.5 269.3 L 194.4 268.5 L 198.3 267.2 L 202.2 266.8 L 206.0 265.9 L 209.9 264.5 L 213.8 263.1 L 217.7 262.4 L 221.6 262.1 L 225.5 261.8 L 229.4 261.7 L 233.2 260.9 L 237.1 259.9 L 241.0 259.2 L 244.9 258.4 L 248.8 257.9 L 252.7 257.9 L 256.6 257.4 L 260.5 254.5 L 264.3 253.7 L 268.2 252.9 L 272.1 252.3 L 276.0 251.6 L 279.9 250.6 L 283.8 249.8 L 287.7 248.9 L 291.5 247.9 L 295.4 247.4 L 299.3 246.9 L 303.2 246.4 L 307.1 245.0 L 311.0 244.4 L 314.9 244.4 L 318.8 244.1 L 322.6 243.8 L 326.5 243.1 L 330.4 242.9 L 334.3 242.8 L 338.2 242.5 L 342.1 242.2 L 346.0 242.0 L 349.8 241.5 L 353.7 241.1 L 357.6 240.8 L 361.5 240.5 L 365.4 240.1 L 369.3 239.7 L 373.2 239.4 L 377.1 238.8 L 380.9 238.4 L 384.8 237.8 L 388.7 237.4 L 392.6 237.3 L 396.5 237.0 L 400.4 235.7 L 404.3 234.2 L 408.2 233.2 L 412.0 231.5 L 415.9 231.1 L 419.8 230.9 L 423.7 230.1 L 427.6 229.6 L 431.5 228.3 L 435.4 226.8 L 439.2 225.7 L 443.1 225.5 L 447.0 224.3 L 450.9 223.7 L 454.8 223.1 L 458.7 222.1 L 462.6 221.4 L 466.5 221.3 L 470.3 221.1 L 474.2 220.9 L 478.1 220.4 L 482.0 219.7 L 485.9 219.4 L 489.8 218.6 L 493.7 217.7 L 497.5 217.3 L 501.4 216.3 L 505.3 214.8 L 509.2 213.9 L 513.1 212.4 L 517.0 211.5 L 520.9 210.3 L 524.8 209.4 L 528.6 208.4 L 532.5 207.7 L 536.4 205.7 L 540.3 202.8 L 544.2 201.9 L 548.1 201.9 L 552.0 201.3 L 555.8 200.6 L 559.7 200.3 L 563.6 198.0 L 567.5 189.4 L 571.4 185.8 L 575.3 181.9 L 579.2 181.0 L 583.1 178.6 L 586.9 175.5 L 590.8 174.3 L 594.7 172.8 L 598.6 170.6 L 602.5 165.1 L 606.4 163.4 L 610.3 161.4 L 614.2 159.8 L 618.0 157.6 L 621.9 155.4 L 625.8 153.6 L 629.7 153.5 L 633.6 153.4 L 637.5 152.3 L 641.4 149.4 L 645.2 146.9 L 649.1 144.5 L 653.0 143.6 L 656.9 139.4 L 660.8 135.8 L 664.7 134.5 L 668.6 133.3 L 672.5 131.6 L 676.3 130.0 L 680.2 126.7 L 684.1 125.6 L 688.0 125.4 L 691.9 124.8 L 695.8 122.0 L 699.7 118.8 L 703.5 116.4 L 707.4 114.4 L 711.3 113.7 L 715.2 113.2 L 719.1 112.2 L 723.0 111.0 L 726.9 110.2 L 730.8 109.5 L 734.6 108.5 L 738.5 108.1 L 742.4 106.3 L 746.3 102.9 L 750.2 101.7 L 754.1 100.8 L 758.0 100.5 L 761.8 100.2 L 765.7 99.6 L 769.6 98.2 L 773.5 95.4 L 777.4 94.7 L 781.3 94.7 L 785.2 94.7 L 789.1 93.6 L 792.9 91.7 L 796.8 91.0 L 800.7 90.2 L 804.6 90.2 L 808.5 90.0 L 812.4 88.4 L 816.3 87.4 L 820.2 85.2 L 824.0 80.0 L 827.9 77.9 L 831.8 76.8 L 835.7 74.6 L 839.6 71.8 L 843.5 68.7 L 847.4 66.5 L 851.2 63.8 L 855.1 60.8 L 859.0 59.1 L 862.9 56.7 L 866.8 53.9 L 870.7 52.8 L 874.6 49.5 L 878.5 48.0 L 882.3 46.7 L 886.2 42.5 L 890.1 40.2 L 894.0 40.0" fill="none" stroke="#66d9ef" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <g><circle cx="70.0" cy="298.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="140.0" cy="281.0" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="338.2" cy="242.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="404.3" cy="234.2" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="540.3" cy="202.8" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="567.5" cy="189.4" r="5" fill="#0a1018" stroke="#f9c97a" stroke-width="2"/><circle cx="894.0" cy="40.0" r="5.5" fill="#0a1018" stroke="#a6e3a1" stroke-width="2"/></g>
+    <g><line x1="70.0" y1="291.5" x2="70.0" y2="282.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="72.0" y="276.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="start">MVP day</text><line x1="140.0" y1="274.0" x2="140.0" y2="265.0" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="140.0" y="259.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">MCP server</text><line x1="338.2" y1="235.5" x2="338.2" y2="226.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="338.2" y="220.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">Stripe</text><line x1="404.3" y1="241.2" x2="404.3" y2="250.2" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="404.3" y="264.2" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">team joins</text><line x1="540.3" y1="209.8" x2="540.3" y2="218.8" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="540.3" y="232.8" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">supplier portal</text><line x1="567.5" y1="182.4" x2="567.5" y2="173.4" stroke="#f9c97a" stroke-width="1" opacity="0.5"/><text x="557.5" y="163.4" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="end">182-commit day</text><text x="882.0" y="45.0" fill="#a6e3a1" font-size="13" font-weight="800" text-anchor="end">5,500</text></g>
   </svg>
   <figcaption>Generated from the same per-day commit counts as the build-record heatmap. The public number is rounded to 5,500; the embedded dataset sums to 5,501.</figcaption>
 </figure>
@@ -476,16 +394,16 @@ The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanS
     <span id="studio-april-title">April migration close-up</span>
     <strong>Apr 6–13 · commits per day</strong>
   </div>
-  <div class="studio-april-grid" role="img" aria-label="Bar chart of commits per day from April 6 through April 13, highlighting April 8 through April 10 as the 72-hour migration window and April 9 as the 182-commit peak.">
-    <div class="studio-april-day"><span class="studio-april-bar" style="height:39px"></span><strong>15</strong><em>Apr 06</em></div>
-    <div class="studio-april-day"><span class="studio-april-bar" style="height:30px"></span><strong>5</strong><em>Apr 07</em></div>
-    <div class="studio-april-day is-window"><span class="studio-april-bar" style="height:67px"></span><strong>49</strong><em>Apr 08</em></div>
-    <div class="studio-april-day is-window is-peak"><span class="studio-april-bar" style="height:180px"></span><strong>182</strong><em>Apr 09</em></div>
-    <div class="studio-april-day is-window"><span class="studio-april-bar" style="height:90px"></span><strong>76</strong><em>Apr 10</em></div>
-    <div class="studio-april-day"><span class="studio-april-bar" style="height:96px"></span><strong>83</strong><em>Apr 11</em></div>
-    <div class="studio-april-day"><span class="studio-april-bar" style="height:42px"></span><strong>19</strong><em>Apr 12</em></div>
-    <div class="studio-april-day"><span class="studio-april-bar" style="height:68px"></span><strong>50</strong><em>Apr 13</em></div>
-  </div>
+  <svg viewBox="0 0 920 270" role="img" aria-label="Commits per day from April 6 through 13; April 8 to 10 is the 72-hour Next.js to TanStack Start migration window, peaking at 182 commits on April 9.">
+    <rect x="291.5" y="26" width="288.2" height="216" rx="10" fill="rgba(102,217,239,0.055)" stroke="rgba(102,217,239,0.22)"/>
+    <text x="435.6" y="16" fill="#66d9ef" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">72-HOUR MIGRATION WINDOW</text>
+    <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="90" y1="180.5" x2="880" y2="180.5"/><line x1="90" y1="131.1" x2="880" y2="131.1"/><line x1="90" y1="81.6" x2="880" y2="81.6"/></g>
+    <g><text x="80" y="184.5" fill="#94a6b4" font-size="11" text-anchor="end">50</text><text x="80" y="135.1" fill="#94a6b4" font-size="11" text-anchor="end">100</text><text x="80" y="85.6" fill="#94a6b4" font-size="11" text-anchor="end">150</text></g>
+    <line x1="90" y1="230" x2="880" y2="230" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+    <g><rect x="116.4" y="215.2" width="46" height="14.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="215.1" y="225.1" width="46" height="4.9" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="313.9" y="181.5" width="46" height="48.5" rx="5" fill="#66d9ef"/><rect x="412.6" y="50.0" width="46" height="180.0" rx="5" fill="#f9c97a"/><rect x="511.4" y="154.8" width="46" height="75.2" rx="5" fill="#66d9ef"/><rect x="610.1" y="147.9" width="46" height="82.1" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="708.9" y="211.2" width="46" height="18.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="807.6" y="180.5" width="46" height="49.5" rx="5" fill="rgba(102,217,239,0.55)"/></g>
+    <g><text x="139.4" y="207.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">15</text><text x="238.1" y="217.1" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">5</text><text x="336.9" y="173.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">49</text><text x="435.6" y="42.0" fill="#f9c97a" font-size="13" font-weight="700" text-anchor="middle">182</text><text x="534.4" y="146.8" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">76</text><text x="633.1" y="139.9" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">83</text><text x="731.9" y="203.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">19</text><text x="830.6" y="172.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">50</text></g>
+    <g><text x="139.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 6</text><text x="238.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 7</text><text x="336.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 8</text><text x="435.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 9</text><text x="534.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 10</text><text x="633.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 11</text><text x="731.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 12</text><text x="830.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 13</text></g>
+  </svg>
   <figcaption>The highlighted window is the live Next.js → TanStack Start migration: bootstrap on Apr 8, the 182-commit spike on Apr 9, final Next runtime dependencies removed on Apr 10.</figcaption>
 </figure>
 
