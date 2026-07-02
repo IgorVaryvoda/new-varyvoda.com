@@ -568,7 +568,7 @@ Commit volume is not value. But output with that shape needs explaining, and the
 
 My job in that loop is editorial: specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. Architecture, judgment, taste — and standing behind every line that ships.
 
-The human layer is deliberately simple. We run daily branch ownership: one person owns main for the day and pushes straight to production — no pull requests, no review queue, no merge conflicts. A ten-minute morning sync, a handoff, and everyone stays in flow. The coordination ceremony that eats most teams' velocity simply isn't there. The internal team doc ends with the whole philosophy in six words: build fast, trust each other, ship often.
+The human layer is deliberately simple. We run daily branch ownership: one person owns the dev branch for the day and pushes to it directly — no pull requests, no review queue, no merge conflicts. A ten-minute morning sync, a handoff, and everyone stays in flow. The coordination ceremony that eats most teams' velocity simply isn't there. The internal team doc ends with the whole philosophy in six words: build fast, trust each other, ship often.
 
 I wrote the broader argument behind this operating model in [Two theories of a programmer](/posts/two-theories-of-a-programmer/). This page keeps the claim grounded in the Studio evidence.
 
