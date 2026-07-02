@@ -84,15 +84,15 @@ The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanS
 
 A two-day framework migration isn't a typing achievement. It's what happens when the test suite is dense enough to catch every regression an automated refactor introduces, and the review gates are strict enough to trust the throughput. Which brings up the part of this story that's actually about method.
 
-## How three people out-ship a team of twelve
+## How three people ship this fast
 
-Last quarter — March 23 to July 2 — the Studio team was three people, and we landed **5,425 distinct commits**: non-merge, rebase and cherry-pick duplicates deduped, bot-authored commits excluded. In the same window, the twelve-engineer team maintaining the company's mature flagship landed 577. My own count was 3,529.
+Last quarter — March 23 to July 2 — the Studio team was three people, and we landed **5,425 distinct commits**: non-merge, rebase and cherry-pick duplicates deduped, bot-authored commits excluded. My own count was 3,529 — thirty-nine a day, every day, in month seven of the project.
 
-That gap is not a talent gap, and commit volume is not value — different mandates, different codebases, and a greenfield sprint will always out-commit maintenance work. But a nine-times difference in output shape is worth explaining, because the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** Specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. My job in that loop is editorial: architecture, judgment, taste, and standing behind every line that ships.
+Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** Specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. My job in that loop is editorial: architecture, judgment, taste, and standing behind every line that ships.
 
 The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
 
-My favorite detail in the whole dataset: the hand-coding team's repo had 229 bot-authored commits that quarter — CI and automation signing its own work. Ours had 32, because here the agents commit as the humans who direct them, and a human stands behind every one. The team that codes by hand has robots signing work; the team run by robots has a human signing all of it.
+My favorite detail in the whole dataset: a repo run by an agent fleet had just 32 bot-authored commits all quarter. The agents' work ships under the name of the human who directed it — reviewed, gated, and signed for. The machines don't stand behind anything here; people do.
 
 ---
 
