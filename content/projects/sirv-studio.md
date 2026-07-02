@@ -22,6 +22,14 @@ Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants
 
 I created Studio and built it solo for its first twelve weeks, from `create-next-app` to a working platform. It's since grown into a small team effort, but the architecture and the core of the product — the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the background-job infrastructure — are my work, first commit to production. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
 
+## Day one
+
+On December 2, 2025, at commit one, the repo was `Initial commit from Create Next App`. By the end of that same day it had auth, billing scaffolding, rate limiting, Sirv storage integration, virtual try-on, batch mode with multi-select, HEIC conversion, a database swap, and a fix for iPhone gallery uploads in Safari. Thirty commits, day one.
+
+That pace turned out to be the project's resting heart rate, not a launch spike. Six days in: the workflow orchestrator canvas — the drag-and-drop pipeline builder that's still the center of the product. Twelve days in: durable background jobs on Inngest. Eighteen days: an MCP server, before most people knew what MCP was. Twenty-five days: the embedded Shopify app. December closed at 602 commits, and the repo already had the skeleton of everything Studio is today.
+
+The quietest month of the whole run — February, spent wiring Stripe billing, entitlements, and the unglamorous plumbing that turns a demo into a business — still averaged eleven commits a day. Seven months in, there have been exactly five days without a commit. Month seven ran at 39 a day, faster than month one.
+
 ## What it does
 
 The product is organized around one loop: **ingest → fix → validate → review → publish → track**.
@@ -36,7 +44,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 300+ migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android.
 
 Credit where it's due: the internal design system and the custom virtualized data grid that powers the asset and product tables were authored by my colleague Max Wish, and the E2E/QA governance suite is largely the work of Veniamin Krachun. The rest — the architecture and the systems below — is mine.
 
@@ -68,10 +76,28 @@ Studio ships a production MCP server (published on npm, stdio and hosted HTTP tr
 
 The design position: agents don't need raw endpoints, they need *operations inside a governed system*. So the agent surface gets the same context, permissions, approvals, budgets, and rollback as the UI. Auth is OAuth 2.0 with PKCE or API keys; every credit-spending or mutating tool re-authorizes server-side and fails closed if the workspace lacks entitlement; org scoping is validated against membership on every call; tools carry MCP safety annotations (read-only, destructive, idempotent) so agent runtimes can reason about blast radius. An agent can run a batch fix or execute a workflow — but it can't skip the review gate a human would hit.
 
+## April, or: changing the wings mid-flight
+
+By spring, Studio had outgrown its framework. The answer wasn't a rewrite branch that ships "next quarter" — it was a live migration of a production app, with users on it.
+
+The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanStack Start bootstrap slice` — the Next.js → TanStack Start migration begins. April 9: 182 commits in one day, the single biggest day of the project, mid-migration, with a compatibility shim keeping the old framework's imports alive while routes moved over one by one. April 10: `build: remove final next runtime dependencies`. The runtime swap of a billing, multi-tenant, background-job-running platform took about seventy-two hours, and nothing froze — the same month also shipped 1,337 commits from me alone, my heaviest stretch of the whole project (429 in the week of April 6).
+
+A two-day framework migration isn't a typing achievement. It's what happens when the test suite is dense enough to catch every regression an automated refactor introduces, and the review gates are strict enough to trust the throughput. Which brings up the part of this story that's actually about method.
+
+## How three people out-ship a team of twelve
+
+Last quarter — March 23 to July 2 — the Studio team was three people, and we landed **5,425 distinct commits**: non-merge, rebase and cherry-pick duplicates deduped, bot-authored commits excluded. In the same window, the twelve-engineer team maintaining the company's mature flagship landed 577. My own count was 3,529.
+
+That gap is not a talent gap, and commit volume is not value — different mandates, different codebases, and a greenfield sprint will always out-commit maintenance work. But a nine-times difference in output shape is worth explaining, because the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** Specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. My job in that loop is editorial: architecture, judgment, taste, and standing behind every line that ships.
+
+The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
+
+My favorite detail in the whole dataset: the hand-coding team's repo had 229 bot-authored commits that quarter — CI and automation signing its own work. Ours had 32, because here the agents commit as the humans who direct them, and a human stands behind every one. The team that codes by hand has robots signing work; the team run by robots has a human signing all of it.
+
 ---
 
 Studio also carries the less glamorous machinery a production platform needs: exponential-backoff retries with jitter, per-operation circuit breakers on AI providers, content-based idempotency keys, Redis-backed rate limits, and restore-drilled database backups. That layer has no screenshots, but it's why the rest works.
 
-<a href="https://www.sirv.studio" target="_blank">Try Sirv AI Studio →</a>
+<a href="https://www.sirv.studio" target="_blank">Try Sirv AI Studio →</a> · [Check the build record →](/projects/sirv-studio/build-record/)
 
 <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>
