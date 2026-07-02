@@ -186,6 +186,10 @@ weight: 1
 .project-description .studio-toolwall-cat > b.is-amber { color: var(--sv-amber); }
 .project-description .studio-toolwall-cat > b.is-violet { color: var(--sv-violet); }
 
+.project-description .studio-toolwall-wide {
+  grid-column: 1 / -1;
+}
+
 .project-description .studio-toolwall-cat span {
   display: inline-block;
   margin: 0 0.35rem 0.45rem 0;
@@ -383,7 +387,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 - **A visual workflow orchestrator**: a drag-and-drop DAG builder with 36 step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
 - **A supplier portal**: brands give their suppliers an upload link or SFTP drop. Incoming files are validated against filename/SKU/spec rules, run through AI autofix, and routed into an approval queue — so supplier content goes through review instead of straight into the catalog.
 - **Marketplace compliance built in**: an image-review tool validates against Amazon, eBay, Walmart, and Shopify listing rules — dimensions, backgrounds, watermarks, frame fill — and one-click autofix repairs what fails.
-- **Asset and product management** (DAM + PIM) underneath it all, with Stripe billing on top, and integrations out the sides: Shopify, Zapier, n8n, a REST API, and MCP for AI agents.
+- **Asset and product management** (DAM + PIM) underneath it all — with search-by-image, duplicate detection, auto-tagging, and license tracking that can gate a publish — plus Stripe billing on top and integrations out the sides: Shopify, Zapier, n8n, a REST API, and MCP for AI agents.
 
 <figure class="studio-visual studio-toolwall" aria-labelledby="studio-toolwall-title">
   <div class="studio-visual-head">
@@ -406,6 +410,10 @@ The product is organized around one loop: **ingest → fix → validate → revi
     <div class="studio-toolwall-cat">
       <b class="is-violet">automate &amp; govern</b>
       <span>batch · every tool, catalog-scale</span><span>orchestrator · 36 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
+    </div>
+    <div class="studio-toolwall-cat studio-toolwall-wide">
+      <b>asset intelligence</b>
+      <span>search by image</span><span>semantic search</span><span>find similar</span><span>duplicate detection</span><span>auto-tagging</span><span>smart collections</span><span>saved views</span><span>license tracking · publish gates</span><span>license alerts</span><span>watermark templates</span><span>asset &amp; search analytics</span>
     </div>
   </div>
   <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter.</figcaption>
