@@ -6,7 +6,7 @@ Igor's personal website/blog.
 - Path: `/home/igor/Projects/new-varyvoda.com`
 - Production: `https://www.varyvoda.com`
 - Stack: Hugo static site using a customized hugo-coder theme.
-- Deployment: Netlify via `netlify.toml`.
+- Deployment: GitHub Actions → rclone SFTP sync (.github/workflows/main.yml), fronted by Cloudflare. netlify.toml is legacy.
 
 ## Commands
 
@@ -37,4 +37,4 @@ hugo list drafts
 
 ## Current caveats
 
-- Netlify production config pins an old Hugo version. Local newer Hugo may pass while Netlify differs; mention version-sensitive changes.
+- Production Hugo is pinned in .github/workflows/main.yml; keep local Hugo on the same version for reproducible output.

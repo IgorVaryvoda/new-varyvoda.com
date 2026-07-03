@@ -1,3 +1,9 @@
+# SUSPECTED DEAD CONFIG (2026-07-03): the live site is served via
+# Cloudflare + the GitHub Actions SFTP deploy (.github/workflows/main.yml),
+# not Netlify — see plans/002-deploy-consolidation.md. If the operator
+# confirms the Netlify site is disconnected or deleted, remove this file.
+# Until then, note that HUGO_VERSION below (0.78.2) does NOT reflect
+# production.
 [build]
 publish = "public"
 command = "hugo --gc --minify"

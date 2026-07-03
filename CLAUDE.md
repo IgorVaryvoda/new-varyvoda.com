@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a personal website/blog built with Hugo static site generator. The site features blog posts, project showcases, and uses the hugo-coder theme with custom modifications.
 
 **Site URL**: https://www.varyvoda.com
-**Hugo Version**: 0.148.2+extended (deployed version uses 0.78.2 as per netlify.toml)
+**Hugo Version**: 0.161.1+extended — pinned in .github/workflows/main.yml; local builds should use the same version
 
 ## Key Commands
 
@@ -19,7 +19,7 @@ hugo server -D      # Include draft content
 
 ### Building
 ```bash
-hugo --gc --minify  # Build for production (same as Netlify)
+hugo --gc --minify  # Build for production (same as CI)
 ```
 
 ### Content Management
@@ -77,11 +77,10 @@ Main config: `/config.toml`
 
 ## Deployment
 
-Hosted on Netlify:
-- Build command: `hugo --gc --minify`
-- Publish directory: `public`
-- Production Hugo version: 0.78.2 (see netlify.toml)
-- Automatic deploys from main branch
+Deployed via GitHub Actions (.github/workflows/main.yml):
+- On push to main: builds with pinned Hugo 0.161.1 extended, then rclone-syncs public/ to an SFTP server
+- The site is fronted by Cloudflare
+- netlify.toml is legacy/suspected-dead config — see plans/002-deploy-consolidation.md
 
 ## Important Notes
 
