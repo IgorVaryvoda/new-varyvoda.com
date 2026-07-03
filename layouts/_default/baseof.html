@@ -33,6 +33,13 @@
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts | minify | fingerprint }}
       <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
     {{ end }}
+    {{ if hugo.IsServer }}
+      {{ $custom := resources.Get "css/custom.css" | minify }}
+      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" media="screen">
+    {{ else }}
+      {{ $custom := resources.Get "css/custom.css" | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+    {{ end }}
 
     {{ if .Site.Params.rtl }}
       {{ if hugo.IsServer }}
