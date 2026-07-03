@@ -436,5 +436,3 @@ The evidence it's a system and not a slogan is in other people's curves. When Ve
 Studio also carries the less glamorous machinery a production platform needs: exponential-backoff retries with jitter, per-operation circuit breakers on AI providers, content-based idempotency keys, Redis-backed rate limits, and restore-drilled database backups. That layer has no screenshots, but it's why the rest works.
 
 <a href="https://www.sirv.studio" target="_blank">Try Sirv AI Studio →</a> · [Check the build record →](/projects/sirv-studio/build-record/)
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

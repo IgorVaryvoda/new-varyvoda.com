@@ -490,7 +490,6 @@ It's important to make a long-term investment in your customers. Keeping them ha
 Snap36 and Sirv are here to help you along the way. Get in touch with us to learn how to get your product imagery online quickly and enable your website to showcase high-resolution, high-caliber, and interactive spinning imagery.
 
 
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>
 <style>
 .imgwide {
     margin:20px auto;max-width:1100px;

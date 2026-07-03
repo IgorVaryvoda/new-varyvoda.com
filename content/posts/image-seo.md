@@ -428,7 +428,7 @@ src="elva-fairy-640w.jpg" alt="Elva dressed as a fairy"></pre>
 
 <p>To make the magic happen, I've just added a little code snippet at the end of this post.</p>
 
-<pre class="prettyprint"><script src="https://scripts.sirv.com/sirv.js"></script></pre>
+<pre class="prettyprint">&lt;script src="https://scripts.sirv.com/sirv.js"&gt;&lt;/script&gt;</pre>
 
 What it does is detect the browser and the viewport (the size of the browser window) and automatically resizes the image for a perfect fit. On-the-fly. As a side-effect (a quite pleasant one), it also converts the image to the most optimal image format and quality. Apart from that, it enables lazy loading. Which leads us to the next technique...
 
@@ -504,7 +504,6 @@ Lazy loading is on by default when you utilize Sirv's <a href="https://sirv.com/
 
 Get 5 GB of storage to test it out. [Get started today!](https://sirv.com)
 
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>
 <script>
 var SirvOptions = {
     zoom: {

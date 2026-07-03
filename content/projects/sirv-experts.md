@@ -19,5 +19,3 @@ weight: 3
 
 
 [Sirv Experts Directory](https://experts.sirv.com) - A place where you can easily find the best experts (360 product photography, web dev, 3D modelling etc.) near you.
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

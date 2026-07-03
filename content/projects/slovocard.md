@@ -18,5 +18,3 @@ weight: 3
 Master the languages of the Balkans with spaced repetition—the proven method that helps you remember 8,000+ words like a native speaker.
 
 <a href="https://www.slovocard.com" target="_blank">Learn Bosnian, Croatian, Serbian, Montenegrin</a>
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

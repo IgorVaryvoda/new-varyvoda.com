@@ -21,5 +21,3 @@ weight: 4
 A random travel destination generator. It's a pretty fun project which I thouroughly enjoyed creating from scratch :)
 
 [Visit Earth Roulette](https://earthroulette.com) · [Download on iOS](https://apps.apple.com/us/app/earth-roulette-trip-explorer/id6449232498) · [Download on Android](https://play.google.com/store/apps/details?id=xyz.appmaker.casznm)
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

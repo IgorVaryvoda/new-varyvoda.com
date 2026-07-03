@@ -375,4 +375,3 @@ Nowadays, shoppers want not only products – they want better experiences. That
   <div id="toc">
   </div>
   </div>
-  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js"></script>

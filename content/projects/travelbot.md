@@ -21,5 +21,3 @@ weight: 2
 A fun chatbot that will sort all of your travel needs. It's connected to Earth Roulette's API for destination information and has some other cool tricks.
 
 [Visit Travel Bot](https://www.travelbot.me) · [Download on iOS](https://apps.apple.com/ua/app/travel-bot-assistant/id6504498653) · [Download on Android](https://play.google.com/store/apps/details?id=me.travelbot.www)
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

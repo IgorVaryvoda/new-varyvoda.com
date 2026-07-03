@@ -17,5 +17,3 @@ weight: 5
 
 
 [A curated list of resources to help Ukraine](https://www.uahelp.me)
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>

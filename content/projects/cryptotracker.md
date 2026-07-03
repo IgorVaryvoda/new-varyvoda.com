@@ -17,5 +17,3 @@ weight: 6
 
 
 Track cryptocurrency prices. Simple, yet good-looking. Set it as a homepage. [Visit CryptoTracker](https://cryptotracker.xyz)
-
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js?modules=lazyimage"></script>
