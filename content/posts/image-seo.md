@@ -71,7 +71,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 </div>
 <!-- <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Screen%20Shot%202019-05-17%20at%2014.01.22-iPad%20Air%202(1).png" alt="google images mobile search result page of an adidas shoe"> -->
 
-<p>As you can see, the mobile experience is tailored towards browsing through products. Google displays a large image and cleverly includes <a href="#structured-data-is-a-must-have">structured data markup</a> to show price, brand, stock status etc. This makes Google Images a compelling starting point for online shopping.</p>
+<p>As you can see, the mobile experience is tailored towards browsing through products. Google displays a large image and cleverly includes <a href="#structured-data">structured data markup</a> to show price, brand, stock status etc. This makes Google Images a compelling starting point for online shopping.</p>
 
 <p>Another important difference between mobile and desktop image results is the "related images" on the mobile version. Even if your product images don't make it to the top of the image search result page, they can still be shown in the related block, driving more traffic to your website.</p>
 
@@ -180,7 +180,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 
 <p>It's therefore important to get your on-page SEO and <abbr title="User Experience">UX</abbr> right. This includes your meta tags, text, titles, your product image size, quality and loading speed.</p>
 
-<p>In this part, I'll touch only the classic Image SEO parts. Image optimization and UX are covered in the <a href="#image-optimization">next section</a>.</p>
+<p>In this part, I'll touch only the classic Image SEO parts. Image optimization and UX are covered in the <a href="#optimize">next section</a>.</p>
 
 <h3>Title, description and on-page content</h3>
 

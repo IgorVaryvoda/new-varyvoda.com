@@ -21,6 +21,11 @@ jobs:
     - name: Build
       run: hugo --gc --minify
 
+    - name: Check links and HTML
+      run: |
+        curl -sfL https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz | tar -xz htmltest
+        ./htmltest -c .htmltest.yml
+
     - name: Install rclone
       run: |
         curl https://rclone.org/install.sh | sudo bash

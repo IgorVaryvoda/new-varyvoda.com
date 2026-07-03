@@ -1,0 +1,13 @@
+DirectoryPath: public
+CheckExternal: false
+CheckInternal: true
+# CheckImages stays OFF: the site's Sirv lazy-load pattern renders
+# <img class="Sirv" data-src=...> with no src attribute BY DESIGN, which
+# htmltest reports as ~50 false "src attribute missing" errors (verified
+# 2026-07-03). Revisit if htmltest gains a src-less-img ignore option.
+CheckImages: false
+CheckScripts: true
+IgnoreAltMissing: true
+IgnoreDirectoryMissingTrailingSlash: true
+CacheExpires: "720h"
+OutputDir: tmp/.htmltest
