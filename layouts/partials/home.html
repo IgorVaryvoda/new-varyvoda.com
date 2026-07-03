@@ -74,7 +74,11 @@
             <a href="{{ .RelPermalink }}" class="project-link">
               {{ with .Params.image }}
               <div class="project-thumbnail">
-                <img class="Sirv" src="{{ . }}?w=600"  alt="{{ $.Title }} thumbnail"/>
+                {{ if hasPrefix . "/" }}
+                <img src="{{ . }}" alt="{{ $.Title }} thumbnail" loading="lazy" decoding="async"/>
+                {{ else }}
+                <img class="Sirv" data-src="{{ . }}?w=600" src="{{ . }}?w=600&q=10" alt="{{ $.Title }} thumbnail"/>
+                {{ end }}
               </div>
               {{ end }}
               <div class="project-info">

@@ -337,7 +337,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
   <figcaption>The toolbox, by category. Every chip is a shipped tool route or orchestrator capability; the models behind them route through fal.ai, OpenAI, and OpenRouter. The interface all of this lives in runs on the internal design system and virtualized data grid built by <a href="https://www.linkedin.com/in/max-wish/">Max Wish</a>.</figcaption>
 </figure>
 
-![Sirv AI Studio products view with per-product readiness scores](/images/studio/studio-products.webp)
+<img src="/images/studio/studio-products.webp" alt="Sirv AI Studio products view with per-product readiness scores" width="1345" height="1343" loading="lazy" decoding="async"/>
 *The products view: every product scored for content readiness against its channel's requirements.*
 
 ## How it's built
@@ -355,7 +355,7 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
 
 Two teammates own critical pieces of this: [Max Wish](https://www.linkedin.com/in/max-wish/) built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
 
-![Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table](/images/studio/studio-assets-grid.webp)
+<img src="/images/studio/studio-assets-grid.webp" alt="Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table" width="1350" height="1338" loading="lazy" decoding="async"/>
 *The assets table, running on the in-house virtualized data grid built by [Max Wish](https://www.linkedin.com/in/max-wish/) — live thumbnails, sortable metadata, virtualized rows. And near the top: `Herceg-Novi-bg.jpg`, the town where the bet was made.*
 
 Three problems were harder than the rest.
@@ -374,7 +374,7 @@ Every merchant with suppliers has the same intake problem: product content arriv
 
 Studio turns intake into a pipeline. Each supplier gets a scoped upload portal — a link, chunked batch upload, or an SFTP drop. Submissions are validated on arrival against filename patterns, SKU matching, gallery-slot requirements, and image specs. AI autofix repairs what can be repaired automatically. Everything then lands in an approval queue where the reviewer sees the product context, the shot list, and exactly which checks failed before accepting anything; rejected work goes back to the supplier with reasons. The approval boundary is enforced at the database layer — hardened guards make it structurally impossible for supplier content to skip review on its way to a live store.
 
-![Sirv AI Studio review queue with automated checks and AI autofix](/images/studio/studio-review-queue.webp)
+<img src="/images/studio/studio-review-queue.webp" alt="Sirv AI Studio review queue with automated checks and AI autofix" width="1600" height="945" loading="lazy" decoding="async"/>
 *The review queue — the human gate between supplier intake and a live store. Automated checks flag problems, AI autofix repairs them, a reviewer approves.*
 
 ## Making it operable by AI agents
@@ -420,7 +420,7 @@ Commit volume is not value. But output with that shape needs explaining, and the
 - **The agent roles live in the repo with written charters** — qa-lead, qa-explorer, qa-security-lead, perf-reviewer — the way a real team has job descriptions.
 - **Sirvant**, the fleet's Slack-facing work partner, takes a bug report in plain English and dispatches disposable workers to reproduce and fix it. Slack is the cockpit; VibeQueue is the ledger.
 
-![VibeQueue dashboard showing who's working on what, the bug pipeline, and the coverage-matrix quality gate](/images/studio/studio-vibeq.webp)
+<img src="/images/studio/studio-vibeq.webp" alt="VibeQueue dashboard showing who's working on what, the bug pipeline, and the coverage-matrix quality gate" width="1340" height="1314" loading="lazy" decoding="async"/>
 *VibeQueue, live: who's working on what (the 164 open tasks are mine), stalled reviews flagged for attention, the bug pipeline by priority, hotspot domains — and the coverage-matrix gate at the bottom deciding whether work is allowed to ship.*
 
 My job in that loop is editorial: specs before code, tests before behavior changes, a blocking quality gate on every stop, and adversarial review agents that try to break each change before it lands. Architecture, judgment, taste — and standing behind every line that ships.

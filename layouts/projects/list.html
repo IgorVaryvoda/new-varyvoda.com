@@ -12,7 +12,11 @@
       <a href="{{ .RelPermalink }}" class="hero-card">
         {{ if .Params.image }}
         <div class="hero-thumbnail">
-          <img class="Sirv" src="{{ .Params.image }}?w=900" alt="{{ .Title }} screenshot"/>
+          {{ if hasPrefix .Params.image "/" }}
+          <img src="{{ .Params.image }}" alt="{{ .Title }} screenshot" decoding="async"/>
+          {{ else }}
+          <img class="Sirv" data-src="{{ .Params.image }}?w=900" src="{{ .Params.image }}?w=900&q=10" alt="{{ .Title }} screenshot"/>
+          {{ end }}
         </div>
         {{ end }}
         <div class="hero-info">
@@ -43,7 +47,11 @@
           <a href="{{ .RelPermalink }}" class="project-link">
             {{ if .Params.image }}
             <div class="project-thumbnail">
-              <img class="Sirv" src="{{ .Params.image }}?w=600" alt="{{ .Title }} thumbnail"/>
+              {{ if hasPrefix .Params.image "/" }}
+              <img src="{{ .Params.image }}" alt="{{ .Title }} thumbnail" loading="lazy" decoding="async"/>
+              {{ else }}
+              <img class="Sirv" data-src="{{ .Params.image }}?w=600" src="{{ .Params.image }}?w=600&q=10" alt="{{ .Title }} thumbnail"/>
+              {{ end }}
             </div>
             {{ end }}
             <div class="project-info">

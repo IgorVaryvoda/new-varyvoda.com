@@ -83,12 +83,21 @@
 
         {{ with .Params.image }}
         <div class="project-image">
+          {{ $img := $.Params.image }}
           {{ with $.Params.project_url }}
-          <a href="{{ . }}" target="_blank">
-            <img class="Sirv" data-src="{{ $.Params.image }}" src="{{ $.Params.image }}?q=10" alt="{{ $.Title }} screenshot"/>
+          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">
+            {{ if hasPrefix $img "/" }}
+            <img src="{{ $img }}" alt="{{ $.Title }} screenshot" decoding="async"/>
+            {{ else }}
+            <img class="Sirv" data-src="{{ $img }}" src="{{ $img }}?q=10" alt="{{ $.Title }} screenshot"/>
+            {{ end }}
           </a>
           {{ else }}
-          <img class="Sirv" data-src="{{ $.Params.image }}" src="{{ $.Params.image }}?q=10" alt="{{ $.Title }} screenshot"/>
+          {{ if hasPrefix $img "/" }}
+          <img src="{{ $img }}" alt="{{ $.Title }} screenshot" decoding="async"/>
+          {{ else }}
+          <img class="Sirv" data-src="{{ $img }}" src="{{ $img }}?q=10" alt="{{ $.Title }} screenshot"/>
+          {{ end }}
           {{ end }}
         </div>
         {{ end }}
