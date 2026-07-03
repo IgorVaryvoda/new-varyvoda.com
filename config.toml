@@ -29,7 +29,7 @@ disqusShortname = "varyvoda"
 
   enableTwemoji = true
 
-  colorsheme = "dark"
+  colorScheme = "dark"
   hidecolorschemetoggle = true
 
   customCSS = []

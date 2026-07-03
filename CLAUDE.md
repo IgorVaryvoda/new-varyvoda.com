@@ -85,7 +85,7 @@ Hosted on Netlify:
 
 ## Important Notes
 
-- Site is dark mode only (colorsheme = "dark", hidecolorschemetoggle = true)
+- Site is dark mode only (colorScheme = "dark", hidecolorschemetoggle = true)
 - Custom OG image: `https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900`
 - Homepage shows 5 latest posts and 4 featured projects
 - All project pages include schema.org breadcrumbs for SEO
