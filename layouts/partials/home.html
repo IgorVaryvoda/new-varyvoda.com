@@ -35,7 +35,7 @@
           {{ if .icon }}
             <li>
               <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }} class="social-link">
-                <i class="{{ .icon }}" aria-hidden="true"></i>
+                {{ partial "icons.html" (lower .name) }}
               </a>
             </li>
           {{ else }}
@@ -302,6 +302,18 @@
   color: #7a7a8a !important;
   transition: all 0.3s ease;
   text-decoration: none;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  vertical-align: -0.125em;
+}
+
+.social-link .icon {
+  width: 1.6em;
+  height: 1.6em;
 }
 
 .social-link:hover {

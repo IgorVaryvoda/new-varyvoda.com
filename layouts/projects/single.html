@@ -60,22 +60,22 @@
           <div class="project-links">
             {{ with .Params.project_url }}
             <a href="{{ . }}" target="_blank" class="project-url">
-              <i class="fa fa-external-link" aria-hidden="true"></i> Visit Project
+              {{ partial "icons.html" "external-link" }} Visit Project
             </a>
             {{ end }}
             {{ with .Params.github_url }}
             <a href="{{ . }}" target="_blank" class="project-url github">
-              <i class="fa fa-github" aria-hidden="true"></i> GitHub
+              {{ partial "icons.html" "github" }} GitHub
             </a>
             {{ end }}
             {{ with .Params.app_store_url }}
             <a href="{{ . }}" target="_blank" class="project-url app-store">
-              <i class="fa fa-apple" aria-hidden="true"></i> iOS
+              {{ partial "icons.html" "apple" }} iOS
             </a>
             {{ end }}
             {{ with .Params.play_store_url }}
             <a href="{{ . }}" target="_blank" class="project-url play-store">
-              <i class="fa fa-android" aria-hidden="true"></i> Android
+              {{ partial "icons.html" "android" }} Android
             </a>
             {{ end }}
           </div>
@@ -212,6 +212,17 @@
     font-weight: 600;
     font-size: 1.4rem;
     transition: all 0.2s ease;
+  }
+
+  .icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em;
+  }
+
+  .project-url .icon {
+    flex-shrink: 0;
   }
 
   .project-url:hover {

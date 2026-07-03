@@ -61,13 +61,13 @@
         <div class="post-meta">
           <div class="date">
             <span class="posted-on">
-              <i class="fa fa-calendar" aria-hidden="true"></i>
+              {{ partial "icons.html" "calendar" }}
               <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
                 {{ .Date.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}
               </time>
             </span>
             <span class="reading-time">
-              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              {{ partial "icons.html" "clock-o" }}
               {{ i18n "reading_time" .ReadingTime }}
             </span>
           </div>
@@ -177,8 +177,16 @@
     gap: 0.6rem;
   }
 
-  .post-meta i {
+  .icon {
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em;
+  }
+
+  .post-meta .icon {
     color: #7a7a8a;
+    flex-shrink: 0;
   }
 
   article > div {
