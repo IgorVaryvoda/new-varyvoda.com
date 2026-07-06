@@ -94,6 +94,8 @@ That second point deserves a pause, because it's new. In 2019, image "quality" m
 
 The practical consequence: the old minimum of "one decent product photo" became a portfolio requirement. The surfaces picking your images want product-on-clean-background *and* in-context lifestyle shots, multiple angles, and consistency across the catalog. Ironically, generative AI is also what makes this affordable — background replacement and lifestyle-scene generation turned a photoshoot problem into a batch-processing problem. The winning move isn't AI *or* photography; it's a small number of excellent real photos, multiplied responsibly.
 
+That's the split I like in the tooling too: [Sirv](https://sirv.com/) as the image CDN for resizing, format negotiation, and delivery; [Sirv Studio](https://www.sirv.studio/) as the AI image-generation and batch-workflow layer on top.
+
 ### The checklist, 2026 edition
 
 If the 2019 article compressed to a checklist, here's its successor:
