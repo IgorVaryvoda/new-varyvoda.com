@@ -73,3 +73,20 @@ Compiled 2026-07-06. Grouped by theme; ⭐ marks the strongest bets. Each entry:
 ---
 
 **Top three to write first:** #1 (organs tour — material exists, high shareability), #35 (Hugo over-engineering — unique meta-angle bridging both threads), #25 (Image SEO refresh — proven search demand already owned).
+
+## G. 2026-07-08 shortlist
+
+Fresh pass after re-reading the live site: the strongest pattern is first-person operator essays tied to real artifacts, especially Sirv Studio, image SEO, and the side projects that have more story behind them than the current project pages show.
+
+1. ⭐ **The 72-hour framework migration** — How Studio moved from Next.js to TanStack Start while the product stayed alive. Use the April commit spike as the spine.
+2. ⭐ **AI agents need operations, not APIs** — Agents should call safe product operations with permissions, budgets, review gates, and rollback, not raw endpoints.
+3. ⭐ **One good product photo is no longer enough** — Clean product shots, lifestyle variants, model-graded images, and why AI turns catalog photography into a batch workflow.
+4. **What I learned building an AI app that writes to real Shopify stores** — Drift detection, rollback, publish strategies, idempotency, and why "let AI update products" is terrifying without governance.
+5. **The boring infrastructure behind fast AI product teams** — Tests, gates, specs, memory, queues, and review agents: the stuff that makes the velocity real.
+6. **How I'd redo image SEO for a Shopify store from scratch in 2026** — Practical implementation follow-up to the broader "what changed" essay.
+7. **Building Earth Roulette: why random discovery is still underrated** — The internet got optimized for intent; random travel scratches a different itch.
+8. **The apps I built because I needed them** — Earth Roulette, BudJet, SlovoCard, Viddl: a personal builder essay about scratching your own itch without pretending every project is a startup.
+9. **BudJet: the personal finance app I actually use** — Receipt scanning, household budgets, recommendations, and where AI is useful versus annoying in money apps.
+10. **Learning Balkan languages as a product problem** — SlovoCard angle: why spaced repetition is easy to explain and hard to make pleasant enough to stick with.
+11. **Commit counts are a bad metric until the shape changes** — Follow-up to "Two theories": not "more commits good," but what curves reveal about process changes.
+12. **The AI coding bottleneck moved upstream** — Spec quality, taste, review, and verification as the new scarce skills.
