@@ -14,7 +14,7 @@ status: "active"
 highlights:
   - "Creator & architect, first commit to production"
   - "30+ AI tools backed by 57 registered models"
-  - "45-tool MCP server + API platform for AI agents"
+  - "47-tool MCP server + API platform for AI agents"
   - "Safe Shopify publishing with drift detection and rollback"
 weight: 1
 ---
@@ -147,7 +147,8 @@ weight: 1
 
 .project-description .studio-architecture svg,
 .project-description .studio-cumulative svg,
-.project-description .studio-april svg {
+.project-description .studio-april svg,
+.project-description .studio-scorecard svg {
   display: block;
   width: 100%;
   height: auto;
@@ -155,8 +156,62 @@ weight: 1
 
 .project-description .studio-architecture text,
 .project-description .studio-cumulative text,
-.project-description .studio-april text {
+.project-description .studio-april text,
+.project-description .studio-scorecard text {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.project-description .studio-visual .studio-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  display: none;
+  max-width: 320px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--sv-line-strong);
+  border-radius: 7px;
+  background: rgba(7, 16, 24, 0.96);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  text-align: left;
+}
+
+.project-description .studio-visual .studio-tip.is-on {
+  display: block;
+}
+
+.project-description .studio-visual .studio-tip b {
+  display: block;
+  color: var(--sv-cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.project-description .studio-visual .studio-tip span {
+  display: block;
+  color: var(--sv-text);
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.project-description .studio-visual .studio-tip em {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--sv-muted);
+  font-size: 1.1rem;
+  font-style: normal;
+  line-height: 1.45;
+}
+
+.project-description .studio-visual [data-tip-label] {
+  cursor: pointer;
+  outline: none;
+}
+
+.project-description .studio-visual .sc-hot {
+  filter: brightness(1.35);
 }
 
 .project-description .studio-toolwall-grid {
@@ -237,6 +292,15 @@ weight: 1
 
   .project-description .studio-april svg {
     min-width: 560px;
+  }
+
+  .project-description .studio-scorecard {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-description .studio-scorecard svg {
+    min-width: 700px;
   }
 
   .project-description .studio-toolwall-grid {
@@ -342,7 +406,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 254 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 768-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity: about $70 a month.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 265 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 942-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity: about $70 a month.
 
 <figure class="studio-visual studio-architecture" aria-labelledby="studio-architecture-title">
   <div class="studio-visual-head">
@@ -379,7 +443,7 @@ Studio turns intake into a pipeline. Each supplier gets a scoped upload portal �
 
 ## Making it operable by AI agents
 
-Studio ships a production MCP server (published on npm, stdio and hosted HTTP transports) exposing **45 tools** — AI processing, asset search and management, product CRUD, Shopify sync, supplier-portal review — plus an OpenAPI surface for ChatGPT-style integrations.
+Studio ships a production MCP server (published on npm, stdio and hosted HTTP transports) exposing **47 tools** — AI processing, asset search and management, product CRUD, Shopify sync, supplier-portal review — plus an OpenAPI surface for ChatGPT-style integrations.
 
 The design position: agents don't need raw endpoints, they need *operations inside a governed system*. So the agent surface gets the same context, permissions, approvals, budgets, and rollback as the UI. Auth is OAuth 2.0 with PKCE or API keys; every credit-spending or mutating tool re-authorizes server-side and fails closed if the workspace lacks entitlement; org scoping is validated against membership on every call; tools carry MCP safety annotations (read-only, destructive, idempotent) so agent runtimes can reason about blast radius. An agent can run a batch fix or execute a workflow — but it can't skip the review gate a human would hit.
 
@@ -400,9 +464,10 @@ The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanS
     <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="90" y1="180.5" x2="880" y2="180.5"/><line x1="90" y1="131.1" x2="880" y2="131.1"/><line x1="90" y1="81.6" x2="880" y2="81.6"/></g>
     <g><text x="80" y="184.5" fill="#94a6b4" font-size="11" text-anchor="end">50</text><text x="80" y="135.1" fill="#94a6b4" font-size="11" text-anchor="end">100</text><text x="80" y="85.6" fill="#94a6b4" font-size="11" text-anchor="end">150</text></g>
     <line x1="90" y1="230" x2="880" y2="230" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <g><rect x="116.4" y="215.2" width="46" height="14.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="215.1" y="225.1" width="46" height="4.9" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="313.9" y="181.5" width="46" height="48.5" rx="5" fill="#66d9ef"/><rect x="412.6" y="50.0" width="46" height="180.0" rx="5" fill="#f9c97a"/><rect x="511.4" y="154.8" width="46" height="75.2" rx="5" fill="#66d9ef"/><rect x="610.1" y="147.9" width="46" height="82.1" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="708.9" y="211.2" width="46" height="18.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect x="807.6" y="180.5" width="46" height="49.5" rx="5" fill="rgba(102,217,239,0.55)"/></g>
+    <g><rect id="apr-b1" x="116.4" y="215.2" width="46" height="14.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b2" x="215.1" y="225.1" width="46" height="4.9" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b3" x="313.9" y="181.5" width="46" height="48.5" rx="5" fill="#66d9ef"/><rect id="apr-b4" x="412.6" y="50.0" width="46" height="180.0" rx="5" fill="#f9c97a"/><rect id="apr-b5" x="511.4" y="154.8" width="46" height="75.2" rx="5" fill="#66d9ef"/><rect id="apr-b6" x="610.1" y="147.9" width="46" height="82.1" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b7" x="708.9" y="211.2" width="46" height="18.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b8" x="807.6" y="180.5" width="46" height="49.5" rx="5" fill="rgba(102,217,239,0.55)"/></g>
     <g><text x="139.4" y="207.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">15</text><text x="238.1" y="217.1" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">5</text><text x="336.9" y="173.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">49</text><text x="435.6" y="42.0" fill="#f9c97a" font-size="13" font-weight="700" text-anchor="middle">182</text><text x="534.4" y="146.8" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">76</text><text x="633.1" y="139.9" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">83</text><text x="731.9" y="203.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">19</text><text x="830.6" y="172.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">50</text></g>
     <g><text x="139.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 6</text><text x="238.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 7</text><text x="336.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 8</text><text x="435.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 9</text><text x="534.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 10</text><text x="633.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 11</text><text x="731.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 12</text><text x="830.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 13</text></g>
+    <g><rect x="90.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b1" data-tip-value="15 commits" data-tip-label="Apr 6"/><rect x="189.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b2" data-tip-value="5 commits" data-tip-label="Apr 7"/><rect x="287.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b3" data-tip-value="49 commits" data-tip-label="Apr 8" data-tip-note="Add TanStack Start bootstrap slice — the migration begins"/><rect x="386.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b4" data-tip-value="182 commits" data-tip-label="Apr 9" data-tip-note="The single biggest day of the project, mid-migration"/><rect x="485.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b5" data-tip-value="76 commits" data-tip-label="Apr 10" data-tip-note="Final Next runtime dependencies removed"/><rect x="584.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b6" data-tip-value="83 commits" data-tip-label="Apr 11"/><rect x="682.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b7" data-tip-value="19 commits" data-tip-label="Apr 12"/><rect x="781.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b8" data-tip-value="50 commits" data-tip-label="Apr 13"/></g>
   </svg>
   <figcaption>The highlighted window is the live Next.js → TanStack Start migration: bootstrap on Apr 8, the 182-commit spike on Apr 9, final Next runtime dependencies removed on Apr 10.</figcaption>
 </figure>
@@ -431,8 +496,175 @@ I wrote the broader argument behind this operating model in [Two theories of a p
 
 The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
 
+## So is it any good?
+
+Commit counts measure motion, not quality — a fair objection, so a week after writing this page I turned the fleet on the codebase itself. Ten reviewer agents in parallel, one per domain, read the code, schema, migrations, tests, and CI configuration — by then ~512K lines of hand-written TypeScript across 7,800 files, 162 database tables, and roughly 4,000 test files — and Claude Fable compiled the reviews into a scorecard, then ran four file-level deep-dives to re-verify the heaviest findings. The calibration was explicit: 5 is a typical startup, 7 is solid production quality, 9+ is exceptional.
+
+The verdict: **8.25 out of 10**.
+
+<figure class="studio-visual studio-scorecard" aria-labelledby="studio-scorecard-title">
+  <div class="studio-visual-head">
+    <span id="studio-scorecard-title">the scorecard</span>
+    <strong>Jul 9, 2026 · 10 parallel reviewers</strong>
+  </div>
+  <svg viewBox="0 0 920 576" role="img" aria-label="Scorecard bar chart on a 0-to-10 scale with calibration lines at 5 (typical startup), 7 (solid production), and 9 (exceptional). Overall 8.25. Domains: testing and quality 8.5, data model 8.5, frontend and design system 8.5, architecture 8, security 8. Features: supplier portal 8.5, integrations and API 8.5, orchestrator 8.5, AI tools 8, DAM 8, billing 8, marketing and SEO 8, PIM 7.">
+    <g stroke="rgba(255,255,255,0.14)" stroke-width="1" stroke-dasharray="3 4"><line x1="570" y1="28" x2="570" y2="546"/><line x1="702" y1="28" x2="702" y2="546"/><line x1="834" y1="28" x2="834" y2="546"/></g>
+    <g fill="#94a6b4" font-size="10.5" text-anchor="middle"><text x="570" y="18">5 · typical startup</text><text x="702" y="18">7 · solid production</text><text x="834" y="18">9 · exceptional</text></g>
+    <rect id="sc-o" x="240" y="44" width="544.5" height="20" rx="5" fill="#66d9ef"/>
+    <text x="232" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="end">Overall</text>
+    <text x="792.5" y="59" fill="#f9c97a" font-size="15" font-weight="800">8.25</text>
+    <text x="0" y="96" fill="#94a6b4" font-size="11" letter-spacing="0.14em">DOMAINS</text>
+    <g fill="rgba(102,217,239,0.72)"><rect id="sc-d1" x="240" y="112" width="561" height="16" rx="5"/><rect id="sc-d2" x="240" y="142" width="561" height="16" rx="5"/><rect id="sc-d3" x="240" y="172" width="561" height="16" rx="5"/><rect id="sc-d4" x="240" y="202" width="528" height="16" rx="5"/><rect id="sc-d5" x="240" y="232" width="528" height="16" rx="5"/></g>
+    <g fill="#cdd8e0" font-size="13" text-anchor="end"><text x="232" y="124">Testing &amp; quality</text><text x="232" y="154">Data model</text><text x="232" y="184">Frontend &amp; design system</text><text x="232" y="214">Architecture</text><text x="232" y="244">Security</text></g>
+    <g fill="#edf7fb" font-size="13" font-weight="700"><text x="809" y="124">8.5</text><text x="809" y="154">8.5</text><text x="809" y="184">8.5</text><text x="776" y="214">8</text><text x="776" y="244">8</text></g>
+    <text x="0" y="288" fill="#94a6b4" font-size="11" letter-spacing="0.14em">FEATURES</text>
+    <g fill="rgba(102,217,239,0.72)"><rect id="sc-f1" x="240" y="300" width="561" height="16" rx="5"/><rect id="sc-f2" x="240" y="330" width="561" height="16" rx="5"/><rect id="sc-f3" x="240" y="360" width="561" height="16" rx="5"/><rect id="sc-f4" x="240" y="390" width="528" height="16" rx="5"/><rect id="sc-f5" x="240" y="420" width="528" height="16" rx="5"/><rect id="sc-f6" x="240" y="450" width="528" height="16" rx="5"/><rect id="sc-f7" x="240" y="480" width="528" height="16" rx="5"/></g>
+    <rect id="sc-f8" x="240" y="510" width="462" height="16" rx="5" fill="#f9c97a"/>
+    <g fill="#cdd8e0" font-size="13" text-anchor="end"><text x="232" y="312">Supplier portal</text><text x="232" y="342">Integrations &amp; API</text><text x="232" y="372">Orchestrator</text><text x="232" y="402">AI tools</text><text x="232" y="432">DAM</text><text x="232" y="462">Billing</text><text x="232" y="492">Marketing &amp; SEO</text><text x="232" y="522">PIM</text></g>
+    <g fill="#edf7fb" font-size="13" font-weight="700"><text x="809" y="312">8.5</text><text x="809" y="342">8.5</text><text x="809" y="372">8.5</text><text x="776" y="402">8</text><text x="776" y="432">8</text><text x="776" y="462">8</text><text x="776" y="492">8</text><text x="710" y="522">7</text></g>
+    <line x1="240" y1="546" x2="900" y2="546" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+    <g fill="#94a6b4" font-size="11.5" text-anchor="middle"><text x="240" y="564">0</text><text x="570" y="564">5</text><text x="702" y="564">7</text><text x="834" y="564">9</text><text x="900" y="564">10</text></g>
+    <g><rect x="0" y="38" width="920" height="32" fill="rgba(0,0,0,0)" data-bar="#sc-o" data-tip-value="8.25 / 10" data-tip-label="Overall" data-tip-note="Initial pass scored 8; revised to 8.25 after four file-level deep-dives re-verified the heaviest findings."/><rect x="0" y="105" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d1" data-tip-value="8.5 / 10" data-tip-label="Testing and quality" data-tip-note="Governed e2e coverage matrix with signed evidence receipts and real-worker idempotency proofs; the unit layer leans hard on mocks."/><rect x="0" y="135" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d2" data-tip-value="8.5 / 10" data-tip-label="Data model" data-tip-note="Composite tenant-parity foreign keys and 385 CHECK constraints make cross-tenant links structurally impossible; some legacy FK and index debt."/><rect x="0" y="165" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d3" data-tip-value="8.5 / 10" data-tip-label="Frontend and design system" data-tip-note="sid-kit ships 88 contract docs and OKLCH token math with inline WCAG rationale; a few 2,000-line components remain."/><rect x="0" y="195" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d4" data-tip-value="8 / 10" data-tip-label="Architecture" data-tip-note="Layering is machine-enforced: ~100 import-safety CI assertions, zero route-to-DB imports across 502 API routes; god files tracked but tolerated."/><rect x="0" y="225" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d5" data-tip-value="8 / 10" data-tip-label="Security" data-tip-note="DNS-pinned SSRF defense, strict OAuth rotation, and a tenant-scoping CI gate; a hardening backlog is planned and queued."/><rect x="0" y="293" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f1" data-tip-value="8.5 / 10" data-tip-label="Supplier portal" data-tip-note="End-to-end intake, validation, review, and delivery with ~430 test files; live with a real enterprise customer."/><rect x="0" y="323" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f2" data-tip-value="8.5 / 10" data-tip-label="Integrations and API" data-tip-note="47-tool MCP server with its own OAuth provider, a ratcheted 63-operation OpenAPI surface, and a deep Shopify app."/><rect x="0" y="353" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f3" data-tip-value="8.5 / 10" data-tip-label="Orchestrator" data-tip-note="Durable DAG execution with review gates, pause/resume, and four refund reconciliation paths. Revised up from 8: the feared legacy path was dead code."/><rect x="0" y="383" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f4" data-tip-value="8 / 10" data-tip-label="AI tools" data-tip-note="One factory gives 34 tool routes retry, circuit breakers, dedupe, and credit handling; deterministic pixel rules replace paid AI calls where they can."/><rect x="0" y="413" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f5" data-tip-value="8 / 10" data-tip-label="DAM" data-tip-note="Wide format support, BM25 plus vector search, versions, licensing, share links; usage analytics still missing."/><rect x="0" y="443" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f6" data-tip-value="8 / 10" data-tip-label="Billing" data-tip-note="Idempotent ledger writes, dispute clawback, dual-provider entitlements; storage quotas still run in warn mode."/><rect x="0" y="473" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f7" data-tip-value="8 / 10" data-tip-label="Marketing and SEO" data-tip-note="A ~400-URL programmatic estate with an in-house SEO CMS and a full lifecycle funnel; the editorial leg barely exists."/><rect x="0" y="503" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f8" data-tip-value="7 / 10" data-tip-label="PIM" data-tip-note="Typed attributes, a readiness engine, and industrial import are real; variant editing and non-Shopify channel sync are unfinished. Revised up from 6.5."/></g>
+  </svg>
+  <figcaption>Every rating from the July 9 scorecard, on its stated calibration scale. Hover or tab across a bar for the one-line verdict behind the number; the amber bar is the honest weak spot.</figcaption>
+</figure>
+
+The theme every reviewer independently landed on is the same one that explains the velocity chapter above: the guardrails are executable, not prose. Import-safety tests function as a machine-checked log of architecture decisions. The e2e coverage matrix refuses to count a flow as covered without a signed receipt from a real run. Org scoping is a static-analysis gate that fails pull requests. Tenancy is enforced by the schema itself, so cross-tenant data links are structurally impossible rather than merely discouraged. That apparatus is what lets fleet-scale output land at production quality — and the audit is the measurement of it.
+
+The scorecard is just as plain about what keeps it off a 9: the PIM's back half is unfinished (variant editing, channel sync beyond Shopify), storage quotas still run in warn mode instead of enforce, and the tracked-but-tolerated debt — a few 2,000-line components, circular imports in the lib layer — is ratcheted but not blocked. Every one of those tracks left the audit with an executor-ready implementation plan, because that's the pipeline here: findings become plans, plans become fleet work.
+
+Two findings stuck with me. First, when the deep-dives re-verified the audit's heaviest weaknesses, every re-checked claim turned out equal to or smaller than first reported — the scariest one, a supposedly divergent legacy billing path in the orchestrator, was dead code with zero production callers. The codebase was better than its own audit notes. Second, the economics line: the reviewers put comparable scope at 200+ engineer-months for a conventional team, and this took about ten — with no quality cliff between the domains I built solo and the ones with dedicated owners. That's the fleet claim from the previous section, measured.
+
 ---
 
 Studio also carries the less glamorous machinery a production platform needs: exponential-backoff retries with jitter, per-operation circuit breakers on AI providers, content-based idempotency keys, Redis-backed rate limits, and restore-drilled database backups. That layer has no screenshots, but it's why the rest works.
 
 <a href="https://www.sirv.studio" target="_blank">Try Sirv AI Studio →</a> · [Check the build record →](/projects/sirv-studio/build-record/)
+
+<script>
+(function () {
+  function makeTip(fig) {
+    var tip = document.createElement("div");
+    tip.className = "studio-tip";
+    fig.appendChild(tip);
+    return tip;
+  }
+
+  function fillTip(tip, value, label, note) {
+    tip.textContent = "";
+    var b = document.createElement("b");
+    b.textContent = value;
+    tip.appendChild(b);
+    var s = document.createElement("span");
+    s.textContent = label;
+    tip.appendChild(s);
+    if (note) {
+      var e = document.createElement("em");
+      e.textContent = note;
+      tip.appendChild(e);
+    }
+  }
+
+  function placeTip(tip, fig, clientX, clientY) {
+    var r = fig.getBoundingClientRect();
+    var x = clientX - r.left + fig.scrollLeft - tip.offsetWidth / 2;
+    x = Math.max(8, Math.min(x, r.width + fig.scrollLeft - tip.offsetWidth - 8));
+    var y = clientY - r.top - tip.offsetHeight - 16;
+    if (y < 6) y = clientY - r.top + 18;
+    tip.style.left = x + "px";
+    tip.style.top = y + "px";
+  }
+
+  function bindMarks(fig) {
+    var tip = makeTip(fig);
+    fig.querySelectorAll("[data-tip-label]").forEach(function (el) {
+      var barSel = el.getAttribute("data-bar");
+      var bar = barSel ? fig.querySelector(barSel) : el;
+      el.setAttribute("tabindex", "0");
+      function show(ev) {
+        fillTip(tip, el.getAttribute("data-tip-value"), el.getAttribute("data-tip-label"), el.getAttribute("data-tip-note"));
+        tip.classList.add("is-on");
+        if (bar) bar.classList.add("sc-hot");
+        var cx, cy;
+        if (ev && ev.type !== "focus" && typeof ev.clientX === "number") {
+          cx = ev.clientX;
+          cy = ev.clientY;
+        } else {
+          var box = (bar || el).getBoundingClientRect();
+          cx = box.left + box.width / 2;
+          cy = box.top;
+        }
+        placeTip(tip, fig, cx, cy);
+      }
+      function hide() {
+        tip.classList.remove("is-on");
+        if (bar) bar.classList.remove("sc-hot");
+      }
+      el.addEventListener("pointerenter", show);
+      el.addEventListener("pointermove", show);
+      el.addEventListener("pointerleave", hide);
+      el.addEventListener("focus", show);
+      el.addEventListener("blur", hide);
+    });
+  }
+
+  document.querySelectorAll(".studio-scorecard, .studio-april").forEach(bindMarks);
+
+  var fig = document.querySelector(".studio-cumulative");
+  var svg = fig && fig.querySelector("svg");
+  var curve = svg && svg.querySelector('path[stroke="#66d9ef"][fill="none"]');
+  if (curve) {
+    var nums = (curve.getAttribute("d").match(/-?[\d.]+/g) || []).map(Number);
+    var pts = [];
+    for (var i = 0; i < nums.length; i += 2) pts.push([nums[i], nums[i + 1]]);
+    var N = pts.length;
+    var NS = "http://www.w3.org/2000/svg";
+    var marker = document.createElementNS(NS, "g");
+    marker.setAttribute("style", "display:none");
+    var vline = document.createElementNS(NS, "line");
+    vline.setAttribute("y1", "40");
+    vline.setAttribute("y2", "300");
+    vline.setAttribute("stroke", "rgba(102,217,239,0.45)");
+    vline.setAttribute("stroke-dasharray", "3 4");
+    var dot = document.createElementNS(NS, "circle");
+    dot.setAttribute("r", "5");
+    dot.setAttribute("fill", "#66d9ef");
+    dot.setAttribute("stroke", "#0a1018");
+    dot.setAttribute("stroke-width", "2");
+    marker.appendChild(vline);
+    marker.appendChild(dot);
+    svg.appendChild(marker);
+    var hit = document.createElementNS(NS, "rect");
+    hit.setAttribute("x", "70");
+    hit.setAttribute("y", "20");
+    hit.setAttribute("width", "824");
+    hit.setAttribute("height", "290");
+    hit.setAttribute("fill", "rgba(0,0,0,0)");
+    svg.appendChild(hit);
+    var tip = makeTip(fig);
+    var start = new Date(2025, 11, 2).getTime();
+    var totalDays = 212;
+    hit.addEventListener("pointermove", function (ev) {
+      var r = svg.getBoundingClientRect();
+      var sx = (ev.clientX - r.left) * (920 / r.width);
+      var idx = Math.round((sx - 70) / (824 / (N - 1)));
+      idx = Math.max(0, Math.min(N - 1, idx));
+      var p = pts[idx];
+      var commits = idx === N - 1 ? 5501 : Math.round((300 - p[1]) * 5000 / 236.3);
+      var day = new Date(start + Math.round(idx * totalDays / (N - 1)) * 86400000);
+      vline.setAttribute("x1", p[0]);
+      vline.setAttribute("x2", p[0]);
+      dot.setAttribute("cx", p[0]);
+      dot.setAttribute("cy", p[1]);
+      marker.setAttribute("style", "");
+      fillTip(tip, commits.toLocaleString("en-US") + " commits", day.toLocaleDateString("en-US", { month: "short", day: "numeric" }));
+      tip.classList.add("is-on");
+      placeTip(tip, fig, r.left + p[0] * r.width / 920, r.top + p[1] * r.height / 344);
+    });
+    hit.addEventListener("pointerleave", function () {
+      marker.setAttribute("style", "display:none");
+      tip.classList.remove("is-on");
+    });
+  }
+})();
+</script>
