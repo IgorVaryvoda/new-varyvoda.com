@@ -4,481 +4,590 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
-<title>I built Sirv AI Studio — Igor Varyvoda</title>
-<meta name="description" content="Seven months, 5,500 commits, 254 database migrations. The build record of Sirv AI Studio, with every claim traceable to the git log.">
-<meta property="og:title" content="One person shipped this.">
-<meta property="og:description" content="The build record of Sirv AI Studio: 7 months, 5,500 commits, 3,695 test files. Every claim traceable to the git log.">
+<title>The build record of Sirv AI Studio — Igor Varyvoda</title>
+<meta name="description" content="From an empty repo at 06:35 to a production e-commerce platform: 220 days of commits, milestones, architecture, tests, migrations, and the operating system behind Sirv AI Studio.">
+<link rel="canonical" href="https://www.varyvoda.com/projects/sirv-studio/build-record/">
+<meta property="og:title" content="At 06:35 there was an empty repo. By lunch there was a product.">
+<meta property="og:description" content="The forensic build record of Sirv AI Studio, based on the current dev branch and checked-in architecture.">
 <meta property="og:type" content="article">
+<meta property="og:url" content="https://www.varyvoda.com/projects/sirv-studio/build-record/">
+<meta property="og:image" content="https://www.varyvoda.com/images/studio/sirv-studio-og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #FAFAF8;
-    --ink: #191613;
-    --ink-soft: #6E675C;
-    --line: #E4E0D7;
-    --ember-0: #EFEBE2;
-    --ember-1: #F3D9AE;
-    --ember-2: #EDB169;
-    --ember-3: #D97B2F;
-    --ember-4: #B34E14;
-    --ember-5: #7A2E0B;
-    --accent: #B34E14;
-    --display: "Bricolage Grotesque", system-ui, sans-serif;
+    --fog: #edf3f1;
+    --paper: #f8faf9;
+    --ink: #10201f;
+    --ink-2: #3f514f;
+    --line: #cad8d5;
+    --line-strong: #9db3af;
+    --cyan: #087f87;
+    --cyan-soft: #cce5e3;
+    --violet: #5b43e6;
+    --violet-soft: #ded9fb;
+    --orange: #e4542e;
+    --orange-soft: #f8d9ce;
+    --display: "Space Grotesk", system-ui, sans-serif;
+    --body: "Source Serif 4", Georgia, serif;
     --mono: "IBM Plex Mono", ui-monospace, monospace;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   body {
+    margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 17px;
-    line-height: 1.65;
+    font-family: var(--body);
+    font-size: 18px;
+    line-height: 1.66;
     -webkit-font-smoothing: antialiased;
   }
-  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); }
-  a:hover { border-bottom-color: var(--accent); }
-  a:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 3px;
-    border-radius: 2px;
-  }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
-  .wrap-wide { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  a { color: var(--cyan); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+  a:hover { color: var(--violet); }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+  .skip-link { position: fixed; left: 12px; top: -60px; z-index: 20; padding: 9px 13px; background: var(--ink); color: #fff; font-family: var(--mono); font-size: 12px; }
+  .skip-link:focus { top: 12px; }
+  .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+  .mono { font-family: var(--mono); }
 
-  .ref {
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--ink-soft);
-    text-transform: lowercase;
-  }
-  .ref::after { content: ""; display: block; width: 34px; height: 2px; background: var(--accent); margin-top: 10px; }
-
-  /* ---------- header ---------- */
-  header { padding: 28px 0 0; }
   .topbar {
-    display: flex; justify-content: space-between; align-items: baseline;
-    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line-strong);
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--ink-2);
   }
-  .topbar a { color: var(--ink-soft); border-bottom: none; }
-  .topbar a:hover { color: var(--accent); }
+  .topbar a { color: inherit; text-decoration: none; }
+  .topbar a:hover { color: var(--violet); }
 
-  /* ---------- hero ---------- */
-  .hero { padding: 56px 0 18px; }
-  .hero h1 {
-    font-size: clamp(46px, 8.5vw, 92px);
-    font-weight: 800;
-    line-height: 0.98;
-    letter-spacing: -0.025em;
-    max-width: 12ch;
-  }
-  .hero p.lede {
-    margin-top: 22px;
-    font-size: clamp(17px, 2.2vw, 20px);
-    max-width: 56ch;
-    color: var(--ink);
-  }
-  .hero p.lede strong { font-weight: 600; }
+  .hero { padding: clamp(64px, 9vw, 126px) 0 34px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.6fr); gap: clamp(36px, 6vw, 90px); align-items: end; }
+  .kicker { display: flex; align-items: center; gap: 10px; margin-bottom: 22px; font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .kicker::before { content: ""; width: 34px; height: 3px; background: var(--orange); }
+  h1, h2, h3 { font-family: var(--display); }
+  h1 { max-width: 11.8ch; margin: 0; font-size: clamp(46px, 7.6vw, 104px); line-height: 0.94; letter-spacing: -0.055em; }
+  h1 em { color: var(--violet); font-style: normal; }
+  .hero-note { max-width: 34ch; margin: 0 0 8px; font-size: clamp(19px, 2.1vw, 25px); line-height: 1.45; color: var(--ink-2); }
+  .hero-note strong { color: var(--ink); font-family: var(--display); font-weight: 600; }
 
-  /* ---------- heatmap ---------- */
-  :root { --cell: 20px; --cellgap: 4px; }
-  @media (max-width: 700px) { :root { --cell: 13px; --cellgap: 3px; } }
-  .heatband { padding: 26px 0 12px; }
-  .heat-inner { width: fit-content; margin: 0 auto; max-width: 100%; }
-  .heat-meta {
-    display: flex; flex-wrap: wrap; gap: 8px 24px;
-    justify-content: space-between; align-items: baseline;
-    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
-    margin-bottom: 16px;
+  .pulse-wrap { margin-top: clamp(48px, 7vw, 86px); padding: 22px 0 18px; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); }
+  .pulse-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; margin-bottom: 18px; font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+  .pulse-scroll { overflow-x: auto; scrollbar-width: thin; }
+  .pulse { display: flex; align-items: end; gap: 2px; min-width: 760px; height: 118px; }
+  .pulse-bar { flex: 1 0 2px; min-width: 2px; height: var(--h); background: var(--cyan); transform-origin: bottom; animation: rise 420ms both; animation-delay: var(--delay); }
+  .pulse-bar:nth-last-child(-n+9) { background: var(--violet); }
+  .pulse-bar.peak { background: var(--orange); }
+  @keyframes rise { from { opacity: 0; transform: scaleY(0.04); } to { opacity: 1; transform: scaleY(1); } }
+
+  .snapshot { display: grid; grid-template-columns: repeat(6, 1fr); border-bottom: 1px solid var(--line-strong); }
+  .stat { min-width: 0; padding: 24px 18px 25px 0; }
+  .stat + .stat { padding-left: 18px; border-left: 1px solid var(--line); }
+  .stat strong { display: block; font-family: var(--display); font-size: clamp(25px, 3vw, 37px); line-height: 1; letter-spacing: -0.04em; }
+  .stat span { display: block; margin-top: 8px; font-family: var(--mono); font-size: 10px; line-height: 1.45; color: var(--ink-2); }
+
+  .page-grid { display: grid; grid-template-columns: 170px minmax(0, 800px); gap: clamp(38px, 7vw, 92px); justify-content: center; }
+  .rail { align-self: start; position: sticky; top: 24px; margin-top: 98px; padding-top: 14px; border-top: 2px solid var(--ink); font-family: var(--mono); font-size: 10px; line-height: 1.5; }
+  .rail strong { display: block; margin-bottom: 12px; font-size: 11px; }
+  .rail a { display: block; padding: 5px 0; color: var(--ink-2); text-decoration: none; }
+  .rail a:hover { color: var(--violet); }
+  article { min-width: 0; }
+  section { padding: 98px 0 0; scroll-margin-top: 20px; }
+  .section-mark { display: grid; grid-template-columns: 60px 1fr; gap: 18px; align-items: baseline; margin-bottom: 26px; font-family: var(--mono); font-size: 11px; line-height: 1.4; color: var(--ink-2); }
+  .section-mark b { color: var(--orange); font-size: 12px; }
+  h2 { max-width: 16ch; margin: 0 0 25px; font-size: clamp(34px, 5.2vw, 59px); line-height: 0.99; letter-spacing: -0.045em; }
+  h3 { margin: 0; font-size: 21px; line-height: 1.2; letter-spacing: -0.025em; }
+  .lede { max-width: 58ch; margin: 0; font-size: 21px; line-height: 1.55; }
+  .prose { max-width: 61ch; }
+  .prose p { margin: 0; }
+  .prose p + p { margin-top: 18px; }
+  .callout { margin-top: 32px; padding: 22px 24px; border-left: 5px solid var(--violet); background: var(--violet-soft); font-family: var(--display); font-size: 18px; line-height: 1.48; }
+
+  .terminal { margin-top: 34px; border: 1px solid var(--ink); background: #10201f; color: #e6f1ef; box-shadow: 10px 10px 0 var(--cyan-soft); }
+  .terminal-head { display: flex; justify-content: space-between; gap: 16px; padding: 10px 14px; border-bottom: 1px solid #506260; font-family: var(--mono); font-size: 10px; color: #adc0bc; }
+  .terminal ol { margin: 0; padding: 12px 16px 16px; list-style: none; counter-reset: log; font-family: var(--mono); font-size: 12px; line-height: 1.65; }
+  .terminal li { display: grid; grid-template-columns: 52px 72px 1fr; gap: 12px; padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .terminal li:last-child { border-bottom: 0; }
+  .terminal time { color: #7edbd7; }
+  .terminal code { color: #f4a68d; }
+
+  .heat-panel { margin-top: 38px; padding: 25px; border: 1px solid var(--line-strong); background: var(--fog); }
+  .heat-meta, .heat-legend { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
+  .heat-scroll { overflow-x: auto; margin-top: 20px; padding-bottom: 8px; }
+  .heatmap { display: inline-grid; grid-auto-flow: column; gap: 4px; }
+  .heat-col { display: grid; grid-template-rows: repeat(7, 15px); gap: 4px; }
+  .cell { width: 15px; height: 15px; border: 1px solid rgba(16,32,31,0.06); background: #dfe7e5; }
+  .heat-legend { justify-content: flex-start; margin-top: 16px; }
+  .heat-legend .cell { width: 11px; height: 11px; }
+  .month-bars { margin-top: 34px; border-top: 1px solid var(--line-strong); }
+  .month { display: grid; grid-template-columns: 68px minmax(0, 1fr) 82px; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11px; }
+  .bar-track { display: flex; height: 21px; background: #e1e9e7; }
+  .bar-mine { width: calc(var(--mine) / 2278 * 100%); background: var(--violet); }
+  .bar-others { width: calc(var(--others) / 2278 * 100%); background: var(--cyan); }
+  .month .total { text-align: right; color: var(--ink-2); }
+  .chart-key { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
+  .chart-key span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; background: var(--violet); }
+  .chart-key span + span::before { background: var(--cyan); }
+
+  .milestones { margin-top: 36px; }
+  .month-chapter { margin-top: 62px; }
+  .month-chapter:first-child { margin-top: 0; }
+  .month-head { display: grid; grid-template-columns: 118px minmax(0, 1fr) auto; gap: 20px; align-items: end; padding: 0 0 18px; border-bottom: 3px solid var(--ink); }
+  .month-head .index { font-family: var(--display); font-size: 64px; font-weight: 700; line-height: 0.78; letter-spacing: -0.07em; color: var(--violet); }
+  .month-head h3 { font-size: 29px; }
+  .month-head p { margin: 6px 0 0; color: var(--ink-2); font-size: 14px; line-height: 1.45; }
+  .month-head .count { font-family: var(--mono); font-size: 10px; line-height: 1.55; color: var(--ink-2); text-align: right; }
+  .milestone { display: grid; grid-template-columns: 118px minmax(0, 1fr) 88px; gap: 20px; padding: 26px 0; border-bottom: 1px solid var(--line); }
+  .milestone time, .milestone code { font-family: var(--mono); font-size: 11px; }
+  .milestone time { color: var(--orange); font-weight: 600; }
+  .milestone code { color: var(--ink-2); text-align: right; }
+  .milestone p { max-width: 54ch; margin: 8px 0 0; font-size: 16px; line-height: 1.55; color: var(--ink-2); }
+
+  .loop { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); margin-top: 35px; border: 1px solid var(--ink); background: var(--ink); gap: 1px; }
+  .loop span { position: relative; display: grid; place-items: center; min-height: 72px; padding: 10px 7px; background: var(--paper); font-family: var(--mono); font-size: 10px; text-align: center; }
+  .loop span:not(:last-child)::after { content: "→"; position: absolute; right: -8px; z-index: 2; width: 15px; color: var(--orange); font-size: 15px; }
+  .systems { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 34px; }
+  .system { min-height: 230px; padding: 24px; border: 1px solid var(--line-strong); background: var(--fog); }
+  .system:nth-child(2) { background: var(--cyan-soft); }
+  .system:nth-child(3) { background: var(--violet-soft); }
+  .system:nth-child(4) { background: var(--orange-soft); }
+  .system .big { display: block; margin-bottom: 18px; font-family: var(--display); font-size: 44px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; }
+  .system p { margin: 10px 0 0; font-size: 15.5px; line-height: 1.55; color: var(--ink-2); }
+  .system .source { display: block; margin-top: 18px; font-family: var(--mono); font-size: 9.5px; color: var(--ink-2); }
+
+  .method { display: grid; grid-template-columns: repeat(5, 1fr); margin-top: 34px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+  .method div { position: relative; padding: 21px 14px 22px 0; }
+  .method div + div { padding-left: 14px; border-left: 1px solid var(--line); }
+  .method b { display: block; margin-bottom: 8px; font-family: var(--mono); font-size: 10px; color: var(--orange); }
+  .method span { display: block; font-family: var(--display); font-size: 14px; line-height: 1.35; }
+  .credit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 34px; }
+  .credit { padding: 20px; border: 1px solid var(--line); }
+  .credit strong { display: block; font-family: var(--display); font-size: 28px; letter-spacing: -0.04em; }
+  .credit b { display: block; margin-top: 5px; font-family: var(--display); font-size: 15px; }
+  .credit span { display: block; margin-top: 5px; font-family: var(--mono); font-size: 9.5px; color: var(--ink-2); }
+
+  .truth { margin-top: 36px; padding: clamp(28px, 5vw, 50px); background: var(--ink); color: #f0f6f4; }
+  .truth blockquote { max-width: 14ch; margin: 0; font-family: var(--display); font-size: clamp(38px, 6vw, 68px); font-weight: 600; line-height: 1; letter-spacing: -0.05em; }
+  .truth blockquote em { color: #8de0dc; font-style: normal; }
+  .truth p { max-width: 54ch; margin: 28px 0 0; color: #bdceca; font-size: 17px; }
+
+  .ledger { width: 100%; margin-top: 34px; border-collapse: collapse; font-family: var(--mono); font-size: 10.5px; line-height: 1.5; }
+  .ledger th { padding: 11px 12px 11px 0; border-bottom: 2px solid var(--ink); color: var(--ink-2); text-align: left; font-weight: 500; }
+  .ledger td { padding: 15px 12px 15px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .ledger code { font: inherit; color: var(--violet); overflow-wrap: anywhere; }
+  .ledger td:last-child, .ledger th:last-child { padding-right: 0; }
+  .verify { margin-top: 34px; padding: 30px; border: 1px solid var(--ink); box-shadow: 9px 9px 0 var(--orange-soft); }
+  .verify p { max-width: 57ch; margin: 0; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+  .btn { padding: 11px 16px; border: 1px solid var(--ink); color: var(--ink); font-family: var(--mono); font-size: 11px; text-decoration: none; }
+  .btn:hover { background: var(--ink); color: #fff; }
+  .btn.primary { background: var(--violet); border-color: var(--violet); color: #fff; }
+  .btn.primary:hover { background: var(--ink); border-color: var(--ink); }
+
+  footer { margin-top: 104px; padding: 26px 0 42px; border-top: 1px solid var(--line-strong); font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
+  footer .shell { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+  @media (max-width: 920px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-note { max-width: 43ch; }
+    .snapshot { grid-template-columns: repeat(3, 1fr); }
+    .stat:nth-child(4) { border-left: 0; }
+    .stat:nth-child(n+4) { border-top: 1px solid var(--line); }
+    .page-grid { grid-template-columns: minmax(0, 800px); }
+    .rail { display: none; }
   }
-  .heat-scroll { overflow-x: auto; padding-bottom: 6px; }
-  .heatmap { display: inline-grid; grid-auto-flow: column; gap: var(--cellgap); }
-  .heat-col { display: grid; grid-template-rows: repeat(7, var(--cell)); gap: var(--cellgap); }
-  .cell {
-    width: var(--cell); height: var(--cell); border-radius: 4px;
-    background: var(--ember-0);
-  }
-  .cell.pop { animation: pop 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
-  @keyframes pop {
-    from { opacity: 0; transform: scale(0.3); }
-    to { opacity: 1; transform: scale(1); }
+  @media (max-width: 650px) {
+    body { font-size: 17px; }
+    .shell { width: min(100% - 28px, 1180px); }
+    .topbar { align-items: flex-start; flex-direction: column; gap: 6px; }
+    .hero { padding-top: 54px; }
+    .snapshot { grid-template-columns: repeat(2, 1fr); }
+    .stat:nth-child(3), .stat:nth-child(5) { border-left: 0; }
+    .stat:nth-child(3) { border-top: 1px solid var(--line); }
+    .stat:nth-child(4) { border-left: 1px solid var(--line); }
+    .stat { padding: 20px 12px 20px 0; }
+    .stat + .stat { padding-left: 12px; }
+    section { padding-top: 76px; }
+    .section-mark { grid-template-columns: 46px 1fr; }
+    .terminal { margin-right: 8px; }
+    .terminal li { grid-template-columns: 48px 1fr; gap: 8px; }
+    .terminal li span { grid-column: 1 / -1; padding-left: 56px; }
+    .heat-panel { margin-left: -7px; margin-right: -7px; padding: 18px; }
+    .month { grid-template-columns: 54px minmax(0, 1fr) 68px; gap: 9px; }
+    .milestone { grid-template-columns: 88px 1fr; gap: 12px; }
+    .milestone code { grid-column: 2; text-align: left; }
+    .month-chapter { margin-top: 48px; }
+    .month-head { grid-template-columns: 70px 1fr; gap: 12px; }
+    .month-head .index { font-size: 48px; }
+    .month-head .count { grid-column: 2; text-align: left; }
+    .loop { grid-template-columns: 1fr; }
+    .loop span { min-height: 49px; }
+    .loop span:not(:last-child)::after { right: 50%; bottom: -12px; transform: rotate(90deg); }
+    .systems { grid-template-columns: 1fr; }
+    .system { min-height: 0; }
+    .method { grid-template-columns: 1fr; }
+    .method div { padding: 16px 0; }
+    .method div + div { padding-left: 0; border-top: 1px solid var(--line); border-left: 0; }
+    .credit-grid { grid-template-columns: 1fr; }
+    .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; }
+    .ledger thead { display: none; }
+    .ledger tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .ledger td { padding: 4px 0; border: 0; }
+    .ledger td:first-child { color: var(--orange); font-weight: 600; }
+    .verify { padding: 22px; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cell.pop { animation: none; }
     html { scroll-behavior: auto; }
+    .pulse-bar { animation: none; }
   }
-  .heat-months {
-    display: flex; gap: 0;
-    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
-    margin-bottom: 6px;
-  }
-  .heat-legend {
-    display: flex; align-items: center; gap: 5px;
-    font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
-    margin-top: 14px;
-  }
-  .heat-legend .cell { width: 11px; height: 11px; }
-  .heat-caption {
-    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
-    margin-top: 18px; max-width: 72ch;
-  }
-  .heat-caption em { font-style: normal; color: var(--ink); }
-
-  /* ---------- sections ---------- */
-  section { padding: 72px 0 0; }
-  section .body { margin-top: 26px; }
-  h2 {
-    font-size: clamp(26px, 4vw, 36px);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin-top: 18px;
-  }
-  .prose p + p { margin-top: 16px; }
-  .prose { max-width: 60ch; }
-
-  /* ---------- ledger ---------- */
-  .ledger { width: 100%; border-collapse: collapse; margin-top: 30px; }
-  .ledger tr { border-top: 1px solid var(--line); }
-  .ledger tr:last-child { border-bottom: 1px solid var(--line); }
-  .ledger td { padding: 16px 18px 16px 0; vertical-align: baseline; }
-  .ledger .num {
-    font-family: var(--display); font-weight: 800;
-    font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em;
-    white-space: nowrap; width: 1%; padding-right: 30px;
-  }
-  .ledger .claim { font-size: 15.5px; max-width: 44ch; }
-  .ledger .src {
-    font-family: var(--mono); font-size: 11.5px; color: var(--ink-soft);
-    text-align: right; white-space: nowrap; padding-right: 0;
-  }
-  @media (max-width: 700px) {
-    .ledger .src { display: none; }
-  }
-
-  /* ---------- loop block ---------- */
-  .loop {
-    font-family: var(--mono); font-size: 13px; line-height: 2.1;
-    border: 1px solid var(--line); border-radius: 6px;
-    padding: 22px 26px; margin-top: 26px;
-    background: #fff;
-    color: var(--ink);
-    overflow-x: auto;
-  }
-  .loop b { color: var(--accent); font-weight: 500; }
-
-  /* ---------- problems ---------- */
-  .problem { border-top: 1px solid var(--line); padding: 26px 0; }
-  .problem:last-of-type { border-bottom: 1px solid var(--line); }
-  .problem .tag {
-    font-family: var(--mono); font-size: 12px; font-weight: 500;
-    color: var(--accent); letter-spacing: 0.05em;
-  }
-  .problem h3 { font-size: 20px; font-weight: 600; margin-top: 6px; letter-spacing: -0.01em; }
-  .problem p { margin-top: 8px; font-size: 15.5px; color: var(--ink); max-width: 62ch; }
-
-  /* ---------- verify / cta ---------- */
-  .verify {
-    border: 1px solid var(--line); border-radius: 6px; background: #fff;
-    padding: 30px; margin-top: 30px;
-  }
-  .verify p { max-width: 58ch; }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
-  .btn {
-    display: inline-block; font-family: var(--mono); font-size: 13px; font-weight: 500;
-    padding: 12px 20px; border-radius: 4px; border: 1px solid var(--ink);
-    color: var(--ink); background: transparent;
-  }
-  .btn:hover { background: var(--ink); color: var(--paper); border-bottom-color: var(--ink); }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
-
-  footer {
-    margin-top: 96px; padding: 28px 0 44px; border-top: 1px solid var(--line);
-    font-family: var(--mono); font-size: 12px; color: var(--ink-soft);
-  }
-  footer .wrap-wide { display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between; }
 </style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Article","headline":"The build record of Sirv AI Studio","author":{"@type":"Person","name":"Igor Varyvoda","url":"https://www.varyvoda.com"},"datePublished":"2026-07-02","dateModified":"2026-07-10","mainEntityOfPage":"https://www.varyvoda.com/projects/sirv-studio/build-record/","image":"https://www.varyvoda.com/images/studio/sirv-studio-og.png"}
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to the build record</a>
 
-<header>
-  <div class="wrap-wide topbar">
-    <span><a href="https://www.varyvoda.com">varyvoda.com</a> / <a href="/projects/">projects</a> / <a href="/projects/sirv-studio/">sirv-studio</a> / build-record</span>
-    <span>updated 2026-07</span>
-  </div>
+<header class="shell topbar">
+  <span><a href="https://www.varyvoda.com">varyvoda.com</a> / <a href="/projects/">projects</a> / <a href="/projects/sirv-studio/">sirv studio</a> / build record</span>
+  <span>dev @ 20eef964 &middot; snapshot 10 Jul 2026</span>
 </header>
 
-<div class="wrap">
-  <div class="hero">
-    <h1>One person shipped this.</h1>
-    <p class="lede">
-      <strong><a href="https://www.sirv.studio">Sirv AI Studio</a></strong> is an AI product-content platform for
-      e-commerce: 30+ AI tools, batch workflows, supplier intake, and safe publishing to Shopify.
-      I designed and built it. Solo for the first twelve weeks, and still the author of
-      roughly 73% of every commit since. <a href="https://www.linkedin.com/in/max-wish/">Max Wish</a> built the design system and the data grid; <a href="https://www.linkedin.com/in/veniamin-krachun/">Veniamin Krachun</a> built the QA machine. Below is the build record, straight from the git log.
-    </p>
-  </div>
-</div>
-
-<div class="wrap-wide heatband">
-  <div class="heat-inner">
-  <div class="heat-meta">
-    <span>5,500 commits by me &middot; Dec 2, 2025 &rarr; Jul 2, 2026</span>
-    <span>one cell = one day &middot; author filter: me &middot; no smoothing</span>
-  </div>
-  <div class="heat-scroll">
-    <div id="months" class="heat-months" aria-hidden="true"></div>
-    <div id="heatmap" class="heatmap" role="img" aria-label="Commit activity heatmap: 208 active days out of 213 tracked, December 2025 through July 2026, peaking at 182 commits in a single day."></div>
-  </div>
-  <div class="heat-legend">
-    <span style="margin-right:4px">fewer</span>
-    <span class="cell" style="background:var(--ember-0)"></span>
-    <span class="cell" style="background:var(--ember-1)"></span>
-    <span class="cell" style="background:var(--ember-2)"></span>
-    <span class="cell" style="background:var(--ember-3)"></span>
-    <span class="cell" style="background:var(--ember-4)"></span>
-    <span class="cell" style="background:var(--ember-5)"></span>
-    <span style="margin-left:4px">more</span>
-  </div>
-  <p class="heat-caption">
-    Rendered from real per-day commit counts. Seven months, <em>five days off</em>.
-    The hot streak from April onward is the platform hardening for production: billing,
-    entitlements, supplier portal, publish safety.
-  </p>
-  </div>
-</div>
-
-<div class="wrap">
-
-  <section id="evidence">
-    <span class="ref">evidence/</span>
-    <h2>The ledger</h2>
-    <table class="ledger">
-      <tr>
-        <td class="num">Dec 2</td>
-        <td class="claim">First commit, December 2, 2025. Empty repo to production platform in seven months.</td>
-        <td class="src">git log --reverse</td>
-      </tr>
-      <tr>
-        <td class="num">7,515</td>
-        <td class="claim">Commits in the repo. 5,500 are mine, about 73%. Four engineers have joined since.</td>
-        <td class="src">git shortlog -sn</td>
-      </tr>
-      <tr>
-        <td class="num">12 wks</td>
-        <td class="claim">Solo. Every commit in the first twelve weeks is mine or my AI agents&rsquo;. The next engineer landed Feb 26.</td>
-        <td class="src">git log --author</td>
-      </tr>
-      <tr>
-        <td class="num">254</td>
-        <td class="claim">Database migrations, each one a schema change that shipped.</td>
-        <td class="src">ls drizzle/</td>
-      </tr>
-      <tr>
-        <td class="num">3,695</td>
-        <td class="claim">Test files behind a blocking quality gate. Velocity without tests is just typing.</td>
-        <td class="src">find . -name '*.test.*' -o -name '*.spec.*'</td>
-      </tr>
-      <tr>
-        <td class="num">39/day</td>
-        <td class="claim">My commit rate over the last 30 days. Month seven, faster than month one.</td>
-        <td class="src">git log --since='30 days'</td>
-      </tr>
-      <tr>
-        <td class="num">30+</td>
-        <td class="claim">AI tools live in production, from background removal to full workflow orchestration.</td>
-        <td class="src">sirv.studio</td>
-      </tr>
-    </table>
-  </section>
-
-  <section id="product">
-    <span class="ref">product/</span>
-    <h2>What it does</h2>
-    <div class="body prose">
-      <p>
-        E-commerce teams get product images from suppliers, photographers, and old catalogs.
-        The content is messy, the fixes are manual, and publishing a wrong image to a live store
-        is expensive. Studio turns that into one controlled loop:
-      </p>
-      <div class="loop">scan catalog &rarr; <b>find what blocks every product</b> &rarr; fix in AI batches &rarr; review &amp; approve &rarr; <b>publish safely to Shopify</b> &rarr; version, track, roll back</div>
-      <p>
-        Under the loop: a product-linked asset library, supplier upload portals with validation
-        and SFTP intake, readiness scoring, a visual workflow builder, and an API/MCP layer so
-        AI agents can run the same operations the UI does, inside the same permission and
-        approval rules.
+<main id="main">
+  <div class="shell hero">
+    <div class="hero-grid">
+      <div>
+        <div class="kicker">The repository record</div>
+        <h1>At 06:35 there was an empty repo. <em>By lunch there was a product.</em></h1>
+      </div>
+      <p class="hero-note">
+        I kept going. <strong>Sirv AI Studio</strong> grew into AI product-content operations for e-commerce, with supplier intake, a product-linked asset library, workflow automation, and safe Shopify publishing. This is how the repo got there, including the uncomfortable parts.
       </p>
     </div>
-  </section>
 
-  <section id="problems">
-    <span class="ref">problems/</span>
-    <h2>Four problems worth the trouble</h2>
-    <div class="body">
-      <div class="problem">
-        <span class="tag">mcp/</span>
-        <h3>An agent platform, not an endpoint</h3>
-        <p>
-          A production MCP server (45 tools, published on npm) and OpenAPI layer where AI agents
-          run real product-content workflows, and every operation respects credits, permissions,
-          review gates, and publish safety. Agents get the same rules as humans, enforced in the
-          same place.
-        </p>
+    <div class="pulse-wrap">
+      <div class="pulse-head">
+        <span>220 calendar days &middot; every vertical mark is one day</span>
+        <span>height = my commits &middot; square-root scale &middot; no smoothing</span>
       </div>
-      <div class="problem">
-        <span class="tag">publish/</span>
-        <h3>Publishing that cannot wreck a store</h3>
-        <p>
-          Writes to live Shopify catalogs are guarded by source drift detection, idempotency keys,
-          per-product status, preserved originals, and one-click rollback. Partial failure is a
-          designed state, not a surprise.
-        </p>
-      </div>
-      <div class="problem">
-        <span class="tag">supplier/</span>
-        <h3>Supplier intake without the chaos</h3>
-        <p>
-          Suppliers get scoped upload portals and SFTP drops. Files are validated on arrival
-          against filenames, SKUs, slots, and specs, repaired by AI autofix, and held in an
-          approval queue enforced at the database layer. Supplier content cannot reach a live
-          store without a human yes.
-        </p>
-      </div>
-      <div class="problem">
-        <span class="tag">orchestrate/</span>
-        <h3>Workflows as a graph</h3>
-        <p>
-          A visual pipeline builder compiling to DAG execution over durable background jobs,
-          with 36 step types, live SSE progress, human review gates, and credit metering
-          per step.
-        </p>
+      <div class="pulse-scroll">
+        <div id="pulse" class="pulse" role="img" aria-label="Daily commit pulse from December 2, 2025 to July 9, 2026. There were commits on 215 of 220 days, with the highest day at 287 commits."></div>
       </div>
     </div>
-  </section>
 
-  <section id="method">
-    <span class="ref">method/</span>
-    <h2>How one person ships like a team</h2>
-    <div class="body prose">
-      <p>
-        The honest answer: I run a fleet of AI coding agents the way a lead runs a team.
-        Test-first on every behavior change. A blocking quality gate on every stop. Adversarial
-        review agents that try to break each change before it lands. Ratchets that stop files
-        from growing back.
-      </p>
-      <p>
-        The agents type faster than I do. The architecture, the judgment, and the taste are mine,
-        and the 3,695 test files are why I can trust the throughput. In 2026 every engineer has
-        the same models. The difference is whether your system turns that speed into a product
-        or into a mess.
-      </p>
+    <div class="snapshot" aria-label="Repository snapshot metrics">
+      <div class="stat"><strong>9,452</strong><span>commits on dev</span></div>
+      <div class="stat"><strong>6,638</strong><span>under my primary author identity</span></div>
+      <div class="stat"><strong>215 / 220</strong><span>active calendar days</span></div>
+      <div class="stat"><strong>4,751</strong><span>tracked test and spec files</span></div>
+      <div class="stat"><strong>263</strong><span>Drizzle migrations</span></div>
+      <div class="stat"><strong>47</strong><span>tools in the MCP server</span></div>
     </div>
-  </section>
+  </div>
 
-  <section id="verify">
-    <span class="ref">verify/</span>
-    <h2>Check my work</h2>
-    <div class="verify">
-      <p>
-        The codebase is private, so you cannot run the commands in the ledger yourself.
-        I will happily walk through the git history live in any interview, screen shared,
-        no preparation. The product needs no permission at all:
-        <a href="https://www.sirv.studio">sirv.studio</a> is public and free to try.
-      </p>
-      <div class="cta-row">
-        <a class="btn primary" href="https://www.sirv.studio">Try Sirv AI Studio</a>
-        <a class="btn" href="/projects/sirv-studio/">Case study</a>
-        <a class="btn" href="https://github.com/igorvaryvoda">GitHub</a>
-        <a class="btn" href="https://www.linkedin.com/in/igorvaryvoda/">LinkedIn</a>
-        <a class="btn" href="https://x.com/igorvaryvoda">X / Twitter</a>
-      </div>
-    </div>
-  </section>
+  <div class="shell page-grid">
+    <nav class="rail" aria-label="Build record sections">
+      <strong>CONTENTS</strong>
+      <a href="#day-one">00 / day one</a>
+      <a href="#velocity">01 / velocity</a>
+      <a href="#milestones">02 / milestones</a>
+      <a href="#system">03 / the system</a>
+      <a href="#method">04 / the method</a>
+      <a href="#truth">05 / the correction</a>
+      <a href="#evidence">06 / evidence</a>
+    </nav>
 
-</div>
+    <article>
+      <section id="day-one">
+        <div class="section-mark"><b>00</b><span>2 December 2025 &middot; Herceg Novi</span></div>
+        <h2>The dare was one day.</h2>
+        <div class="prose">
+          <p class="lede">The evening before, over a beer with coworkers, I said I would build the idea in a day. The first commit landed at 06:35. Background replacement worked at 08:00. Virtual try-on followed at 08:23.</p>
+          <p>Auth, billing, rate limiting, and Sirv storage were in before noon. The first MVP merge is timestamped 12:05. Batch processing and a side-by-side compare mode landed that afternoon. There were 31 commits on day one.</p>
+        </div>
+
+        <div class="terminal" aria-label="Selected day-one git log entries">
+          <div class="terminal-head"><span>git log &middot; selected entries</span><span>timezone +01:00</span></div>
+          <ol>
+            <li><time>06:35</time><code>436e069</code><span>Initial commit from Create Next App</span></li>
+            <li><time>08:00</time><code>f001584</code><span>background replacement + model selection</span></li>
+            <li><time>08:23</time><code>6aa7e81</code><span>virtual try-on</span></li>
+            <li><time>08:45</time><code>71ab430</code><span>multiple product angles + lighting removal</span></li>
+            <li><time>09:57</time><code>5ec7242</code><span>auth, billing, rate limiting, Sirv integration</span></li>
+            <li><time>12:05</time><code>c19bf1e</code><span>merge the MVP branch</span></li>
+            <li><time>15:51</time><code>d9f6f2e</code><span>batch mode + multi-select</span></li>
+            <li><time>16:29</time><code>b659a90</code><span>compare mode</span></li>
+          </ol>
+        </div>
+        <div class="callout">The interesting part is not that a demo existed by lunch. It is that the skeleton survived: tools, storage, billing, batch work, and comparison are still part of the product seven months later.</div>
+      </section>
+
+      <section id="velocity">
+        <div class="section-mark"><b>01</b><span>2 December 2025 → 9 July 2026</span></div>
+        <h2>The launch spike never ended.</h2>
+        <div class="prose">
+          <p class="lede">There were five blank days in the first 220. February was the quiet month. It still carried 316 of my commits, mostly billing, entitlements, and the plumbing that turns a demo into a business.</p>
+          <p>The shape changes in March when other engineers enter the history. April contains the live framework migration. June and July show the QA and agent machinery at full speed. July is partial below, the first nine full days plus the snapshot commit just after midnight on the 10th, and it already exceeds every complete month except April.</p>
+        </div>
+
+        <div class="heat-panel">
+          <div class="heat-meta"><span>daily activity / primary Igor author identity</span><span>hover a cell for exact count</span></div>
+          <div class="heat-scroll"><div id="heatmap" class="heatmap" role="img" aria-label="Calendar heatmap of Igor Varyvoda's commits from December 2, 2025 through July 9, 2026."></div></div>
+          <div class="heat-legend">
+            <span>fewer</span><span class="cell" style="background:#dfe7e5"></span><span class="cell" style="background:#b9deda"></span><span class="cell" style="background:#68bdb8"></span><span class="cell" style="background:#087f87"></span><span class="cell" style="background:#5b43e6"></span><span class="cell" style="background:#e4542e"></span><span>more</span>
+          </div>
+        </div>
+
+        <div class="month-bars" aria-label="Commits by month, split between Igor and other authors">
+          <div class="month" style="--mine:602;--others:10"><span>Dec</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">612</span></div>
+          <div class="month" style="--mine:531;--others:1"><span>Jan</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">532</span></div>
+          <div class="month" style="--mine:316;--others:6"><span>Feb</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">322</span></div>
+          <div class="month" style="--mine:504;--others:176"><span>Mar</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">680</span></div>
+          <div class="month" style="--mine:1337;--others:255"><span>Apr</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">1,592</span></div>
+          <div class="month" style="--mine:979;--others:436"><span>May</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">1,415</span></div>
+          <div class="month" style="--mine:1180;--others:1098"><span>Jun</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">2,278</span></div>
+          <div class="month" style="--mine:1189;--others:832"><span>Jul*</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">2,021</span></div>
+        </div>
+        <div class="chart-key"><span>my commits</span><span>other authors</span><span>* through the 00:33 snapshot on 10 July</span></div>
+      </section>
+
+      <section id="milestones">
+        <div class="section-mark"><b>02</b><span>The full build chronology</span></div>
+        <h2>This is what 220 days bought.</h2>
+        <p class="lede">The old page reduced the whole run to seven numbers. That missed the story. Below is the actual sequence: tools become workflows, workflows become a DAM and PIM, supplier intake becomes governed publishing, and the repo develops its own production line.</p>
+
+        <div class="milestones">
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">12</span><div><h3>December 2025</h3><p>From dare to connected platform in 30 days.</p></div><span class="count">612 repo commits<br>602 mine</span></div>
+            <div class="milestone"><time>02 Dec</time><div><h3>A product before lunch</h3><p>Background replacement, virtual try-on, multi-angle product shots, auth, billing, rate limits, Sirv storage, batch mode, and compare mode all land on day one.</p></div><code>436e069<br>c19bf1e</code></div>
+            <div class="milestone"><time>07–13 Dec</time><div><h3>Single tools become a visual workflow</h3><p>The canvas arrives with reusable tool configs, multiple execution modes, generated-image sources, batch inputs, undo and redo, and a full-screen studio.</p></div><code>650e590<br>a5bace3</code></div>
+            <div class="milestone"><time>14–16 Dec</time><div><h3>Durable jobs, live progress, human review</h3><p>Large batches and workflows leave the browser request cycle for Inngest, stream progress over SSE, reconnect after interruption, and pause at an image-review step inside a DAG.</p></div><code>53fde2f<br>cc9ae98</code></div>
+            <div class="milestone"><time>17–20 Dec</time><div><h3>Sirv delivery, analytics, 3D, and MCP</h3><p>Processed files upload to Sirv, PostHog starts measuring use, new 3D models arrive, billing moves to background jobs, and the first MCP server gives agents a proper tool surface.</p></div><code>bb9b387<br>d5e45fd</code></div>
+            <div class="milestone"><time>23–25 Dec</time><div><h3>Catalog-scale processing</h3><p>Product descriptions and batch alt text join the toolbox. CSV, Google Sheets, and XLSX imports feed a fan-out architecture designed for 100,000-plus items with live item status.</p></div><code>90a54c1<br>2cb96c3</code></div>
+            <div class="milestone"><time>26–29 Dec</time><div><h3>Five integration surfaces in four days</h3><p>MCP gains OAuth, stateless HTTP, and Claude support. Shopify ships and moves from REST to GraphQL. Zapier, n8n, and the OpenAI Apps SDK follow. The platform can now be used from a store, an automation, or an agent.</p></div><code>212608e<br>c1a7f45<br>72c88f8</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">01</span><div><h3>January 2026</h3><p>The tool collection acquires memory, products, and organisations.</p></div><span class="count">532 repo commits<br>531 mine</span></div>
+            <div class="milestone"><time>04–08 Jan</time><div><h3>One model registry and a smarter graph</h3><p>Model configuration is centralised across image, video, 3D, caption, and try-on tools. The orchestrator gains typed ports, multiple sources, Magic Fix, branching outputs, and connection validation.</p></div><code>059080c<br>9d3e4a6</code></div>
+            <div class="milestone"><time>11–16 Jan</time><div><h3>Context-aware prompts, WordPress, Sentry, GLB</h3><p>Prompt expansion can inspect the source image. A WordPress plugin gets OAuth. GLB optimisation moves server-side with batch jobs. Sentry lands, then a programmatic SEO system capable of generating a very large route set.</p></div><code>d7d59a5<br>1ca234e<br>79a8053</code></div>
+            <div class="milestone"><time>20 Jan</time><div><h3>The DAM starts in one concentrated day</h3><p>Assets, tags, favourites, filters, R2 storage, product columns, operation history, save-to-library, and product review establish the asset system under the AI tools.</p></div><code>5394a3a<br>d4051af<br>cb7b92f</code></div>
+            <div class="milestone"><time>21–23 Jan</time><div><h3>Products and activity enter the same workspace</h3><p>The dashboard absorbs assets, products, workflows, and activity. Bulk product assignment and context menus arrive. Usage analytics becomes a first-class workspace section.</p></div><code>125d23d<br>b703357</code></div>
+            <div class="milestone"><time>26–27 Jan</time><div><h3>Multi-organisation DAM</h3><p>Role-based access, multiple organisations, nested collections, bulk download, share links with subfolder navigation, and a full-width workflow studio turn the library into a team product.</p></div><code>e215943<br>6c82a9d<br>cca1c01</code></div>
+            <div class="milestone"><time>31 Jan</time><div><h3>Shopify metadata and a cleaner data layer</h3><p>Shopify metafields and metadata templates arrive while the data layer finishes its snake_case to camelCase Drizzle migration.</p></div><code>3758e6c<br>a53dac6</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">02</span><div><h3>February 2026</h3><p>Supplier intake becomes a product, not an upload form.</p></div><span class="count">322 repo commits<br>316 mine</span></div>
+            <div class="milestone"><time>01–03 Feb</time><div><h3>Approval workflows and the first supplier portal</h3><p>Pinned image comments, approval workflow services, a supplier-facing upload portal, an approval queue, before-and-after autofix review, and one-click repair with controlled approval land together.</p></div><code>f6dc77f<br>e9f198e<br>489d4c3</code></div>
+            <div class="milestone"><time>06–07 Feb</time><div><h3>Search, permissions, trash, and Shopify workflows</h3><p>BM25 search gains typo tolerance. Resource-level RBAC closes product, folder, and collection paths. Soft deletion gets a cleanup job. Shopify gets multi-step pipelines and a health dashboard.</p></div><code>addeba9<br>bed01d3<br>a7dd921</code></div>
+            <div class="milestone"><time>09 Feb</time><div><h3>Supplier batch intake</h3><p>Scoped assignments, slot templates, spreadsheet imports, manual product matching, Dropbox, and Google Drive turn supplier delivery into a structured batch workflow.</p></div><code>ede7c9d</code></div>
+            <div class="milestone"><time>16–21 Feb</time><div><h3>SFTP, SAP, catalog imports, and live Shopify sync</h3><p>Supplier SFTP and SAP import support arrive beside product CSV import. Shopify product edits can sync automatically with retry-safe GraphQL handling.</p></div><code>95b2fc4<br>7473589<br>ae93156</code></div>
+            <div class="milestone"><time>24–25 Feb</time><div><h3>The safety net gets serious</h3><p>One commit adds 955 edge-case tests. Five paid AI vision checks are replaced with deterministic pixel analysis. The library gets marquee selection and keyboard navigation.</p></div><code>2beb40e<br>31e710a<br>b08037c</code></div>
+            <div class="milestone"><time>27–28 Feb</time><div><h3>AI moves inside the asset workflow</h3><p>Create Studio launches, bulk AI processing starts from the library, tool state survives refresh, and Bearer-token auth unifies public API and session access. Generation Studio follows with five modes.</p></div><code>68beab6<br>337a0ae<br>948185e</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">03</span><div><h3>March 2026</h3><p>The demo becomes an operable content system.</p></div><span class="count">680 repo commits<br>504 mine</span></div>
+            <div class="milestone"><time>04–06 Mar</time><div><h3>The library is rebuilt on a real data grid</h3><p>Assets and products move onto a shared virtualised grid with table and gallery modes, server-side product search, row-level import recovery, bulk actions, and hundreds of focused DAM tests.</p></div><code>67fe026</code></div>
+            <div class="milestone"><time>07–12 Mar</time><div><h3>The Alkosto pipeline proves supplier operations</h3><p>A demanding real supplier specification drives reusable validation, product assignment, image specs, autofix, review, and delivery. The setup wizard and information architecture are redesigned around the workflow.</p></div><code>1b46de7</code></div>
+            <div class="milestone"><time>18–19 Mar</time><div><h3>Imports and side effects become durable</h3><p>Product imports fan out as cancellable background jobs. Supplier SFTP gets stronger auth and cleanup. Batch and tool handoff moves through an event outbox so a retry does not casually duplicate work.</p></div><code>cc82f6a</code></div>
+            <div class="milestone"><time>20–22 Mar</time><div><h3>Autofix becomes a review system</h3><p>Single and bulk repair share a review-session controller. Geometry fixes collapse into one smart-crop pass, buffers are reused, and supplier results remain manual where confidence is not enough.</p></div><code>ede85b0<br>ae2fac3</code></div>
+            <div class="milestone"><time>24–26 Mar</time><div><h3>The data grid gets extracted and profiled</h3><p>Column resize, reorder, selection, keyboard navigation, and state ownership move into shared seams. Accessibility and render performance improve without losing the dense operator UI.</p></div><code>7bc6817<br>4b5577b</code></div>
+            <div class="milestone"><time>31 Mar</time><div><h3>Supplier delivery learns to roll back</h3><p>Approved supplier assets can follow configurable Sirv delivery roots with a delivery audit and cleanup path instead of becoming irreversible file copies.</p></div><code>810b4e0</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">04</span><div><h3>April 2026</h3><p>A live framework migration, followed by a data-model expansion.</p></div><span class="count">1,592 repo commits<br>1,337 mine</span></div>
+            <div class="milestone"><time>08–10 Apr</time><div><h3>Next.js is replaced in 72 hours</h3><p>TanStack Start boots on the 8th. Public pages, auth, products, assets, suppliers, settings, webhooks, MCP, Shopify, and uploads move route by route. The final Next runtime dependency is removed on the 10th.</p></div><code>2b77aee<br>1b3e106</code></div>
+            <div class="milestone"><time>10–13 Apr</time><div><h3>The QA fleet gets roles and campaigns</h3><p>A lead, runner, and explorer become a three-agent QA framework. Axe-based accessibility scans, bug-hunt campaigns, dedicated role users, pooled execution, web-vitals capture, and worker heartbeats turn testing into an operated system.</p></div><code>550fd25<br>2a48b59</code></div>
+            <div class="milestone"><time>18–21 Apr</time><div><h3>Autofix becomes an agentic planner</h3><p>Mask-aware margin repair, sellable-unit safety, atomic approvals, private agent state, diagnostics, and retry-aware planning let the system propose repairs without granting it unsafe freedom.</p></div><code>4e65c4e<br>74aa157</code></div>
+            <div class="milestone"><time>27–28 Apr</time><div><h3>The product-content graph takes shape</h3><p>Typed attributes, variant identity, revision history, product search documents, publish projections, drift checks, proposal review, and backup verification give product content explicit owners.</p></div><code>af5afa8<br>cc60142</code></div>
+            <div class="milestone"><time>28–29 Apr</time><div><h3>Workflows gain real triggers</h3><p>Uploads, schedules, product changes, and authenticated webhooks can start workflows. Dry runs, test events, attempt history, enable checks, filters, duplicate actions, and provenance make triggers operable.</p></div><code>93f91ab<br>4588de6</code></div>
+            <div class="milestone"><time>30 Apr</time><div><h3>QA becomes visible</h3><p>The QA Monitor gains retained run history, quality gates, migration-aware status, bug-hunter summaries, and wiring audits while programmatic SEO gets route-specific metadata and cross-linking.</p></div><code>8832cbf<br>7221548</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">05</span><div><h3>May 2026</h3><p>Governance, channels, repairability, and release trust.</p></div><span class="count">1,415 repo commits<br>979 mine</span></div>
+            <div class="milestone"><time>15–16 May</time><div><h3>The product graph gets a written constitution</h3><p>The repo defines one canonical path from organisation to source, product, variant, assignment, asset, attribute, publish projection, and readiness. A product readiness command centre follows.</p></div><code>4922c34<br>76e0197</code></div>
+            <div class="milestone"><time>18–21 May</time><div><h3>Readiness becomes channel-aware</h3><p>Shopify, SAP, and other destinations get distinct requirements. Logical filter groups, saved views, CSV export, channel targeting rules, PIM workspace updates, and Sid Kit primitives make those rules usable.</p></div><code>8661f62<br>bfbb992</code></div>
+            <div class="milestone"><time>22 May</time><div><h3>Workflows learn DAM and PIM operations</h3><p>The orchestrator can source from products and assets, write into the content system, and run through a typed Effect-based operation kernel with explicit credit, persistence, and finalisation boundaries.</p></div><code>17ccb65<br>0a4d83b</code></div>
+            <div class="milestone"><time>24–25 May</time><div><h3>Recovery paths stop being an afterthought</h3><p>Invariant safety rails, projection repair, idempotent credits, queue health, dry-run reconciliation, HLS inspection, video remux, and filmstrip extraction close failure modes that only appear under real load.</p></div><code>f81e52e<br>1cffb47</code></div>
+            <div class="milestone"><time>26–27 May</time><div><h3>A real QA database and operator monitoring</h3><p>Tests get an isolated PostgreSQL database. Inngest realtime subscriptions harden. Signup onboarding arrives, and Grafana becomes a menu-bar signal instead of a dashboard someone forgets to open.</p></div><code>8ab1f65<br>c3ab638</code></div>
+            <div class="milestone"><time>29–31 May</time><div><h3>Releases and email decisions become auditable</h3><p>Release attestation binds proof to the exact pushed commit. The E2E coverage control plane gains evidence artifacts. Managed email gets versioned templates, policy decisions, test sends, audit history, and rollback.</p></div><code>d5d2237<br>3e438e5</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">06</span><div><h3>June 2026</h3><p>The construction machine turns into a proof machine.</p></div><span class="count">2,278 repo commits<br>1,180 mine</span></div>
+            <div class="milestone"><time>03–10 Jun</time><div><h3>QA campaigns become evidence-bearing work</h3><p>Agent loops get workflow packets, result bundles, defect backfeed, coverage claims, mutation sentinels, evidence freshness, risk budgets, and an operator ledger instead of merely reporting “tests passed”.</p></div><code>d0ef47e<br>55e2e58</code></div>
+            <div class="milestone"><time>11–14 Jun</time><div><h3>Quality gates split by risk</h3><p>Tiered edit, session, and ship gates keep feedback fast. An analytics command centre ships. The coverage matrix becomes tool-owned, Storybook gets a taxonomy, and supplier MCP tools expose SFTP, review requirements, and autofix safely.</p></div><code>f2a04c3<br>29a22f8</code></div>
+            <div class="milestone"><time>12–15 Jun</time><div><h3>Entitlements become source-aware</h3><p>Plan access moves from scattered tier checks to named source grants, capability guards, admin ceilings, Shopify billing reconciliation, guarded backfills, and a cutover report.</p></div><code>25184b7<br>fca2a4c</code></div>
+            <div class="milestone"><time>15–22 Jun</time><div><h3>Readiness and public proof broaden</h3><p>Product readiness previews, public page smokes, API auth-boundary contracts, area-aware coverage, and large proof waves shift attention from code presence to working user paths.</p></div><code>2297a6b<br>d54ae6b</code></div>
+            <div class="milestone"><time>26–28 Jun</time><div><h3>The catalog-health loop becomes executable</h3><p>Quota and readiness observers, asset linking, AI-fix workflows, supplier requests, Shopify sync, channel export, and browser proofs connect a detected product gap to a controlled action.</p></div><code>5bbe169<br>7e11baa</code></div>
+            <div class="milestone"><time>30 Jun</time><div><h3>The old tool pages begin converging</h3><p>The unified Create workspace migration starts pulling separate AI tool routes into one operation dock, stage, result inspector, attach flow, and shared job model.</p></div><code>a22f3ee<br>c60134f</code></div>
+          </div>
+
+          <div class="month-chapter">
+            <div class="month-head"><span class="index">07</span><div><h3>July 2026</h3><p>Nine full days. The largest wave, then a deliberate correction.</p></div><span class="count">2,021 repo commits<br>1,189 mine<br>snapshot 10 Jul</span></div>
+            <div class="milestone"><time>01–02 Jul</time><div><h3>Every major AI tool moves into one studio</h3><p>Background removal, upscale, generation, translation, product copy, video, fashion, and depth tools share one workspace with library search, attach targets, chaining, model-aware progress, and reduced-motion processing scenes.</p></div><code>6500481<br>ac3d1cd</code></div>
+            <div class="milestone"><time>02 Jul</time><div><h3>New tools and a supplier expansion wave</h3><p>Image expand, relight, video upscale, generative fill, Fashn try-on, Kling, Seedance, and SVG vectorise arrive. Supplier search, live status, custom rejection reasons, quotas, onboarding email, and locked-plan states land beside them.</p></div><code>4057353<br>8873cd0</code></div>
+            <div class="milestone"><time>02–03 Jul</time><div><h3>The QA Manager and transaction guard</h3><p>A supervised QA manager gets pause, snooze, breaker, cost, and heartbeat controls. A runtime guard now fails immediately if code tries to use the global database pool from inside a transaction, replacing two-minute deadlocks with a useful error.</p></div><code>4fbf953<br>af60353</code></div>
+            <div class="milestone"><time>04 Jul</time><div><h3>The product points at activation</h3><p>Catalog health leads the dashboard. Named workflow recipes run on product selections. Drift-aware publish confirmation shows per-product results. The entire save, attach, approve, and publish loop gets analytics and consent-aware measurement.</p></div><code>a8cd589<br>9ab22a8</code></div>
+            <div class="milestone"><time>05–06 Jul</time><div><h3>First-run experience replaces empty machinery</h3><p>Sample assets, an activation checklist, honest channel states, capability-led admin, privacy controls, quota email, and a catalog-health homepage give a new user a path instead of a wall of features.</p></div><code>01bd13a<br>0cb349d</code></div>
+            <div class="milestone"><time>07–09 Jul</time><div><h3>Proof, rollback, and scope control</h3><p>Readiness gets a mobile first-run experience. Shopify rollback receives a full design spike. Retention jobs handle high-volume tables. The homepage tightens to the product wedge, and clanker convergence now quarantines workers that exceed their assigned scope.</p></div><code>9638f45<br>5ef05cd<br>e1d4d80</code></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="system">
+        <div class="section-mark"><b>03</b><span>What the platform actually controls</span></div>
+        <h2>The product is the loop.</h2>
+        <div class="prose">
+          <p class="lede">AI output is easy to make. Product content is hard to operate. Studio keeps the file attached to its product, variant, source, approval state, channel requirements, publish history, and rollback path.</p>
+        </div>
+
+        <div class="loop" aria-label="Sirv AI Studio product-content loop"><span>ingest</span><span>fix</span><span>attach</span><span>validate</span><span>review</span><span>publish</span><span>track</span></div>
+
+        <div class="systems">
+          <div class="system"><span class="big">39</span><h3>workflow step types</h3><p>Image work, product operations, branching, human review, storage, and Shopify delivery in a typed graph.</p><span class="source">source: STEP_REGISTRY</span></div>
+          <div class="system"><span class="big">47</span><h3>MCP tools</h3><p>AI agents can search assets, manage products, run workflows, sync Shopify, and use supplier operations without bypassing entitlements.</p><span class="source">source: mcp-server/README.md + registrations</span></div>
+          <div class="system"><span class="big">64</span><h3>OpenAPI operations</h3><p>A published, ratcheted API surface. Every route is either documented or deliberately excluded with an owner and a reason.</p><span class="source">source: public/openapi.json operationId count</span></div>
+          <div class="system"><span class="big">263</span><h3>database migrations</h3><p>Products, variants, product-asset links, approvals, event intent, billing, jobs, integrations, and the history needed to recover from mistakes.</p><span class="source">source: drizzle/**/migration.sql</span></div>
+          <div class="system"><span class="big">4,751</span><h3>test and spec files</h3><p>Unit, integration, contract, edge-case, Storybook, and browser coverage. The number is large because the operating method depends on cheap regression detection.</p><span class="source">source: tracked *.test.* + *.spec.* files</span></div>
+          <div class="system"><span class="big">$70</span><h3>approximate monthly infrastructure</h3><p>Vercel, a self-hosted Inngest stack, PostgreSQL HA, Redis, and observability at the current capacity. Model usage is separate.</p><span class="source">source: current project operating estimate</span></div>
+        </div>
+      </section>
+
+      <section id="method">
+        <div class="section-mark"><b>04</b><span>The production system behind the production system</span></div>
+        <h2>I built a machine that builds.</h2>
+        <div class="prose">
+          <p class="lede">AI agents type the code. That is the least interesting part. The leverage comes from giving them bounded work, isolated branches, tests, adversarial reviewers, and a path to converge without turning the repo into soup.</p>
+          <p>VibeQueue holds the work. The clanker army turns reviewed plans into worker batches. Each batch runs in its own worktree, passes focused tests and quality gates, then gets reviewed by specialist agents before convergence. My job is architecture, specification, judgment, and deciding what deserves to exist.</p>
+        </div>
+
+        <div class="method" aria-label="Agent fleet delivery method">
+          <div><b>01</b><span>Write the spec and observable outcome</span></div>
+          <div><b>02</b><span>Split it into isolated worker batches</span></div>
+          <div><b>03</b><span>Make tests and gates blocking</span></div>
+          <div><b>04</b><span>Send the diff to adversarial reviewers</span></div>
+          <div><b>05</b><span>Converge, verify, and ship</span></div>
+        </div>
+
+        <div class="credit-grid" aria-label="Primary repository authors">
+          <div class="credit"><strong>6,638</strong><b>Igor Varyvoda</b><span>architecture, product, agent fleet</span></div>
+          <div class="credit"><strong>1,943</strong><b>Veniamin Krachun</b><span>QA harness and proof machine</span></div>
+          <div class="credit"><strong>727</strong><b>Max Wish</b><span>design system and data grid</span></div>
+        </div>
+        <p class="mono" style="margin:12px 0 0;font-size:9.5px;color:var(--ink-2)">Primary identities from git shortlog. Another 144 commits belong to additional contributors, bots, and alternate identities.</p>
+      </section>
+
+      <section id="truth">
+        <div class="section-mark"><b>05</b><span>The correction built into the record</span></div>
+        <h2>Velocity created its own problem.</h2>
+        <div class="truth">
+          <blockquote>“Construction has <em>outrun proof.</em>”</blockquote>
+          <p>That line is from the repo’s own July situation assessment. The end-to-end loop exists, but too much of the platform is rollout-gated and too little is backed by named merchants using it every week. The commit graph is evidence of an unusual production system. It is not evidence of product-market fit.</p>
+          <p>So Q3 has a surface freeze. No new tools, channels, or workflow step types without an explicit decision. The same fleet is moving onto activation, billing boundaries, browser proof, onboarding, App Store quality, and getting ten merchants through the full loop. A build record is stronger when it records the course correction too.</p>
+        </div>
+      </section>
+
+      <section id="evidence">
+        <div class="section-mark"><b>06</b><span>Reproduce the arithmetic</span></div>
+        <h2>Every big number has a counting rule.</h2>
+        <p class="lede">The codebase is private, but the claims are not hand-waved. This snapshot uses the current local <code class="mono">dev</code> branch at <code class="mono">20eef964</code>. Here is exactly what was counted.</p>
+
+        <table class="ledger">
+          <thead><tr><th>Claim</th><th>Counting rule</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>repo commits</td><td><code>git rev-list --count HEAD</code></td><td>9,452</td></tr>
+            <tr><td>author split</td><td><code>git shortlog -sne HEAD</code></td><td>6,638 / 1,943 / 727</td></tr>
+            <tr><td>daily activity</td><td><code>git log --author='igor@varyvoda.com' --format='%ad' --date=short HEAD</code></td><td>215 active days</td></tr>
+            <tr><td>test files</td><td><code>git ls-files '**/*.test.*' '**/*.spec.*'</code></td><td>4,751</td></tr>
+            <tr><td>migrations</td><td><code>find drizzle -name migration.sql -type f</code></td><td>263</td></tr>
+            <tr><td>MCP tools</td><td><code>mcp-server/README.md</code> checked against tool registrations</td><td>47</td></tr>
+            <tr><td>workflow steps</td><td>definitions exported through <code>STEP_REGISTRY</code></td><td>39</td></tr>
+            <tr><td>OpenAPI operations</td><td><code>operationId</code> entries in <code>public/openapi.json</code></td><td>64</td></tr>
+          </tbody>
+        </table>
+
+        <div class="verify">
+          <p>I will walk through the private git history live in an interview, screen shared, with no prepared branch. The product itself needs no permission. Sirv AI Studio is public and free to try.</p>
+          <div class="buttons">
+            <a class="btn primary" href="https://www.sirv.studio">Try Sirv AI Studio</a>
+            <a class="btn" href="/projects/sirv-studio/">Read the case study</a>
+            <a class="btn" href="https://www.linkedin.com/in/igorvaryvoda/">LinkedIn</a>
+            <a class="btn" href="https://github.com/igorvaryvoda">GitHub</a>
+          </div>
+        </div>
+      </section>
+    </article>
+  </div>
+</main>
 
 <footer>
-  <div class="wrap-wide">
-    <span>Numbers as of July 2, 2026. Heatmap rendered from real per-day commit counts.</span>
-    <span>Igor Varyvoda &middot; <a href="https://www.varyvoda.com">varyvoda.com</a></span>
-  </div>
+  <div class="shell"><span>Repo snapshot: dev @ 20eef964 on 10 July 2026 &middot; my daily activity through 9 July</span><span>Igor Varyvoda &middot; <a href="https://www.varyvoda.com">varyvoda.com</a></span></div>
 </footer>
 
 <script>
 (function () {
-  var DATA = [["2025-12-02",31],["2025-12-03",21],["2025-12-04",31],["2025-12-05",12],["2025-12-06",19],["2025-12-07",21],["2025-12-08",13],["2025-12-09",31],["2025-12-10",14],["2025-12-11",30],["2025-12-12",29],["2025-12-13",10],["2025-12-14",11],["2025-12-15",7],["2025-12-16",8],["2025-12-17",26],["2025-12-18",39],["2025-12-19",36],["2025-12-20",14],["2025-12-21",11],["2025-12-22",11],["2025-12-23",18],["2025-12-24",14],["2025-12-25",38],["2025-12-26",40],["2025-12-27",14],["2025-12-28",14],["2025-12-29",29],["2025-12-30",7],["2025-12-31",3],["2026-01-01",20],["2026-01-02",28],["2026-01-03",16],["2026-01-04",28],["2026-01-05",9],["2026-01-06",19],["2026-01-07",30],["2026-01-08",29],["2026-01-09",15],["2026-01-10",6],["2026-01-11",6],["2026-01-12",3],["2026-01-13",16],["2026-01-14",21],["2026-01-15",16],["2026-01-16",17],["2026-01-17",9],["2026-01-19",11],["2026-01-20",62],["2026-01-21",16],["2026-01-22",17],["2026-01-23",13],["2026-01-24",16],["2026-01-25",21],["2026-01-26",16],["2026-01-27",19],["2026-01-28",21],["2026-01-29",11],["2026-01-30",10],["2026-01-31",10],["2026-02-01",31],["2026-02-02",12],["2026-02-03",1],["2026-02-04",5],["2026-02-05",8],["2026-02-06",14],["2026-02-07",5],["2026-02-08",2],["2026-02-09",6],["2026-02-10",5],["2026-02-11",5],["2026-02-12",11],["2026-02-13",9],["2026-02-14",6],["2026-02-15",6],["2026-02-16",8],["2026-02-17",9],["2026-02-18",6],["2026-02-19",12],["2026-02-20",9],["2026-02-21",12],["2026-02-22",10],["2026-02-23",1],["2026-02-24",6],["2026-02-25",28],["2026-02-26",32],["2026-02-27",21],["2026-02-28",36],["2026-03-01",8],["2026-03-02",4],["2026-03-03",17],["2026-03-04",12],["2026-03-05",27],["2026-03-06",31],["2026-03-07",24],["2026-03-08",4],["2026-03-09",25],["2026-03-10",14],["2026-03-11",13],["2026-03-12",21],["2026-03-13",13],["2026-03-14",3],["2026-03-15",4],["2026-03-16",4],["2026-03-17",12],["2026-03-18",13],["2026-03-19",7],["2026-03-20",17],["2026-03-21",19],["2026-03-22",8],["2026-03-23",22],["2026-03-24",31],["2026-03-25",19],["2026-03-26",33],["2026-03-27",18],["2026-03-28",26],["2026-03-29",19],["2026-03-30",21],["2026-03-31",15],["2026-04-01",42],["2026-04-02",61],["2026-04-03",19],["2026-04-05",14],["2026-04-06",15],["2026-04-07",5],["2026-04-08",49],["2026-04-09",182],["2026-04-10",76],["2026-04-11",83],["2026-04-12",19],["2026-04-13",50],["2026-04-14",66],["2026-04-15",25],["2026-04-16",33],["2026-04-17",46],["2026-04-18",117],["2026-04-19",36],["2026-04-20",41],["2026-04-21",35],["2026-04-22",46],["2026-04-23",47],["2026-04-24",37],["2026-04-25",3],["2026-04-26",1],["2026-04-27",25],["2026-04-28",60],["2026-04-29",54],["2026-04-30",50],["2026-05-01",19],["2026-05-02",88],["2026-05-03",78],["2026-05-04",26],["2026-05-05",27],["2026-05-06",34],["2026-05-07",35],["2026-05-08",70],["2026-05-09",22],["2026-05-10",5],["2026-05-11",13],["2026-05-12",60],["2026-05-13",66],["2026-05-14",52],["2026-05-15",41],["2026-05-16",15],["2026-05-17",12],["2026-05-18",21],["2026-05-19",24],["2026-05-20",17],["2026-05-21",15],["2026-05-22",21],["2026-05-23",10],["2026-05-24",37],["2026-05-25",73],["2026-05-26",25],["2026-05-27",18],["2026-05-28",8],["2026-05-29",6],["2026-05-30",11],["2026-05-31",31],["2026-06-01",58],["2026-06-02",16],["2026-06-05",22],["2026-06-06",41],["2026-06-07",16],["2026-06-08",16],["2026-06-10",4],["2026-06-11",35],["2026-06-12",21],["2026-06-13",45],["2026-06-14",110],["2026-06-15",45],["2026-06-16",23],["2026-06-17",48],["2026-06-18",58],["2026-06-19",66],["2026-06-20",46],["2026-06-21",58],["2026-06-22",62],["2026-06-23",36],["2026-06-24",52],["2026-06-25",58],["2026-06-26",24],["2026-06-27",70],["2026-06-28",32],["2026-06-29",28],["2026-06-30",88],["2026-07-01",49],["2026-07-02",4]];
-
+  var DATA = [["2025-12-02",31],["2025-12-03",21],["2025-12-04",31],["2025-12-05",12],["2025-12-06",19],["2025-12-07",21],["2025-12-08",13],["2025-12-09",31],["2025-12-10",14],["2025-12-11",30],["2025-12-12",29],["2025-12-13",10],["2025-12-14",11],["2025-12-15",7],["2025-12-16",8],["2025-12-17",26],["2025-12-18",39],["2025-12-19",36],["2025-12-20",14],["2025-12-21",11],["2025-12-22",11],["2025-12-23",18],["2025-12-24",14],["2025-12-25",38],["2025-12-26",40],["2025-12-27",14],["2025-12-28",14],["2025-12-29",29],["2025-12-30",7],["2025-12-31",3],["2026-01-01",20],["2026-01-02",28],["2026-01-03",16],["2026-01-04",28],["2026-01-05",9],["2026-01-06",19],["2026-01-07",30],["2026-01-08",29],["2026-01-09",15],["2026-01-10",6],["2026-01-11",6],["2026-01-12",3],["2026-01-13",16],["2026-01-14",21],["2026-01-15",16],["2026-01-16",17],["2026-01-17",9],["2026-01-19",11],["2026-01-20",62],["2026-01-21",16],["2026-01-22",17],["2026-01-23",13],["2026-01-24",16],["2026-01-25",21],["2026-01-26",16],["2026-01-27",19],["2026-01-28",21],["2026-01-29",11],["2026-01-30",10],["2026-01-31",10],["2026-02-01",31],["2026-02-02",12],["2026-02-03",1],["2026-02-04",5],["2026-02-05",8],["2026-02-06",14],["2026-02-07",5],["2026-02-08",2],["2026-02-09",6],["2026-02-10",5],["2026-02-11",5],["2026-02-12",11],["2026-02-13",9],["2026-02-14",6],["2026-02-15",6],["2026-02-16",8],["2026-02-17",9],["2026-02-18",6],["2026-02-19",12],["2026-02-20",9],["2026-02-21",12],["2026-02-22",10],["2026-02-23",1],["2026-02-24",6],["2026-02-25",28],["2026-02-26",32],["2026-02-27",21],["2026-02-28",36],["2026-03-01",8],["2026-03-02",4],["2026-03-03",17],["2026-03-04",12],["2026-03-05",27],["2026-03-06",31],["2026-03-07",24],["2026-03-08",4],["2026-03-09",25],["2026-03-10",14],["2026-03-11",13],["2026-03-12",21],["2026-03-13",13],["2026-03-14",3],["2026-03-15",4],["2026-03-16",4],["2026-03-17",12],["2026-03-18",13],["2026-03-19",7],["2026-03-20",17],["2026-03-21",19],["2026-03-22",8],["2026-03-23",22],["2026-03-24",31],["2026-03-25",19],["2026-03-26",33],["2026-03-27",18],["2026-03-28",26],["2026-03-29",19],["2026-03-30",21],["2026-03-31",15],["2026-04-01",42],["2026-04-02",61],["2026-04-03",19],["2026-04-05",14],["2026-04-06",15],["2026-04-07",5],["2026-04-08",49],["2026-04-09",182],["2026-04-10",76],["2026-04-11",83],["2026-04-12",19],["2026-04-13",50],["2026-04-14",66],["2026-04-15",25],["2026-04-16",33],["2026-04-17",46],["2026-04-18",117],["2026-04-19",36],["2026-04-20",41],["2026-04-21",35],["2026-04-22",46],["2026-04-23",47],["2026-04-24",37],["2026-04-25",3],["2026-04-26",1],["2026-04-27",25],["2026-04-28",60],["2026-04-29",54],["2026-04-30",50],["2026-05-01",19],["2026-05-02",88],["2026-05-03",78],["2026-05-04",26],["2026-05-05",27],["2026-05-06",34],["2026-05-07",35],["2026-05-08",70],["2026-05-09",22],["2026-05-10",5],["2026-05-11",13],["2026-05-12",60],["2026-05-13",66],["2026-05-14",52],["2026-05-15",41],["2026-05-16",15],["2026-05-17",12],["2026-05-18",21],["2026-05-19",24],["2026-05-20",17],["2026-05-21",15],["2026-05-22",21],["2026-05-23",10],["2026-05-24",37],["2026-05-25",73],["2026-05-26",24],["2026-05-27",18],["2026-05-28",8],["2026-05-29",6],["2026-05-30",11],["2026-05-31",31],["2026-06-01",58],["2026-06-02",16],["2026-06-05",22],["2026-06-06",41],["2026-06-07",16],["2026-06-08",16],["2026-06-10",4],["2026-06-11",35],["2026-06-12",21],["2026-06-13",45],["2026-06-14",110],["2026-06-15",45],["2026-06-16",23],["2026-06-17",48],["2026-06-18",58],["2026-06-19",66],["2026-06-20",46],["2026-06-21",58],["2026-06-22",62],["2026-06-23",36],["2026-06-24",52],["2026-06-25",58],["2026-06-26",24],["2026-06-27",70],["2026-06-28",32],["2026-06-29",28],["2026-06-30",90],["2026-07-01",50],["2026-07-02",193],["2026-07-03",141],["2026-07-04",287],["2026-07-05",278],["2026-07-06",111],["2026-07-07",32],["2026-07-08",49],["2026-07-09",48]];
   var byDate = {};
-  DATA.forEach(function (d) { byDate[d[0]] = d[1]; });
+  DATA.forEach(function (entry) { byDate[entry[0]] = entry[1]; });
 
-  function ramp(n) {
-    if (!n) return 'var(--ember-0)';
-    if (n <= 8) return 'var(--ember-1)';
-    if (n <= 20) return 'var(--ember-2)';
-    if (n <= 40) return 'var(--ember-3)';
-    if (n <= 80) return 'var(--ember-4)';
-    return 'var(--ember-5)';
+  var start = new Date("2025-12-02T00:00:00");
+  var end = new Date("2026-07-09T00:00:00");
+  var pulse = document.getElementById("pulse");
+  var heatmap = document.getElementById("heatmap");
+  var column = null;
+  var index = 0;
+
+  function colour(n) {
+    if (!n) return "#dfe7e5";
+    if (n <= 8) return "#b9deda";
+    if (n <= 24) return "#68bdb8";
+    if (n <= 60) return "#087f87";
+    if (n <= 140) return "#5b43e6";
+    return "#e4542e";
   }
 
-  var start = new Date('2025-12-01T00:00:00');
-  var end = new Date('2026-07-01T00:00:00');
-  var map = document.getElementById('heatmap');
-  var monthsEl = document.getElementById('months');
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  for (var date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+    var iso = date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, "0") + "-" + String(date.getDate()).padStart(2, "0");
+    var count = byDate[iso] || 0;
+    var pulseBar = document.createElement("span");
+    pulseBar.className = "pulse-bar" + (count >= 180 ? " peak" : "");
+    pulseBar.style.setProperty("--h", Math.max(2, Math.sqrt(count) / Math.sqrt(287) * 100) + "%");
+    pulseBar.style.setProperty("--delay", Math.min(index * 3, 650) + "ms");
+    pulseBar.title = iso + " · " + count + " commit" + (count === 1 ? "" : "s");
+    pulse.appendChild(pulseBar);
 
-  var col = null, dayIdx = 0, cellIdx = 0;
-  var monthLabels = [];
-  var colCount = 0;
-
-  for (var d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-    var dow = (d.getDay() + 6) % 7; // Monday = 0
-    if (dow === 0 || !col) {
-      col = document.createElement('div');
-      col.className = 'heat-col';
-      map.appendChild(col);
-      colCount++;
-      if (d.getDate() <= 7) {
-        monthLabels.push({ col: colCount, label: d.toLocaleString('en', { month: 'short' }) });
+    var day = (date.getDay() + 6) % 7;
+    if (day === 0 || !column) {
+      column = document.createElement("div");
+      column.className = "heat-col";
+      heatmap.appendChild(column);
+      if (index === 0 && day > 0) {
+        for (var pad = 0; pad < day; pad++) {
+          var blank = document.createElement("span");
+          blank.className = "cell";
+          blank.style.visibility = "hidden";
+          column.appendChild(blank);
+        }
       }
     }
-    // pad first column so Dec 1 (Mon) aligns; Dec 1 IS Monday, so no pad needed
-    var iso = d.toISOString().slice(0, 10);
-    var n = byDate[iso] || 0;
-    var cell = document.createElement('div');
-    cell.className = 'cell';
-    cell.style.background = ramp(n);
-    cell.title = iso + ' · ' + n + ' commit' + (n === 1 ? '' : 's');
-    if (!reduced) {
-      cell.classList.add('pop');
-      cell.style.animationDelay = (cellIdx * 7) + 'ms';
-    }
-    col.appendChild(cell);
-    cellIdx++;
+    var cell = document.createElement("span");
+    cell.className = "cell";
+    cell.style.background = colour(count);
+    cell.title = iso + " · " + count + " commit" + (count === 1 ? "" : "s");
+    column.appendChild(cell);
+    index++;
   }
-
-  // month labels: position by column offset (cell + gap)
-  var cs = getComputedStyle(document.documentElement);
-  var step = parseFloat(cs.getPropertyValue('--cell')) + parseFloat(cs.getPropertyValue('--cellgap'));
-  var seen = {};
-  monthLabels.forEach(function (m) {
-    if (seen[m.label]) return;
-    seen[m.label] = true;
-    var s = document.createElement('span');
-    s.textContent = m.label;
-    s.style.position = 'relative';
-    s.style.display = 'inline-block';
-    s.style.width = '0';
-    s.style.left = ((m.col - 1) * step) + 'px';
-    monthsEl.appendChild(s);
-  });
 })();
 </script>
-
 </body>
 </html>
