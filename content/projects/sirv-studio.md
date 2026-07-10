@@ -1,6 +1,7 @@
 ---
 title: "Sirv AI Studio"
 date: 2026-07-02
+lastmod: 2026-07-10
 draft: false
 featured: true
 hero: true
@@ -145,6 +146,40 @@ weight: 1
   line-height: 1.35;
 }
 
+.project-description .studio-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.project-description .studio-snapshot-card {
+  min-width: 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  background: rgba(7, 16, 24, 0.74);
+}
+
+.project-description .studio-snapshot-card strong,
+.project-description .studio-snapshot-card span {
+  display: block;
+}
+
+.project-description .studio-snapshot-card strong {
+  color: var(--sv-cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.project-description .studio-snapshot-card span {
+  margin-top: 0.55rem;
+  color: var(--sv-muted);
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
 .project-description .studio-architecture svg,
 .project-description .studio-cumulative svg,
 .project-description .studio-april svg,
@@ -285,6 +320,10 @@ weight: 1
     grid-template-columns: 1fr;
   }
 
+  .project-description .studio-snapshot-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .project-description .studio-april {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -311,13 +350,13 @@ weight: 1
 
 Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants connect their Shopify store, scan the catalog for weak product content — missing alt text, poor images, thin descriptions — fix it in AI-powered batches, route supplier uploads through review, and publish back safely with versioning and rollback.
 
-I built Studio — from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, the workflow orchestrator, the supplier portal, the Shopify publishing pipeline, the MCP/agent platform, and the infrastructure underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) joined and took on some critical parts — the design system and data grid, and the QA harness. This page is the build story. For the raw numbers — seven months of daily commits rendered straight from the git log — see the [build record](/projects/sirv-studio/build-record/).
+I built Studio from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, workflow orchestrator, supplier portal, Shopify publishing pipeline, MCP and API platform, and the reliability machinery underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) took ownership of critical parts: the design system and data grid, and the QA proof machine. This page is the product story. The separate [build record](/projects/sirv-studio/build-record/) now carries the forensic version, with 48 dated milestones and every large number tied to a counting rule.
 
 ## It started over a beer
 
 Some coworkers were visiting me in Herceg Novi, Montenegro. Over a beer the conversation drifted to AI — what it could actually build now, not what the keynotes promised — and at some point I told the table: I'm going to build this in a day.
 
-The next morning I was up at six. `Initial commit from Create Next App` landed at 6:35 on December 2, 2025. The first AI tool — background replacement, with model selection — was working by 8:00. Virtual try-on by 8:23. Multi-angle product shots and lighting removal by 8:45. Auth, billing, rate limiting, and Sirv storage went in before noon, and the MVP merge is timestamped 12:05. The afternoon added batch processing with multi-select and a side-by-side compare mode. Thirty commits, day one — every timestamp in the log. The bet stood by lunch; the rest of this page is what happened when I kept going.
+The next morning I was up at six. `Initial commit from Create Next App` landed at 6:35 on December 2, 2025. The first AI tool — background replacement, with model selection — was working by 8:00. Virtual try-on by 8:23. Multi-angle product shots and lighting removal by 8:45. Auth, billing, rate limiting, and Sirv storage went in before noon, and the MVP merge is timestamped 12:05. The afternoon added batch processing with multi-select and a side-by-side compare mode. Thirty-one commits, day one — every timestamp in the log. The bet stood by lunch; the rest of this page is what happened when I kept going.
 
 <figure class="studio-visual studio-dayone" aria-labelledby="studio-dayone-title">
   <div class="studio-visual-head">
@@ -332,19 +371,19 @@ The next morning I was up at six. `Initial commit from Create Next App` landed a
     <li><time>12:05</time><b>MVP merge</b><span>auth, billing, rate limits, Sirv storage</span></li>
     <li><time>17:14</time><b>cleanup pass</b><span>batch mode and compare mode were already in</span></li>
   </ol>
-  <figcaption>Six of the thirty day-one commits, timestamps straight from the repo history. The story sounds like a dare because it was one.</figcaption>
+  <figcaption>Six of the 31 day-one commits, timestamps straight from the repo history. The story sounds like a dare because it was one.</figcaption>
 </figure>
 
 That pace turned out to be the project's resting heart rate, not a launch spike. Six days in: the workflow orchestrator canvas — the drag-and-drop pipeline builder that's still the center of the product. Twelve days in: durable background jobs on Inngest. Eighteen days: an MCP server, before most people knew what MCP was. Twenty-five days: the embedded Shopify app. December closed at 602 commits, and the repo already had the skeleton of everything Studio is today.
 
-The quietest month of the whole run — February, spent wiring Stripe billing, entitlements, and the unglamorous plumbing that turns a demo into a business — still averaged eleven commits a day. Seven months in, there have been exactly five days without a commit. Month seven ran at 39 a day, faster than month one.
+The quietest month of the run — February, spent wiring billing, supplier intake, permissions, and the unglamorous plumbing that turns a demo into a business — still carried 316 of my commits. In the first 220 calendar days there were exactly five blank ones. By the July 10 snapshot the repo had reached 9,452 commits, 6,638 under my primary author identity.
 
 <figure class="studio-visual studio-cumulative" aria-labelledby="studio-cumulative-title">
   <div class="studio-visual-head">
     <span id="studio-cumulative-title">cumulative commits</span>
-    <strong>Dec 2, 2025 → Jul 2, 2026 · per-day data</strong>
+    <strong>Dec 2, 2025 → Jul 2, 2026 · original seven-month snapshot</strong>
   </div>
-  <svg viewBox="0 0 920 344" role="img" aria-label="Cumulative commit curve from zero to 5,500 commits with milestones for MVP day, MCP server, Stripe, team joins, supplier portal, and the 182-commit migration day.">
+  <svg viewBox="0 0 920 344" role="img" aria-label="Historical cumulative commit curve showing the first 5,501 commits by Igor Varyvoda through July 2, 2026, with milestones for MVP day, MCP server, Stripe, team joins, supplier portal, and the April migration.">
     <defs>
       <linearGradient id="studio-area" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0%" stop-color="#66d9ef" stop-opacity="0.22"/>
@@ -358,7 +397,23 @@ The quietest month of the whole run — February, spent wiring Stripe billing, e
     <g><circle cx="70.0" cy="298.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="140.0" cy="281.0" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="338.2" cy="242.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="404.3" cy="234.2" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="540.3" cy="202.8" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="567.5" cy="189.4" r="5" fill="#0a1018" stroke="#f9c97a" stroke-width="2"/><circle cx="894.0" cy="40.0" r="5.5" fill="#0a1018" stroke="#a6e3a1" stroke-width="2"/></g>
     <g><line x1="70.0" y1="291.5" x2="70.0" y2="282.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="72.0" y="276.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="start">MVP day</text><line x1="140.0" y1="274.0" x2="140.0" y2="265.0" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="140.0" y="259.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">MCP server</text><line x1="338.2" y1="235.5" x2="338.2" y2="226.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="338.2" y="220.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">Stripe</text><line x1="404.3" y1="241.2" x2="404.3" y2="250.2" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="404.3" y="264.2" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">team joins</text><line x1="540.3" y1="209.8" x2="540.3" y2="218.8" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="540.3" y="232.8" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">supplier portal</text><line x1="567.5" y1="182.4" x2="567.5" y2="173.4" stroke="#f9c97a" stroke-width="1" opacity="0.5"/><text x="557.5" y="163.4" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="end">182-commit day</text><text x="882.0" y="45.0" fill="#a6e3a1" font-size="13" font-weight="800" text-anchor="end">5,500</text></g>
   </svg>
-  <figcaption>Generated from the same per-day commit counts as the build-record heatmap. The public number is rounded to 5,500; the embedded dataset sums to 5,501.</figcaption>
+  <figcaption>This is the original seven-month curve: my first 5,501 commits through July 2. The <a href="/projects/sirv-studio/build-record/">live build record</a> continues through the July 10 snapshot and breaks the work into 48 dated milestones.</figcaption>
+</figure>
+
+<figure class="studio-visual studio-snapshot" aria-labelledby="studio-snapshot-title">
+  <div class="studio-visual-head">
+    <span id="studio-snapshot-title">repository snapshot</span>
+    <strong>dev @ 20eef964 · Jul 10, 2026</strong>
+  </div>
+  <div class="studio-snapshot-grid">
+    <div class="studio-snapshot-card"><strong>9,452</strong><span>commits in the repo</span></div>
+    <div class="studio-snapshot-card"><strong>6,638</strong><span>under my primary author identity</span></div>
+    <div class="studio-snapshot-card"><strong>215 / 220</strong><span>calendar days with a commit</span></div>
+    <div class="studio-snapshot-card"><strong>4,751</strong><span>tracked test and spec files</span></div>
+    <div class="studio-snapshot-card"><strong>263</strong><span>Drizzle migrations</span></div>
+    <div class="studio-snapshot-card"><strong>47</strong><span>tools in the MCP server</span></div>
+  </div>
+  <figcaption>A moving snapshot, not decorative numerology. The build record includes the exact command behind each count.</figcaption>
 </figure>
 
 ## What it does
@@ -366,7 +421,7 @@ The quietest month of the whole run — February, spent wiring Stripe billing, e
 The product is organized around one loop: **ingest → fix → validate → review → publish → track**.
 
 - **30+ AI tools** for product content — background removal and replacement, upscaling, lifestyle-shot generation, ghost mannequin, virtual try-on (image and video), alt text, product descriptions, image translation, image-to-3D, video generation — backed by 57 registered models routed through fal.ai, OpenAI, and OpenRouter.
-- **A visual workflow orchestrator**: a drag-and-drop DAG builder with 36 step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
+- **A visual workflow orchestrator**: a drag-and-drop DAG builder with 39 registered step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
 - **A supplier portal**: brands give their suppliers an upload link or SFTP drop. Incoming files are validated against filename/SKU/spec rules, run through AI autofix, and routed into an approval queue — so supplier content goes through review instead of straight into the catalog.
 - **Marketplace compliance built in**: an image-review tool validates against Amazon, eBay, Walmart, and Shopify listing rules — dimensions, backgrounds, watermarks, frame fill — and one-click autofix repairs what fails.
 - **Asset and product management** (DAM + PIM) underneath it all — with search-by-image, duplicate detection, auto-tagging, and license tracking that can gate a publish — plus Stripe billing on top and integrations out the sides: Shopify, Zapier, n8n, a REST API, and MCP for AI agents.
@@ -391,7 +446,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
     </div>
     <div class="studio-toolwall-cat">
       <b class="is-violet">automate &amp; govern</b>
-      <span>batch · every tool, catalog-scale</span><span>orchestrator · 36 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
+      <span>batch · every tool, catalog-scale</span><span>orchestrator · 39 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
     </div>
     <div class="studio-toolwall-cat studio-toolwall-wide">
       <b>asset intelligence</b>
@@ -406,7 +461,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM — 265 migrations and counting. Background work runs on Inngest — 87 functions across sync, publishing, billing, imports, and workflow execution — self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and a 942-spec Playwright E2E suite runs against merchant, vendor, and mobile personas. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity: about $70 a month.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM, with 263 committed migrations in the July 10 snapshot. Background work runs on Inngest across sync, publishing, billing, imports, repair jobs, and workflow execution, self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 4,751 tracked test and spec files across unit, integration, contract, Storybook, and browser layers. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity, is about $70 a month.
 
 <figure class="studio-visual studio-architecture" aria-labelledby="studio-architecture-title">
   <div class="studio-visual-head">
@@ -443,7 +498,7 @@ Studio turns intake into a pipeline. Each supplier gets a scoped upload portal �
 
 ## Making it operable by AI agents
 
-Studio ships a production MCP server (published on npm, stdio and hosted HTTP transports) exposing **47 tools** — AI processing, asset search and management, product CRUD, Shopify sync, supplier-portal review — plus an OpenAPI surface for ChatGPT-style integrations.
+Studio ships a production MCP server (published on npm, stdio and hosted HTTP transports) exposing **47 tools** — AI processing, asset search and management, product CRUD, Shopify sync, supplier-portal review — plus a published **64-operation OpenAPI surface** for ChatGPT-style integrations and conventional clients.
 
 The design position: agents don't need raw endpoints, they need *operations inside a governed system*. So the agent surface gets the same context, permissions, approvals, budgets, and rollback as the UI. Auth is OAuth 2.0 with PKCE or API keys; every credit-spending or mutating tool re-authorizes server-side and fails closed if the workspace lacks entitlement; org scoping is validated against membership on every call; tools carry MCP safety annotations (read-only, destructive, idempotent) so agent runtimes can reason about blast radius. An agent can run a batch fix or execute a workflow — but it can't skip the review gate a human would hit.
 
@@ -451,14 +506,14 @@ The design position: agents don't need raw endpoints, they need *operations insi
 
 By spring, Studio had outgrown its framework. The answer wasn't a rewrite branch that ships "next quarter" — it was a live migration of a production app, with users on it.
 
-The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanStack Start bootstrap slice` — the Next.js → TanStack Start migration begins. April 9: 182 commits in one day, the single biggest day of the project, mid-migration, with a compatibility shim keeping the old framework's imports alive while routes moved over one by one. April 10: `build: remove final next runtime dependencies`. The runtime swap of a billing, multi-tenant, background-job-running platform took about seventy-two hours, and nothing froze — the same month also shipped 1,337 commits from me alone, my heaviest stretch of the whole project (429 in the week of April 6).
+The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanStack Start bootstrap slice` — the Next.js → TanStack Start migration begins. April 9: 182 commits in one day, the largest day of the project at that point, mid-migration, with a compatibility shim keeping the old framework's imports alive while routes moved one by one. April 10: `build: remove final next runtime dependencies`. The runtime swap of a billing, multi-tenant, background-job-running platform took about seventy-two hours, and nothing froze. The same month carried 1,337 commits from me alone.
 
 <figure class="studio-visual studio-april" aria-labelledby="studio-april-title">
   <div class="studio-visual-head">
     <span id="studio-april-title">April migration close-up</span>
     <strong>Apr 6–13 · commits per day</strong>
   </div>
-  <svg viewBox="0 0 920 270" role="img" aria-label="Commits per day from April 6 through 13; April 8 to 10 is the 72-hour Next.js to TanStack Start migration window, peaking at 182 commits on April 9.">
+  <svg viewBox="0 0 920 270" role="img" aria-label="Commits per day from April 6 through 13; April 8 to 10 is the Next.js to TanStack Start migration window, with the migration stretch peaking at 182 commits on April 9.">
     <rect x="291.5" y="26" width="288.2" height="216" rx="10" fill="rgba(102,217,239,0.055)" stroke="rgba(102,217,239,0.22)"/>
     <text x="435.6" y="16" fill="#66d9ef" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">72-HOUR MIGRATION WINDOW</text>
     <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="90" y1="180.5" x2="880" y2="180.5"/><line x1="90" y1="131.1" x2="880" y2="131.1"/><line x1="90" y1="81.6" x2="880" y2="81.6"/></g>
@@ -467,16 +522,16 @@ The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanS
     <g><rect id="apr-b1" x="116.4" y="215.2" width="46" height="14.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b2" x="215.1" y="225.1" width="46" height="4.9" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b3" x="313.9" y="181.5" width="46" height="48.5" rx="5" fill="#66d9ef"/><rect id="apr-b4" x="412.6" y="50.0" width="46" height="180.0" rx="5" fill="#f9c97a"/><rect id="apr-b5" x="511.4" y="154.8" width="46" height="75.2" rx="5" fill="#66d9ef"/><rect id="apr-b6" x="610.1" y="147.9" width="46" height="82.1" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b7" x="708.9" y="211.2" width="46" height="18.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b8" x="807.6" y="180.5" width="46" height="49.5" rx="5" fill="rgba(102,217,239,0.55)"/></g>
     <g><text x="139.4" y="207.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">15</text><text x="238.1" y="217.1" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">5</text><text x="336.9" y="173.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">49</text><text x="435.6" y="42.0" fill="#f9c97a" font-size="13" font-weight="700" text-anchor="middle">182</text><text x="534.4" y="146.8" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">76</text><text x="633.1" y="139.9" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">83</text><text x="731.9" y="203.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">19</text><text x="830.6" y="172.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">50</text></g>
     <g><text x="139.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 6</text><text x="238.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 7</text><text x="336.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 8</text><text x="435.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 9</text><text x="534.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 10</text><text x="633.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 11</text><text x="731.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 12</text><text x="830.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 13</text></g>
-    <g><rect x="90.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b1" data-tip-value="15 commits" data-tip-label="Apr 6"/><rect x="189.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b2" data-tip-value="5 commits" data-tip-label="Apr 7"/><rect x="287.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b3" data-tip-value="49 commits" data-tip-label="Apr 8" data-tip-note="Add TanStack Start bootstrap slice — the migration begins"/><rect x="386.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b4" data-tip-value="182 commits" data-tip-label="Apr 9" data-tip-note="The single biggest day of the project, mid-migration"/><rect x="485.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b5" data-tip-value="76 commits" data-tip-label="Apr 10" data-tip-note="Final Next runtime dependencies removed"/><rect x="584.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b6" data-tip-value="83 commits" data-tip-label="Apr 11"/><rect x="682.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b7" data-tip-value="19 commits" data-tip-label="Apr 12"/><rect x="781.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b8" data-tip-value="50 commits" data-tip-label="Apr 13"/></g>
+    <g><rect x="90.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b1" data-tip-value="15 commits" data-tip-label="Apr 6"/><rect x="189.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b2" data-tip-value="5 commits" data-tip-label="Apr 7"/><rect x="287.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b3" data-tip-value="49 commits" data-tip-label="Apr 8" data-tip-note="Add TanStack Start bootstrap slice — the migration begins"/><rect x="386.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b4" data-tip-value="182 commits" data-tip-label="Apr 9" data-tip-note="The migration's biggest day, and the project peak at that point"/><rect x="485.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b5" data-tip-value="76 commits" data-tip-label="Apr 10" data-tip-note="Final Next runtime dependencies removed"/><rect x="584.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b6" data-tip-value="83 commits" data-tip-label="Apr 11"/><rect x="682.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b7" data-tip-value="19 commits" data-tip-label="Apr 12"/><rect x="781.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b8" data-tip-value="50 commits" data-tip-label="Apr 13"/></g>
   </svg>
   <figcaption>The highlighted window is the live Next.js → TanStack Start migration: bootstrap on Apr 8, the 182-commit spike on Apr 9, final Next runtime dependencies removed on Apr 10.</figcaption>
 </figure>
 
 A two-day framework migration isn't a typing achievement. It's what happens when the test suite is dense enough to catch every regression an automated refactor introduces, and the review gates are strict enough to trust the throughput. Which brings up the part of this story that's actually about method.
 
-## How three people ship this fast
+## How three people and a fleet ship this fast
 
-Last quarter — March 23 to July 2 — the Studio team was three people, and we landed **5,425 distinct commits**: non-merge, rebase and cherry-pick duplicates deduped, bot-authored commits excluded. My own count was 3,529 — thirty-nine a day, every day, in month seven of the project.
+At the July 10 snapshot, the primary identities of the core three account for **9,308 commits**: 6,638 mine, 1,943 from Veniamin, and 727 from Max. Another 144 belong to additional contributors, bots, and alternate identities. Raw commit volume is not value, and agent-heavy histories make the number especially noisy. What matters is the shape: output accelerated as the production system around the agents matured.
 
 Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** And the fleet has real infrastructure, not vibes:
 
@@ -496,9 +551,17 @@ I wrote the broader argument behind this operating model in [Two theories of a p
 
 The evidence it's a system and not a slogan is in other people's curves. When Veniamin joined on QA, his weekly output ran near twenty commits while he built the harness — coverage matrix, anti-forgery checks, agent workflows. Two months later his weeks read 277, 309, 188. A fifteen-fold personal ramp inside one quarter isn't a person learning to type faster; it's infrastructure coming online and paying compound interest. Manual coding scales with hours. Fleet coding scales with the infrastructure you've built for the agents — and infrastructure compounds.
 
+## The correction
+
+The repository's own July assessment opens with a line I agree with: **construction has outrun proof**.
+
+Studio has an unusually complete product-content loop, but too much breadth was still rollout-gated and too little was backed by named merchants using the loop every week. The same machine that made code cheap also made adding one more surface almost irresistible. Every new tool, channel, and workflow step then carried a tax in support, documentation, billing, and browser proof.
+
+So the Q3 rule is a surface freeze. No casual new tools, channels, or step types. The fleet is pointed at activation, enforceable plan boundaries, onboarding, App Store quality, rollback proof, and getting real merchants from catalog scan to first approved Shopify publish. The build velocity is still the advantage. The target changed from more surface to more evidence.
+
 ## So is it any good?
 
-Commit counts measure motion, not quality — a fair objection, so a week after writing this page I turned the fleet on the codebase itself. Ten reviewer agents in parallel, one per domain, read the code, schema, migrations, tests, and CI configuration — by then ~512K lines of hand-written TypeScript across 7,800 files, 162 database tables, and roughly 4,000 test files — and Claude Fable compiled the reviews into a scorecard, then ran four file-level deep-dives to re-verify the heaviest findings. The calibration was explicit: 5 is a typical startup, 7 is solid production quality, 9+ is exceptional.
+Commit counts measure motion, not quality — a fair objection, so a week after writing this page I turned the fleet on the codebase itself. Ten reviewer agents in parallel, one per domain, read the code, schema, migrations, tests, and CI configuration — by then roughly 512K lines of hand-written TypeScript across 7,800 files and 162 database tables, with 4,751 tracked test and spec files by the next morning's repository snapshot — and Claude Fable compiled the reviews into a scorecard, then ran four file-level deep-dives to re-verify the heaviest findings. The calibration was explicit: 5 is a typical startup, 7 is solid production quality, 9+ is exceptional.
 
 The verdict: **8.25 out of 10**.
 
@@ -524,7 +587,7 @@ The verdict: **8.25 out of 10**.
     <g fill="#edf7fb" font-size="13" font-weight="700"><text x="809" y="312">8.5</text><text x="809" y="342">8.5</text><text x="809" y="372">8.5</text><text x="776" y="402">8</text><text x="776" y="432">8</text><text x="776" y="462">8</text><text x="776" y="492">8</text><text x="710" y="522">7</text></g>
     <line x1="240" y1="546" x2="900" y2="546" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
     <g fill="#94a6b4" font-size="11.5" text-anchor="middle"><text x="240" y="564">0</text><text x="570" y="564">5</text><text x="702" y="564">7</text><text x="834" y="564">9</text><text x="900" y="564">10</text></g>
-    <g><rect x="0" y="38" width="920" height="32" fill="rgba(0,0,0,0)" data-bar="#sc-o" data-tip-value="8.25 / 10" data-tip-label="Overall" data-tip-note="Initial pass scored 8; revised to 8.25 after four file-level deep-dives re-verified the heaviest findings."/><rect x="0" y="105" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d1" data-tip-value="8.5 / 10" data-tip-label="Testing and quality" data-tip-note="Governed e2e coverage matrix with signed evidence receipts and real-worker idempotency proofs; the unit layer leans hard on mocks."/><rect x="0" y="135" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d2" data-tip-value="8.5 / 10" data-tip-label="Data model" data-tip-note="Composite tenant-parity foreign keys and 385 CHECK constraints make cross-tenant links structurally impossible; some legacy FK and index debt."/><rect x="0" y="165" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d3" data-tip-value="8.5 / 10" data-tip-label="Frontend and design system" data-tip-note="sid-kit ships 88 contract docs and OKLCH token math with inline WCAG rationale; a few 2,000-line components remain."/><rect x="0" y="195" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d4" data-tip-value="8 / 10" data-tip-label="Architecture" data-tip-note="Layering is machine-enforced: ~100 import-safety CI assertions, zero route-to-DB imports across 502 API routes; god files tracked but tolerated."/><rect x="0" y="225" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d5" data-tip-value="8 / 10" data-tip-label="Security" data-tip-note="DNS-pinned SSRF defense, strict OAuth rotation, and a tenant-scoping CI gate; a hardening backlog is planned and queued."/><rect x="0" y="293" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f1" data-tip-value="8.5 / 10" data-tip-label="Supplier portal" data-tip-note="End-to-end intake, validation, review, and delivery with ~430 test files; live with a real enterprise customer."/><rect x="0" y="323" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f2" data-tip-value="8.5 / 10" data-tip-label="Integrations and API" data-tip-note="47-tool MCP server with its own OAuth provider, a ratcheted 63-operation OpenAPI surface, and a deep Shopify app."/><rect x="0" y="353" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f3" data-tip-value="8.5 / 10" data-tip-label="Orchestrator" data-tip-note="Durable DAG execution with review gates, pause/resume, and four refund reconciliation paths. Revised up from 8: the feared legacy path was dead code."/><rect x="0" y="383" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f4" data-tip-value="8 / 10" data-tip-label="AI tools" data-tip-note="One factory gives 34 tool routes retry, circuit breakers, dedupe, and credit handling; deterministic pixel rules replace paid AI calls where they can."/><rect x="0" y="413" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f5" data-tip-value="8 / 10" data-tip-label="DAM" data-tip-note="Wide format support, BM25 plus vector search, versions, licensing, share links; usage analytics still missing."/><rect x="0" y="443" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f6" data-tip-value="8 / 10" data-tip-label="Billing" data-tip-note="Idempotent ledger writes, dispute clawback, dual-provider entitlements; storage quotas still run in warn mode."/><rect x="0" y="473" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f7" data-tip-value="8 / 10" data-tip-label="Marketing and SEO" data-tip-note="A ~400-URL programmatic estate with an in-house SEO CMS and a full lifecycle funnel; the editorial leg barely exists."/><rect x="0" y="503" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f8" data-tip-value="7 / 10" data-tip-label="PIM" data-tip-note="Typed attributes, a readiness engine, and industrial import are real; variant editing and non-Shopify channel sync are unfinished. Revised up from 6.5."/></g>
+    <g><rect x="0" y="38" width="920" height="32" fill="rgba(0,0,0,0)" data-bar="#sc-o" data-tip-value="8.25 / 10" data-tip-label="Overall" data-tip-note="Initial pass scored 8; revised to 8.25 after four file-level deep-dives re-verified the heaviest findings."/><rect x="0" y="105" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d1" data-tip-value="8.5 / 10" data-tip-label="Testing and quality" data-tip-note="Governed e2e coverage matrix with signed evidence receipts and real-worker idempotency proofs; the unit layer leans hard on mocks."/><rect x="0" y="135" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d2" data-tip-value="8.5 / 10" data-tip-label="Data model" data-tip-note="Composite tenant-parity foreign keys and 385 CHECK constraints make cross-tenant links structurally impossible; some legacy FK and index debt."/><rect x="0" y="165" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d3" data-tip-value="8.5 / 10" data-tip-label="Frontend and design system" data-tip-note="sid-kit ships 88 contract docs and OKLCH token math with inline WCAG rationale; a few 2,000-line components remain."/><rect x="0" y="195" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d4" data-tip-value="8 / 10" data-tip-label="Architecture" data-tip-note="Layering is machine-enforced: ~100 import-safety CI assertions, zero route-to-DB imports across 502 API routes; god files tracked but tolerated."/><rect x="0" y="225" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d5" data-tip-value="8 / 10" data-tip-label="Security" data-tip-note="DNS-pinned SSRF defense, strict OAuth rotation, and a tenant-scoping CI gate; a hardening backlog is planned and queued."/><rect x="0" y="293" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f1" data-tip-value="8.5 / 10" data-tip-label="Supplier portal" data-tip-note="End-to-end intake, validation, review, and delivery with ~430 test files; live with a real enterprise customer."/><rect x="0" y="323" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f2" data-tip-value="8.5 / 10" data-tip-label="Integrations and API" data-tip-note="47-tool MCP server with its own OAuth provider, a ratcheted 64-operation OpenAPI surface, and a deep Shopify app."/><rect x="0" y="353" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f3" data-tip-value="8.5 / 10" data-tip-label="Orchestrator" data-tip-note="Durable DAG execution with review gates, pause/resume, and four refund reconciliation paths. Revised up from 8: the feared legacy path was dead code."/><rect x="0" y="383" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f4" data-tip-value="8 / 10" data-tip-label="AI tools" data-tip-note="One factory gives 34 tool routes retry, circuit breakers, dedupe, and credit handling; deterministic pixel rules replace paid AI calls where they can."/><rect x="0" y="413" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f5" data-tip-value="8 / 10" data-tip-label="DAM" data-tip-note="Wide format support, BM25 plus vector search, versions, licensing, share links; usage analytics still missing."/><rect x="0" y="443" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f6" data-tip-value="8 / 10" data-tip-label="Billing" data-tip-note="Idempotent ledger writes, dispute clawback, dual-provider entitlements; storage quotas still run in warn mode."/><rect x="0" y="473" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f7" data-tip-value="8 / 10" data-tip-label="Marketing and SEO" data-tip-note="A ~400-URL programmatic estate with an in-house SEO CMS and a full lifecycle funnel; the editorial leg barely exists."/><rect x="0" y="503" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f8" data-tip-value="7 / 10" data-tip-label="PIM" data-tip-note="Typed attributes, a readiness engine, and industrial import are real; variant editing and non-Shopify channel sync are unfinished. Revised up from 6.5."/></g>
   </svg>
   <figcaption>Every rating from the July 9 scorecard, on its stated calibration scale. Hover or tab across a bar for the one-line verdict behind the number; the amber bar is the honest weak spot.</figcaption>
 </figure>
