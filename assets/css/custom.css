@@ -106,6 +106,7 @@ body.builder-index :where(h1, h2, h3, h4, h5, h6) { font-family: var(--display);
 .archive-heading h2,
 .selected-project-copy h3,
 .page-lead h1,
+.project-page:not(.project-page--system) .project-heading h1,
 .work-atlas-thesis h1,
 .work-atlas-heading h2,
 .work-atlas-copy h3,
@@ -370,7 +371,7 @@ img { max-width: 100%; }
 .section-heading h2,
 .page-lead h1,
 .article-heading h1,
-.project-heading h1 {
+.project-page:not(.project-page--system) .project-heading h1 {
   margin: 0;
   color: var(--ink);
   font-family: var(--display);
@@ -1109,7 +1110,7 @@ img { max-width: 100%; }
 
 .work-atlas { padding: clamp(8rem, 11vw, 14rem) 0; background: var(--paper); }
 .work-atlas-heading { align-items: end; margin-bottom: clamp(5rem, 8vw, 9rem); }
-.work-atlas-heading h2 { margin: 0.8rem 0 0; color: var(--ink); font-size: clamp(4rem, 6vw, 7.5rem); line-height: 0.92; letter-spacing: var(--tracking-display-xl); }
+.work-atlas-heading h2 { margin: 0.8rem 0 0; color: var(--ink); font-size: clamp(4rem, 6vw, 7.5rem); font-weight: 500; line-height: 0.92; letter-spacing: var(--tracking-display-xl); }
 .work-atlas-heading .quiet-meta { max-width: 34rem; text-align: right; }
 
 .work-atlas-grid {
@@ -1246,7 +1247,7 @@ img { max-width: 100%; }
 .article-heading,
 .project-heading { max-width: 94rem; }
 .article-heading h1,
-.project-heading h1 { margin-top: 1.5rem; font-size: clamp(5rem, 8vw, 10.5rem); line-height: 0.94; }
+.project-page:not(.project-page--system) .project-heading h1 { margin-top: 1.5rem; font-size: clamp(5rem, 8vw, 10.5rem); line-height: 0.94; }
 .project-heading h1 { color: var(--harbor-ink); }
 .article-dek,
 .project-dek { max-width: 78rem; margin: 3rem 0 0; color: var(--slate); font-family: var(--reading); font-size: clamp(1.9rem, 2.3vw, 2.6rem); line-height: 1.5; }
@@ -1979,7 +1980,7 @@ img { max-width: 100%; }
   .project-system-flow li:nth-child(3) { padding-left: 0; border-top: 1px solid var(--harbor-rule); border-left: 0; }
   .project-system-flow li:nth-child(4) { border-top: 1px solid var(--harbor-rule); }
   .article-heading h1,
-  .project-heading h1 { font-size: clamp(4.4rem, 13vw, 6.4rem); }
+  .project-page:not(.project-page--system) .project-heading h1 { font-size: clamp(4.4rem, 13vw, 6.4rem); }
   .article-layout,
   .project-story { padding: 5rem 0 7rem; }
   .sticky-rail { position: static; }
