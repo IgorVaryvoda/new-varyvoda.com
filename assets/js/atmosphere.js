@@ -19,8 +19,13 @@
   }
 
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var running = true;
-  var startTime = performance.now();
+  var contextAvailable = true;
+  var frameRequest = null;
+  var activeElapsed = 0;
+  var activeSegmentStart = null;
+  var observerReady = false;
+  var observerFallback = false;
+  var intersectingSurfaces = new Set();
   var lastFrame = 0;
   var nightBlend = document.documentElement.dataset.theme === "dark" ? 1 : 0;
 
@@ -953,6 +958,7 @@
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skylineImage);
+    refreshFrame();
   };
   skylineImage.onerror = function () {
     canvas.classList.add("ambient-canvas-fallback");
@@ -975,7 +981,7 @@
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, dayPhotoImage);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     dayPhotoReady = 1;
-    if (reducedMotion) renderOnce();
+    refreshFrame();
   };
   dayPhotoImage.src = canvas.dataset.dayScene || "/images/herceg-novi-day.webp";
 
@@ -996,7 +1002,7 @@
     gl.generateMipmap(gl.TEXTURE_2D);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     mountainPhotoReady = 1;
-    if (reducedMotion) renderOnce();
+    refreshFrame();
   };
   mountainPhotoImage.src = canvas.dataset.mountainScene || "/images/herceg-novi-mountains.webp";
 
@@ -1019,7 +1025,7 @@
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     shipReady = 1;
-    if (reducedMotion) renderOnce();
+    refreshFrame();
   };
   shipImage.src = "/images/herceg-novi-cruise-ship.png";
 
@@ -1099,19 +1105,74 @@
   var CAMERA_HEIGHT_JS = 1.5;
 
   window.addEventListener("pointerdown", function (event) {
-    if (reducedMotion || event.target.closest("a, button, input, textarea, select, label")) return;
-    var time = (performance.now() - startTime) * 0.001;
+    if (!animationEligible() || event.target.closest("a, button, input, textarea, select, label")) return;
+    var time = currentSceneTime(performance.now());
     var hit = screenToWater(event.clientX, event.clientY, time);
     if (!hit) return;
     ripples.push({ x: hit.x, z: hit.z, time: time, amplitude: 0.18 });
     if (ripples.length > maxRipples) ripples.shift();
   }, { passive: true });
 
-  function render(now) {
+  function currentSceneTime(now) {
+    return (activeElapsed + (activeSegmentStart === null ? 0 : now - activeSegmentStart)) * 0.001;
+  }
+
+  function animationEligible() {
+    return !reducedMotion && contextAvailable && !document.hidden &&
+      (!observerReady || observerFallback || intersectingSurfaces.size > 0);
+  }
+
+  function cancelFrame() {
+    if (frameRequest !== null) {
+      window.cancelAnimationFrame(frameRequest);
+      frameRequest = null;
+    }
+  }
+
+  function updateAnimationState(now) {
+    if (animationEligible()) {
+      if (activeSegmentStart === null) {
+        activeSegmentStart = now;
+        lastFrame = now;
+      }
+      scheduleFrame();
+      return;
+    }
+    if (activeSegmentStart !== null) {
+      activeElapsed += now - activeSegmentStart;
+      activeSegmentStart = null;
+    }
+    cancelFrame();
+  }
+
+  function scheduleFrame() {
+    if (frameRequest === null && animationEligible()) {
+      frameRequest = window.requestAnimationFrame(frame);
+    }
+  }
+
+  function frame(now) {
+    frameRequest = null;
+    if (!animationEligible()) {
+      updateAnimationState(now);
+      return;
+    }
+    if (activeSegmentStart === null) {
+      activeSegmentStart = now;
+      lastFrame = now;
+    }
+    drawFrame(now, currentSceneTime(now), true);
+    scheduleFrame();
+  }
+
+  function drawFrame(now, sceneTime, animateTheme) {
     resize();
-    var time = reducedMotion ? 3 : (now - startTime) * 0.001;
     var targetNight = document.documentElement.dataset.theme === "dark" ? 1 : 0;
-    nightBlend += (targetNight - nightBlend) * Math.min(1, (now - lastFrame) / 180);
+    if (animateTheme) {
+      nightBlend += (targetNight - nightBlend) * Math.min(1, (now - lastFrame) / 180);
+    } else {
+      nightBlend = targetNight;
+    }
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -1120,7 +1181,7 @@
     gl.enableVertexAttribArray(oceanPosition);
     gl.vertexAttribPointer(oceanPosition, 2, gl.FLOAT, false, 0, 0);
     gl.uniform2f(oceanResolution, canvas.width, canvas.height);
-    gl.uniform1f(oceanTime, time);
+    gl.uniform1f(oceanTime, sceneTime);
     gl.uniform1f(oceanNight, nightBlend);
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
@@ -1154,41 +1215,58 @@
     gl.bindTexture(gl.TEXTURE_2D, renderTexture);
     gl.uniform1i(postImage, 0);
     gl.uniform2f(postResolution, canvas.width, canvas.height);
-    gl.uniform1f(postTime, time);
+    gl.uniform1f(postTime, sceneTime);
     gl.uniform1f(postNight, nightBlend);
     gl.uniform1f(postNoiseScale, (window.devicePixelRatio || 1) < 1.5 ? 1.7 : 1.0);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
     canvas.classList.add("shader-ready");
     lastFrame = now;
-    if (running && !reducedMotion) window.requestAnimationFrame(render);
   }
 
-  function renderOnce() {
-    var wasRunning = running;
-    running = false;
-    render(performance.now());
-    running = wasRunning;
+  function refreshFrame() {
+    if (!contextAvailable) return;
+    cancelFrame();
+    var now = performance.now();
+    drawFrame(now, reducedMotion ? 3 : currentSceneTime(now), animationEligible());
+    scheduleFrame();
   }
 
   window.addEventListener("resize", function () {
-    resize();
-    if (reducedMotion) renderOnce();
+    refreshFrame();
   }, { passive: true });
   window.addEventListener("varyvoda:themechange", function () {
-    if (reducedMotion) renderOnce();
+    if (reducedMotion || !animationEligible()) refreshFrame();
   });
   document.addEventListener("visibilitychange", function () {
-    running = !document.hidden;
-    if (running && !reducedMotion) window.requestAnimationFrame(render);
+    updateAnimationState(performance.now());
   });
   canvas.addEventListener("webglcontextlost", function (event) {
     event.preventDefault();
-    running = false;
+    contextAvailable = false;
+    updateAnimationState(performance.now());
     canvas.classList.add("ambient-canvas-fallback");
   });
 
+  var sceneSelector = ".site-header, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
+  var sceneSurfaces = document.querySelectorAll(sceneSelector);
+  if (typeof window.IntersectionObserver === "undefined" || sceneSurfaces.length === 0) {
+    observerFallback = true;
+  } else {
+    var sceneObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) intersectingSurfaces.add(entry.target);
+        else intersectingSurfaces.delete(entry.target);
+      });
+      observerReady = true;
+      updateAnimationState(performance.now());
+    }, { threshold: 0.01 });
+    sceneSurfaces.forEach(function (surface) {
+      sceneObserver.observe(surface);
+    });
+  }
+
   resize();
-  if (reducedMotion) renderOnce();
-  else window.requestAnimationFrame(render);
+  if (reducedMotion) refreshFrame();
+  else updateAnimationState(performance.now());
 })();
