@@ -1402,6 +1402,7 @@ img { max-width: 100%; }
 .project-masthead--system .project-system-copy h1 {
   max-width: 7ch;
   margin-top: 1.2rem;
+  font-weight: 500;
   font-size: clamp(6.4rem, 8vw, 11.5rem);
   line-height: var(--leading-display-multiline);
   letter-spacing: var(--tracking-display-xl);
