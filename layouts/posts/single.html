@@ -1,237 +1,59 @@
-{{ define "title" }}
-  {{ .Title }} · {{ .Site.Title }}
-{{ end }}
+{{ define "title" }}{{ .Title }} · {{ .Site.Title }}{{ end }}
 {{ define "content" }}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "{{ .Site.BaseURL }}"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Blog",
-        "item": "{{ .Site.BaseURL }}posts/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "{{ .Title }}",
-        "item": "{{ .Permalink }}"
-      }
-    ]
-  }
-  </script>
-
-  <section class="container post">
-    <article>
-      <header>
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <ol itemscope itemtype="https://schema.org/BreadcrumbList">
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <a itemprop="item" href="/">
-                <span itemprop="name">Home</span>
-              </a>
-              <meta itemprop="position" content="1" />
-            </li>
-            <span class="separator">→</span>
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <a itemprop="item" href="/posts/">
-                <span itemprop="name">Blog</span>
-              </a>
-              <meta itemprop="position" content="2" />
-            </li>
-            <span class="separator">→</span>
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <span itemprop="name" class="current">{{ .Title }}</span>
-              <meta itemprop="position" content="3" />
-            </li>
-          </ol>
-        </nav>
-
-        <div class="post-title">
-          <h1 class="title">{{ .Title }}</h1>
-        </div>
-        <div class="post-meta">
-          <div class="date">
-            <span class="posted-on">
-              {{ partial "icons.html" "calendar" }}
-              <time datetime='{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}'>
-                {{ .Date.Format (.Site.Params.dateFormat | default "January 2, 2006" ) }}
-              </time>
-            </span>
-            <span class="reading-time">
-              {{ partial "icons.html" "clock-o" }}
-              {{ i18n "reading_time" .ReadingTime }}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      <div>
-        {{ if .Params.featuredImage }}
-          <img src='{{ .Params.featuredImage }}' alt="Featured image"/>
-        {{ end }}
-        {{ .Content }}
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ .Site.BaseURL }}"},{"@type":"ListItem","position":2,"name":"Writing","item":"{{ .Site.BaseURL }}posts/"},{"@type":"ListItem","position":3,"name":"{{ .Title }}","item":"{{ .Permalink }}"}]}
+</script>
+<article class="article-page article-page--editorial">
+  <header class="article-hero">
+    <div class="article-hero-inner">
+      <div class="article-hero-top">
+        <p><a href="/posts/">Writing index</a><span>Field note</span></p>
+        <p><span>{{ .Date.Format "02 Jan 2006" }}</span><span>{{ .ReadingTime }} min read</span></p>
       </div>
 
+      <div class="article-hero-title">
+        <h1>{{ .Title }}</h1>
+      </div>
 
-      <footer>
+      <div class="article-hero-bottom">
+        <p class="article-hero-number">{{ .Date.Format "2006" }} / {{ printf "%02d" .Date.Month }}</p>
+        {{ with .Description }}<p class="article-dek">{{ . }}</p>{{ end }}
+        <a class="article-start" href="#article-body">Start reading <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+  </header>
+
+  <section class="article-reading-surface" id="article-body">
+    <div class="article-reading-inner">
+      <aside class="article-rail" aria-label="Article contents">
+        <p class="article-rail-label">In this note</p>
+        {{ .TableOfContents }}
+        <dl>
+          <div><dt>Published</dt><dd>{{ .Date.Format "02 Jan 2006" }}</dd></div>
+          <div><dt>Reading time</dt><dd>{{ .ReadingTime }} minutes</dd></div>
+        </dl>
+      </aside>
+
+      <div class="article-prose prose">
+        {{ if .Params.featuredImage }}<img src="{{ .Params.featuredImage }}" alt="Featured image">{{ end }}
+        {{ .Content }}
+        <footer class="article-end">
+          <span>— End of note</span>
+          <a href="/posts/">Back to writing index</a>
+        </footer>
         {{ partial "posts/series.html" . }}
         {{ partial "posts/utterances.html" . }}
-      </footer>
-    </article>
-
-    {{ partial "posts/math.html" . }}
+      </div>
+    </div>
   </section>
-
-  <style>
-  .post-title {
-    animation: fadeIn 0.5s ease-out 0.1s backwards;
-  }
-
-  .post-title h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 2rem;
-    background: linear-gradient(135deg, #fff 0%, #a0a0b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .post-meta {
-    animation: fadeIn 0.5s ease-out 0.2s backwards;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .post-meta .date {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    font-size: 1.4rem;
-    color: #9090a0;
-  }
-
-  .post-meta .posted-on,
-  .post-meta .reading-time {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-  }
-
-  .icon {
-    width: 1em;
-    height: 1em;
-    display: inline-block;
-    vertical-align: -0.125em;
-  }
-
-  .post-meta .icon {
-    color: #7a7a8a;
-    flex-shrink: 0;
-  }
-
-  article > div {
-    animation: fadeIn 0.6s ease-out 0.3s backwards;
-    font-size: 1.7rem;
-    line-height: 1.8;
-    color: #d0d0d8;
-  }
-
-  article > div p {
-    margin-bottom: 1.8rem;
-  }
-
-  article > div h2,
-  article > div h3,
-  article > div h4 {
-    margin-top: 3rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: #fff;
-  }
-
-  article > div h2 {
-    font-size: 2.8rem;
-    border-bottom: 2px solid rgba(102, 217, 239, 0.15);
-    padding-bottom: 0.8rem;
-  }
-
-  article > div h3 {
-    font-size: 2.2rem;
-  }
-
-  article > div a {
-    color: #66d9ef;
-    text-decoration: underline;
-    text-decoration-color: rgba(102, 217, 239, 0.3);
-    text-underline-offset: 3px;
-    transition: all 0.2s ease;
-  }
-
-  article > div a:hover {
-    color: #8ae4f5;
-    text-decoration-color: rgba(102, 217, 239, 0.7);
-  }
-
-  article > div code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.9em;
-    color: #fff;
-  }
-
-  article > div pre {
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 1.5rem;
-    overflow-x: auto;
-    margin: 2rem 0;
-  }
-
-  article > div img {
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    margin: 2rem 0;
-  }
-
-  article > div blockquote {
-    border-left: 3px solid rgba(102, 217, 239, 0.4);
-    padding-left: 2rem;
-    margin: 2rem 0;
-    font-style: italic;
-    color: #a0a0b0;
-  }
-
-  @media (max-width: 768px) {
-    .post-title h1 {
-      font-size: 2.5rem;
-    }
-
-    article > div {
-      font-size: 1.5rem;
-    }
-
-    article > div h2 {
-      font-size: 2.2rem;
-    }
-
-    article > div h3 {
-      font-size: 1.8rem;
-    }
-  }
-  </style>
-  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+  {{ partial "posts/math.html" . }}
+</article>
+<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+{{ if hugo.IsServer }}
+  {{ $scrollspy := resources.Get "js/article-scrollspy.js" }}
+  <script src="{{ $scrollspy.RelPermalink }}" defer></script>
+{{ else }}
+  {{ $scrollspy := resources.Get "js/article-scrollspy.js" | minify | fingerprint }}
+  <script src="{{ $scrollspy.RelPermalink }}" integrity="{{ $scrollspy.Data.Integrity }}" crossorigin="anonymous" defer></script>
+{{ end }}
 {{ end }}

@@ -10,6 +10,31 @@ image: "/images/studio/studio-create-prompt.webp"
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 description: "An AI product-content platform for e-commerce — I created it and built it end to end. Merchants scan their Shopify catalog, fix product content in AI batches, route supplier uploads through review, and publish safely with versioning and rollback."
 hero_note: "30+ AI tools, a workflow orchestrator, a production MCP server and API platform for AI agents, supplier portals, Stripe billing, and the reliability infrastructure underneath."
+hero_kicker: "Built end to end"
+hero_intro: "I built Sirv AI Studio from zero into the system Sirv uses to scan catalogs, run AI work in batches, review supplier uploads, and publish safely to Shopify."
+hero_mark: "Product system"
+hero_scope: "Catalog to Shopify"
+hero_primary_label: "Open Sirv Studio"
+hero_frame_label: "Studio / create"
+hero_frame_status: "Live product"
+hero_secondary_url: "/projects/sirv-studio/build-record/"
+hero_secondary_label: "Read the build record"
+hero_flow:
+  - "Catalog scan"
+  - "AI batch"
+  - "Human review"
+  - "Safe publish"
+project_chapters:
+  - label: "Day one"
+    href: "#it-started-over-a-beer"
+  - label: "Product"
+    href: "#what-it-does"
+  - label: "Architecture"
+    href: "#how-its-built"
+  - label: "Correction"
+    href: "#the-correction"
+  - label: "Verdict"
+    href: "#so-is-it-any-good"
 tech_stack: ["React 19", "TanStack Start", "PostgreSQL", "Drizzle", "Inngest", "Stripe", "fal.ai"]
 status: "active"
 highlights:
@@ -348,10 +373,6 @@ weight: 1
 }
 </style>
 
-Sirv AI Studio is an AI product-content platform for e-commerce teams. Merchants connect their Shopify store, scan the catalog for weak product content — missing alt text, poor images, thin descriptions — fix it in AI-powered batches, route supplier uploads through review, and publish back safely with versioning and rollback.
-
-I built Studio from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, workflow orchestrator, supplier portal, Shopify publishing pipeline, MCP and API platform, and the reliability machinery underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) took ownership of critical parts: the design system and data grid, and the QA proof machine. This page is the product story. The separate [build record](/projects/sirv-studio/build-record/) now carries the forensic version, with 48 dated milestones and every large number tied to a counting rule.
-
 ## It started over a beer
 
 Some coworkers were visiting me in Herceg Novi, Montenegro. Over a beer the conversation drifted to AI — what it could actually build now, not what the keynotes promised — and at some point I told the table: I'm going to build this in a day.
@@ -415,6 +436,8 @@ The quietest month of the run — February, spent wiring billing, supplier intak
   </div>
   <figcaption>A moving snapshot, not decorative numerology. The build record includes the exact command behind each count.</figcaption>
 </figure>
+
+I built Studio from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, workflow orchestrator, supplier portal, Shopify publishing pipeline, MCP and API platform, and the reliability machinery underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) took ownership of critical parts: the design system and data grid, and the QA proof machine. This page is the product story. The separate [build record](/projects/sirv-studio/build-record/) carries the forensic version, with 48 dated milestones and every large number tied to a counting rule.
 
 ## What it does
 

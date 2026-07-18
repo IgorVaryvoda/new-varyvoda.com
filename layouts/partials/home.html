@@ -1,519 +1,156 @@
-<section class="container centered">
-  <div class="hero-section">
-    <div class="hero">
-      {{ if and (isset .Site.Params "avatarurl") (not (isset .Site.Params "gravatar")) }}
-        {{ with .Site.Params.avatarURL }}
-          <div class="avatar"><img src="{{ . | relURL }}" alt="Igor Varyvoda's avatar"></div>
-        {{ end }}
+{{ $projects := where .Site.RegularPages "Section" "projects" }}
+{{ $latestPosts := first 1 (where .Site.RegularPages "Type" "posts") }}
+{{ $featuredProjects := first 1 (where $projects ".Params.featured" true) }}
+
+<div class="builder-home">
+  <section class="index-section home-intro">
+    <div class="intro-copy">
+      <h1>{{ .Site.Params.author }}</h1>
+      <p class="intro-thesis">I build products. Some for work, some because I can’t help myself.</p>
+    </div>
+    {{ with .Site.Params.avatarURL }}
+      <figure class="author-mark">
+        <div class="author-portrait-shell">
+          <a class="author-portrait" href="/about/" aria-label="About Igor Varyvoda">
+            <img src="{{ . | relURL }}" alt="Igor Varyvoda" decoding="async">
+            <span class="author-portrait-cue" aria-hidden="true">About me →</span>
+          </a>
+          <nav class="author-portrait-menu" aria-label="Quick navigation">
+            <a href="/about/"><span>01</span>About</a>
+            <a href="/projects/"><span>02</span>Work</a>
+            <a href="/posts/"><span>03</span>Writing</a>
+            <a href="/contact/"><span>04</span>Contact</a>
+          </nav>
+        </div>
+        <figcaption>Made in Ukraine. Based in Montenegro.</figcaption>
+      </figure>
+    {{ end }}
+
+    <nav class="intro-index" aria-label="Featured content">
+      {{ range $latestPosts }}
+        <a href="{{ .RelPermalink }}">
+          <span class="intro-index-label">Latest note</span>
+          <strong>{{ .Title }}</strong>
+          <span class="intro-index-action">Read <span aria-hidden="true">→</span></span>
+        </a>
       {{ end }}
-      {{ with .Site.Params.gravatar }}
-        <div class="avatar"><img src="https://www.gravatar.com/avatar/{{md5 .}}?s=240&d=mp" alt="gravatar"></div>
+      {{ range $featuredProjects }}
+        <a href="{{ .RelPermalink }}">
+          <span class="intro-index-label">Featured project</span>
+          <strong>{{ .Title }}</strong>
+          <span class="intro-index-action">View <span aria-hidden="true">→</span></span>
+        </a>
       {{ end }}
-      <h1 class="hero-title">{{ .Site.Params.author }}</h1>
-      <p class="hero-subtitle">{{ .Site.Params.info }}</p>
-      <p class="hero-tagline">Shipping products and writing about fleet coding, AI, and SEO</p>
+    </nav>
+  </section>
 
-      <a href="/projects/sirv-studio/" class="featured-cta">
-        <span class="featured-cta-badge">Featured build</span>
-        <span class="featured-cta-text">Sirv AI Studio — how I built an AI product-content platform for e-commerce</span>
-        <span class="featured-cta-arrow">→</span>
-      </a>
+  <div class="tide-gate" aria-hidden="true"><span></span></div>
 
-      <nav class="hero-nav">
-        <a href="/posts/" class="nav-link">Blog</a>
-        <span class="nav-separator">·</span>
-        <a href="/projects/" class="nav-link">Projects</a>
-        <span class="nav-separator">·</span>
-        <a href="/about/" class="nav-link">About</a>
-        <span class="nav-separator">·</span>
-        <a href="/contact/" class="nav-link">Contact</a>
-      </nav>
+  {{ range first 1 (where $projects ".Params.hero" true) }}
+  {{ $project := . }}
+  <section class="current-build tidal-band" aria-labelledby="current-build-title">
+    <div class="home-section-inner current-build-grid">
+      <aside class="current-build-rail">
+        <div>
+          <p class="eyebrow">Current project</p>
+          <p class="build-status"><span class="status-live">● Active</span><span>{{ .Date.Format "2006" }}</span></p>
+        </div>
+      </aside>
 
-      {{ with .Site.Params.social }}
-      <ul class="social-links">
-        {{ range sort . "weight" }}
-          {{ if .icon }}
-            <li>
-              <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} {{ if .type }}type="{{ .type }}"{{ end }} class="social-link">
-                {{ partial "icons.html" (lower .name) }}
-              </a>
-            </li>
+      <div class="current-build-feature">
+        <header class="current-build-header">
+          <h2 id="current-build-title">{{ .Title }}</h2>
+        </header>
+        {{ with .Params.image }}
+        <a class="build-visual" href="{{ $project.RelPermalink }}" aria-label="View the Sirv AI Studio project">
+          {{ if hasPrefix . "/" }}
+            <img src="{{ . }}" alt="Sirv AI Studio interface" decoding="async">
           {{ else }}
-            <li>
-              <a href="{{ .url | safeURL }}" aria-label="{{ .name }}" {{ if .rel }}rel="{{ .rel }}"{{ end }} {{ if .target }}target="{{ .target }}"{{ end }} class="social-link">{{ .name }}</a>
-            </li>
+            <img class="Sirv" data-src="{{ . }}?w=1500" src="{{ . }}?w=1500&q=20" alt="Sirv AI Studio interface">
           {{ end }}
+        </a>
         {{ end }}
-      </ul>
-      {{ end }}
+        <div class="build-summary">
+          <p>{{ .Params.description }}</p>
+          <div class="build-meta">
+            {{ with .Params.tech_stack }}<p class="quiet-meta">{{ delimit . " · " }}</p>{{ end }}
+            <a class="project-cta" href="{{ .RelPermalink }}">View project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
+  {{ end }}
 
-  <div class="home-content">
-    <div class="home-section">
-      <h3>Latest Posts</h3>
-      <ul class="post-list">
+  <section class="recent-writing paper-band" aria-labelledby="recent-writing-title">
+    <div class="home-section-inner editorial-section-inner">
+      <header class="home-section-heading">
+        <div>
+          <p class="eyebrow">Writing</p>
+          <h2 id="recent-writing-title">Notes from the work</h2>
+        </div>
+        <a class="text-link" href="/posts/">All writing</a>
+      </header>
+      <ol class="writing-index">
         {{ range first 5 (where .Site.RegularPages "Type" "posts") }}
-          <li class="post-item">
-            <a href="{{ .RelPermalink }}" class="post-link">
-              <span class="post-title">{{ .Title }}</span>
-              <span class="post-date">{{ .Date.Format "Jan 2, 2006" }}</span>
-            </a>
-          </li>
+        <li>
+          <a href="{{ .RelPermalink }}">
+            <div class="writing-title-group">
+              <h3>{{ .Title }}</h3>
+              {{ with .Description }}<p>{{ . }}</p>{{ end }}
+            </div>
+            <div class="writing-meta">
+              <span>{{ .Date.Format "02 Jan 2006" }}</span>
+              <span>{{ .ReadingTime }} min</span>
+            </div>
+          </a>
+        </li>
         {{ end }}
-      </ul>
-      <p class="view-all"><a href="/posts/" class="view-all-link">View all posts →</a></p>
+      </ol>
     </div>
+  </section>
 
-    <div class="home-section">
-      <h3>Featured Projects</h3>
-      <ul class="project-list">
-        {{ $projects := where .Site.RegularPages "Section" "projects" }}
-        {{ range first 4 (where $projects ".Params.featured" true) }}
-          <li class="project-item">
-            <a href="{{ .RelPermalink }}" class="project-link">
-              {{ with .Params.image }}
-              <div class="project-thumbnail">
-                {{ if hasPrefix . "/" }}
-                <img src="{{ . }}" alt="{{ $.Title }} thumbnail" loading="lazy" decoding="async"/>
-                {{ else }}
-                <img class="Sirv" data-src="{{ . }}?w=600" src="{{ . }}?w=600&q=10" alt="{{ $.Title }} thumbnail"/>
-                {{ end }}
-              </div>
-              {{ end }}
-              <div class="project-info">
-                <span class="project-title">{{ .Title }}</span>
-                <span class="project-description">{{ .Params.description }}</span>
-                {{ with .Params.tech_stack }}
-                <div class="project-tech">
-                  {{ range first 3 . }}
-                    <span class="tech-badge">{{ . }}</span>
-                  {{ end }}
-                </div>
-                {{ end }}
-              </div>
-            </a>
-          </li>
+  <section class="selected-work harbor-band" aria-labelledby="selected-work-title">
+    <div class="home-section-inner">
+      <header class="home-section-heading">
+        <div>
+          <p class="eyebrow">Selected work</p>
+          <h2 id="selected-work-title">Other things I’ve built</h2>
+        </div>
+        <a class="text-link" href="/projects/">Full index</a>
+      </header>
+      <div class="selected-work-list">
+        {{ range $index, $project := first 3 (where (where $projects ".Params.featured" true) ".Params.hero" "ne" true) }}
+        <a class="selected-project" href="{{ .RelPermalink }}">
+          {{ with .Params.image }}
+          <figure class="selected-project-visual">
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
+            {{ if hasPrefix . "/" }}
+              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="lazy" decoding="async">
+            {{ else }}
+              <img class="Sirv" data-src="{{ . }}?w=1400" src="{{ . }}?w=1400&q=15" alt="{{ $project.Title }} interface">
+            {{ end }}
+          </figure>
+          {{ end }}
+          <div class="selected-project-copy">
+            <p class="selected-project-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ .Date.Format "2006" }}</span><span class="status-live">● {{ .Params.status | humanize }}</span></p>
+            <h3>{{ .Params.hero_title | default .Title }}</h3>
+            <p>{{ .Params.hero_intro | default .Params.description }}</p>
+            {{ with .Params.tech_stack }}<span class="quiet-meta">{{ delimit (first 4 .) " · " }}</span>{{ end }}
+            <span class="selected-project-action">Open project <b aria-hidden="true">→</b></span>
+          </div>
+          {{ with .Params.hero_flow }}
+          <ol class="selected-project-flow" aria-label="{{ $project.Title }} workflow">
+            {{ range $stepIndex, $step := . }}
+            <li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>
+            {{ end }}
+          </ol>
+          {{ end }}
+        </a>
         {{ end }}
-      </ul>
-      <p class="view-all"><a href="/projects/" class="view-all-link">View all projects →</a></p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<style>
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.centered {
-  display: block !important;
-}
-
-/* Hero Section */
-.hero-section {
-  position: relative;
-  background:
-    radial-gradient(circle at top right, rgba(102, 217, 239, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at bottom left, rgba(166, 227, 161, 0.03) 0%, transparent 50%),
-    rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 3rem 2rem;
-  margin-bottom: 4rem;
-  animation: fadeIn 0.8s ease-out;
-  overflow: hidden;
-}
-
-.hero-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-}
-
-.hero {
-  text-align: center;
-}
-
-.hero .avatar {
-  margin-bottom: 2rem;
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.hero .avatar img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, border-color 0.3s ease;
-}
-
-.hero .avatar img:hover {
-  transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.3);
-}
-
-.hero-title {
-  font-size: 3.5rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 0;
-  background: linear-gradient(135deg, #fff 0%, #a0a0b8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: fadeInUp 0.6s ease-out 0.1s backwards;
-}
-
-.hero-subtitle {
-  font-size: 1.8rem;
-  color: #a8a8b8;
-  margin-bottom: 1rem;
-  font-weight: 400;
-  animation: fadeInUp 0.6s ease-out 0.2s backwards;
-}
-
-.hero-tagline {
-  font-size: 1.4rem;
-  color: #8a8a9a;
-  max-width: 600px;
-  margin: 0 auto 2.5rem;
-  line-height: 1.6;
-  animation: fadeInUp 0.6s ease-out 0.3s backwards;
-}
-
-.featured-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 1.2rem;
-  padding: 1rem 1.8rem;
-  margin-bottom: 3rem;
-  border-radius: 999px;
-  border: 1px solid rgba(102, 217, 239, 0.35);
-  background: linear-gradient(135deg, rgba(102, 217, 239, 0.1) 0%, rgba(102, 217, 239, 0.02) 100%);
-  text-decoration: none;
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.6s ease-out 0.35s backwards;
-}
-
-.featured-cta:hover {
-  border-color: rgba(102, 217, 239, 0.65);
-  background: linear-gradient(135deg, rgba(102, 217, 239, 0.16) 0%, rgba(102, 217, 239, 0.04) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(102, 217, 239, 0.15);
-  text-decoration: none;
-}
-
-.featured-cta-badge {
-  flex-shrink: 0;
-  font-size: 1rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #0b0b12;
-  background: #66d9ef;
-  padding: 0.35rem 0.9rem;
-  border-radius: 999px;
-}
-
-.featured-cta-text {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #e8e8f0;
-}
-
-.featured-cta-arrow {
-  flex-shrink: 0;
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: #66d9ef;
-  transition: transform 0.3s ease;
-}
-
-.featured-cta:hover .featured-cta-arrow {
-  transform: translateX(4px);
-}
-
-.hero-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
-  animation: fadeInUp 0.6s ease-out 0.4s backwards;
-}
-
-.nav-link {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #d0d0d8;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-}
-
-.nav-link:hover {
-  color: #fff;
-  background: rgba(102, 217, 239, 0.08);
-  text-decoration: none;
-}
-
-.nav-separator {
-  color: #444;
-  font-size: 1.2rem;
-}
-
-.social-links {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  animation: fadeInUp 0.6s ease-out 0.5s backwards;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: transparent;
-  color: #7a7a8a !important;
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.icon {
-  width: 1em;
-  height: 1em;
-  display: inline-block;
-  vertical-align: -0.125em;
-}
-
-.social-link .icon {
-  width: 1.6em;
-  height: 1.6em;
-}
-
-.social-link:hover {
-  background: transparent;
-  color: #fff !important;
-  transform: translateY(-2px);
-  text-decoration: none;
-}
-
-/* Content Sections */
-.home-content {
-  max-width: 1100px;
-  margin: 5rem auto 0;
-  text-align: left;
-}
-
-.home-section {
-  margin-bottom: 6rem;
-  animation: fadeInUp 0.8s ease-out;
-}
-
-.home-section h3 {
-  margin-bottom: 2rem;
-  font-size: 2.4rem;
-  text-align: left;
-  font-weight: 700;
-  opacity: 0.95;
-  position: relative;
-  padding-bottom: 1rem;
-}
-
-.home-section h3::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 3px;
-  background: linear-gradient(90deg, #66d9ef, transparent);
-  border-radius: 2px;
-}
-
-/* Post List */
-.post-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.post-item {
-  margin-bottom: 0;
-  transition: transform 0.2s ease;
-}
-
-.post-link {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 1.2rem;
-  text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.02);
-  margin-bottom: 0.8rem;
-  border: 1px solid transparent;
-}
-
-.post-link:hover {
-  background: rgba(102, 217, 239, 0.04);
-  border-color: rgba(102, 217, 239, 0.12);
-  border-left: 2px solid #66d9ef;
-  transform: translateX(8px);
-  text-decoration: none;
-}
-
-.post-title {
-  flex: 1;
-  font-size: 1.6rem;
-  font-weight: 500;
-  color: #fff;
-  transition: color 0.2s ease;
-}
-
-.post-link:hover .post-title {
-  color: #fff;
-}
-
-.post-date {
-  color: #7a7a8a;
-  font-size: 1.3rem;
-  white-space: nowrap;
-  margin-left: 2rem;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.post-link:hover .post-date {
-  color: #a8a8b8;
-}
-
-/* Project Cards */
-.project-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-}
-
-.project-item {
-  margin-bottom: 0;
-  width: 100%;
-}
-
-.view-all {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.view-all-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #a0a0b0;
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  transition: all 0.3s ease;
-  text-decoration: none;
-}
-
-.view-all-link:hover {
-  color: #fff;
-  background: rgba(102, 217, 239, 0.06);
-  border-color: rgba(102, 217, 239, 0.2);
-  transform: translateY(-2px);
-  text-decoration: none;
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
-  }
-
-  .hero-subtitle {
-    font-size: 1.5rem;
-  }
-
-  .hero-tagline {
-    font-size: 1.2rem;
-  }
-
-  .featured-cta {
-    flex-direction: column;
-    gap: 0.8rem;
-    border-radius: 16px;
-    padding: 1.4rem 1.6rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-
-  .featured-cta-text {
-    font-size: 1.3rem;
-  }
-
-  .hero-nav {
-    flex-direction: column;
-    gap: 0.3rem;
-  }
-
-  .nav-separator {
-    display: none;
-  }
-
-  .post-link {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .post-date {
-    margin-left: 0;
-  }
-
-  .home-section h3 {
-    font-size: 2rem;
-  }
-
-  .post-title {
-    font-size: 1.4rem;
-  }
-
-  .project-list {
-    grid-template-columns: 1fr;
-  }
-
-}
-</style>
+</div>
 <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>

@@ -1,322 +1,128 @@
-{{ define "title" }}
-  {{ .Title }} · {{ .Site.Title }}
-{{ end }}
+{{ define "title" }}{{ .Title }} · {{ .Site.Title }}{{ end }}
 {{ define "content" }}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Home",
-        "item": "{{ .Site.BaseURL }}"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Projects",
-        "item": "{{ .Site.BaseURL }}projects/"
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": "{{ .Title }}",
-        "item": "{{ .Permalink }}"
-      }
-    ]
-  }
-  </script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ .Site.BaseURL }}"},{"@type":"ListItem","position":2,"name":"Work","item":"{{ .Site.BaseURL }}projects/"},{"@type":"ListItem","position":3,"name":"{{ .Title }}","item":"{{ .Permalink }}"}]}
+</script>
+<article class="project-page page-canvas{{ with .Params.hero_flow }} project-page--system{{ end }}">
+  <header class="project-header project-masthead{{ with .Params.hero_flow }} project-masthead--system{{ end }}">
+    <div class="project-masthead-inner">
+      {{ if .Params.hero_flow }}
+      <div class="project-system-top">
+        <p class="project-masthead-meta">
+          <a href="/projects/">Work ←</a>
+          <span>{{ .Date.Format "2006" }}</span>
+          {{ with .Params.status }}<span class="status-live">● {{ . | humanize }}</span>{{ end }}
+        </p>
+        <p class="project-system-mark"><span>{{ .Params.hero_mark | default "Project system" }}</span><span>{{ .Params.hero_scope | default "Built independently" }}</span></p>
+      </div>
 
-  <section class="container post">
-    <article>
-      <header>
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <ol itemscope itemtype="https://schema.org/BreadcrumbList">
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <a itemprop="item" href="/">
-                <span itemprop="name">Home</span>
-              </a>
-              <meta itemprop="position" content="1" />
-            </li>
-            <span class="separator">→</span>
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <a itemprop="item" href="/projects/">
-                <span itemprop="name">Projects</span>
-              </a>
-              <meta itemprop="position" content="2" />
-            </li>
-            <span class="separator">→</span>
-            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-              <span itemprop="name" class="current">{{ .Title }}</span>
-              <meta itemprop="position" content="3" />
-            </li>
-          </ol>
-        </nav>
-
-        <div class="post-title">
-          <h1 class="title">{{ .Title }}</h1>
-          <div class="project-links">
-            {{ with .Params.project_url }}
-            <a href="{{ . }}" target="_blank" class="project-url">
-              {{ partial "icons.html" "external-link" }} Visit Project
-            </a>
-            {{ end }}
-            {{ with .Params.github_url }}
-            <a href="{{ . }}" target="_blank" class="project-url github">
-              {{ partial "icons.html" "github" }} GitHub
-            </a>
-            {{ end }}
-            {{ with .Params.app_store_url }}
-            <a href="{{ . }}" target="_blank" class="project-url app-store">
-              {{ partial "icons.html" "apple" }} iOS
-            </a>
-            {{ end }}
-            {{ with .Params.play_store_url }}
-            <a href="{{ . }}" target="_blank" class="project-url play-store">
-              {{ partial "icons.html" "android" }} Android
-            </a>
-            {{ end }}
+      <div class="project-system-grid">
+        <div class="project-heading project-system-copy">
+          <p class="eyebrow">{{ with .Params.hero_kicker }}{{ . }}{{ else }}Product story{{ end }}</p>
+          <h1{{ with .Params.hero_title_size }} class="project-system-title--{{ . }}"{{ end }}>{{ .Params.hero_title | default .Title }}</h1>
+          <p class="project-dek">{{ with .Params.hero_intro }}{{ . }}{{ else }}{{ $.Params.description }}{{ end }}</p>
+          <div class="project-actions project-system-actions">
+            {{ with .Params.project_url }}<a class="project-primary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }} <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.hero_secondary_url }}<a class="project-secondary-action" href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read the build record" }} <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.github_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.app_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.play_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android <span aria-hidden="true">→</span></a>{{ end }}
           </div>
         </div>
 
         {{ with .Params.image }}
-        <div class="project-image">
-          {{ $img := $.Params.image }}
-          {{ with $.Params.project_url }}
-          <a href="{{ . }}" target="_blank" rel="noopener noreferrer">
-            {{ if hasPrefix $img "/" }}
-            <img src="{{ $img }}" alt="{{ $.Title }} screenshot" decoding="async"/>
-            {{ else }}
-            <img class="Sirv" data-src="{{ $img }}" src="{{ $img }}?q=10" alt="{{ $.Title }} screenshot"/>
-            {{ end }}
-          </a>
-          {{ else }}
-          {{ if hasPrefix $img "/" }}
-          <img src="{{ $img }}" alt="{{ $.Title }} screenshot" decoding="async"/>
-          {{ else }}
-          <img class="Sirv" data-src="{{ $img }}" src="{{ $img }}?q=10" alt="{{ $.Title }} screenshot"/>
-          {{ end }}
-          {{ end }}
-        </div>
-        {{ end }}
-
-        {{ if or .Params.status .Params.tech_stack }}
-        <div class="project-meta">
-          {{ with .Params.tech_stack }}
-          <div class="tech-stack">
-            {{ range . }}
-              <span class="tech-tag">{{ . }}</span>
-            {{ end }}
+        <figure class="project-system-visual">
+          <div class="project-system-windowbar">
+            <span>{{ $.Params.hero_frame_label | default $.Title }}</span>
+            <span>{{ $.Params.hero_frame_status | default "Project view" }}</span>
           </div>
+          {{ if hasPrefix . "/" }}
+            <img src="{{ . }}" alt="{{ $.Title }} interface" decoding="async">
+          {{ else }}
+            <img class="Sirv" data-src="{{ . }}?w=1600" src="{{ . }}?w=1600&q=15" alt="{{ $.Title }} interface">
           {{ end }}
-          {{ with .Params.status }}
-          <span class="project-status status-{{ . }}">{{ . | humanize }}</span>
-          {{ end }}
-        </div>
+        </figure>
         {{ end }}
-      </header>
+      </div>
 
-      <div class="project-content">
-        {{ with .Params.highlights }}
-        <div class="project-highlights">
-          <h3>Key Features</h3>
-          <ul>
-            {{ range . }}
-            <li>{{ . }}</li>
-            {{ end }}
-          </ul>
-        </div>
+      <ol class="project-system-flow" aria-label="{{ .Title }} workflow">
+        {{ range $index, $step := .Params.hero_flow }}
+        <li><span>{{ printf "%02d" (add $index 1) }}</span><strong>{{ $step }}</strong></li>
         {{ end }}
-
-        <div class="project-description">
-          {{ .Content }}
+      </ol>
+      {{ else }}
+      <p class="project-masthead-meta">
+        <a href="/projects/">Work ↖</a>
+        <span>{{ .Date.Format "2006" }}</span>
+        {{ with .Params.status }}<span class="status-live">● {{ . | humanize }}</span>{{ end }}
+      </p>
+      <div class="project-heading">
+        <p class="eyebrow">Build record</p>
+        <h1>{{ .Title }}</h1>
+        <p class="project-dek">{{ .Params.description }}</p>
+        <div class="project-actions">
+          {{ with .Params.project_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Visit project</a>{{ end }}
+          {{ with .Params.github_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
+          {{ with .Params.app_store_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS</a>{{ end }}
+          {{ with .Params.play_store_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android</a>{{ end }}
         </div>
       </div>
-    </article>
-  </section>
+      {{ end }}
+    </div>
+  </header>
 
-  <style>
-  .post-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 2rem;
-  }
+  {{ if not .Params.hero_flow }}
+  {{ with .Params.image }}
+  <div class="project-stage">
+    {{ $img := $.Params.image }}
+    {{ if hasPrefix $img "/" }}
+      <img src="{{ $img }}" alt="{{ $.Title }} screenshot" decoding="async">
+    {{ else }}
+      <img class="Sirv" data-src="{{ $img }}?w=1600" src="{{ $img }}?w=1600&q=15" alt="{{ $.Title }} screenshot">
+    {{ end }}
+  </div>
+  {{ end }}
+  {{ end }}
 
-  .post-title h1 {
-    margin: 0;
-  }
-
-  .project-links {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .project-url {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.7rem 1.4rem;
-    background: rgba(102, 217, 239, 0.08);
-    border: 1px solid rgba(102, 217, 239, 0.3);
-    border-radius: 8px;
-    color: #66d9ef;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.4rem;
-    transition: all 0.2s ease;
-  }
-
-  .icon {
-    width: 1em;
-    height: 1em;
-    display: inline-block;
-    vertical-align: -0.125em;
-  }
-
-  .project-url .icon {
-    flex-shrink: 0;
-  }
-
-  .project-url:hover {
-    background: rgba(102, 217, 239, 0.16);
-    border-color: rgba(102, 217, 239, 0.55);
-    color: #8ae4f5;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(102, 217, 239, 0.12);
-    text-decoration: none;
-  }
-
-  .project-meta {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin: 2rem 0;
-    flex-wrap: wrap;
-  }
-
-  .project-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    text-transform: capitalize;
-    color: #999;
-  }
-
-  .status-active::before {
-    content: '●';
-    color: #2ecc71;
-  }
-
-  .status-archived::before {
-    content: '●';
-    color: #666;
-  }
-
-  .status-wip::before {
-    content: '●';
-    color: #f1c40f;
-  }
-
-  .tech-stack {
-    display: flex;
-    gap: 0.6rem;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  .tech-tag {
-    display: inline-block;
-    padding: 0.4rem 0.9rem;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #ccc;
-  }
-
-  .project-image {
-    margin: 2rem 0;
-  }
-
-  .project-image a {
-    display: block;
-  }
-
-  .project-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    transition: opacity 0.2s ease;
-  }
-
-  .project-image a:hover img {
-    opacity: 0.9;
-  }
-
-  .project-highlights {
-    margin: 0 0 2rem;
-    padding: 1.5rem;
-    background: rgba(102, 217, 239, 0.04);
-    border-left: 3px solid rgba(102, 217, 239, 0.4);
-    border-radius: 4px;
-  }
-
-  .project-highlights h3 {
-    margin-top: 0;
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-    opacity: 0.9;
-  }
-
-  .project-highlights ul {
-    margin: 0;
-    padding-left: 2rem;
-  }
-
-  .project-highlights li {
-    margin-bottom: 0.6rem;
-    font-size: 1.4rem;
-    line-height: 1.6;
-  }
-
-  .project-description {
-    font-size: 1.6rem;
-    line-height: 1.8;
-    color: #d0d0d8;
-    margin: 2rem 0;
-  }
-
-  .project-description img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    margin: 2rem 0 0.5rem;
-  }
-
-  .project-description img + em,
-  .project-description p:has(img) + p em {
-    display: block;
-    font-size: 1.3rem;
-    color: #8a8a9a;
-    margin-bottom: 1.5rem;
-  }
-  </style>
-  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+  <div class="project-story index-section{{ with .Params.hero_flow }} project-story--system{{ end }}{{ with .Params.project_chapters }} project-story--chapters{{ end }}">
+    {{ with .Params.project_chapters }}
+    <aside class="project-facts project-chapters-rail">
+      <p class="project-chapters-label">On this page</p>
+      <nav aria-label="Project chapters">
+        {{ range $index, $chapter := . }}
+        <a href="{{ $chapter.href }}"><span>{{ printf "%02d" (add $index 1) }}</span>{{ $chapter.label }}</a>
+        {{ end }}
+      </nav>
+      <div class="project-chapter-facts">
+        <span>Status / {{ $.Params.status | humanize }}</span>
+        <span>Started / {{ $.Date.Format "2006" }}</span>
+      </div>
+    </aside>
+    {{ else }}
+    <aside class="project-facts artifact-rail">
+      <span>Project facts</span>
+      {{ with .Params.status }}<span>Status / {{ . | humanize }}</span>{{ end }}
+      <span>Started / {{ .Date.Format "2006" }}</span>
+      {{ with .Params.tech_stack }}<span>{{ delimit . " · " }}</span>{{ end }}
+      <i aria-hidden="true"></i>
+    </aside>
+    {{ end }}
+    <div class="project-prose prose">
+      {{ if and (not .Params.project_chapters) (not .Params.hero_flow) }}
+      {{ with .Params.highlights }}
+      <aside class="project-highlights">
+        <p class="eyebrow">Selected evidence</p>
+        <ol>{{ range . }}<li>{{ . }}</li>{{ end }}</ol>
+      </aside>
+      {{ end }}
+      {{ end }}
+      <div class="project-description">{{ .Content }}</div>
+      <footer class="article-end">
+        <span>— End of {{ if or .Params.project_chapters .Params.hero_flow }}product story{{ else }}build record{{ end }}</span>
+        <a href="/projects/">Back to work index ↑</a>
+      </footer>
+    </div>
+  </div>
+</article>
+<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
 {{ end }}

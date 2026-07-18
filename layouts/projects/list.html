@@ -1,288 +1,70 @@
-{{ define "title" }}
-  {{ title (i18n (lower .Title)) | default .Title }} · {{ .Site.Title }}
-{{ end }}
+{{ define "title" }}Work · {{ .Site.Title }}{{ end }}
 {{ define "content" }}
-  <section class="container list">
-    <h1 class="title"> {{ title (i18n (lower .Title)) | default .Title }} </h1>
-    {{ .Content }}
-
-    {{ $pages := .Pages.ByParam "weight" }}
-    {{ range $pages }}
-      {{ if .Params.hero }}
-      <a href="{{ .RelPermalink }}" class="hero-card">
-        {{ if .Params.image }}
-        <div class="hero-thumbnail">
-          {{ if hasPrefix .Params.image "/" }}
-          <img src="{{ .Params.image }}" alt="{{ .Title }} screenshot" decoding="async"/>
-          {{ else }}
-          <img class="Sirv" data-src="{{ .Params.image }}?w=900" src="{{ .Params.image }}?w=900&q=10" alt="{{ .Title }} screenshot"/>
-          {{ end }}
+{{ $pages := where (.Pages.ByParam "weight") ".Params.hidden" "ne" true }}
+<section class="work-page work-page--atlas">
+  <header class="work-masthead work-masthead--atlas">
+    <div class="work-masthead-inner work-atlas-intro">
+      <div class="work-atlas-topline">
+        <p class="project-masthead-meta"><span>Work index</span><span>{{ len $pages }} builds</span></p>
+        <p class="work-masthead-meta"><span>2018—{{ now.Format "2006" }}</span><span>Products · tools · experiments</span></p>
+      </div>
+      <div class="work-atlas-thesis">
+        <div>
+          <p class="eyebrow">Things I’ve built</p>
+          <h1>Products,<br>tools,<br>useful detours.</h1>
         </div>
-        {{ end }}
-        <div class="hero-info">
-          <span class="hero-eyebrow">Featured project</span>
-          <span class="hero-card-title">{{ .Title }}</span>
-          <p class="hero-description">{{ .Params.description }}</p>
-          {{ with .Params.hero_note }}
-          <p class="hero-note">{{ . }}</p>
-          {{ end }}
-          {{ with .Params.tech_stack }}
-          <div class="project-tech">
-            {{ range . }}
-              <span class="tech-badge">{{ . }}</span>
+        <div class="work-atlas-intro-copy">
+          <p>{{ .Params.description | default "Some for work, some because I couldn’t help myself." }}</p>
+          <a class="project-primary-action" href="#project-atlas">Open the index <span aria-hidden="true">↓</span></a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="work-atlas" id="project-atlas">
+    <div class="work-atlas-inner">
+      <header class="work-atlas-heading">
+        <div>
+          <p class="eyebrow">The build index</p>
+          <h2>Pick a system.</h2>
+        </div>
+        <p class="quiet-meta">Each one started with a problem I wanted solved.</p>
+      </header>
+
+      <div class="work-atlas-grid">
+        {{ range $index, $project := $pages }}
+        <a class="work-atlas-entry{{ if eq $index 0 }} work-atlas-entry--lead{{ end }}" href="{{ .RelPermalink }}">
+          {{ with .Params.image }}
+          <figure class="work-atlas-visual">
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
+            {{ if hasPrefix . "/" }}
+              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}" decoding="async">
+            {{ else }}
+              <img class="Sirv" data-src="{{ . }}?w={{ if eq $index 0 }}1600{{ else }}1000{{ end }}" src="{{ . }}?w={{ if eq $index 0 }}1600{{ else }}1000{{ end }}&q=15" alt="{{ $project.Title }} interface">
             {{ end }}
+          </figure>
+          {{ end }}
+
+          <div class="work-atlas-copy">
+            <p class="work-atlas-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ .Date.Format "2006" }}</span><span class="status-live">● {{ .Params.status | humanize }}</span></p>
+            <h3>{{ .Params.hero_title | default .Title }}</h3>
+            <p>{{ .Params.hero_intro | default .Params.description }}</p>
+            {{ with .Params.tech_stack }}<span class="quiet-meta">{{ delimit (first 4 .) " · " }}</span>{{ end }}
+            <span class="work-atlas-action">Open project <b aria-hidden="true">→</b></span>
           </div>
-          {{ end }}
-          <span class="hero-cta">Read the build story →</span>
-        </div>
-      </a>
-      {{ end }}
-    {{ end }}
 
-    <h2 class="other-heading">Other things I've built</h2>
-    <ul class="project-grid">
-      {{- range $pages -}}
-        {{- if and (not .Params.hero) (not .Params.hidden) -}}
-        <li class="project-card">
-          <a href="{{ .RelPermalink }}" class="project-link">
-            {{ if .Params.image }}
-            <div class="project-thumbnail">
-              {{ if hasPrefix .Params.image "/" }}
-              <img src="{{ .Params.image }}" alt="{{ .Title }} thumbnail" loading="lazy" decoding="async"/>
-              {{ else }}
-              <img class="Sirv" data-src="{{ .Params.image }}?w=600" src="{{ .Params.image }}?w=600&q=10" alt="{{ .Title }} thumbnail"/>
-              {{ end }}
-            </div>
+          {{ with .Params.hero_flow }}
+          <ol class="work-atlas-flow" aria-label="{{ $project.Title }} workflow">
+            {{ range $stepIndex, $step := . }}
+            <li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>
             {{ end }}
-            <div class="project-info">
-              <span class="project-title">{{ .Title }}</span>
-              <span class="project-description">{{ .Params.description }}</span>
-              {{ with .Params.tech_stack }}
-              <div class="project-tech">
-                {{ range first 3 . }}
-                  <span class="tech-badge">{{ . }}</span>
-                {{ end }}
-              </div>
-              {{ end }}
-            </div>
-          </a>
-        </li>
-        {{- end -}}
-      {{- end -}}
-    </ul>
+          </ol>
+          {{ end }}
+        </a>
+        {{ end }}
+      </div>
+    </div>
   </section>
-
-  <style>
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .list h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #fff 0%, #a0a0b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: fadeInUp 0.5s ease-out;
-  }
-
-  .hero-card {
-    display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    margin: 3rem 0 1rem;
-    border: 1px solid rgba(102, 217, 239, 0.25);
-    border-radius: 16px;
-    overflow: hidden;
-    background:
-      radial-gradient(circle at top right, rgba(102, 217, 239, 0.06) 0%, transparent 55%),
-      rgba(255, 255, 255, 0.03);
-    text-decoration: none;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeInUp 0.5s ease-out backwards;
-  }
-
-  .hero-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #66d9ef, transparent);
-  }
-
-  .hero-card:hover {
-    border-color: rgba(102, 217, 239, 0.45);
-    transform: translateY(-6px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(102, 217, 239, 0.1);
-    text-decoration: none;
-  }
-
-  .hero-thumbnail {
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.4);
-    min-height: 340px;
-  }
-
-  .hero-thumbnail img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .hero-card:hover .hero-thumbnail img {
-    transform: scale(1.05);
-  }
-
-  .hero-info {
-    padding: 3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-  }
-
-  .hero-eyebrow {
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #66d9ef;
-  }
-
-  .hero-card-title {
-    font-size: 2.8rem;
-    font-weight: 800;
-    line-height: 1.2;
-    color: #fff;
-  }
-
-  .hero-description {
-    color: #c8c8d8;
-    font-size: 1.5rem;
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  .hero-note {
-    color: #9a9aac;
-    font-size: 1.35rem;
-    line-height: 1.7;
-    margin: 0;
-  }
-
-  .hero-cta {
-    margin-top: auto;
-    padding-top: 1rem;
-    color: #66d9ef;
-    font-size: 1.4rem;
-    font-weight: 600;
-  }
-
-  .other-heading {
-    margin: 5rem 0 0;
-    font-size: 2.2rem;
-    font-weight: 700;
-    opacity: 0.95;
-    position: relative;
-    padding-bottom: 1rem;
-  }
-
-  .other-heading::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #66d9ef, transparent);
-    border-radius: 2px;
-  }
-
-  .project-grid {
-    list-style: none;
-    padding: 0;
-    margin: 2rem 0 3rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
-  }
-
-  .project-card {
-    margin: 0;
-    width: 100%;
-    animation: fadeInUp 0.6s ease-out backwards;
-  }
-
-  .project-card:nth-child(1) { animation-delay: 0.1s; }
-  .project-card:nth-child(2) { animation-delay: 0.15s; }
-  .project-card:nth-child(3) { animation-delay: 0.2s; }
-  .project-card:nth-child(4) { animation-delay: 0.25s; }
-  .project-card:nth-child(5) { animation-delay: 0.3s; }
-  .project-card:nth-child(6) { animation-delay: 0.35s; }
-
-  .project-link {
-    position: relative;
-  }
-
-  .project-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #66d9ef, transparent);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .project-link:hover::before {
-    opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-    .list h1 {
-      font-size: 2.5rem;
-    }
-
-    .hero-card {
-      grid-template-columns: 1fr;
-    }
-
-    .hero-thumbnail {
-      min-height: 0;
-      height: 220px;
-    }
-
-    .hero-info {
-      padding: 2rem;
-    }
-
-    .hero-card-title {
-      font-size: 2.2rem;
-    }
-
-    .other-heading {
-      margin-top: 4rem;
-    }
-
-    .project-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-  }
-  </style>
-  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+</section>
+<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
 {{ end }}

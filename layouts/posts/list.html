@@ -1,0 +1,59 @@
+{{ define "title" }}Writing · {{ .Site.Title }}{{ end }}
+{{ define "content" }}
+{{ $posts := .Pages.ByDate.Reverse }}
+<section class="writing-page">
+  <header class="writing-masthead">
+    <div class="writing-masthead-inner">
+      <div class="writing-masthead-top">
+        <div class="writing-lead-copy">
+          <p class="eyebrow">Notes from the work</p>
+          <h1>Writing</h1>
+          {{ with .Content }}<div class="page-dek">{{ . }}</div>{{ end }}
+        </div>
+        <p class="writing-lead-meta"><span>{{ len .Pages }} notes</span><span>Newest first</span></p>
+      </div>
+
+      {{ range first 1 $posts }}
+      <a class="writing-feature" href="{{ .RelPermalink }}">
+        <div class="writing-feature-meta">
+          <span>Latest note</span>
+          <span>{{ .Date.Format "02 Jan 2006" }}</span>
+          <span>{{ .ReadingTime }} min read</span>
+        </div>
+        <h2>{{ .Title }}</h2>
+        {{ if .Description }}<p>{{ .Description }}</p>{{ else }}<p>{{ .Summary | plainify | truncate 220 }}</p>{{ end }}
+        <span class="text-link">Read note</span>
+      </a>
+      {{ end }}
+    </div>
+  </header>
+
+  <section class="writing-archive">
+    <div class="writing-archive-inner">
+      <header class="archive-heading writing-archive-heading">
+        <div><p class="eyebrow">Archive</p><h2>Earlier notes</h2></div>
+      </header>
+      <ol class="writing-index writing-index-full">
+        {{ range after 1 $posts }}
+        <li>
+          <a href="{{ .RelPermalink }}">
+            <div class="writing-title-group">
+              <h2>{{ .Title }}</h2>
+              {{ if .Description }}
+                <p>{{ .Description }}</p>
+              {{ else }}
+                <p>{{ .Summary | plainify | truncate 180 }}</p>
+              {{ end }}
+            </div>
+            <div class="writing-meta">
+              <span>{{ .Date.Format "02 Jan 2006" }}</span>
+              <span>{{ .ReadingTime }} min read</span>
+            </div>
+          </a>
+        </li>
+        {{ end }}
+      </ol>
+    </div>
+  </section>
+</section>
+{{ end }}

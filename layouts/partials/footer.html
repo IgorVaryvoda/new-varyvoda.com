@@ -1,0 +1,22 @@
+<footer class="site-footer">
+  <div class="footer-closing">
+    <p>Got a hard problem or a strange idea?</p>
+    <a class="footer-cta" href="/contact/">Tell me about it</a>
+  </div>
+  <div class="site-footer-grid">
+    <p class="footer-index">IV / {{ now.Year }}</p>
+    <p class="footer-note">Products, notes, and working records.</p>
+    <div class="footer-tools">
+      <div class="footer-links">
+        {{ range sort .Site.Params.social "weight" }}
+          <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
+        {{ end }}
+      </div>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
+        <span class="theme-toggle-mark" aria-hidden="true">◐</span>
+        <span data-theme-label>Dark</span>
+      </button>
+    </div>
+  </div>
+  <script defer data-domain="varyvoda.com" src="https://stats.varyvoda.com/js/script.js"></script>
+</footer>

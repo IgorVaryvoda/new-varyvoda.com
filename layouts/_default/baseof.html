@@ -1,179 +1,81 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}">
-
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Language" content="{{ .Site.Language.Lang }}">
-
+    <meta name="theme-color" content="#eef2f1">
     {{ with .Site.Params.author }}<meta name="author" content="{{ . }}">{{ end }}
-    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else if .Summary }}{{ .Summary | plainify }}{{ else }}{{ .Site.Params.description }}{{ end }}">
     <meta name="keywords" content="{{ (delimit .Keywords ',') | default .Site.Params.keywords }}">
-    {{ if .Params.canonicalUrl }}
-      <link rel="canonical" href="{{ .Params.canonicalUrl }}">
-    {{ else }}
-      <link rel="canonical" href="{{ .Permalink }}">
-    {{ end }}
+    <link rel="canonical" href="{{ with .Params.canonicalUrl }}{{ . }}{{ else }}{{ $.Permalink }}{{ end }}">
     {{ if .Params.ogImage }}
-    <meta property="og:image" content="{{ .Params.ogImage }}">
+      <meta property="og:image" content="{{ .Params.ogImage }}">
     {{ else }}
-    <meta property="og:image" content="https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900" />
+      <meta property="og:image" content="https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900">
     {{ end }}
     {{ template "_internal/twitter_cards.html" . }}
     {{ template "_internal/opengraph.html" . }}
-
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     {{ if hugo.IsServer }}
-      {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true ) }}
+      {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
       <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
+      {{ $custom := resources.Get "css/custom.css" | fingerprint }}
+      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ else }}
-      {{ $cssOpts := (dict "targetPath" "css/coder.css" ) }}
+      {{ $cssOpts := (dict "targetPath" "css/coder.css") }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-    {{ end }}
-    {{ if hugo.IsServer }}
-      {{ $custom := resources.Get "css/custom.css" | minify }}
-      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" media="screen">
-    {{ else }}
+      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen">
       {{ $custom := resources.Get "css/custom.css" | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen" />
+      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ end }}
-
-    {{ if .Site.Params.rtl }}
-      {{ if hugo.IsServer }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" "enableSourceMap" true ) }}
-        {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-rtl.css" ) }}
-        {{ $styles := resources.Get "scss/coder-rtl.scss" | resources.ExecuteAsTemplate "style.coder-rtl.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
-    {{ end }}
-        {{ $cssOpts := (dict "targetPath" "css/coder-dark.css" ) }}
-        {{ $styles := resources.Get "scss/coder-dark.scss" | resources.ExecuteAsTemplate "style.coder-dark.css" . | toCSS $cssOpts | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-
-    {{ range .Site.Params.customCSS }}
-      <link rel="stylesheet" href="{{ . | relURL }}" />
-    {{ end }}
-
-    {{ range .Site.Params.customSCSS }}
-      {{/* We don't change the targetPath to because it's transparent to users */}}
-      {{ if hugo.IsServer }}
-        {{ $cssOpts := (dict "enableSourceMap" true ) }}
-        {{ $styles := resources.Get . | toCSS $cssOpts }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
-      {{ else }}
-        {{ $styles := resources.Get . | toCSS | minify | fingerprint }}
-        <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen" />
-      {{ end }}
-    {{ end }}
-
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32x32.png" | relURL }}" sizes="32x32">
-    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16x16.png" | relURL }}" sizes="16x16">
-
-    <link rel="apple-touch-icon" href="{{ .Site.Params.touchicon | default "/images/apple-touch-icon.png" | relURL }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ .Site.Params.touchicon | default "/images/apple-touch-icon.png" | relURL }}">
-
-    {{ range .AlternativeOutputFormats -}}
-      {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
-    {{ end -}}
-
-    {{ if .Site.Params.enableTwemoji }}
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/12.0.4/2/twemoji.min.js" integrity="sha512-panBjUGuKarjg0qxHggQULmRf9jB/YVCy238hmzBWUuLeOuwMSuJgJcUv3T+rwXUBZ9zeUvc49ZcCRH+EO0H8g==" crossorigin="anonymous" defer></script>
-    {{ end }}
-
-    {{ hugo.Generator }}
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://scripts.sirv.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="preconnect" href="https://cdn.earthroulette.com">
     <link rel="preconnect" href="https://sirv-cdn.sirv.com">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --font-body: 'Outfit', system-ui, -apple-system, sans-serif;
-        --accent: #66d9ef;
-        --accent-green: #a6e3a1;
-      }
-      body, body.colorscheme-dark {
-        font-family: var(--font-body) !important;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      h1, h2, h3, h4, h5, h6 {
-        font-family: var(--font-body) !important;
-        letter-spacing: -0.02em;
-      }
-      a {
-        font-family: var(--font-body) !important;
-      }
-      ::selection {
-        background: rgba(102, 217, 239, 0.3);
-        color: #fff;
-      }
-      .footer {
-        opacity: 0.7;
-        transition: opacity 0.3s ease;
-      }
-      .footer:hover {
-        opacity: 1;
-      }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
+    {{ if hugo.IsServer }}
+      {{ $themeScript := resources.Get "js/theme.js" }}
+      <script src="{{ $themeScript.RelPermalink }}"></script>
+    {{ else }}
+      {{ $themeScript := resources.Get "js/theme.js" | minify | fingerprint }}
+      <script src="{{ $themeScript.RelPermalink }}" integrity="{{ $themeScript.Data.Integrity }}" crossorigin="anonymous"></script>
+    {{ end }}
+
+    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_32 | default "/images/favicon-32x32.png" | relURL }}" sizes="32x32">
+    <link rel="icon" type="image/png" href="{{ .Site.Params.favicon_16 | default "/images/favicon-16x16.png" | relURL }}" sizes="16x16">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ .Site.Params.touchicon | default "/images/apple-touch-icon.png" | relURL }}">
+    {{ range .AlternativeOutputFormats -}}
+      {{ printf `<link rel="%s" type="%s" href="%s" title="%s">` .Rel .MediaType.Type .RelPermalink $.Site.Title | safeHTML }}
+    {{ end -}}
+    {{ if .Site.Params.enableTwemoji }}
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/12.0.4/2/twemoji.min.js" integrity="sha512-panBjUGuKarjg0qxHggQULmRf9jB/YVCy238hmzBWUuLeOuwMSuJgJcUv3T+rwXUBZ9zeUvc49ZcCRH+EO0H8g==" crossorigin="anonymous" defer></script>
+    {{ end }}
+    {{ hugo.Generator }}
   </head>
-
-  {{ $csClass := "colorscheme-dark" }}
-  {{ if eq .Site.Params.colorScheme "dark" }}
-    {{ $csClass = "colorscheme-dark" }}
-  {{ else if eq .Site.Params.colorScheme "auto" }}
-    {{ $csClass = "colorscheme-auto" }}
-  {{ end }}
-  <body class="{{ $csClass }}{{ if .Site.Params.rtl }} rtl{{ end }}"
-        {{ if .Site.Params.enableTwemoji }}onload='twemoji.parse(document.body)'{{ end }}
-  >
-    {{ partial "float" . }}
-    <main class="wrapper">
+  <body class="builder-index page-{{ if .IsHome }}home{{ else }}inner{{ end }} kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ with .File }} view-{{ .BaseFileName | urlize }}{{ end }}{{ with .Params.hero_flow }} has-system-hero{{ end }}{{ if and .IsSection (eq .Section "projects") }} has-work-atlas{{ end }}"{{ if .Site.Params.enableTwemoji }} onload='twemoji.parse(document.body)'{{ end }}>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <canvas class="ambient-canvas" data-atmosphere data-skyline="{{ "/images/herceg-novi-skyline.png" | relURL }}" aria-hidden="true"></canvas>
+    <main class="site-shell">
       {{ partial "header.html" . }}
-
-      <div class="content">
+      <div class="content" id="main-content">
         {{ block "content" . }}{{ end }}
       </div>
-
       {{ partial "footer.html" . }}
     </main>
-
-    {{ if not .Site.Params.hideColorSchemeToggle }}
-      {{ if hugo.IsServer }}
-        {{ $script := resources.Get "js/dark-mode.js" }}
-        <script src="{{ $script.RelPermalink }}"></script>
-      {{ else }}
-        {{ $script := resources.Get "js/dark-mode.js" | minify | fingerprint }}
-        <script src="{{ $script.RelPermalink }}"></script>
-      {{ end }}
+    {{ if hugo.IsServer }}
+      {{ $atmosphereScript := resources.Get "js/atmosphere.js" }}
+      <script src="{{ $atmosphereScript.RelPermalink }}" defer></script>
+    {{ else }}
+      {{ $atmosphereScript := resources.Get "js/atmosphere.js" | minify | fingerprint }}
+      <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
     {{ end }}
-
-    {{ range .Site.Params.customJS }}
-      <script src="{{ . | relURL }}"></script>
-    {{ end }}
-
+    {{ range .Site.Params.customJS }}<script src="{{ . | relURL }}"></script>{{ end }}
     {{ template "_internal/google_analytics.html" . }}
-
-    {{ if and .Site.Params.fathomAnalytics .Site.Params.fathomAnalytics.siteID }}
-      {{- partial "analytics/fathom" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.plausibleAnalytics .Site.Params.plausibleAnalytics.domain }}
-      {{- partial "analytics/plausible" . -}}
-    {{ end }}
-
-    {{ if and .Site.Params.goatCounter .Site.Params.goatCounter.code }}
-      {{- partial "analytics/goatcounter" . -}}
-    {{ end }}
   </body>
-
 </html>

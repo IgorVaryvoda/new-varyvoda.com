@@ -6,6 +6,19 @@ featured: true
 project_url: "https://www.budjet.app"
 image: "https://cdn.earthroulette.com/budjet/og.png"
 description: "A personal finance tracker with powerful AI features like receipt scanning, AI recommendations, household management and so on."
+hero_title: "BudJet"
+hero_kicker: "Built for daily use"
+hero_intro: "A personal finance tracker I built because I wanted one I would actually use—receipt scanning, recommendations, and household budgets included."
+hero_mark: "Personal finance"
+hero_scope: "Receipt to budget"
+hero_primary_label: "Open BudJet"
+hero_frame_label: "BudJet / overview"
+hero_frame_status: "Used daily"
+hero_flow:
+  - "Scan receipt"
+  - "Categorize spend"
+  - "Share household"
+  - "Plan ahead"
 tech_stack: ["AI", "Vue", "Nuxt", "Finance"]
 status: "active"
 highlights:

@@ -8,6 +8,18 @@ app_store_url: "https://apps.apple.com/app/earth-roulette-trip-explorer/id644923
 play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casznm"
 image: "https://iantiark.sirv.com/varyvoda/er.png"
 description: "A random travel destination generator with advanced filters, hotels, flights and all the good stuff for the adventurous"
+hero_kicker: "Built from scratch"
+hero_intro: "I built a random destination generator for people who would rather discover somewhere unexpected than choose from the same shortlist."
+hero_mark: "Travel discovery"
+hero_scope: "Spin to itinerary"
+hero_primary_label: "Explore Earth Roulette"
+hero_frame_label: "Earth Roulette / discover"
+hero_frame_status: "Live product"
+hero_flow:
+  - "Set filters"
+  - "Spin the globe"
+  - "Explore a place"
+  - "Plan the trip"
 tech_stack: ["Vue", "Travel", "API"]
 status: "active"
 highlights:
