@@ -264,8 +264,10 @@ img { max-width: 100%; }
 .theme-toggle:hover { color: var(--ink); }
 .theme-toggle-mark { color: var(--accent); font-size: 1.35rem; line-height: 1; }
 
-.menu-toggle,
-.menu-button { display: none; }
+.site-navigation { display: contents; }
+.site-navigation::details-content { display: contents; content-visibility: visible; }
+.site-navigation > .menu-button { display: none; }
+.site-navigation > .primary-navigation { display: flex; }
 
 /* Shared layout */
 .builder-home,
@@ -1807,12 +1809,17 @@ img { max-width: 100%; }
 @media (max-width: 680px) {
   :root { --gutter: 1.8rem; }
   .site-header-inner { min-height: 6.4rem; }
-  .menu-toggle { position: absolute; opacity: 0; pointer-events: none; }
-  .menu-button { display: flex; align-items: center; gap: 0.7rem; color: var(--ink); font-family: var(--mono); font-size: 1.05rem; text-transform: uppercase; cursor: pointer; }
+  .site-navigation { display: block; }
+  .site-navigation::details-content { display: block; }
+  .site-navigation:not([open])::details-content { content-visibility: hidden; }
+  .site-navigation[open]::details-content { content-visibility: visible; }
+  .menu-button { display: flex; align-items: center; gap: 0.7rem; padding: 0; color: var(--ink); background: transparent; border: 0; font-family: var(--mono); font-size: 1.05rem; list-style: none; text-transform: uppercase; cursor: pointer; }
+  .menu-button::-webkit-details-marker { display: none; }
   .primary-navigation { position: absolute; top: 6.4rem; right: 0; left: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 1.2rem var(--gutter) 2rem; background: var(--paper-raised); border-bottom: 1px solid var(--rule-dark); }
   .primary-navigation a { padding: 1.2rem 0; border-bottom: 1px solid var(--rule); font-size: 1.5rem; }
-  .menu-toggle:checked ~ .primary-navigation { display: flex; }
-  .menu-toggle:checked + .menu-button span:last-child { transform: rotate(45deg); }
+  .site-navigation:not([open]) > .primary-navigation { display: none; }
+  .site-navigation[open] > .primary-navigation { display: flex; }
+  .site-navigation[open] .menu-button span:last-child { transform: rotate(45deg); }
 
   .index-section,
   .home-intro,
