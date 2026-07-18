@@ -25,7 +25,7 @@
         <header class="contact-heading">
           <p class="eyebrow">Contact</p>
           <h1>Tell me about it.</h1>
-          <p>Got a hard problem or a strange idea?</p>
+          <p>Want to ask about one of my projects, discuss advertising, or just get in touch?</p>
           <div class="contact-links">
             {{ range sort .Site.Params.social "weight" }}
               <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
@@ -34,18 +34,18 @@
         </header>
         <div class="contact-panel">
           <div class="contact-panel-header">
-            <span>Start a conversation</span>
-            <a href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the brief</a>
+            <span>Send me a message</span>
+            <a href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the contact form</a>
           </div>
           <div class="contact-brief">
-            <p class="contact-brief-lead">Send me the rough version.</p>
+            <p class="contact-brief-lead">Whatever it is, send it over.</p>
             <ol>
-              <li><span>01</span><strong>What are you making?</strong></li>
-              <li><span>02</span><strong>Where is it stuck?</strong></li>
-              <li><span>03</span><strong>What would a good outcome look like?</strong></li>
+              <li><span>01</span><strong>Questions about my projects</strong></li>
+              <li><span>02</span><strong>Advertising and partnerships</strong></li>
+              <li><span>03</span><strong>Anything else</strong></li>
             </ol>
             <div class="contact-brief-action">
-              <a class="project-primary-action" href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the brief</a>
+              <a class="project-primary-action" href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the contact form</a>
               <p>A short Typeform. I read every response.</p>
             </div>
           </div>
