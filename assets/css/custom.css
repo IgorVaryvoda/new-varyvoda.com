@@ -301,7 +301,6 @@ img { max-width: 100%; }
 .theme-toggle-mark { color: var(--accent); font-size: 1.35rem; line-height: 1; }
 
 .site-navigation { display: contents; }
-.site-navigation::details-content { display: contents; content-visibility: visible; }
 .site-navigation > .menu-button { display: none; }
 .site-navigation > .primary-navigation { display: flex; }
 
@@ -1873,16 +1872,82 @@ img { max-width: 100%; }
   :root { --gutter: 1.8rem; }
   .site-header-inner { min-height: 6.4rem; }
   .site-navigation { display: block; }
-  .site-navigation::details-content { display: block; }
-  .site-navigation:not([open])::details-content { content-visibility: hidden; }
-  .site-navigation[open]::details-content { content-visibility: visible; }
-  .site-navigation > .menu-button { display: flex; align-items: center; gap: 0.7rem; padding: 0; color: var(--ink); background: transparent; border: 0; font-family: var(--mono); font-size: var(--type-compact-action); list-style: none; text-transform: uppercase; cursor: pointer; }
-  .menu-button::-webkit-details-marker { display: none; }
-  .primary-navigation { position: absolute; top: 6.4rem; right: 0; left: 0; display: none; flex-direction: column; align-items: stretch; gap: 0; padding: 1.2rem var(--gutter) 2rem; background: var(--paper-raised); border-bottom: 1px solid var(--rule-dark); }
-  .primary-navigation a { padding: 1.2rem 0; border-bottom: 1px solid var(--rule); font-size: 1.5rem; }
-  .site-navigation:not([open]) > .primary-navigation { display: none; }
-  .site-navigation[open] > .primary-navigation { display: flex; }
-  .site-navigation[open] .menu-button span:last-child { transform: rotate(45deg); }
+  .site-navigation[data-navigation-ready] > .menu-button {
+    display: flex;
+    min-width: 9.6rem;
+    min-height: 4.4rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.2rem;
+    padding: 0 1.2rem;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule-dark);
+    font-family: var(--mono);
+    font-size: var(--type-compact-action);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .menu-button:hover,
+  .menu-button[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); }
+  .menu-button-mark { color: var(--accent); font-size: 1.8rem; line-height: 1; transition: transform 180ms ease; }
+  .menu-button[aria-expanded="true"] .menu-button-mark { transform: rotate(45deg); }
+  .primary-navigation {
+    position: absolute;
+    top: 6.4rem;
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 0 var(--gutter) 1.6rem;
+    background: color-mix(in srgb, var(--paper-raised) 96%, transparent);
+    border-bottom: 1px solid var(--rule-dark);
+    box-shadow: 0 2.4rem 4.8rem var(--harbor-shadow);
+    backdrop-filter: blur(18px) saturate(1.08);
+  }
+  .primary-navigation a {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    min-height: 6.4rem;
+    padding: 1.4rem 0;
+    color: var(--slate);
+    border-bottom: 1px solid var(--rule);
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .primary-navigation a::after {
+    position: static;
+    width: auto;
+    height: auto;
+    color: var(--accent);
+    background: transparent;
+    content: "\2192";
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    opacity: 0.55;
+    transform: none;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .primary-navigation a:hover::after,
+  .primary-navigation a[aria-current="page"]::after { opacity: 1; transform: translateX(0.3rem); }
+  .site-navigation[data-navigation-ready] > .primary-navigation {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-0.8rem);
+  }
+  .site-navigation[data-navigation-ready] > .menu-button[aria-expanded="true"] + .primary-navigation {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition: opacity 180ms ease, transform 180ms ease;
+  }
 
   .index-section,
   .home-intro,

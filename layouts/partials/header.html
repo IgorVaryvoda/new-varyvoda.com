@@ -6,16 +6,17 @@
       <span>Varyvoda</span>
     </a>
 
-    <details class="site-navigation">
-      <summary class="menu-button">
-        <span class="menu-label">Menu</span><span aria-hidden="true">+</span>
-      </summary>
-    <nav class="primary-navigation" id="primary-navigation" aria-label="Main navigation">
-      <a href="/projects/"{{ if eq .Section "projects" }} aria-current="page"{{ end }}>Work</a>
-      <a href="/posts/"{{ if eq .Section "posts" }} aria-current="page"{{ end }}>Writing</a>
-      <a href="/about/"{{ if eq .RelPermalink "/about/" }} aria-current="page"{{ end }}>About</a>
-      <a href="/contact/"{{ if eq .RelPermalink "/contact/" }} aria-current="page"{{ end }}>Contact</a>
-    </nav>
-    </details>
+    <div class="site-navigation" data-site-navigation>
+      <button class="menu-button" type="button" aria-controls="primary-navigation" aria-expanded="false" data-menu-button>
+        <span class="menu-label" data-menu-label>Menu</span>
+        <span class="menu-button-mark" aria-hidden="true">+</span>
+      </button>
+      <nav class="primary-navigation" id="primary-navigation" aria-label="Main navigation" data-primary-navigation>
+        <a href="/projects/"{{ if eq .Section "projects" }} aria-current="page"{{ end }}>Work</a>
+        <a href="/posts/"{{ if eq .Section "posts" }} aria-current="page"{{ end }}>Writing</a>
+        <a href="/about/"{{ if eq .RelPermalink "/about/" }} aria-current="page"{{ end }}>About</a>
+        <a href="/contact/"{{ if eq .RelPermalink "/contact/" }} aria-current="page"{{ end }}>Contact</a>
+      </nav>
+    </div>
   </div>
 </header>

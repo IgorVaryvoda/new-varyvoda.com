@@ -69,6 +69,13 @@
       {{ partial "footer.html" . }}
     </main>
     {{ if hugo.IsServer }}
+      {{ $navigationScript := resources.Get "js/navigation.js" }}
+      <script src="{{ $navigationScript.RelPermalink }}" defer></script>
+    {{ else }}
+      {{ $navigationScript := resources.Get "js/navigation.js" | minify | fingerprint }}
+      <script src="{{ $navigationScript.RelPermalink }}" integrity="{{ $navigationScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
+    {{ end }}
+    {{ if hugo.IsServer }}
       {{ $atmosphereScript := resources.Get "js/atmosphere.js" | fingerprint }}
       <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
     {{ else }}
