@@ -42,6 +42,10 @@
     uniform sampler2D u_skyline;
     uniform sampler2D u_day_photo;
     uniform float u_day_photo_ready;
+    uniform sampler2D u_mountain_photo;
+    uniform float u_mountain_photo_ready;
+    uniform sampler2D u_ship;
+    uniform float u_ship_ready;
     uniform vec4 u_ripples[8];
     uniform int u_rippleCount;
 
@@ -53,6 +57,8 @@
     #define ITERATIONS_NORMAL 16
     #define RAYMARCH_STEPS 32
     #define FBM_OCTAVES 4
+    #define SUN_SCREEN_X 0.075
+    #define SUN_SCREEN_Y 0.535
 
     float hash21(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -100,17 +106,10 @@
 
     vec4 skylineAt(float screenX) {
       float x = sceneX(screenX);
-      float texel = 1.0 / 512.0;
-      vec4 center = texture2D(u_skyline, vec2(x, 0.5)) * 0.40;
-      vec4 inner = (
-        texture2D(u_skyline, vec2(clamp(x - texel, 0.0, 1.0), 0.5)) +
-        texture2D(u_skyline, vec2(clamp(x + texel, 0.0, 1.0), 0.5))
-      ) * 0.24;
-      vec4 outer = (
-        texture2D(u_skyline, vec2(clamp(x - texel * 2.0, 0.0, 1.0), 0.5)) +
-        texture2D(u_skyline, vec2(clamp(x + texel * 2.0, 0.0, 1.0), 0.5))
-      ) * 0.06;
-      return center + inner + outer;
+      // Linear texture filtering already interpolates the photographed ridge.
+      // The previous five-tap blur spread each 512px mask sample across roughly
+      // ten screen pixels and made the daylight silhouette look blocky.
+      return texture2D(u_skyline, vec2(x, 0.5));
     }
 
     float nearRidgeAt(float screenX) {
@@ -124,7 +123,11 @@
     float mountainLayerMask(vec2 screenUv, float ridge) {
       float horizon = 0.395;
       float aa = 2.25 / iResolution.y;
-      float aboveWater = smoothstep(horizon - aa, horizon + aa, screenUv.y);
+      // The horizon is already a perfectly horizontal pixel boundary. Keeping
+      // a soft mask here sends those partial pixels through the sky-edge blend
+      // and creates a pale strip between land and water. Antialias only the
+      // irregular photographed ridge above it.
+      float aboveWater = step(horizon - 2.0 / iResolution.y, screenUv.y);
       float belowRidge = 1.0 - smoothstep(ridge - aa, ridge + aa, screenUv.y);
       return aboveWater * belowRidge;
     }
@@ -149,10 +152,36 @@
       vec2 photoUv = vec2(clamp(sceneX(screenUv.x) + drift, 0.003, 0.997), sourceY);
       vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb) * 1.42;
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      photo = mix(vec3(luminance), photo, 1.34);
+      photo = mix(vec3(luminance), photo, 1.18);
       photo *= mix(1.04, 0.72, skyHeight);
-      vec3 horizonHaze = vec3(0.35, 0.55, 0.69);
-      return mix(horizonHaze, photo, smoothstep(0.0, 0.20, skyHeight));
+      float viewX = screenUv.x;
+      float leftField = exp(-pow((viewX + 0.035) / 0.48, 2.0));
+      float lowerSky = 1.0 - smoothstep(0.24, 0.78, skyHeight);
+      vec3 horizonHaze = mix(vec3(0.40, 0.55, 0.68), vec3(0.92, 0.72, 0.49), leftField * lowerSky * 0.76);
+      vec3 sky = mix(horizonHaze, photo, smoothstep(0.0, 0.20, skyHeight));
+      float rightBlue = smoothstep(0.18, 0.96, viewX) * smoothstep(0.08, 0.72, skyHeight);
+      sky = mix(sky, sky * vec3(0.78, 0.94, 1.16), rightBlue * 0.34);
+
+      // Sunrise in this view is strongly backlit: the source is just outside
+      // the far-left edge, its core is nearly white, and the warmth falls away
+      // quickly into a cool blue sky. Keep the photographed cloud structure,
+      // but veil it in the broad overexposure around the horizon.
+      vec2 sunriseCenter = vec2(SUN_SCREEN_X, SUN_SCREEN_Y);
+      vec2 haloDelta = (vec2(viewX, screenUv.y) - sunriseCenter) / vec2(0.31, 0.205);
+      float halo = exp(-dot(haloDelta, haloDelta) * 0.92);
+      float horizonBand = exp(-skyHeight * 5.4) * leftField;
+      float cloudLight = smoothstep(0.18, 0.66, luminance) * halo;
+      vec3 paleGold = vec3(1.58, 1.32, 0.98);
+      float overexposure = clamp(halo * lowerSky * 0.86 + horizonBand * 0.38, 0.0, 0.94);
+      sky = mix(sky, paleGold, overexposure);
+      sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
+
+      float sunDistance = length((vec2(viewX, screenUv.y) - sunriseCenter) / vec2(1.0, 1.55));
+      float sunAureole = exp(-pow(sunDistance / 0.058, 2.0));
+      float sunCore = exp(-pow(sunDistance / 0.016, 2.0));
+      sky += vec3(1.72, 1.30, 0.78) * sunAureole * 0.74;
+      sky += vec3(4.20, 3.70, 2.90) * sunCore * 1.35;
+      return sky;
     }
 
     vec3 photoMountainColor(vec2 screenUv, float ridge, float depth) {
@@ -160,33 +189,66 @@
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
       float x = sceneX(screenUv.x);
 
-      // Use clean photographic material atlases rather than literal screen
-      // coordinates: the far-range patch excludes the tower, while the near
-      // patch stays entirely inside the right headland and above the liner.
-      float farRepeat = abs(fract(x * 1.65 + 0.17) * 2.0 - 1.0);
-      float nearRepeat = abs(fract(x * 1.95 + 0.11) * 2.0 - 1.0);
-      float farX = mix(0.43, 0.59, farRepeat);
-      float nearX = mix(0.72, 0.965, nearRepeat);
+      // A dedicated 2048px terrain atlas comes from clean, full-resolution
+      // patches of Igor's photograph. The top half is the near headland and
+      // the bottom half is the distant range; neither contains the tower,
+      // foreground foliage, or liner.
+      float farX = clamp(x * 1.12 + 0.08, 0.015, 0.985);
+      float nearX = clamp(x * 0.86 + 0.07, 0.015, 0.985);
       float sampleX = mix(farX, nearX, depth);
-      float sourceY = mix(mix(0.345, 0.388, height), mix(0.355, 0.425, height), depth);
-      sourceY += sin(x * 19.0 + depth * 3.7) * mix(0.002, 0.0045, depth);
-      vec2 photoUv = vec2(sampleX, sourceY);
-      vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb);
-      vec2 detailStep = vec2(mix(0.0034, 0.0022, depth), mix(0.0020, 0.0014, depth));
-      vec3 localAverage = (
-        srgbToLinear(texture2D(u_day_photo, photoUv + vec2(detailStep.x, 0.0)).rgb) +
-        srgbToLinear(texture2D(u_day_photo, photoUv - vec2(detailStep.x, 0.0)).rgb) +
-        srgbToLinear(texture2D(u_day_photo, photoUv + vec2(0.0, detailStep.y)).rgb) +
-        srgbToLinear(texture2D(u_day_photo, photoUv - vec2(0.0, detailStep.y)).rgb)
-      ) * 0.25;
-      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 7.5, -0.24, 0.24);
+      float farY = mix(0.02, 0.48, pow(height, 0.92));
+      float nearY = mix(0.52, 0.98, pow(height, 0.92));
+      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.046, 0.035, depth);
+      terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.007;
+      float slopeProjection = (height - 0.5) * mix(0.18, 0.12, depth);
+      sampleX = clamp(sampleX + slopeProjection + terrainWarp * (0.42 + height * 0.58), 0.015, 0.985);
+      vec2 atlasUv = vec2(sampleX, mix(farY, nearY, depth));
+      vec3 photo = srgbToLinear(texture2D(u_mountain_photo, atlasUv).rgb);
+      vec2 atlasStep = vec2(0.0024, 0.0032);
+      vec3 photoRight = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb);
+      vec3 photoLeft = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(atlasStep.x, 0.0)).rgb);
+      vec3 photoUp = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb);
+      vec3 photoDown = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb);
+      vec3 localAverage = (photoRight + photoLeft + photoUp + photoDown) * 0.25;
+      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 7.4, -0.22, 0.22);
       photo *= 1.0 + terrainRelief;
 
+      // Derive the light-facing normal from the photographed material. Using
+      // the 2D skyline derivative here turns every ridge sample into a vertical
+      // band; atlas gradients let sunlight follow actual gullies and folds.
+      float gradientX = dot(photoRight - photoLeft, vec3(0.2126, 0.7152, 0.0722));
+      float gradientY = dot(photoUp - photoDown, vec3(0.2126, 0.7152, 0.0722));
+      vec3 terrainNormal = normalize(vec3(-gradientX * 4.2, -gradientY * 2.8, 1.0));
+      // The sunrise is left of the frame but still on the camera-facing side
+      // of the bay. Give left-facing slopes a low, frontal dawn light and let
+      // the terrain turn away into shadow toward the right.
+      vec3 sunriseDirection = normalize(vec3(-0.72, 0.34, 0.90));
+      float diffuse = clamp(dot(terrainNormal, sunriseDirection), 0.0, 1.0);
+
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      vec3 chroma = mix(vec3(luminance), photo, mix(0.62, 0.96, depth));
-      vec3 coastalHaze = vec3(0.13, 0.24, 0.31);
-      vec3 graded = chroma * mix(1.72, 1.58, depth);
-      graded = mix(coastalHaze, graded, mix(0.48, 0.90, depth));
+      vec3 chroma = mix(vec3(luminance), photo, mix(0.74, 0.96, depth));
+      vec3 coastalHaze = vec3(0.15, 0.25, 0.34);
+      float rightExposure = mix(1.0, 1.18, smoothstep(0.34, 0.58, x) * depth);
+      vec3 graded = chroma * mix(2.20, 2.72, depth) * rightExposure;
+      graded = mix(coastalHaze, graded, mix(0.62, 0.97, depth));
+
+      // Preserve the cool photographic material, but model the sunrise as
+      // side/front light rather than a backlight. The broad diffuse term keeps
+      // the actual terrain legible while the x-facing normal decides where
+      // shadows fall.
+      float sunriseReach = exp(-screenUv.x * 1.62);
+      graded = mix(vec3(0.10, 0.17, 0.24), graded, mix(0.70, 0.86, depth));
+      graded *= mix(0.74, 0.70, depth) + diffuse * mix(0.44, 0.34, depth);
+      float slopeLight = smoothstep(0.28, 0.84, diffuse) * sunriseReach;
+      graded += vec3(0.66, 0.47, 0.28) * slopeLight * (0.075 + height * 0.075) * mix(1.0, 0.72, depth);
+
+      // The broad inner face of the right headland turns toward the left-hand
+      // sun. Open that plane up, then let it fall back into cooler shadow along
+      // the long eastern tail instead of silhouetting the whole mountain.
+      float rightHeadland = depth * smoothstep(0.36, 0.49, x);
+      float rightSunFace = rightHeadland * (1.0 - smoothstep(0.64, 0.94, x)) * mix(0.72, 1.0, height);
+      graded *= 1.0 + rightHeadland * 0.10 + rightSunFace * 0.22;
+      graded += vec3(0.50, 0.38, 0.25) * rightSunFace * (0.080 + height * 0.060);
       return graded;
     }
 
@@ -208,7 +270,7 @@
       vec3 day = mix(vec3(0.045, 0.105, 0.15), vec3(0.19, 0.30, 0.37), haze * 0.66 + detail * 0.14);
       day += vec3(0.012, 0.025, 0.035) * (1.0 - height) * (0.35 + detail * 0.65);
       day *= 0.90 + detail * 0.18;
-      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_day_photo_ready * 0.88);
+      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_mountain_photo_ready * 0.90);
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
@@ -222,7 +284,7 @@
       vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
       day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
-      day = mix(day, photoMountainColor(screenUv, ridge, 1.0), u_day_photo_ready * 0.94);
+      day = mix(day, photoMountainColor(screenUv, ridge, 1.0), u_mountain_photo_ready * 0.96);
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       return mix(day, night, u_night);
     }
@@ -327,6 +389,96 @@
 
     vec3 mountainColor(vec2 screenUv) {
       return mountainSurfaceColor(screenUv) + mountainLightColor(screenUv);
+    }
+
+    vec4 cruiseShipSample(vec2 screenUv) {
+      // The photographed ship faces right, so give it one slow passage across
+      // the bay. Fade it outside the useful part of the frame before wrapping
+      // instead of reversing direction or visibly jumping back to the start.
+      float passage = fract((iTime + 149.0) / 320.0);
+      float shipX = mix(0.50, 0.94, passage);
+      float passageAlpha = smoothstep(0.0, 0.08, passage)
+        * (1.0 - smoothstep(0.92, 1.0, passage));
+      float aspect = iResolution.x / iResolution.y;
+      float coverage = aspect >= 1.5 ? 1.0 : max(aspect / 1.5, 0.48);
+      float shipHeight = (0.080 / coverage) * aspect / 2.0;
+      float shipWaterline = 0.390 - 4.0 / iResolution.y;
+      vec2 point = vec2(
+        (sceneX(screenUv.x) - shipX) / 0.040,
+        (screenUv.y - shipWaterline) / shipHeight
+      );
+      if (abs(point.x) > 1.0 || point.y < 0.0 || point.y > 1.0) {
+        return vec4(0.0);
+      }
+      vec2 shipUv = vec2(point.x * 0.5 + 0.5, point.y);
+      // The ship is displayed at roughly one fifth of its source size, so one
+      // screen pixel spans several source texels. Sample across that actual
+      // footprint rather than taking nearly identical taps inside one mip texel.
+      vec2 shipTexel = vec2(3.0 / 512.0, 3.0 / 256.0);
+      vec4 shipCenter = texture2D(u_ship, shipUv);
+      vec4 shipLeft = texture2D(u_ship, shipUv - vec2(shipTexel.x, 0.0));
+      vec4 shipRight = texture2D(u_ship, shipUv + vec2(shipTexel.x, 0.0));
+      vec4 shipUp = texture2D(u_ship, shipUv + vec2(0.0, shipTexel.y));
+      vec4 shipDown = texture2D(u_ship, shipUv - vec2(0.0, shipTexel.y));
+      float alphaSum = shipCenter.a * 2.0 + shipLeft.a + shipRight.a + shipUp.a + shipDown.a;
+      // The sprite is uploaded premultiplied, so mip and linear filtering do
+      // not mix transparent black into its edge colors. Reconstruct straight
+      // color only after the filtered samples have been accumulated.
+      vec3 premultiplied = shipCenter.rgb * 2.0
+        + shipLeft.rgb
+        + shipRight.rgb
+        + shipUp.rgb
+        + shipDown.rgb;
+      vec3 shipColor = premultiplied / max(alphaSum, 0.001);
+      float alphaMaximum = max(shipCenter.a, max(max(shipLeft.a, shipRight.a), max(shipUp.a, shipDown.a)));
+      vec2 edgeProbe = vec2(7.0 / 512.0, 7.0 / 256.0);
+      float edgeAlphaMinimum = min(
+        min(texture2D(u_ship, shipUv - vec2(edgeProbe.x, 0.0)).a, texture2D(u_ship, shipUv + vec2(edgeProbe.x, 0.0)).a),
+        min(texture2D(u_ship, shipUv - vec2(0.0, edgeProbe.y)).a, texture2D(u_ship, shipUv + vec2(0.0, edgeProbe.y)).a)
+      );
+      float boundary = smoothstep(0.08, 0.82, alphaMaximum - edgeAlphaMinimum);
+      shipColor = mix(shipColor, max(shipColor, vec3(0.42, 0.48, 0.55)), boundary * 0.82);
+      float shipAlpha = smoothstep(0.10, 0.90, alphaSum / 6.0);
+      shipAlpha *= mix(1.0, 0.42, boundary);
+      return vec4(srgbToLinear(shipColor) * 1.48, shipAlpha * passageAlpha);
+    }
+
+    float cruiseShipSmoke(vec2 screenUv) {
+      float passage = fract((iTime + 149.0) / 320.0);
+      float shipX = mix(0.50, 0.94, passage);
+      float passageAlpha = smoothstep(0.0, 0.08, passage)
+        * (1.0 - smoothstep(0.92, 1.0, passage));
+      float aspect = iResolution.x / iResolution.y;
+      float coverage = aspect >= 1.5 ? 1.0 : max(aspect / 1.5, 0.48);
+      float shipHeight = (0.080 / coverage) * aspect / 2.0;
+      float shipWaterline = 0.390 - 4.0 / iResolution.y;
+      vec2 point = vec2(
+        (sceneX(screenUv.x) - shipX) / 0.040,
+        (screenUv.y - shipWaterline) / shipHeight
+      );
+
+      vec2 funnel = vec2(-0.39, 0.72);
+      float smoke = 0.0;
+      for (int index = 0; index < 6; index++) {
+        float puffIndex = float(index);
+        float age = fract(iTime * 0.032 + puffIndex / 6.0);
+        vec2 center = funnel + vec2(-age * 1.26, age * 0.72);
+        float spread = mix(0.065, 0.29, age);
+        vec2 delta = (point - center) / vec2(spread * 1.55, spread);
+        float shape = exp(-dot(delta, delta) * 1.35);
+        float breakup = mix(0.58, 1.0, fbm(point * vec2(6.4, 8.2) + vec2(puffIndex * 2.7, -iTime * 0.025)));
+        float life = smoothstep(0.0, 0.075, age) * (1.0 - smoothstep(0.58, 1.0, age));
+        smoke += shape * breakup * life;
+      }
+      return clamp(smoke * 0.24 * passageAlpha, 0.0, 0.40);
+    }
+
+    vec3 compositeCruiseShip(vec2 screenUv, vec3 background) {
+      float smoke = cruiseShipSmoke(screenUv) * u_ship_ready * (1.0 - u_night);
+      background = mix(background, vec3(0.19, 0.24, 0.25), smoke);
+      vec4 ship = cruiseShipSample(screenUv);
+      ship.a *= u_ship_ready * (1.0 - u_night);
+      return mix(background, ship.rgb, ship.a);
     }
 
     float star(vec2 screenUv, vec2 cellId, vec2 grid) {
@@ -467,10 +619,10 @@
     }
 
     vec3 daySky(vec3 direction) {
-      vec3 sunDirection = normalize(vec3(-0.42, 0.58, 0.70));
+      vec3 sunDirection = normalize(vec3(-0.62, 0.10, 0.78));
       float altitude = clamp(direction.y * 1.65, 0.0, 1.0);
-      vec3 horizon = vec3(0.30, 0.55, 0.73);
-      vec3 zenith = vec3(0.055, 0.27, 0.61);
+      vec3 horizon = vec3(0.48, 0.48, 0.62);
+      vec3 zenith = vec3(0.045, 0.24, 0.58);
       vec3 color = mix(horizon, zenith, pow(altitude, 0.72));
 
       float sunAmount = max(dot(direction, sunDirection), 0.0);
@@ -546,13 +698,21 @@
       vec2 screenUv = fragmentCoordinate / iResolution;
       float mountains = mountainMask(screenUv);
       if (mountains > 0.001) {
-        fragmentColor = vec4(acesTonemap(mountainColor(screenUv) * 1.25), 1.0);
+        vec3 landscape = compositeCruiseShip(screenUv, mountainColor(screenUv));
+        vec3 mountainComposite = landscape;
+        if (mountains < 0.999) {
+          vec3 edgeRay = getRay(fragmentCoordinate);
+          vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay));
+          mountainComposite = mix(edgeSky, landscape, mountains);
+        }
+        fragmentColor = vec4(acesTonemap(mountainComposite * 1.25), 1.0);
         return;
       }
 
       vec3 ray = getRay(fragmentCoordinate);
       if (ray.y >= 0.0) {
-        fragmentColor = vec4(acesTonemap(skyColor(ray) * mix(1.28, 2.0, u_night)), 1.0);
+        vec3 sky = compositeCruiseShip(screenUv, skyColor(ray));
+        fragmentColor = vec4(acesTonemap(sky * mix(1.28, 2.0, u_night)), 1.0);
         return;
       }
 
@@ -580,7 +740,12 @@
       vec3 reflection = skyColor(reflectionDirection);
       vec2 reflectionScreen = dirToScreenUV(reflectionDirection);
       if (reflectionScreen.x >= 0.0 && reflectionScreen.x <= 1.0 && reflectionScreen.y >= 0.0 && reflectionScreen.y <= 1.0) {
-        reflection = mix(reflection, mountainSurfaceColor(reflectionScreen), mountainMask(reflectionScreen));
+        // Daylight water catches far more sky than mountain. A full-strength
+        // terrain reflection reads as a cast shadow and wrongly implies that
+        // the sun is behind the ridge; keep that stronger mirror only at night.
+        float mountainReflection = mountainMask(reflectionScreen);
+        float reflectionWeight = mountainReflection * mix(0.38, 0.92, u_night);
+        reflection = mix(reflection, mountainSurfaceColor(reflectionScreen), reflectionWeight);
       }
 
       // Reuse the woven ocean geometry for reflected lights, but evaluate it
@@ -608,6 +773,24 @@
       color += waterBody * (1.0 - fresnel) * 0.72;
       vec3 fogColor = mix(vec3(0.10, 0.29, 0.48), vec3(0.03, 0.035, 0.05), u_night);
       color = mix(color, fogColor, 1.0 - exp(-distanceToWater * 0.02));
+
+      // The low sun needs a corresponding path across the water. Keep it
+      // broad and woven into the ocean bands, with a clock slow enough to read
+      // as distant light rather than flickering particles.
+      float waterProgress = clamp((0.395 - screenUv.y) / 0.395, 0.0, 1.0);
+      float pathDrift = (fbm(vec2(screenUv.y * 15.0, iTime * 0.002)) - 0.5) * mix(0.010, 0.055, waterProgress);
+      float pathWidth = mix(0.028, 0.17, waterProgress);
+      float pathCenter = SUN_SCREEN_X + waterProgress * 0.075 + pathDrift;
+      float pathDistance = (screenUv.x - pathCenter) / pathWidth;
+      float solarPath = exp(-pathDistance * pathDistance * 1.12);
+      float bandWarp = fbm(vec2(screenUv.x * 14.0, screenUv.y * 31.0 - iTime * 0.003));
+      float lightBands = 0.5 + 0.5 * sin(screenUv.y * 520.0 + bandWarp * 8.0);
+      float brokenPath = mix(0.42, 1.0, smoothstep(0.22, 0.88, lightBands));
+      float pathFade = smoothstep(0.01, 0.09, waterProgress) * (1.0 - smoothstep(0.82, 1.0, waterProgress));
+      vec3 pathColor = mix(vec3(1.02, 0.70, 0.37), vec3(0.70, 0.68, 0.59), waterProgress);
+      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night) * 0.19;
+
+      color = compositeCruiseShip(screenUv, color);
       fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night)), 1.0);
     }
 
@@ -717,6 +900,10 @@
   var oceanSkyline = gl.getUniformLocation(oceanProgram, "u_skyline");
   var oceanDayPhoto = gl.getUniformLocation(oceanProgram, "u_day_photo");
   var oceanDayPhotoReady = gl.getUniformLocation(oceanProgram, "u_day_photo_ready");
+  var oceanMountainPhoto = gl.getUniformLocation(oceanProgram, "u_mountain_photo");
+  var oceanMountainPhotoReady = gl.getUniformLocation(oceanProgram, "u_mountain_photo_ready");
+  var oceanShip = gl.getUniformLocation(oceanProgram, "u_ship");
+  var oceanShipReady = gl.getUniformLocation(oceanProgram, "u_ship_ready");
   var oceanRipples = gl.getUniformLocation(oceanProgram, "u_ripples");
   var oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
 
@@ -766,6 +953,50 @@
     if (reducedMotion) renderOnce();
   };
   dayPhotoImage.src = canvas.dataset.dayScene || "/images/herceg-novi-day.webp";
+
+  var mountainPhotoReady = 0;
+  var mountainPhotoTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, mountainPhotoTexture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([30, 64, 74, 255]));
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  var mountainPhotoImage = new Image();
+  mountainPhotoImage.onload = function () {
+    gl.bindTexture(gl.TEXTURE_2D, mountainPhotoTexture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mountainPhotoImage);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    mountainPhotoReady = 1;
+    if (reducedMotion) renderOnce();
+  };
+  mountainPhotoImage.src = canvas.dataset.mountainScene || "/images/herceg-novi-mountains.webp";
+
+  var shipReady = 0;
+  var shipTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, shipTexture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 0, 0]));
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  var shipImage = new Image();
+  shipImage.onload = function () {
+    gl.bindTexture(gl.TEXTURE_2D, shipTexture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, shipImage);
+    gl.generateMipmap(gl.TEXTURE_2D);
+    gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    shipReady = 1;
+    if (reducedMotion) renderOnce();
+  };
+  shipImage.src = "/images/herceg-novi-cruise-ship.png";
 
   var framebuffer = gl.createFramebuffer();
   var renderTexture = gl.createTexture();
@@ -873,6 +1104,14 @@
     gl.bindTexture(gl.TEXTURE_2D, dayPhotoTexture);
     gl.uniform1i(oceanDayPhoto, 2);
     gl.uniform1f(oceanDayPhotoReady, dayPhotoReady);
+    gl.activeTexture(gl.TEXTURE3);
+    gl.bindTexture(gl.TEXTURE_2D, shipTexture);
+    gl.uniform1i(oceanShip, 3);
+    gl.uniform1f(oceanShipReady, shipReady);
+    gl.activeTexture(gl.TEXTURE4);
+    gl.bindTexture(gl.TEXTURE_2D, mountainPhotoTexture);
+    gl.uniform1i(oceanMountainPhoto, 4);
+    gl.uniform1f(oceanMountainPhotoReady, mountainPhotoReady);
     gl.uniform4fv(oceanRipples, rippleUniforms());
     gl.uniform1i(oceanRippleCount, ripples.length);
     gl.drawArrays(gl.TRIANGLES, 0, 6);

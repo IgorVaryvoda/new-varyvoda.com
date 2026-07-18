@@ -8,14 +8,14 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 
 <style>
 .two-theories-standfirst {
-  color: #b9c0cf;
+  color: var(--slate);
   font-size: 1.95rem;
   line-height: 1.65;
   margin-bottom: 2.2rem;
 }
 
 .two-theories-meta {
-  color: #7d8392;
+  color: var(--muted);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 1.15rem;
   letter-spacing: 0.08em;

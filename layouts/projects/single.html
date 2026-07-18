@@ -41,6 +41,15 @@
           {{ else }}
             <img class="Sirv" data-src="{{ . }}?w=1600" src="{{ . }}?w=1600&q=15" alt="{{ $.Title }} interface">
           {{ end }}
+          {{ if or $.Params.project_url $.Params.hero_secondary_url $.Params.github_url $.Params.app_store_url $.Params.play_store_url }}
+          <nav class="project-system-visual-actions" aria-label="{{ $.Title }} links">
+            {{ with $.Params.project_url }}<a class="project-system-visual-primary" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }}</a>{{ end }}
+            {{ with $.Params.hero_secondary_url }}<a href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read more" }} <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with $.Params.github_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
+            {{ with $.Params.app_store_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS</a>{{ end }}
+            {{ with $.Params.play_store_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">Android</a>{{ end }}
+          </nav>
+          {{ end }}
         </figure>
         {{ end }}
       </div>
