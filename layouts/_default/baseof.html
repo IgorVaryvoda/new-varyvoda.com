@@ -69,8 +69,8 @@
       {{ partial "footer.html" . }}
     </main>
     {{ if hugo.IsServer }}
-      {{ $atmosphereScript := resources.Get "js/atmosphere.js" }}
-      <script src="{{ $atmosphereScript.RelPermalink }}" defer></script>
+      {{ $atmosphereScript := resources.Get "js/atmosphere.js" | fingerprint }}
+      <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
     {{ else }}
       {{ $atmosphereScript := resources.Get "js/atmosphere.js" | minify | fingerprint }}
       <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>

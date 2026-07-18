@@ -138,7 +138,9 @@
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
       float detail = terrainDetail(screenUv, 2.7, 0.72);
       float haze = 1.0 - height;
-      vec3 day = mix(vec3(0.13, 0.18, 0.20), vec3(0.23, 0.29, 0.30), haze * 0.56 + detail * 0.16);
+      vec3 day = mix(vec3(0.045, 0.105, 0.15), vec3(0.19, 0.30, 0.37), haze * 0.66 + detail * 0.14);
+      day += vec3(0.012, 0.025, 0.035) * (1.0 - height) * (0.35 + detail * 0.65);
+      day *= 0.90 + detail * 0.18;
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
@@ -149,7 +151,9 @@
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
       float detail = terrainDetail(screenUv, 7.1, 1.0);
       float valleys = fbm(vec2(sceneX(screenUv.x) * 17.0 + 4.0, screenUv.y * 28.0));
-      vec3 day = mix(vec3(0.055, 0.075, 0.067), vec3(0.145, 0.17, 0.145), detail * 0.55 + valleys * 0.12 + height * 0.06);
+      vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
+      day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
+      day *= 0.80 + detail * 0.34 + valleys * 0.06;
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       return mix(day, night, u_night);
     }
@@ -394,8 +398,33 @@
     }
 
     vec3 daySky(vec3 direction) {
-      vec3 sunDirection = normalize(vec3(-0.07735, 0.6, 0.57735));
-      return atmosphere(direction, sunDirection) * 0.5 + vec3(0.12);
+      vec3 sunDirection = normalize(vec3(-0.42, 0.58, 0.70));
+      float altitude = clamp(direction.y * 1.65, 0.0, 1.0);
+      vec3 horizon = vec3(0.30, 0.55, 0.73);
+      vec3 zenith = vec3(0.055, 0.27, 0.61);
+      vec3 color = mix(horizon, zenith, pow(altitude, 0.72));
+
+      float sunAmount = max(dot(direction, sunDirection), 0.0);
+      float sunGlow = pow(sunAmount, 9.0);
+      float sunCore = pow(sunAmount, 180.0);
+      color += vec3(1.0, 0.72, 0.42) * sunGlow * 0.05;
+      color += vec3(1.0, 0.94, 0.79) * sunCore * 0.34;
+
+      vec2 screenUv = dirToScreenUV(direction);
+      if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
+        float sceneUvX = sceneX(screenUv.x);
+        vec2 broadUv = vec2(sceneUvX * 2.35 + iTime * 0.0016, screenUv.y * 5.4);
+        float broad = fbm(broadUv);
+        vec2 wispUv = vec2(sceneUvX * 6.8 - iTime * 0.0022 + broad * 0.75, screenUv.y * 16.0);
+        float wisps = fbm(wispUv) * 0.72 + fbm(wispUv * vec2(0.48, 0.72) + vec2(3.7, -1.4)) * 0.28;
+        float clouds = smoothstep(0.49, 0.64, wisps);
+        float cloudBand = smoothstep(0.53, 0.64, screenUv.y) * (1.0 - smoothstep(0.87, 0.97, screenUv.y));
+        float cloudTaper = smoothstep(0.03, 0.16, sceneUvX) * (1.0 - smoothstep(0.72, 0.96, sceneUvX));
+        clouds *= cloudBand * cloudTaper;
+        color = mix(color, vec3(0.86, 0.93, 0.97), clouds * 0.26);
+      }
+
+      return color;
     }
 
     vec3 nightSky(vec3 direction) {
@@ -450,7 +479,7 @@
 
       vec3 ray = getRay(fragmentCoordinate);
       if (ray.y >= 0.0) {
-        fragmentColor = vec4(acesTonemap(skyColor(ray) * 2.0), 1.0);
+        fragmentColor = vec4(acesTonemap(skyColor(ray) * mix(1.28, 2.0, u_night)), 1.0);
         return;
       }
 
@@ -464,7 +493,9 @@
 
       float epsilon = max(0.01, distanceToWater * 0.004);
       vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH);
-      normal = mix(normal, vec3(0.0, 1.0, 0.0), 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1));
+      float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
+      float daylightCalm = (1.0 - u_night) * 0.64;
+      normal = mix(normal, vec3(0.0, 1.0, 0.0), clamp(distanceFlatten + daylightCalm, 0.0, 0.95));
 
       float fresnelSharp = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-normal, ray)), 5.0);
       float fresnelFlat = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(vec3(0.0, 1.0, 0.0), -ray)), 5.0);
@@ -497,12 +528,14 @@
         reflection += reflectedLights * 0.82;
       }
 
-      vec3 scatteringBase = mix(vec3(0.08, 0.08, 0.09), vec3(0.02, 0.02, 0.03), u_night);
+      vec3 scatteringBase = mix(vec3(0.008, 0.055, 0.13), vec3(0.02, 0.02, 0.03), u_night);
       vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
       vec3 color = fresnel * reflection + scattering;
-      vec3 fogColor = mix(vec3(0.55, 0.55, 0.58), vec3(0.03, 0.035, 0.05), u_night);
+      vec3 waterBody = mix(vec3(0.006, 0.05, 0.13), vec3(0.012, 0.014, 0.022), u_night);
+      color += waterBody * (1.0 - fresnel) * 0.72;
+      vec3 fogColor = mix(vec3(0.10, 0.29, 0.48), vec3(0.03, 0.035, 0.05), u_night);
       color = mix(color, fogColor, 1.0 - exp(-distanceToWater * 0.02));
-      fragmentColor = vec4(acesTonemap(color * mix(1.4, 1.9, u_night)), 1.0);
+      fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night)), 1.0);
     }
 
     void main() {
@@ -536,19 +569,23 @@
 
     void main() {
       vec4 source = texture2D(u_image, v_texCoord);
-      float gray = dot(source.rgb, vec3(0.299, 0.587, 0.114));
+      float sourceGray = dot(source.rgb, vec3(0.299, 0.587, 0.114));
       vec2 uv = gl_FragCoord.xy * u_noiseScale / u_resolution;
       float seed = dot(uv, vec2(12.9898, 78.233));
-      float noise = fract(sin(seed) * 43758.5453 + u_time * 1.5);
-      float variance = mix(0.75, 0.6, u_night);
-      noise = gaussian(noise, 0.0, variance * variance);
-      float intensity = mix(0.4, 0.065, u_night);
-      gray = clamp(gray + noise * (1.0 - gray) * intensity, 0.0, 1.0);
-      vec3 dark = mix(vec3(0.235), vec3(0.02), u_night);
-      vec3 light = mix(vec3(0.836), vec3(1.0), u_night);
-      vec3 monochrome = mix(dark, light, gray);
-      float warmHighlight = smoothstep(0.04, 0.42, source.r - source.b) * smoothstep(0.34, 0.86, source.r) * u_night;
-      gl_FragColor = vec4(mix(monochrome, source.rgb, warmHighlight * 0.82), 1.0);
+      float noiseSample = fract(sin(seed) * 43758.5453 + u_time * 1.5);
+
+      vec3 dayColor = mix(vec3(sourceGray), source.rgb, 1.10);
+      dayColor = (dayColor - 0.5) * 1.055 + 0.5;
+      dayColor += (noiseSample - 0.5) * 0.018 * (0.55 + sourceGray * 0.45);
+      dayColor = clamp(dayColor, 0.0, 1.0);
+
+      float nightNoise = gaussian(noiseSample, 0.0, 0.36);
+      float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.065, 0.0, 1.0);
+      vec3 monochrome = mix(vec3(0.02), vec3(1.0), nightGray);
+      float warmHighlight = smoothstep(0.04, 0.42, source.r - source.b) * smoothstep(0.34, 0.86, source.r);
+      vec3 nightColor = mix(monochrome, source.rgb, warmHighlight * 0.82);
+
+      gl_FragColor = vec4(mix(dayColor, nightColor, u_night), 1.0);
     }
   `;
 
@@ -658,7 +695,7 @@
     var width = canvas.clientWidth || window.innerWidth;
     var height = canvas.clientHeight || window.innerHeight;
     var lowDpi = (window.devicePixelRatio || 1) < 1.5;
-    var scale = lowDpi ? 0.68 : 0.4;
+    var scale = lowDpi ? 0.82 : 0.5;
     var pixelRatio = window.devicePixelRatio || 1;
     var renderWidth = Math.max(1, Math.round(width * pixelRatio * scale));
     var renderHeight = Math.max(1, Math.round(height * pixelRatio * scale));
