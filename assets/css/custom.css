@@ -1616,7 +1616,7 @@ img { max-width: 100%; }
 
 .project-system-flow strong {
   color: var(--harbor-ink);
-  font-size: var(--type-compact-label);
+  font-size: var(--type-compact-action);
   font-weight: 550;
   letter-spacing: 0.02em;
   text-transform: uppercase;
