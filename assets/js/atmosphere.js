@@ -1,5 +1,6 @@
 // Raw WebGL ocean based on afl_ext's MIT-licensed "ocean weaves" shader.
-// The mountain ridge is extracted from Igor's Herceg Novi photograph.
+// The daylight landscape and mountain ridge are extracted from Igor's
+// Herceg Novi photograph. Night mode keeps the procedural treatment.
 (function () {
   var canvas = document.querySelector("[data-atmosphere]");
   if (!canvas) return;
@@ -39,6 +40,8 @@
     uniform float iTime;
     uniform float u_night;
     uniform sampler2D u_skyline;
+    uniform sampler2D u_day_photo;
+    uniform float u_day_photo_ready;
     uniform vec4 u_ripples[8];
     uniform int u_rippleCount;
 
@@ -96,7 +99,18 @@
     }
 
     vec4 skylineAt(float screenX) {
-      return texture2D(u_skyline, vec2(sceneX(screenX), 0.5));
+      float x = sceneX(screenX);
+      float texel = 1.0 / 512.0;
+      vec4 center = texture2D(u_skyline, vec2(x, 0.5)) * 0.40;
+      vec4 inner = (
+        texture2D(u_skyline, vec2(clamp(x - texel, 0.0, 1.0), 0.5)) +
+        texture2D(u_skyline, vec2(clamp(x + texel, 0.0, 1.0), 0.5))
+      ) * 0.24;
+      vec4 outer = (
+        texture2D(u_skyline, vec2(clamp(x - texel * 2.0, 0.0, 1.0), 0.5)) +
+        texture2D(u_skyline, vec2(clamp(x + texel * 2.0, 0.0, 1.0), 0.5))
+      ) * 0.06;
+      return center + inner + outer;
     }
 
     float nearRidgeAt(float screenX) {
@@ -109,7 +123,7 @@
 
     float mountainLayerMask(vec2 screenUv, float ridge) {
       float horizon = 0.395;
-      float aa = 1.75 / iResolution.y;
+      float aa = 2.25 / iResolution.y;
       float aboveWater = smoothstep(horizon - aa, horizon + aa, screenUv.y);
       float belowRidge = 1.0 - smoothstep(ridge - aa, ridge + aa, screenUv.y);
       return aboveWater * belowRidge;
@@ -121,6 +135,59 @@
 
     float farMountainMask(vec2 screenUv) {
       return mountainLayerMask(screenUv, farRidgeAt(screenUv.x));
+    }
+
+    vec3 srgbToLinear(vec3 color) {
+      return pow(max(color, vec3(0.0)), vec3(2.2));
+    }
+
+    vec3 photoSkyColor(vec2 screenUv) {
+      float horizon = 0.395;
+      float skyHeight = clamp((screenUv.y - horizon) / (1.0 - horizon), 0.0, 1.0);
+      float sourceY = mix(0.535, 0.995, pow(skyHeight, 0.94));
+      float drift = iTime * 0.00004;
+      vec2 photoUv = vec2(clamp(sceneX(screenUv.x) + drift, 0.003, 0.997), sourceY);
+      vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb) * 1.42;
+      float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
+      photo = mix(vec3(luminance), photo, 1.34);
+      photo *= mix(1.04, 0.72, skyHeight);
+      vec3 horizonHaze = vec3(0.35, 0.55, 0.69);
+      return mix(horizonHaze, photo, smoothstep(0.0, 0.20, skyHeight));
+    }
+
+    vec3 photoMountainColor(vec2 screenUv, float ridge, float depth) {
+      float horizon = 0.395;
+      float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
+      float x = sceneX(screenUv.x);
+
+      // Use clean photographic material atlases rather than literal screen
+      // coordinates: the far-range patch excludes the tower, while the near
+      // patch stays entirely inside the right headland and above the liner.
+      float farRepeat = abs(fract(x * 1.65 + 0.17) * 2.0 - 1.0);
+      float nearRepeat = abs(fract(x * 1.95 + 0.11) * 2.0 - 1.0);
+      float farX = mix(0.43, 0.59, farRepeat);
+      float nearX = mix(0.72, 0.965, nearRepeat);
+      float sampleX = mix(farX, nearX, depth);
+      float sourceY = mix(mix(0.345, 0.388, height), mix(0.355, 0.425, height), depth);
+      sourceY += sin(x * 19.0 + depth * 3.7) * mix(0.002, 0.0045, depth);
+      vec2 photoUv = vec2(sampleX, sourceY);
+      vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb);
+      vec2 detailStep = vec2(mix(0.0034, 0.0022, depth), mix(0.0020, 0.0014, depth));
+      vec3 localAverage = (
+        srgbToLinear(texture2D(u_day_photo, photoUv + vec2(detailStep.x, 0.0)).rgb) +
+        srgbToLinear(texture2D(u_day_photo, photoUv - vec2(detailStep.x, 0.0)).rgb) +
+        srgbToLinear(texture2D(u_day_photo, photoUv + vec2(0.0, detailStep.y)).rgb) +
+        srgbToLinear(texture2D(u_day_photo, photoUv - vec2(0.0, detailStep.y)).rgb)
+      ) * 0.25;
+      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 7.5, -0.24, 0.24);
+      photo *= 1.0 + terrainRelief;
+
+      float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
+      vec3 chroma = mix(vec3(luminance), photo, mix(0.62, 0.96, depth));
+      vec3 coastalHaze = vec3(0.13, 0.24, 0.31);
+      vec3 graded = chroma * mix(1.72, 1.58, depth);
+      graded = mix(coastalHaze, graded, mix(0.48, 0.90, depth));
+      return graded;
     }
 
     float terrainDetail(vec2 screenUv, float seed, float depthScale) {
@@ -141,6 +208,7 @@
       vec3 day = mix(vec3(0.045, 0.105, 0.15), vec3(0.19, 0.30, 0.37), haze * 0.66 + detail * 0.14);
       day += vec3(0.012, 0.025, 0.035) * (1.0 - height) * (0.35 + detail * 0.65);
       day *= 0.90 + detail * 0.18;
+      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_day_photo_ready * 0.88);
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
@@ -154,6 +222,7 @@
       vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
       day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
+      day = mix(day, photoMountainColor(screenUv, ridge, 1.0), u_day_photo_ready * 0.94);
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       return mix(day, night, u_night);
     }
@@ -411,7 +480,11 @@
       color += vec3(1.0, 0.94, 0.79) * sunCore * 0.34;
 
       vec2 screenUv = dirToScreenUV(direction);
-      if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
+      if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.395 && screenUv.y <= 1.0) {
+        color = mix(color, photoSkyColor(screenUv), u_day_photo_ready * 0.96);
+      }
+
+      if (u_day_photo_ready < 0.5 && screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
         float sceneUvX = sceneX(screenUv.x);
         vec2 broadUv = vec2(sceneUvX * 2.35 + iTime * 0.0016, screenUv.y * 5.4);
         float broad = fbm(broadUv);
@@ -642,6 +715,8 @@
   var oceanTime = gl.getUniformLocation(oceanProgram, "iTime");
   var oceanNight = gl.getUniformLocation(oceanProgram, "u_night");
   var oceanSkyline = gl.getUniformLocation(oceanProgram, "u_skyline");
+  var oceanDayPhoto = gl.getUniformLocation(oceanProgram, "u_day_photo");
+  var oceanDayPhotoReady = gl.getUniformLocation(oceanProgram, "u_day_photo_ready");
   var oceanRipples = gl.getUniformLocation(oceanProgram, "u_ripples");
   var oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
 
@@ -664,12 +739,33 @@
   var skylineImage = new Image();
   skylineImage.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skylineImage);
   };
   skylineImage.onerror = function () {
     canvas.classList.add("ambient-canvas-fallback");
   };
   skylineImage.src = canvas.dataset.skyline || "/images/herceg-novi-skyline.png";
+
+  var dayPhotoReady = 0;
+  var dayPhotoTexture = gl.createTexture();
+  gl.bindTexture(gl.TEXTURE_2D, dayPhotoTexture);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([92, 151, 190, 255]));
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+  var dayPhotoImage = new Image();
+  dayPhotoImage.onload = function () {
+    gl.bindTexture(gl.TEXTURE_2D, dayPhotoTexture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, dayPhotoImage);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+    dayPhotoReady = 1;
+    if (reducedMotion) renderOnce();
+  };
+  dayPhotoImage.src = canvas.dataset.dayScene || "/images/herceg-novi-day.webp";
 
   var framebuffer = gl.createFramebuffer();
   var renderTexture = gl.createTexture();
@@ -695,7 +791,7 @@
     var width = canvas.clientWidth || window.innerWidth;
     var height = canvas.clientHeight || window.innerHeight;
     var lowDpi = (window.devicePixelRatio || 1) < 1.5;
-    var scale = lowDpi ? 0.82 : 0.5;
+    var scale = lowDpi ? 1.0 : 0.5;
     var pixelRatio = window.devicePixelRatio || 1;
     var renderWidth = Math.max(1, Math.round(width * pixelRatio * scale));
     var renderHeight = Math.max(1, Math.round(height * pixelRatio * scale));
@@ -773,6 +869,10 @@
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
     gl.uniform1i(oceanSkyline, 1);
+    gl.activeTexture(gl.TEXTURE2);
+    gl.bindTexture(gl.TEXTURE_2D, dayPhotoTexture);
+    gl.uniform1i(oceanDayPhoto, 2);
+    gl.uniform1f(oceanDayPhotoReady, dayPhotoReady);
     gl.uniform4fv(oceanRipples, rippleUniforms());
     gl.uniform1i(oceanRippleCount, ripples.length);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
