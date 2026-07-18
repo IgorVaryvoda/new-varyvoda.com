@@ -30,6 +30,10 @@ same layout files.
 | 007 | Make `make quality-gate` actually gate quality (htmltest) | P2 | M | 002 | DONE (`3cff26f`, reviewed+approved 2026-07-03; CheckImages off — Sirv lazy imgs have no src by design; 2 dead anchors fixed in image-seo) |
 | 008 | Security + caching headers at the real edge (runbook + verifier) | P3 | M | 002 (hard) | DONE (`4c006c3`, reviewed+approved 2026-07-03; operator must apply Cloudflare rules per docs/edge-headers.md, then re-run scripts/check-headers.sh) |
 | 009 | Spike: how should the build-record page live inside Hugo | P3 | M | — | DONE (`2ea3775`, reviewed+approved 2026-07-03; design doc at plans/notes/009-build-record-design.md; recommends Option B iff more evidence pages are planned — operator question open) |
+| 010 | Make the intended typography own every redesigned page | P1 | M | — | DONE (`5be6ec0`, reviewed+approved 2026-07-18) |
+| 011 | Give compact interface type a legible minimum scale | P1 | S | 010 | DONE (`5537083`, reviewed+approved 2026-07-18) |
+| 012 | Make the mobile menu natively focusable and stateful | P1 | S | — | DONE (`3760150`, reviewed+approved 2026-07-18) |
+| 013 | Pause the atmospheric renderer when no scene surface is visible | P2 | M | — | DONE (`70cc7e5`, reviewed+approved 2026-07-18) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -41,6 +45,16 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **007 after 002**: its CI step goes into the workflow that 002 confirms as the keeper.
 - **008 hard-depends on 002**: header configuration lives wherever production actually is; 008 assumes the SFTP+Cloudflare conclusion and STOPs otherwise.
 - **001, 002, 003, 009 are mutually independent** and can start in any order (still run one at a time).
+- **011 after 010**: both edit the typography layer in `assets/css/custom.css`; 011 reuses the corrected type foundation and must not race it.
+- **010, 012, and 013 are independent**: 010 owns typography CSS, 012 owns the mobile disclosure markup/styles, and 013 owns only renderer lifecycle code. Run at most two Codex jobs concurrently per the improve-codex contract.
+
+## 2026-07-18 design audit
+
+Plans 010–013 were selected together after a focused rendered audit at commit
+`a450b29`. The baseline `make quality-gate` passed 29 documents. The audit was
+limited to design, typography, responsive interaction, and atmospheric-motion
+performance; it did not re-audit the previously declined security/deployment
+items below.
 
 ## Key facts discovered during the audit (context for all executors)
 
