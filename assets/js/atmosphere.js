@@ -1226,6 +1226,7 @@
 
   function refreshFrame() {
     if (!contextAvailable) return;
+    if (document.hidden) return;
     cancelFrame();
     var now = performance.now();
     drawFrame(now, reducedMotion ? 3 : currentSceneTime(now), animationEligible());
@@ -1233,7 +1234,12 @@
   }
 
   window.addEventListener("resize", function () {
-    refreshFrame();
+    resize();
+    if (animationEligible()) {
+      scheduleFrame();
+    } else if (!document.hidden) {
+      refreshFrame();
+    }
   }, { passive: true });
   window.addEventListener("varyvoda:themechange", function () {
     if (reducedMotion || !animationEligible()) refreshFrame();
