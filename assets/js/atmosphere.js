@@ -148,10 +148,25 @@
       float horizon = 0.395;
       float skyHeight = clamp((screenUv.y - horizon) / (1.0 - horizon), 0.0, 1.0);
       float sourceY = mix(0.535, 0.995, pow(skyHeight, 0.94));
-      float drift = iTime * 0.00004;
-      vec2 photoUv = vec2(clamp(sceneX(screenUv.x) + drift, 0.003, 0.997), sourceY);
+      float sceneUvX = sceneX(screenUv.x);
+
+      // Let the photographed cloud deck breathe instead of sliding the whole
+      // sky like a flat backdrop. Broad wind shear bends the cloud mass while
+      // a finer layer travels east at a slightly different speed.
+      float cloudTime = iTime * 0.010;
+      float broadFlow = fbm(vec2(sceneUvX * 2.1 - cloudTime, skyHeight * 4.6));
+      float fineFlow = fbm(vec2(sceneUvX * 6.4 - cloudTime * 2.3 + broadFlow * 0.82, skyHeight * 11.8));
+      float shear = (broadFlow - 0.5) * mix(0.0025, 0.0085, skyHeight);
+      shear += sin(skyHeight * 15.0 - cloudTime * 1.7) * 0.0014;
+      float lift = (fineFlow - 0.5) * 0.0032;
+      vec2 photoUv = vec2(
+        clamp(sceneUvX + shear, 0.003, 0.997),
+        clamp(sourceY + lift, 0.535, 0.997)
+      );
       vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb) * 1.42;
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
+      vec3 upwindPhoto = srgbToLinear(texture2D(u_day_photo, photoUv - vec2(0.0045, 0.0)).rgb) * 1.42;
+      float upwindLuminance = dot(upwindPhoto, vec3(0.2126, 0.7152, 0.0722));
       photo = mix(vec3(luminance), photo, 1.18);
       photo *= mix(1.04, 0.72, skyHeight);
       float viewX = screenUv.x;
@@ -175,6 +190,16 @@
       float overexposure = clamp(halo * lowerSky * 0.86 + horizonBand * 0.38, 0.0, 0.94);
       sky = mix(sky, paleGold, overexposure);
       sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
+
+      // The moving veil is most visible inside the existing bright cloud
+      // structure. It adds soft depth, while the sun-facing edge catches a
+      // narrow white-gold glint that travels with the wind field.
+      float cloudBody = smoothstep(0.16, 0.54, luminance) * smoothstep(0.08, 0.34, skyHeight);
+      float movingVeil = smoothstep(0.44, 0.70, fineFlow * 0.68 + broadFlow * 0.32) * cloudBody;
+      float silverLining = smoothstep(0.006, 0.072, luminance - upwindLuminance);
+      silverLining *= cloudBody * leftField * (0.66 + movingVeil * 0.34);
+      sky = mix(sky, sky * vec3(0.89, 0.95, 1.04), movingVeil * 0.075);
+      sky += vec3(1.24, 1.06, 0.78) * silverLining * 0.18;
 
       float sunDistance = length((vec2(viewX, screenUv.y) - sunriseCenter) / vec2(1.0, 1.55));
       float sunAureole = exp(-pow(sunDistance / 0.058, 2.0));
