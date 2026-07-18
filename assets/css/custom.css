@@ -3,7 +3,7 @@
   --paper-raised: #f8faf9;
   --ink: #111820;
   --slate: #536068;
-  --muted: #7b878c;
+  --muted: #5f6b70;
   --rule: #cbd4d1;
   --rule-dark: #aebbb7;
   --accent: #2657d8;
@@ -19,13 +19,14 @@
   --harbor-deep: #d5dfdc;
   --harbor-raised: #f2f6f4;
   --harbor-ink: #111820;
-  --harbor-muted: #58666d;
+  --harbor-muted: #46555d;
   --harbor-rule: rgba(17, 24, 32, 0.17);
   --harbor-glow: rgba(74, 123, 137, 0.16);
   --harbor-shadow: rgba(30, 54, 62, 0.2);
   --tide-middle: rgba(213, 223, 220, 0.62);
   --footer-scene-edge: rgba(226, 233, 231, 0.96);
-  --footer-scene-veil: rgba(226, 233, 231, 0.16);
+  --footer-scene-veil: rgba(226, 233, 231, 0.84);
+  --home-scene-veil: rgba(238, 242, 241, 0.72);
   --mist-paper: #dfe7e5;
   --display: "Geologica", system-ui, sans-serif;
   --reading: "Literata", Georgia, serif;
@@ -66,6 +67,7 @@
   --tide-middle: rgba(10, 18, 23, 0.62);
   --footer-scene-edge: rgba(6, 11, 15, 0.94);
   --footer-scene-veil: rgba(6, 11, 15, 0.18);
+  --home-scene-veil: transparent;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -151,6 +153,10 @@ img { max-width: 100%; }
 .project-page > .project-header { margin-bottom: 0; }
 .page-inner .content { background: var(--paper); }
 
+:root:not([data-theme="dark"]) .page-home .content {
+  background: linear-gradient(180deg, var(--footer-scene-edge) 0%, var(--home-scene-veil) 15%, var(--home-scene-veil) 100%);
+}
+
 /* Global navigation */
 .site-header {
   position: relative;
@@ -166,6 +172,12 @@ img { max-width: 100%; }
 .kind-page.section-posts .site-header,
 .view-about .site-header,
 .view-contact .site-header {
+  background: var(--footer-scene-edge);
+  border-bottom-color: var(--harbor-rule);
+}
+
+:root:not([data-theme="dark"]) .page-home .site-header,
+:root:not([data-theme="dark"]) .has-system-hero .site-header {
   background: var(--footer-scene-edge);
   border-bottom-color: var(--harbor-rule);
 }
@@ -1211,6 +1223,10 @@ img { max-width: 100%; }
   overflow: hidden;
   margin-top: 0;
   background: transparent;
+}
+
+:root:not([data-theme="dark"]) .project-masthead--system {
+  background: linear-gradient(180deg, var(--footer-scene-edge) 0%, var(--footer-scene-veil) 48%, var(--footer-scene-edge) 100%);
 }
 
 .project-page--system { margin-top: 0; }
