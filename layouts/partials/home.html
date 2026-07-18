@@ -120,7 +120,7 @@
         <a class="text-link" href="/projects/">Full index</a>
       </header>
       <div class="selected-work-list">
-        {{ range $index, $project := first 3 (where (where $projects ".Params.featured" true) ".Params.hero" "ne" true) }}
+        {{ range $index, $project := first 4 (where (where $projects ".Params.featured" true) ".Params.hero" "ne" true) }}
         <a class="selected-project" href="{{ .RelPermalink }}">
           {{ with .Params.image }}
           <figure class="selected-project-visual">
