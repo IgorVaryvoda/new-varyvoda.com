@@ -231,13 +231,13 @@
       float sampleX = mix(farX, nearX, depth);
       float farY = mix(0.02, 0.48, pow(height, 0.92));
       float nearY = mix(0.52, 0.98, pow(height, 0.92));
-      // Keep the warp gentle on the far layer: its stretched material turns
-      // strong displacement into wavy melted smears.
-      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.022, 0.034, depth);
-      terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.007;
-      // Keep the crest-side sample shift small — a large shift drags
-      // material sideways near the ridge and smears the silhouette.
-      float slopeProjection = (height - 0.5) * mix(0.09, 0.06, depth);
+      // Almost no warp on the near layer: fbm displacement snakes straight
+      // through the photographed villages. It only ever existed to hide
+      // stretch banding, which the zoned single-orientation atlas no longer
+      // has. The featureless far haze keeps a whisper for variety.
+      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.022, 0.006, depth);
+      terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.003;
+      float slopeProjection = (height - 0.5) * mix(0.09, 0.03, depth);
       // Warp peaks mid-slope and calms at both the waterline and the crest,
       // so the silhouette edge stays steady.
       float warpEnvelope = 0.42 + (height - height * height) * 1.2;
