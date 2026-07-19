@@ -138,7 +138,9 @@
 
     float mountainLayerMask(vec2 screenUv, float ridge) {
       float horizon = 0.395;
-      float aa = 2.25 / iResolution.y;
+      // One-pixel antialiasing: the old 2.25px feather was tuned for the
+      // half-resolution canvas and reads as a fuzzy crest at native res.
+      float aa = 1.0 / iResolution.y;
       // The horizon is already a perfectly horizontal pixel boundary. Keeping
       // a soft mask here sends those partial pixels through the sky-edge blend
       // and creates a pale strip between land and water. Antialias only the
@@ -395,12 +397,14 @@
       float shoreGrid = 265.0;
       float shorelineWarm = 0.0;
       float shorelineCool = 0.0;
+      // All pixel-space sizes below were tuned at a ~900px-tall render.
+      float pxScale = iResolution.y / 900.0;
       for (int row = 0; row < 2; row++) {
         float rowSeed = seed + float(row) * 37.0;
         float shoreCell = floor(screenUv.x * shoreGrid);
         float shoreX = (shoreCell + hash21(vec2(shoreCell, rowSeed + 21.0))) / shoreGrid;
-        float shoreYpx = mix(0.34, 1.7, hash21(vec2(shoreCell, rowSeed + 22.0)))
-          + float(row) * mix(1.6, 3.4, hash21(vec2(shoreCell, rowSeed + 26.0)));
+        float shoreYpx = (mix(0.34, 1.7, hash21(vec2(shoreCell, rowSeed + 22.0)))
+          + float(row) * mix(1.6, 3.4, hash21(vec2(shoreCell, rowSeed + 26.0)))) * pxScale;
         vec2 shoreDeltaPx = vec2(
           (screenUv.x - shoreX) * iResolution.x,
           (screenUv.y - horizon) * iResolution.y - shoreYpx
@@ -414,7 +418,8 @@
         float shoreRadius = mix(0.20, 0.36, shoreSizeVariation);
         shoreRadius = mix(shoreRadius, mix(0.55, 0.95, shoreSizeVariation), step(0.78, shoreSizeClass));
         shoreRadius = mix(shoreRadius, mix(1.30, 2.00, shoreSizeVariation), step(0.965, shoreSizeClass));
-        float shorePoint = 1.0 - smoothstep(shoreRadius, shoreRadius + 0.30 + shoreRadius * 0.55, length(shoreDeltaPx));
+        shoreRadius *= pxScale;
+        float shorePoint = 1.0 - smoothstep(shoreRadius, shoreRadius + 0.30 * pxScale + shoreRadius * 0.55, length(shoreDeltaPx));
         float rowGate = row == 0 ? 1.0 : smoothstep(0.5, 0.95, population);
         // Squared population keeps town cores dense while the stretches
         // between settlements fall back to genuine darkness, matching the
@@ -444,7 +449,8 @@
       float radiusPx = mix(0.14, 0.26, sizeVariation);
       radiusPx = mix(radiusPx, mix(0.42, 0.68, sizeVariation), step(0.75, sizeClass));
       radiusPx = mix(radiusPx, mix(0.95, 1.35, sizeVariation), step(0.96, sizeClass));
-      float point = 1.0 - smoothstep(radiusPx, radiusPx + 0.28 + radiusPx * 0.5, length(deltaPx));
+      radiusPx *= pxScale;
+      float point = 1.0 - smoothstep(radiusPx, radiusPx + 0.28 * pxScale + radiusPx * 0.5, length(deltaPx));
       float roadLow = exp(-abs(height - (0.16 + 0.045 * sin(x * 18.0 + seed))) * 24.0);
       float roadHigh = exp(-abs(height - (0.38 + 0.055 * sin(x * 13.0 + seed * 0.7))) * 21.0);
       float neighbourhood = smoothstep(0.47, 0.69, fbm(vec2(x * 8.0 + seed, height * 6.0)));
@@ -498,7 +504,8 @@
         float by = (b == 0 ? nearRidgeAt(bx) : farRidgeAt(bx)) - 0.004;
         vec2 beaconDeltaPx = (screenUv - vec2(bx, by)) * iResolution.xy;
         float pulse = 0.65 + 0.35 * sin(iTime * 0.9 + float(b) * 2.1);
-        float beacon = (1.0 - smoothstep(0.5, 1.2, length(beaconDeltaPx))) * pulse;
+        float beaconScale = iResolution.y / 900.0;
+        float beacon = (1.0 - smoothstep(0.5 * beaconScale, 1.2 * beaconScale, length(beaconDeltaPx))) * pulse;
         beacons += vec3(1.6, 0.14, 0.10) * beacon;
       }
 
@@ -640,7 +647,9 @@
       vec2 starPos = vec2(hash21(cellId + 0.1), hash21(cellId + 0.2));
       vec2 starUv = (cellId + starPos) / grid;
       vec2 deltaPx = (screenUv - starUv) * iResolution.xy;
-      float sizePx = 0.25 + hash21(cellId + 0.3) * 0.45;
+      // Pixel radii were tuned at a ~900px-tall render; scale with the
+      // actual resolution so native hi-DPI keeps the same apparent size.
+      float sizePx = (0.25 + hash21(cellId + 0.3) * 0.45) * (iResolution.y / 900.0);
       float core = smoothstep(sizePx, sizePx * 0.2, length(deltaPx));
       float phase = hash21(cellId + 0.4) * 6.28318;
       float speed = 0.2 + hash21(cellId + 0.5) * 0.3;
