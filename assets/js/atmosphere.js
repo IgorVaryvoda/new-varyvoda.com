@@ -268,7 +268,10 @@
       // short columns stop at mid-slope forest instead.
       float farBandTop = mix(0.30, 0.48, smoothstep(0.012, 0.10, ridge - 0.395));
       float farY = mix(0.02, farBandTop, pow(height, 0.92));
-      float nearY = mix(0.52, 0.98, pow(height, 0.92));
+      // Same summit-row gate as the far band: low columns must not drag
+      // crest material down their compressed flanks.
+      float nearBandTop = mix(0.76, 0.98, smoothstep(0.012, 0.10, ridge - 0.395));
+      float nearY = mix(0.52, nearBandTop, pow(height, 0.92));
       // Almost no warp on the near layer: fbm displacement snakes straight
       // through the photographed villages. It only ever existed to hide
       // stretch banding, which the zoned single-orientation atlas no longer
