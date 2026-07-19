@@ -48,7 +48,20 @@
   </section>
   {{ partial "posts/math.html" . }}
 </article>
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+{{/* Migrate old article markup to native lazy loading without rewriting the original posts. */}}
+{{ if in .RawContent "data-src=" }}
+  {{ if hugo.IsServer }}
+    {{ $nativeLazyImages := resources.Get "js/native-lazy-images.js" }}
+    <script src="{{ $nativeLazyImages.RelPermalink }}" defer></script>
+  {{ else }}
+    {{ $nativeLazyImages := resources.Get "js/native-lazy-images.js" | minify | fingerprint }}
+    <script src="{{ $nativeLazyImages.RelPermalink }}" integrity="{{ $nativeLazyImages.Data.Integrity }}" crossorigin="anonymous" defer></script>
+  {{ end }}
+{{ end }}
+{{/* Keep Sirv only for legacy interactive zoom/spin viewers, after native images are claimed above. */}}
+{{ if in .RawContent "data-type=" }}
+  <script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
+{{ end }}
 {{ if hugo.IsServer }}
   {{ $scrollspy := resources.Get "js/article-scrollspy.js" }}
   <script src="{{ $scrollspy.RelPermalink }}" defer></script>

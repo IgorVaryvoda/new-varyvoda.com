@@ -37,9 +37,15 @@
         {{ with .Params.image }}
         <a class="build-visual" href="{{ $project.RelPermalink }}" aria-label="View the Sirv AI Studio project">
           {{ if hasPrefix . "/" }}
-            <img src="{{ . }}" alt="Sirv AI Studio interface" decoding="async">
+            <img src="{{ . }}" alt="Sirv AI Studio interface" loading="lazy" decoding="async">
           {{ else }}
-            <img class="Sirv" data-src="{{ . }}?w=1500" src="{{ . }}?w=1500&q=20" alt="Sirv AI Studio interface">
+            <img
+              src="{{ . }}?w=800"
+              srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1500 1500w"
+              sizes="(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)"
+              alt="Sirv AI Studio interface"
+              loading="lazy"
+              decoding="async">
           {{ end }}
         </a>
         {{ end }}
@@ -101,7 +107,13 @@
             {{ if hasPrefix . "/" }}
               <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="lazy" decoding="async">
             {{ else }}
-              <img class="Sirv" data-src="{{ . }}?w=1400" src="{{ . }}?w=1400&q=15" alt="{{ $project.Title }} interface">
+              <img
+                src="{{ . }}?w=800"
+                srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1100 1100w, {{ . }}?w=1400 1400w"
+                sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw"
+                alt="{{ $project.Title }} interface"
+                loading="lazy"
+                decoding="async">
             {{ end }}
           </figure>
           {{ end }}
@@ -126,4 +138,3 @@
   </section>
 
 </div>
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>

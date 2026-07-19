@@ -35,9 +35,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://scripts.sirv.com" crossorigin>
     <link rel="preconnect" href="https://cdn.earthroulette.com">
-    <link rel="preconnect" href="https://sirv-cdn.sirv.com">
+    {{ if or .IsHome (and .IsSection (eq .Section "projects")) }}
+      <link rel="preconnect" href="https://iantiark.sirv.com">
+    {{ end }}
+    {{ if and .IsPage (eq .Section "posts") (in .RawContent "data-type=") }}
+      <link rel="preconnect" href="https://scripts.sirv.com" crossorigin>
+    {{ end }}
     <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
     {{ if hugo.IsServer }}
       {{ $themeScript := resources.Get "js/theme.js" }}

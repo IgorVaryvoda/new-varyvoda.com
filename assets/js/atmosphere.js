@@ -44,6 +44,7 @@
     uniform vec2 iResolution;
     uniform float iTime;
     uniform float u_night;
+    uniform float u_noiseScale;
     uniform sampler2D u_skyline;
     uniform sampler2D u_day_photo;
     uniform float u_day_photo_ready;
@@ -1203,57 +1204,34 @@
       fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night) * waterLift), 1.0);
     }
 
-    void main() {
-      mainImage(gl_FragColor, gl_FragCoord.xy);
-    }
-  `;
-
-  var postVertexSource = `
-    attribute vec2 a_position;
-    attribute vec2 a_texCoord;
-    varying vec2 v_texCoord;
-    void main() {
-      gl_Position = vec4(a_position, 0.0, 1.0);
-      v_texCoord = a_texCoord;
-    }
-  `;
-
-  // Film-grain post pass based on Martin Upitis's film grain shader.
-  var postFragmentSource = `
-    precision highp float;
-    uniform sampler2D u_image;
-    uniform vec2 u_resolution;
-    uniform float u_time;
-    uniform float u_night;
-    uniform float u_noiseScale;
-    varying vec2 v_texCoord;
-
     float gaussian(float value, float mean, float deviation) {
       return (1.0 / (deviation * sqrt(6.283))) * exp(-(((value - mean) * (value - mean)) / (2.0 * deviation * deviation)));
     }
 
-    void main() {
-      vec4 source = texture2D(u_image, v_texCoord);
-      float sourceGray = dot(source.rgb, vec3(0.299, 0.587, 0.114));
-      vec2 uv = gl_FragCoord.xy * u_noiseScale / u_resolution;
+    vec3 filmGrade(vec3 source, vec2 fragmentCoordinate) {
+      float sourceGray = dot(source, vec3(0.299, 0.587, 0.114));
+      vec2 uv = fragmentCoordinate * u_noiseScale / iResolution;
       float seed = dot(uv, vec2(12.9898, 78.233));
-      float noiseSample = fract(sin(seed) * 43758.5453 + u_time * 1.5);
+      float noiseSample = fract(sin(seed) * 43758.5453 + iTime * 1.5);
 
-      vec3 dayColor = mix(vec3(sourceGray), source.rgb, 1.10);
+      vec3 dayColor = mix(vec3(sourceGray), source, 1.10);
       dayColor = (dayColor - 0.5) * 1.055 + 0.5;
       dayColor += (noiseSample - 0.5) * 0.018 * (0.55 + sourceGray * 0.45);
       dayColor = clamp(dayColor, 0.0, 1.0);
 
       float nightNoise = gaussian(noiseSample, 0.0, 0.36);
       float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.055, 0.0, 1.0);
-      // Moonlit nights on the bay read deep indigo, not neutral gray (see
-      // the night reference photo): duotone from indigo shadows to silver
-      // moonlight, with the warm town lights preserved below.
       vec3 monochrome = mix(vec3(0.018, 0.026, 0.052), vec3(0.86, 0.90, 1.0), nightGray);
       float warmHighlight = smoothstep(0.03, 0.36, source.r - source.b) * smoothstep(0.14, 0.62, source.r);
-      vec3 nightColor = mix(monochrome, source.rgb, warmHighlight * 0.88);
+      vec3 nightColor = mix(monochrome, source, warmHighlight * 0.88);
 
-      gl_FragColor = vec4(mix(dayColor, nightColor, u_night), 1.0);
+      return mix(dayColor, nightColor, u_night);
+    }
+
+    void main() {
+      vec4 sceneColor;
+      mainImage(sceneColor, gl_FragCoord.xy);
+      gl_FragColor = vec4(filmGrade(sceneColor.rgb, gl_FragCoord.xy), 1.0);
     }
   `;
 
@@ -1285,8 +1263,7 @@
   }
 
   var oceanProgram = link(vertexSource, oceanFragmentSource);
-  var postProgram = link(postVertexSource, postFragmentSource);
-  if (!oceanProgram || !postProgram) {
+  if (!oceanProgram) {
     canvas.classList.add("ambient-canvas-fallback");
     return;
   }
@@ -1298,17 +1275,11 @@
     -1, 1, 1, -1, 1, 1
   ]), gl.STATIC_DRAW);
 
-  var postPositionBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, postPositionBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-  var postTexCoordBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, postTexCoordBuffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, 1, 0, 0, 1, 1, 1]), gl.STATIC_DRAW);
-
   var oceanPosition = gl.getAttribLocation(oceanProgram, "position");
   var oceanResolution = gl.getUniformLocation(oceanProgram, "iResolution");
   var oceanTime = gl.getUniformLocation(oceanProgram, "iTime");
   var oceanNight = gl.getUniformLocation(oceanProgram, "u_night");
+  var oceanNoiseScale = gl.getUniformLocation(oceanProgram, "u_noiseScale");
   var oceanSkyline = gl.getUniformLocation(oceanProgram, "u_skyline");
   var oceanDayPhoto = gl.getUniformLocation(oceanProgram, "u_day_photo");
   var oceanDayPhotoReady = gl.getUniformLocation(oceanProgram, "u_day_photo_ready");
@@ -1318,14 +1289,6 @@
   var oceanShipReady = gl.getUniformLocation(oceanProgram, "u_ship_ready");
   var oceanRipples = gl.getUniformLocation(oceanProgram, "u_ripples");
   var oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
-
-  var postPosition = gl.getAttribLocation(postProgram, "a_position");
-  var postTexCoord = gl.getAttribLocation(postProgram, "a_texCoord");
-  var postImage = gl.getUniformLocation(postProgram, "u_image");
-  var postResolution = gl.getUniformLocation(postProgram, "u_resolution");
-  var postTime = gl.getUniformLocation(postProgram, "u_time");
-  var postNight = gl.getUniformLocation(postProgram, "u_night");
-  var postNoiseScale = gl.getUniformLocation(postProgram, "u_noiseScale");
 
   var skylineTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
@@ -1433,31 +1396,10 @@
   };
   shipImage.src = "/images/herceg-novi-cruise-ship.png";
 
-  var framebuffer = gl.createFramebuffer();
-  var renderTexture = gl.createTexture();
-  var framebufferWidth = 0;
-  var framebufferHeight = 0;
-
-  function setupFramebuffer(width, height) {
-    if (framebufferWidth === width && framebufferHeight === height) return;
-    framebufferWidth = width;
-    framebufferHeight = height;
-    gl.bindTexture(gl.TEXTURE_2D, renderTexture);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
-    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, renderTexture, 0);
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-  }
-
-  // Start at full native resolution — anything less bilinear-upscales the
-  // canvas and reads as blur on every edge. If the GPU cannot sustain the
-  // frame rate, adaptQuality steps the scale down — and back up once the
-  // renderer proves itself, so a stretch of page-load jank cannot blur the
-  // scene for the whole session.
+  // Two device pixels per CSS pixel preserve Retina detail without paying
+  // the 2.25x fragment cost of a 3x display. Adaptive quality can still step
+  // down further on slower GPUs and recover once the renderer proves itself.
+  var maxPixelRatio = 2;
   var renderScale = 1.0;
   var slowFrameCount = 0;
   var fastFrameCount = 0;
@@ -1504,13 +1446,12 @@
   function resize() {
     var width = canvas.clientWidth || window.innerWidth;
     var height = canvas.clientHeight || window.innerHeight;
-    var pixelRatio = window.devicePixelRatio || 1;
+    var pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
     var renderWidth = Math.max(1, Math.round(width * pixelRatio * renderScale));
     var renderHeight = Math.max(1, Math.round(height * pixelRatio * renderScale));
     if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
       canvas.width = renderWidth;
       canvas.height = renderHeight;
-      setupFramebuffer(renderWidth, renderHeight);
     }
   }
 
@@ -1658,7 +1599,7 @@
       nightBlend = targetNight;
     }
 
-    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.useProgram(oceanProgram);
     gl.bindBuffer(gl.ARRAY_BUFFER, oceanBuffer);
@@ -1667,6 +1608,7 @@
     gl.uniform2f(oceanResolution, canvas.width, canvas.height);
     gl.uniform1f(oceanTime, sceneTime);
     gl.uniform1f(oceanNight, nightBlend);
+    gl.uniform1f(oceanNoiseScale, (window.devicePixelRatio || 1) < 1.5 ? 1.7 : 1.0);
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
     gl.uniform1i(oceanSkyline, 1);
@@ -1685,24 +1627,6 @@
     gl.uniform4fv(oceanRipples, rippleUniforms());
     gl.uniform1i(oceanRippleCount, ripples.length);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
-
-    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    gl.viewport(0, 0, canvas.width, canvas.height);
-    gl.useProgram(postProgram);
-    gl.bindBuffer(gl.ARRAY_BUFFER, postPositionBuffer);
-    gl.enableVertexAttribArray(postPosition);
-    gl.vertexAttribPointer(postPosition, 2, gl.FLOAT, false, 0, 0);
-    gl.bindBuffer(gl.ARRAY_BUFFER, postTexCoordBuffer);
-    gl.enableVertexAttribArray(postTexCoord);
-    gl.vertexAttribPointer(postTexCoord, 2, gl.FLOAT, false, 0, 0);
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, renderTexture);
-    gl.uniform1i(postImage, 0);
-    gl.uniform2f(postResolution, canvas.width, canvas.height);
-    gl.uniform1f(postTime, sceneTime);
-    gl.uniform1f(postNight, nightBlend);
-    gl.uniform1f(postNoiseScale, (window.devicePixelRatio || 1) < 1.5 ? 1.7 : 1.0);
-    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
     canvas.classList.add("shader-ready");
     lastFrame = now;

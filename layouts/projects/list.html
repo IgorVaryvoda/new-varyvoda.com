@@ -38,9 +38,16 @@
           <figure class="work-atlas-visual">
             <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
             {{ if hasPrefix . "/" }}
-              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}" decoding="async">
+              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"{{ if eq $index 0 }} fetchpriority="high"{{ end }} decoding="async">
             {{ else }}
-              <img class="Sirv" data-src="{{ . }}?w={{ if eq $index 0 }}1600{{ else }}1000{{ end }}" src="{{ . }}?w={{ if eq $index 0 }}1600{{ else }}1000{{ end }}&q=15" alt="{{ $project.Title }} interface">
+              <img
+                src="{{ . }}?w={{ if eq $index 0 }}1000{{ else }}640{{ end }}"
+                srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1600 1600w"
+                sizes="{{ if eq $index 0 }}(max-width: 960px) calc(100vw - 3.6rem), 50vw{{ else }}(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw{{ end }}"
+                alt="{{ $project.Title }} interface"
+                loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"
+                {{- if eq $index 0 }} fetchpriority="high"{{ end }}
+                decoding="async">
             {{ end }}
             <span class="work-atlas-visual-action" aria-hidden="true">Open project <b>→</b></span>
           </figure>
@@ -67,5 +74,4 @@
     </div>
   </section>
 </section>
-<script src="https://scripts.sirv.com/sirvjs/v3/sirv.js" defer></script>
 {{ end }}
