@@ -235,10 +235,13 @@
       // strong displacement into wavy melted smears.
       float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.022, 0.034, depth);
       terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.007;
-      // Keep the crest-side sample shift small on the far layer — a large
-      // shift drags stretched material sideways near the ridge and smears.
-      float slopeProjection = (height - 0.5) * mix(0.09, 0.12, depth);
-      sampleX = clamp(sampleX + slopeProjection + terrainWarp * (0.42 + height * 0.58), 0.015, 0.985);
+      // Keep the crest-side sample shift small — a large shift drags
+      // material sideways near the ridge and smears the silhouette.
+      float slopeProjection = (height - 0.5) * mix(0.09, 0.06, depth);
+      // Warp peaks mid-slope and calms at both the waterline and the crest,
+      // so the silhouette edge stays steady.
+      float warpEnvelope = 0.42 + (height - height * height) * 1.2;
+      sampleX = clamp(sampleX + slopeProjection + terrainWarp * warpEnvelope, 0.015, 0.985);
       vec2 atlasUv = vec2(sampleX, mix(farY, nearY, depth));
       // The ridge band minifies the atlas ~3:1 vertically; anisotropic
       // filtering (enabled on the texture from JS) keeps the horizontal
