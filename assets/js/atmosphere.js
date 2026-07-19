@@ -336,7 +336,9 @@
       vec3 day = mix(vec3(0.045, 0.105, 0.15), vec3(0.19, 0.30, 0.37), haze * 0.66 + detail * 0.14);
       day += vec3(0.012, 0.025, 0.035) * (1.0 - height) * (0.35 + detail * 0.65);
       day *= 0.90 + detail * 0.18;
-      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_mountain_photo_ready * 0.90);
+      // The far range is a haze layer: let the stable procedural gradient
+      // carry more weight so stretched-photo artifacts stay invisible.
+      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_mountain_photo_ready * 0.72);
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
