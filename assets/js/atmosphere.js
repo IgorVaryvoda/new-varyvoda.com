@@ -1252,21 +1252,38 @@
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
   }
 
+  // Start at full native resolution — anything less bilinear-upscales the
+  // canvas and reads as blur on every edge. If the GPU cannot sustain the
+  // frame rate, adaptQuality steps the scale down instead.
+  var renderScale = 1.0;
+  var slowFrameCount = 0;
+
   function resize() {
     var width = canvas.clientWidth || window.innerWidth;
     var height = canvas.clientHeight || window.innerHeight;
-    // Half-resolution on hi-DPI reads as visible blur on the mountain band;
-    // 0.66 lands near the pixel count of a 1440p low-DPI screen at full
-    // scale, which already ships fine.
-    var lowDpi = (window.devicePixelRatio || 1) < 1.5;
-    var scale = lowDpi ? 1.0 : 0.66;
     var pixelRatio = window.devicePixelRatio || 1;
-    var renderWidth = Math.max(1, Math.round(width * pixelRatio * scale));
-    var renderHeight = Math.max(1, Math.round(height * pixelRatio * scale));
+    var renderWidth = Math.max(1, Math.round(width * pixelRatio * renderScale));
+    var renderHeight = Math.max(1, Math.round(height * pixelRatio * renderScale));
     if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
       canvas.width = renderWidth;
       canvas.height = renderHeight;
       setupFramebuffer(renderWidth, renderHeight);
+    }
+  }
+
+  function adaptQuality(now) {
+    if (reducedMotion) return;
+    var delta = now - lastFrame;
+    // Sustained misses trigger a downscale. Severe misses count heavier so
+    // a truly slow renderer converges in a few frames, while a single
+    // tab-wake stall decays away against normal frames.
+    if (delta > 24) slowFrameCount += delta > 100 ? 4 : 1;
+    else if (slowFrameCount > 0) slowFrameCount--;
+    if (slowFrameCount >= 12 && renderScale > 0.67) {
+      renderScale = renderScale > 0.9 ? 0.8 : 0.66;
+      slowFrameCount = 0;
+      console.info("atmosphere: render scale reduced to " + renderScale + " to hold frame rate");
+      resize();
     }
   }
 
@@ -1372,6 +1389,7 @@
   }
 
   function drawFrame(now, sceneTime, animateTheme) {
+    adaptQuality(now);
     resize();
     var targetNight = document.documentElement.dataset.theme === "dark" ? 1 : 0;
     if (animateTheme) {
