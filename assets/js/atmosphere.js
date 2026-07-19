@@ -405,8 +405,14 @@
       // squared falloff so it reads as atmospheric depth. The old narrow
       // hard fade left the saddle a pale vertical seam and the headland's
       // long tail a flat dark wedge stretching to the frame edge.
-      float lowProfile = 1.0 - smoothstep(0.004, 0.045, ridge - 0.395);
-      graded = mix(graded, vec3(0.44, 0.52, 0.58), lowProfile * lowProfile * 0.55);
+      // Sea haze belongs to DISTANT land. The far layer dissolves broadly;
+      // the near layer only in its last stretch — and scaled by how far
+      // away that stretch actually is: the left ridge's tail at the saddle
+      // is the closest thing in the scene and must stay dark forest, while
+      // the right headland genuinely recedes toward the open sea.
+      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.022, depth), ridge - 0.395);
+      float hazeStrength = mix(0.55, mix(0.20, 0.50, smoothstep(0.35, 0.90, screenUv.x)), depth);
+      graded = mix(graded, vec3(0.44, 0.52, 0.58), lowProfile * lowProfile * hazeStrength);
       return graded;
     }
 
@@ -638,7 +644,8 @@
       // reflections must dissolve the same way or a dark mirror wedge
       // hangs below an already-hazed tail.
       float farTail = 1.0 - smoothstep(0.004, 0.045, farRidgeAt(screenUv.x) - 0.395);
-      float nearTail = 1.0 - smoothstep(0.004, 0.045, nearRidgeAt(screenUv.x) - 0.395);
+      float nearTail = (1.0 - smoothstep(0.003, 0.022, nearRidgeAt(screenUv.x) - 0.395))
+        * smoothstep(0.35, 0.90, screenUv.x);
       vec3 dayHaze = vec3(0.30, 0.37, 0.43);
       vec3 farTone = mix(mix(vec3(0.12, 0.18, 0.22), dayHaze, farTail * farTail * 0.6), vec3(0.035, 0.045, 0.058), u_night);
       vec3 nearTone = mix(mix(vec3(0.05, 0.10, 0.09), dayHaze, nearTail * nearTail * 0.6), vec3(0.012, 0.018, 0.024), u_night);
