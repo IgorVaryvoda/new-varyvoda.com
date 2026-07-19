@@ -34,6 +34,15 @@ same layout files.
 | 011 | Give compact interface type a legible minimum scale | P1 | S | 010 | DONE (`5537083`, reviewed+approved 2026-07-18) |
 | 012 | Make the mobile menu natively focusable and stateful | P1 | S | — | DONE (`3760150`, reviewed+approved 2026-07-18) |
 | 013 | Pause the atmospheric renderer when no scene surface is visible | P2 | M | — | DONE (`70cc7e5`, reviewed+approved 2026-07-18) |
+| 014 | Serve right-sized atmospheric textures | P1 | M | — | BLOCKED (`dc10707` rejected: NPOT mountain mipmaps; superseded by 019) |
+| 015 | Remove Sirv.js from routes that only need native images | P1 | M | — | BLOCKED (`79d80a3` rejected: opt-in runtime was post-only; superseded by 020) |
+| 016 | Right-size the Sirv Studio feature image | P1 | M | 020 | DONE (`3f8aa31`, reviewed+approved 2026-07-19) |
+| 017 | Remove cdnjs from the critical path and scope Twemoji | P2 | M | 016 | BLOCKED (`138e745` rejected: print/census fixes exhausted verifier revisions; superseded by 022) |
+| 018 | Defer WebGL bootstrap until after first paint | P1 | M | 019 | BLOCKED (`c06f2c7` rejected: skyline failure left an invisible render loop; superseded by 021) |
+| 019 | Correct atmospheric textures for WebGL1 completeness | P1 | S | 014 implementation | DONE (`e7760f9`, reviewed+approved 2026-07-19) |
+| 020 | Make the Sirv opt-in work for every content type | P1 | S | 015 implementation | DONE (`5e28c13`, reviewed+approved 2026-07-19) |
+| 021 | Stop failed atmospheric rendering and complete fallback handoff | P1 | S | 018 implementation | DONE (`01515a3`, reviewed+approved 2026-07-19) |
+| 022 | Preserve Normalize print parity and current dependency census | P2 | S | 017 implementation | DONE (`17c1b34`, reviewed+approved 2026-07-19) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -47,6 +56,18 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **001, 002, 003, 009 are mutually independent** and can start in any order (still run one at a time).
 - **011 after 010**: both edit the typography layer in `assets/css/custom.css`; 011 reuses the corrected type foundation and must not race it.
 - **010, 012, and 013 are independent**: 010 owns typography CSS, 012 owns the mobile disclosure markup/styles, and 013 owns only renderer lifecycle code. Run at most two Codex jobs concurrently per the improve-codex contract.
+- **014 → 019 → 018** form the atmosphere lane: review rejected 014's NPOT mipmapped mountains, so 019 corrects its implementation before 018 may start.
+- **015 → 020 → 016 → 017** form the media/head lane: review rejected 015's post-only runtime ownership, so 020 corrects the cumulative implementation before image/head work continues.
+- **018 → 021**: review rejected 018's skyline-error loop after its revision budget; 021 is the corrective cumulative branch to integrate instead.
+- **017 → 022**: review rejected 017 after its verifier revision budget; 022 applies the already-confirmed print/census/EOF corrections on top of its implementation.
+
+## 2026-07-18 loading-speed audit
+
+Plans 014–018 were selected together after a focused loading audit at commit
+`8819dc5`. Execute them as two cumulative lanes with at most two Codex workers:
+014 → 019 → 018 and 015 → 020 → 016 → 017. Executors are browser-free; reviewer browser
+verification is required for Plan 018 and appropriate rendered checks remain
+mandatory for every plan.
 
 ## 2026-07-18 design audit
 

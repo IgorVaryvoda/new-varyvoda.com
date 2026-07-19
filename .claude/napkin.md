@@ -1,0 +1,44 @@
+# Napkin
+
+## Corrections
+| Date | Source | What Went Wrong | What To Do Instead |
+|------|--------|----------------|-------------------|
+| 2026-07-19 | user | Widened the moon halo toward the night reference photo | The photo's moon is a blown long-exposure artifact — keep the shader moon a clean disc; the photo is reference for city lights only |
+| 2026-07-19 | self | First green-shift of the day headlands (1.16 green, 1.26 exposure, 1.02 chroma) rendered lime-green "spring hills" | Layered grading multiplies up fast; move each knob a little and re-screenshot after every pass |
+| 2026-07-19 | self | Placed the moon at screen (0.815, 0.78) — exactly behind the homepage hero photo card | Screen-anchored shader elements must be checked against page content overlays in both desktop and mobile viewports |
+| 2026-07-19 | user | First moon was a flat shaded disc ("very basic"); ship edge-lift painted a white outline; lights read as a uniform silver string | Moon needs procedural maria + terminator + halo faded over the disc; never brighten sprite edges toward gray (premultiplied filtering suffices); cluster lights via population² occupancy and open the night warm-gate at lower luminance so dim golden bloom survives the duotone |
+| 2026-07-19 | user | City lights "dull — all the same size" | Real towns need a light hierarchy: 3 widely-spread size tiers (specks / lamps / rare floodlights) with brightness tied to tier, feather ∝ radius so big lights bloom, ~13-18% cool-white among sodium gold. Per the reference: light mass on the left far shore, right headland base nearly dark, red summit beacons |
+| 2026-07-19 | self | Tried LOD bias -1.25 to sharpen the vertically-minified mountain atlas → wavy wood-grain aliasing; also the terrainDetail `strata` sine term striped the photo layer | For anisotropic minification use EXT_texture_filter_anisotropic (JS texParameterf), never shader LOD bias; never multiply periodic sine patterns onto photo textures |
+| 2026-07-19 | self | Boosted sun gaussians twice with no visible result — the whole corner already clipped to white through ACES | A highlight only reads if its surroundings tonemap below white: cut the veil first, then draw an explicit smoothstep disc (a rim, not a gaussian) |
+| 2026-07-19 | user | First visible sun disc was "too fucking big"; a small disc floating in open sky read pale and detached | Per the sunrise refs: sun core is SMALL (disc rim ~0.012 units) and must KISS the ridge line (SUN_SCREEN_Y = ridge height at its x, 0.512); the apparent size comes from the broad warm glow, not the disc. Light mode target = backlit sunrise (Image #10): dark textured silhouette slopes (exposure mix 1.60–2.00), warm rim light, ship haze veil 0.12 (0.25 = "washed out") |
+| 2026-07-19 | user | A clean disc was still "a shitty disc" — the target is a dramatic BURST | The burst = soft-clipping core gaussian + crepuscular rays (angle-fbm sine) + glare mixed over the mountain branch so the ridge dissolves + a saturated AMBER tone-REPLACEMENT mid-field (mix, not add). Additive-only stacks re-enter the clip-to-white trap; contrast comes from replacing surrounding tone darker+saturated. Mountain atlas sharpness was fixed at the ASSET level (unsharp 9/55 + 2.2/170, contrast 1.10, sat 1.12) — shader knobs were exhausted |
+
+| 2026-07-19 | user | Fixed the middle mountain but my global "thin-ridge haze fade" + far-band blur washed out the two mountains Igor had already approved ("why'd you roll everything back") | Scope fixes to the layer/region complained about; never let a fix for one element regress already-approved elements. Final atlas recipe: near (1180,736,1880,816), far (1230,740,1860,794) no blur, lowProfile fade smoothstep(0.003,0.016)*0.45 max |
+
+| 2026-07-19 | self | Tried swapping the near band to photo #5 for resolution — its clean rectangles are tiny (ship + ridge slant + shore block the face) and naive mean/std histogram matching (sky-contaminated) crushed the forest dark | The 1999px cache photos top out at ~700×80 for the near band; perceptual sharpness must come from a render-resolution procedural detail octave (game-engine detail-map pattern). Real gains need Igor's full-res originals. Ship sharpness was the shader's own 5-tap 3-texel manual blur double-smoothing on top of mips — tighten taps (1.2) + aniso, don't touch the sprite |
+
+| 2026-07-19 | user | Far-range crest kept producing artifacts: luminance ramp → pale halo; my hard row-flattening → dark stripe; 512px skyline interp → crest wobble | Distant haze layers want STABILITY over detail: gentle smoothed-curve ramp correction + top-fade to band mean + reduced photo mix (0.72) + smoothed mask channel. Always verify at DPR=2 — Igor's screen renders the half/0.66-scale path, DPR-1 checks hide what he sees |
+
+| 2026-07-19 | user | "Fuzzy" reports persisted through content fixes — real causes were resolution-dependent constants: fixed 0.66 hi-DPI render scale (bilinear upscale blurs everything), 2.25px ridge AA feather, px-space light radii tuned at 900p | When changing render resolution, audit EVERY pixel-space constant (AA feathers, point radii, offsets) and scale by iResolution.y/900. Native res + adaptive downscale (1.0→0.8→0.66 on sustained >24ms frames, severe misses weighted 4x) beats fixed fractional scale |
+
+| 2026-07-19 | user | Crest halo survived FIVE fixes because three causes compounded: haze rows in the near crop's left third (spread crest-wide by mirror tiling), fade targeting the band mean (skewed light by the shore strip), and farMountainColor's degenerate pale output bleeding into the near ridge's edge feather where no far ridge exists | Layered compositing must weight each layer by ITS OWN mask (never plain near-over-far mix). Fade targets must be the local region's tone. Crop starts must clear contamination across the ENTIRE x-range — mirror tiling spreads any local defect everywhere. Verify at native res + nearest-neighbor zoom, the user's actual magnification |
+
+## User Preferences
+- Igor tunes the atmosphere shader interactively with reference photos of the real Herceg Novi view (his own Shutterstock shots + web finds); match the photos, not generic "pretty shader" defaults.
+- Night mode: deep indigo moonlit duotone with warm golden town lights — NOT neutral-gray noir.
+- Direct "improve/refine the shader" asks are done in-session on main; the codex-exec plan workflow is for audit-driven plans in plans/.
+
+## Patterns That Work
+- Atlas rebuild from Igor's original photos (image-cache 4.jpeg/5.jpeg, watermark-free 1999×1333): near band = Luštica face crop (1180,736,1880,816) — must exclude sky above ridge, sea/ship below, AND the hazy upper-slope rows (they render as a pale "snow cap" on the crest); far band = hazy crags (440,692,950,794). Mirror-tile each to 2048 wide instead of stretching; upright paste (FLIP_Y upload makes shader-y 0.98 = PNG top). Then re-grade: sunlit source needs exposure mix(1.30,1.40) not (1.60,2.00), tint ~neutral, procedural detail down to 0.90+0.20.
+- Skyline mask edit for composition: taper r channel (cos ramp) 0.86→0.93 so the right headland ends into open horizon (Igor's Image #12); night lights/masks follow automatically.
+- Screenshot loop: `hugo server --renderToMemory` + `uv run --with playwright python shot.py` (headless chromium needs `--enable-unsafe-swiftshader`). Set theme via `document.documentElement.dataset.theme` + dispatch `varyvoda:themechange`, wait ~1.5s for the 180ms night blend.
+- System `playwright` module isn't importable; `uv run --with playwright` (browsers already cached) is the reliable path.
+- hittheroadket.com 403s WebFetch but serves plain `curl` with a Firefox UA.
+- PIL crops of screenshots to judge sub-pixel details (settlement lights are fractions of a px).
+
+## Domain Notes
+- Shader: `assets/js/atmosphere.js` — ocean raymarch (afl_ext weaves) + photo-derived Herceg Novi scene; heavily art-directed, comments record deliberate choices — read them before "fixing".
+- Skyline mask `herceg-novi-skyline.png` (512×4): **r channel = near layer** (left foreground ridge x<0.15 AND right Luštica headland x>0.44), **g = far** middle range (x 0.13–0.38).
+- Mountain atlas `herceg-novi-mountains.webp` (2048²): uploaded with FLIP_Y, so shader nearY 0.52–0.98 = PNG top half (shaded navy forest — needs green rebalance in grading), farY = PNG bottom half.
+- Settlement lights radii are in *render* pixels; hi-DPI renders at 0.5 scale, so sub-0.2px radii vanish after upscale.
+- Night post-pass duotone gates color through `warmHighlight` (r−b) — warm lights must be bright enough post-ACES to survive.
