@@ -391,7 +391,11 @@
       // range must catch far less flank warmth than the near headland.
       float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(0.55, 0.72, depth)
         + flankLit * (0.16 + height * 0.28) * sunReach * mix(0.6, 1.0, depth);
-      warmAmount *= 0.75 + 0.40 * surfaceDetail;
+      // A dissolving tail is distant haze — it must not catch warm flank
+      // light or rim burn, and its tone must stay BELOW the sky's: warm +
+      // morning lift on a pale haze target read as blowout.
+      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.022, depth), ridge - 0.395);
+      warmAmount *= (0.75 + 0.40 * surfaceDetail) * (1.0 - lowProfile);
       // Low sun paints deep amber; risen sun bleaches toward gold-white.
       vec3 warmTone = mix(vec3(2.0, 1.42, 0.70), vec3(1.55, 1.32, 1.02), sunProgress());
       graded = mix(graded, graded * warmTone, clamp(warmAmount, 0.0, 0.6));
@@ -401,7 +405,7 @@
       // stretches — an even crest glow just reads as ambient light.
       // The rim burn belongs to the backlit minutes; once the sun clears
       // the ridge the crest is lit like everything else and the rim fades.
-      float crestRim = smoothstep(0.78, 0.985, height) * mix(1.0, 0.35, sunProgress());
+      float crestRim = smoothstep(0.78, 0.985, height) * mix(1.0, 0.35, sunProgress()) * (1.0 - lowProfile);
       graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.15, 0.40, depth) * (0.10 + 0.90 * flankLit);
 
       // Where the ridge tapers, the land dissolves into sea haze — a broad,
@@ -413,9 +417,8 @@
       // away that stretch actually is: the left ridge's tail at the saddle
       // is the closest thing in the scene and must stay dark forest, while
       // the right headland genuinely recedes toward the open sea.
-      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.022, depth), ridge - 0.395);
       float hazeStrength = mix(0.55, mix(0.20, 0.50, smoothstep(0.35, 0.90, screenUv.x)), depth);
-      graded = mix(graded, vec3(0.44, 0.52, 0.58), lowProfile * lowProfile * hazeStrength);
+      graded = mix(graded, vec3(0.37, 0.45, 0.52), lowProfile * lowProfile * hazeStrength);
       return graded;
     }
 
@@ -662,7 +665,7 @@
       // instead of reversing direction or visibly jumping back to the start.
       // The route starts at the middle range's foot and crosses the bay.
       float passage = fract((iTime + 149.0) / 320.0);
-      float shipX = mix(0.43, 0.94, passage);
+      float shipX = mix(0.43, 1.08, passage);
       float passageAlpha = smoothstep(0.0, 0.08, passage)
         * (1.0 - smoothstep(0.92, 1.0, passage));
       float aspect = iResolution.x / iResolution.y;
@@ -713,7 +716,7 @@
 
     float cruiseShipSmoke(vec2 screenUv) {
       float passage = fract((iTime + 149.0) / 320.0);
-      float shipX = mix(0.43, 0.94, passage);
+      float shipX = mix(0.43, 1.08, passage);
       float passageAlpha = smoothstep(0.0, 0.08, passage)
         * (1.0 - smoothstep(0.92, 1.0, passage));
       float aspect = iResolution.x / iResolution.y;
