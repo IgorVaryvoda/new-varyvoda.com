@@ -229,7 +229,9 @@
       float sampleX = mix(farX, nearX, depth);
       float farY = mix(0.02, 0.48, pow(height, 0.92));
       float nearY = mix(0.52, 0.98, pow(height, 0.92));
-      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.046, 0.035, depth);
+      // Keep the warp gentle on the far layer: its stretched material turns
+      // strong displacement into wavy melted smears.
+      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.022, 0.034, depth);
       terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.007;
       float slopeProjection = (height - 0.5) * mix(0.18, 0.12, depth);
       sampleX = clamp(sampleX + slopeProjection + terrainWarp * (0.42 + height * 0.58), 0.015, 0.985);
@@ -1249,8 +1251,11 @@
   function resize() {
     var width = canvas.clientWidth || window.innerWidth;
     var height = canvas.clientHeight || window.innerHeight;
+    // Half-resolution on hi-DPI reads as visible blur on the mountain band;
+    // 0.66 lands near the pixel count of a 1440p low-DPI screen at full
+    // scale, which already ships fine.
     var lowDpi = (window.devicePixelRatio || 1) < 1.5;
-    var scale = lowDpi ? 1.0 : 0.5;
+    var scale = lowDpi ? 1.0 : 0.66;
     var pixelRatio = window.devicePixelRatio || 1;
     var renderWidth = Math.max(1, Math.round(width * pixelRatio * scale));
     var renderHeight = Math.max(1, Math.round(height * pixelRatio * scale));
