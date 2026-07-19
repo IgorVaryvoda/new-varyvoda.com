@@ -60,4 +60,5 @@
 - Mountain atlas `herceg-novi-mountains.webp` (2048²): uploaded with FLIP_Y, so shader nearY 0.52–0.98 = PNG top half (shaded navy forest — needs green rebalance in grading), farY = PNG bottom half.
 - Settlement lights radii are in *render* pixels; hi-DPI renders at 0.5 scale, so sub-0.2px radii vanish after upscale.
 - Night post-pass duotone gates color through `warmHighlight` (r−b) — warm lights must be bright enough post-ACES to survive.
+- Atlas/skyline URLs carry ?v=N cache-busters in baseof.html with a 4h edge cache — BUMP the version in the same commit as any static/images change, or clients keep stale (or deploy-window-failed → textureless mountains) copies for hours.
 - adaptQuality (atmosphere.js) is a one-way ratchet: renderScale 1.0→0.8→0.66 never recovers, and the `delta > 24` slow-frame test assumes 60Hz vsync — 30Hz monitors or macOS Low Power Mode (rAF throttled to 30fps) count EVERY frame slow and always land at 0.66 on any GPU. Candidate root cause for recurring "fuzzy" reports.
