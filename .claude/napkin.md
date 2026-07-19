@@ -50,6 +50,7 @@
 
 - Dynamic sunrise: one `sunProgress()` (0 = kissing ridge, 1 = risen over ~8 min) drives position AND light — reach exponents relax (1.62→1.0, 1.35→0.85), warm tone bleaches amber→gold-white, crest rim fades ×0.35, glare sigma tightens 0.075→0.05, horizon band fades, sea path strengthens 0.23→0.34, and mountains/sky/water get pre-tonemap lifts (×1.13/1.10/1.13). Verify rise features with the accelerated timeline sed ((iTime-30)/480 → (iTime-2)/10), screenshot at ~2.5s and ~16s, then restore.
 - Glare over ridges must keep terrain: modulate the dissolve tone by the composite's own luminance (flat replace = khaki wedge). Ridge tails/saddles: broad squared lowProfile fade (0.004–0.045) toward sea haze + the same fade in mountainSurfaceColorFast so reflections match.
+- Glare shape: compress vertically (delta.y *= 1.25), never stretch — the burst-shaped /1.55 ellipse washed whole flanks down to the waterline. Crest-relative atlas mapping must gate summit rows by ridge height (farBandTop mix(0.30,0.48, smoothstep of ridge-0.395)) or pale summit rock compresses into a blown lip along every low tail's silhouette.
 
 ## Domain Notes
 - Shader: `assets/js/atmosphere.js` — ocean raymarch (afl_ext weaves) + photo-derived Herceg Novi scene; heavily art-directed, comments record deliberate choices — read them before "fixing".

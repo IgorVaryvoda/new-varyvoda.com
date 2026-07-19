@@ -133,8 +133,12 @@
       // mountain branch: the ridge silhouette must dissolve into the burst
       // where they meet, as in the sunrise reference.
       // The glare tightens as the sun detaches from the ridge — a risen
-      // sun no longer swallows the silhouette below it.
-      vec2 delta = sunDelta(screenUv) / vec2(1.0, 1.55);
+      // sun no longer swallows the silhouette below it. Vertically it is
+      // COMPRESSED, not stretched: the old burst-shaped ellipse reached
+      // from the sun all the way down the flank to the waterline and
+      // painted the whole slope as a pale wash.
+      vec2 delta = sunDelta(screenUv);
+      delta.y *= 1.25;
       return exp(-pow(length(delta) / mix(0.075, 0.05, sunProgress()), 2.0));
     }
 
@@ -258,7 +262,12 @@
       float farX = clamp(x * 1.12 + 0.08, 0.015, 0.985);
       float nearX = clamp(x * 0.86 + 0.07, 0.015, 0.985);
       float sampleX = mix(farX, nearX, depth);
-      float farY = mix(0.02, 0.48, pow(height, 0.92));
+      // The far band's top rows are pale summit limestone. Only columns
+      // where the ridge is genuinely tall should reach them — on low tails
+      // those rows compress into a blown pale lip along the silhouette, so
+      // short columns stop at mid-slope forest instead.
+      float farBandTop = mix(0.30, 0.48, smoothstep(0.012, 0.10, ridge - 0.395));
+      float farY = mix(0.02, farBandTop, pow(height, 0.92));
       float nearY = mix(0.52, 0.98, pow(height, 0.92));
       // Almost no warp on the near layer: fbm displacement snakes straight
       // through the photographed villages. It only ever existed to hide
