@@ -312,12 +312,18 @@
       // ridge's west flank (rising toward its peak) catches the sunrise
       // while the east flank falls into shade. flankSlope is the ridge
       // profile's derivative — positive where the crest climbs rightward.
-      float sunReach = 0.35 + 0.65 * exp(-screenUv.x * 1.1);
+      float sunReach = 0.22 + 0.78 * exp(-screenUv.x * 1.35);
       float flankLit = smoothstep(0.05, 0.8, flankSlope);
       float flankShade = smoothstep(0.05, 0.9, -flankSlope);
-      graded *= 1.0 + flankLit * mix(0.20, 0.34, depth) * sunReach;
-      graded *= 1.0 - flankShade * mix(0.12, 0.24, depth);
+      graded *= 1.0 + flankLit * mix(0.26, 0.42, depth) * sunReach;
+      graded *= 1.0 - flankShade * mix(0.24, 0.42, depth);
       graded += vec3(0.55, 0.40, 0.24) * flankLit * (0.06 + height * 0.11) * sunReach;
+
+      // The backlit signature of the sunrise references: a warm rim burns
+      // along crest segments that FACE the sun and dies on flat or shaded
+      // stretches — an even crest glow just reads as ambient light.
+      float crestRim = smoothstep(0.78, 0.985, height);
+      graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.26, 0.40, depth) * (0.10 + 0.90 * flankLit);
 
       // Where the ridge profile is only a sliver the full atlas column
       // compresses into jagged noise; dissolve ONLY those few pixels into
