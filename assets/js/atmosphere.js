@@ -95,11 +95,23 @@
       return value;
     }
 
-    mat3 createRotationMatrixAxisAngle(vec3 axis, float angle);
     float terrainDetail(vec2 screenUv, float seed, float depthScale);
 
+    // cos(0.14) / sin(0.14): the camera tilt never changes, so neither do
+    // these matrices — rebuilding them per call paid sin+cos+18 multiplies.
+    const mat3 CAMERA_TILT = mat3(
+      1.0, 0.0, 0.0,
+      0.0, 0.9902160, -0.1395431,
+      0.0, 0.1395431, 0.9902160
+    );
+    const mat3 CAMERA_TILT_INVERSE = mat3(
+      1.0, 0.0, 0.0,
+      0.0, 0.9902160, 0.1395431,
+      0.0, -0.1395431, 0.9902160
+    );
+
     vec2 dirToScreenUV(vec3 dir) {
-      vec3 unrotated = createRotationMatrixAxisAngle(vec3(1.0, 0.0, 0.0), -0.14) * dir;
+      vec3 unrotated = CAMERA_TILT_INVERSE * dir;
       if (unrotated.z <= 0.0) return vec2(-1.0);
       vec2 uv = (unrotated.xy / unrotated.z) * 1.5;
       vec2 ndc = uv / vec2(iResolution.x / iResolution.y, 1.0);
@@ -736,6 +748,9 @@
       );
 
       vec2 funnel = vec2(-0.39, 0.72);
+      // The puff field spans a few ship-lengths around the funnel; the rest
+      // of the full-width band must not pay for six fbm calls per pixel.
+      if (point.x < -2.8 || point.x > 0.8 || point.y < 0.25) return 0.0;
       float smoke = 0.0;
       for (int index = 0; index < 6; index++) {
         float puffIndex = float(index);
@@ -904,21 +919,10 @@
       ));
     }
 
-    mat3 createRotationMatrixAxisAngle(vec3 axis, float angle) {
-      float s = sin(angle);
-      float c = cos(angle);
-      float oc = 1.0 - c;
-      return mat3(
-        oc * axis.x * axis.x + c, oc * axis.x * axis.y - axis.z * s, oc * axis.z * axis.x + axis.y * s,
-        oc * axis.x * axis.y + axis.z * s, oc * axis.y * axis.y + c, oc * axis.y * axis.z - axis.x * s,
-        oc * axis.z * axis.x - axis.y * s, oc * axis.y * axis.z + axis.x * s, oc * axis.z * axis.z + c
-      );
-    }
-
     vec3 getRay(vec2 fragmentCoordinate) {
       vec2 uv = ((fragmentCoordinate / iResolution) * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
       vec3 projection = normalize(vec3(uv.x, uv.y, 1.5));
-      return createRotationMatrixAxisAngle(vec3(1.0, 0.0, 0.0), 0.14) * projection;
+      return CAMERA_TILT * projection;
     }
 
     float intersectPlane(vec3 origin, vec3 direction, vec3 point, vec3 planeNormal) {
@@ -1134,7 +1138,12 @@
 
       vec3 reflectionDirection = normalize(reflect(ray, normal));
       reflectionDirection.y = abs(reflectionDirection.y);
-      vec3 reflection = skyColor(reflectionDirection, 0.0);
+      // Grazing rows are repainted almost entirely by the fog — computing
+      // the full sky/mirror/lights reflection there is wasted work.
+      float fogAmount = 1.0 - exp(-stableDistance * 0.02);
+      vec3 reflection = vec3(0.0);
+      if (fogAmount < 0.985) {
+      reflection = skyColor(reflectionDirection, 0.0);
       vec2 reflectionScreen = dirToScreenUV(reflectionDirection);
       if (reflectionScreen.x >= 0.0 && reflectionScreen.x <= 1.0 && reflectionScreen.y >= 0.0 && reflectionScreen.y <= 1.0) {
         // Daylight water catches far more sky than mountain. A full-strength
@@ -1165,6 +1174,7 @@
           reflection += reflectedLights * 1.2;
         }
       }
+      }
 
       vec3 scatteringBase = mix(vec3(0.006, 0.06, 0.155), vec3(0.02, 0.02, 0.03), u_night);
       vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
@@ -1176,17 +1186,19 @@
       // atmospheric perspective inverted, and a hard graphic band under the
       // shore. Distance should wash toward the sky's horizon haze.
       vec3 fogColor = mix(vec3(0.21, 0.33, 0.45), vec3(0.03, 0.035, 0.05), u_night);
-      color = mix(color, fogColor, 1.0 - exp(-stableDistance * 0.02));
+      color = mix(color, fogColor, fogAmount);
 
       // Fog at full strength erased every trace of the shore in the water,
       // leaving a razor-straight cut along the entire waterline. A hazed
       // mirror of the slopes hugs the first stretch below the shore and
       // seats the land in the bay; night keeps its own stronger mirror.
       float shoreBand = 1.0 - smoothstep(0.0, 0.026, 0.395 - screenUv.y);
-      vec2 shoreMirror = vec2(screenUv.x, 0.79 - screenUv.y);
-      float shoreMask = mountainMask(shoreMirror);
-      vec3 shoreTone = mix(mountainSurfaceColorFast(shoreMirror), fogColor, 0.45);
-      color = mix(color, shoreTone, shoreBand * shoreBand * shoreMask * 0.65 * (1.0 - u_night));
+      if (shoreBand > 0.001 && u_night < 0.999) {
+        vec2 shoreMirror = vec2(screenUv.x, 0.79 - screenUv.y);
+        float shoreMask = mountainMask(shoreMirror);
+        vec3 shoreTone = mix(mountainSurfaceColorFast(shoreMirror), fogColor, 0.45);
+        color = mix(color, shoreTone, shoreBand * shoreBand * shoreMask * 0.65 * (1.0 - u_night));
+      }
 
       // The low sun needs a corresponding path across the water. Keep it
       // broad and woven into the ocean bands, with a clock slow enough to read
