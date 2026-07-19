@@ -63,7 +63,7 @@
     #define RAYMARCH_STEPS 32
     #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
-    #define SUN_SCREEN_Y 0.512
+    #define SUN_BASE_Y 0.512
     #define MOON_SCREEN_X 0.70
     #define MOON_SCREEN_Y 0.80
 
@@ -105,11 +105,18 @@
       return ndc * 0.5 + 0.5;
     }
 
+    float sunScreenY() {
+      // The sun starts kissing the ridge and clears it over the first
+      // minutes of a visit — too slow to catch moving, obvious if you
+      // glance back. It eases to a stop instead of drifting forever.
+      return SUN_BASE_Y + 0.11 * smoothstep(0.0, 1.0, clamp((iTime - 30.0) / 480.0, 0.0, 1.0));
+    }
+
     vec2 sunDelta(vec2 screenUv) {
       // The burst was tuned on a 1440x900 canvas; without this correction
       // its screen-uv gaussians stretch into a wide ellipse on ultrawide
       // monitors (the moon already aspect-corrects the same way).
-      vec2 delta = screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y);
+      vec2 delta = screenUv - vec2(SUN_SCREEN_X, sunScreenY());
       delta.x *= (iResolution.x / iResolution.y) / 1.6;
       return delta;
     }
@@ -212,7 +219,7 @@
       // the cirrus. The core gaussian clips to white over a broad soft
       // region by design; the ridge glare is added in the mountain branch.
       float sunDistance = length(sunDelta(vec2(viewX, screenUv.y)) / vec2(1.0, 1.55));
-      float rayAngle = atan(screenUv.y - SUN_SCREEN_Y, viewX - SUN_SCREEN_X);
+      float rayAngle = atan(screenUv.y - sunScreenY(), viewX - SUN_SCREEN_X);
       float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
       float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
       float rayReach = exp(-sunDistance * 4.6);
@@ -278,12 +285,16 @@
       // The far band is interpolation mush at this stretch — amplifying its
       // "relief" just renders oily marks. Only the near layer has real
       // detail worth lifting.
+      // The far band carries transplanted canopy grain now — real material,
+      // worth amplifying (the old 0.2 floor guarded interpolation mush).
       float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
-      photo *= 1.0 + terrainRelief * mix(0.2, 1.0, depth) * highlightGuard;
+      photo *= 1.0 + terrainRelief * mix(0.45, 1.0, depth) * highlightGuard;
 
       // The atlas is cut from the sunlit originals now — only a light
       // blue-cut remains so the forest does not go cold under the grade.
-      photo *= mix(vec3(1.0), vec3(1.0, 1.03, 0.90), depth);
+      // The references show the range across the bay staying green through
+      // the haze, so the far layer gets a gentler cut of the same move.
+      photo *= mix(vec3(1.0, 1.015, 0.95), vec3(1.0, 1.03, 0.90), depth);
 
       // A whisper of procedural variation on top of the real texture —
       // slightly stronger than a whisper, so it survives half-resolution
@@ -296,8 +307,8 @@
       // octave evaluated per screen pixel, like a game-engine detail map.
       float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
       float canopyFine = fbm(vec2(sceneX(screenUv.x) * 96.0, screenUv.y * 150.0) + vec2(depth * 5.0, 3.0));
-      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.10, 0.22, depth)
-        + (canopyFine - 0.5) * mix(0.08, 0.18, depth)) * highlightGuard;
+      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.14, 0.22, depth)
+        + (canopyFine - 0.5) * mix(0.11, 0.18, depth)) * highlightGuard;
 
       // Derive the light-facing normal from the photographed material. Using
       // the 2D skyline derivative here turns every ridge sample into a vertical
@@ -313,22 +324,31 @@
 
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
       vec3 chroma = mix(vec3(luminance), photo, mix(0.76, 0.96, depth));
-      vec3 coastalHaze = vec3(0.15, 0.25, 0.34);
+      // Bay haze leans blue-green in the references, not steel blue — the
+      // far layer takes 38% of this tone and was reading slate because of it.
+      vec3 coastalHaze = vec3(0.15, 0.255, 0.30);
       // The sunrise references show backlit slopes: mostly dark silhouette
       // material with texture, not sunlit green faces. Keep the exposure low
       // and let the warm rim light below carry the sunrise.
       vec3 graded = chroma * mix(1.30, 1.40, depth);
-      graded = mix(coastalHaze, graded, mix(0.62, 0.90, depth));
+      // The far band is real crag material now (DSC_4377) — retain more of
+      // its structure through the haze or it flattens back into vinyl.
+      graded = mix(coastalHaze, graded, mix(0.74, 0.90, depth));
 
       // Preserve the cool photographic material, but model the sunrise as
       // side/front light rather than a backlight. The broad diffuse term keeps
       // the actual terrain legible while the x-facing normal decides where
       // shadows fall.
       float sunriseReach = exp(-screenUv.x * 1.62);
-      vec3 shadowBase = mix(vec3(0.10, 0.17, 0.24), vec3(0.05, 0.085, 0.07), depth);
-      graded = mix(shadowBase, graded, mix(0.70, 0.88, depth));
-      graded *= mix(0.66, 0.62, depth) + diffuse * mix(0.56, 0.46, depth);
-      float slopeLight = smoothstep(0.28, 0.84, diffuse) * sunriseReach;
+      vec3 shadowBase = mix(vec3(0.09, 0.155, 0.19), vec3(0.05, 0.085, 0.07), depth);
+      graded = mix(shadowBase, graded, mix(0.80, 0.88, depth));
+      // The photograph already carries its own baked lighting. Re-lighting
+      // it from atlas-gradient normals paints organic pale wisps over the
+      // hazed far range — keep the synthetic relight mostly for the near
+      // layer, where the atlas is sharp enough to support it.
+      float diffuseShading = mix(0.62, diffuse, mix(0.30, 1.0, depth));
+      graded *= mix(0.66, 0.62, depth) + diffuseShading * mix(0.56, 0.46, depth);
+      float slopeLight = smoothstep(0.28, 0.84, diffuseShading) * sunriseReach;
 
       // The sun rises at the far left, so light must follow geometry: each
       // ridge's west flank (rising toward its peak) catches the sunrise
@@ -342,17 +362,20 @@
       // Warmth REPLACES tone instead of adding light: additive warm over the
       // desaturated slate painted a flat airbrushed beige smear with no
       // texture inside it. Warm-grading the photo itself keeps the canopy
-      // legible inside the light, and surfaceDetail lets it breathe.
-      float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(1.0, 0.72, depth)
-        + flankLit * (0.16 + height * 0.28) * sunReach;
-      warmAmount *= 0.55 + 0.75 * surfaceDetail;
-      graded = mix(graded, graded * vec3(2.0, 1.42, 0.70), clamp(warmAmount, 0.0, 0.85));
+      // legible inside the light, and surfaceDetail lets it breathe — but
+      // only gently: a strong fbm gate stamps pale wisps onto lit flanks
+      // that read as scars floating over the terrain, and the hazed far
+      // range must catch far less flank warmth than the near headland.
+      float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(0.55, 0.72, depth)
+        + flankLit * (0.16 + height * 0.28) * sunReach * mix(0.6, 1.0, depth);
+      warmAmount *= 0.75 + 0.40 * surfaceDetail;
+      graded = mix(graded, graded * vec3(2.0, 1.42, 0.70), clamp(warmAmount, 0.0, 0.6));
 
       // The backlit signature of the sunrise references: a warm rim burns
       // along crest segments that FACE the sun and dies on flat or shaded
       // stretches — an even crest glow just reads as ambient light.
       float crestRim = smoothstep(0.78, 0.985, height);
-      graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.26, 0.40, depth) * (0.10 + 0.90 * flankLit);
+      graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.15, 0.40, depth) * (0.10 + 0.90 * flankLit);
 
       // Where the ridge profile is only a sliver the full atlas column
       // compresses into jagged noise; dissolve ONLY those few pixels into
@@ -378,15 +401,18 @@
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
       float detail = terrainDetail(screenUv, 2.7, 0.72);
       float haze = 1.0 - height;
-      vec3 day = mix(vec3(0.045, 0.105, 0.15), vec3(0.19, 0.30, 0.37), haze * 0.66 + detail * 0.14);
-      day += vec3(0.012, 0.025, 0.035) * (1.0 - height) * (0.35 + detail * 0.65);
+      // Per the daylight references the range across the bay reads hazed
+      // GREEN, not slate blue — haze pools at the waterline, the crest
+      // stays defined.
+      vec3 day = mix(vec3(0.05, 0.105, 0.125), vec3(0.19, 0.295, 0.33), haze * 0.66 + detail * 0.14);
+      day += vec3(0.012, 0.025, 0.032) * (1.0 - height) * (0.35 + detail * 0.65);
       day *= 0.90 + detail * 0.18;
-      // The far range is a haze layer: let the stable procedural gradient
-      // carry more weight so stretched-photo artifacts stay invisible.
+      // The atlas far band now carries real transplanted canopy grain, so
+      // the photo layer earns more weight than the old interpolation mush.
       // Skip the whole photo pipeline at full night — it mixes to nothing.
       if (u_night < 0.999) {
         float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
-        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.55);
+        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.78);
       }
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
