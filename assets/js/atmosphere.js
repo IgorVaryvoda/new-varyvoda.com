@@ -59,10 +59,10 @@
     #define DRAG_MULT 0.38
     #define WATER_DEPTH 1.0
     #define CAMERA_HEIGHT 1.5
-    #define ITERATIONS_RAYMARCH 6
-    #define ITERATIONS_NORMAL 8
-    #define RAYMARCH_STEPS 20
-    #define FBM_OCTAVES 3
+    #define ITERATIONS_RAYMARCH 8
+    #define ITERATIONS_NORMAL 16
+    #define RAYMARCH_STEPS 32
+    #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
     #define SUN_BASE_Y 0.512
     #define MOON_SCREEN_X 0.70
@@ -192,7 +192,7 @@
       return pow(max(color, vec3(0.0)), vec3(2.2));
     }
 
-    vec3 photoSkyColor(vec2 screenUv) {
+    vec3 photoSkyColor(vec2 screenUv, float detail) {
       float horizon = 0.395;
       float skyHeight = clamp((screenUv.y - horizon) / (1.0 - horizon), 0.0, 1.0);
       float sourceY = mix(0.535, 0.995, pow(skyHeight, 0.94));
@@ -234,6 +234,8 @@
       // the cirrus. The core gaussian clips to white over a broad soft
       // region by design; the ridge glare is added in the mountain branch.
       float sunDistance = length(sunDelta(vec2(viewX, screenUv.y)) / vec2(1.0, 1.55));
+      // The ray fan stays for reflection rays too: its reflected streaks
+      // visibly enrich the sun's pool on the water.
       float rayAngle = atan(screenUv.y - sunScreenY(), viewX - SUN_SCREEN_X);
       float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
       float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
@@ -602,8 +604,12 @@
       float farWeightMask = farMountainMask(screenUv);
       float nearWeight = nearMountainMask(screenUv);
       float farWeight = farWeightMask * (1.0 - nearWeight);
-      vec3 color = farMountainColor(screenUv) * farWeight
-        + nearMountainColor(screenUv) * nearWeight;
+      // Each layer's full photo pipeline (9 texture taps + several fbm
+      // octaves) runs only where its own mask contributes; interior pixels
+      // of one layer skip the other's entirely.
+      vec3 color = vec3(0.0);
+      if (farWeight > 0.001) color += farMountainColor(screenUv) * farWeight;
+      if (nearWeight > 0.001) color += nearMountainColor(screenUv) * nearWeight;
       return color / max(nearWeight + farWeight, 0.001);
     }
 
@@ -945,7 +951,7 @@
 
       vec2 screenUv = dirToScreenUV(direction);
       if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.395 && screenUv.y <= 1.0) {
-        color = mix(color, photoSkyColor(screenUv), u_day_photo_ready * 0.96);
+        color = mix(color, photoSkyColor(screenUv, detail), u_day_photo_ready * 0.96);
 
         // Wind-combed sunrise cirrus over the photo sky: long streaks that
         // ignite gold around the burst and cool to pale blue further out.
@@ -1000,11 +1006,16 @@
           // plains, finer speckle hints at crater fields, the limb darkens
           // toward the edge and the terminator shades the lower-left.
           vec2 moonSurface = moonDelta / moonRadius;
-          float maria = fbm(moonSurface * 2.4 + vec2(4.7, 1.3));
-          float craters = fbm(moonSurface * 6.5 + vec2(9.2, 3.8));
-          float surface = 1.0
-            - smoothstep(0.38, 0.72, maria) * 0.48
-            - smoothstep(0.52, 0.86, craters) * 0.22;
+          float surface = 1.0;
+          if (detail > 0.5) {
+            // Maria and crater speckle are invisible in wave-broken
+            // reflections - only primary rays pay for the fbm.
+            float maria = fbm(moonSurface * 2.4 + vec2(4.7, 1.3));
+            float craters = fbm(moonSurface * 6.5 + vec2(9.2, 3.8));
+            surface = 1.0
+              - smoothstep(0.38, 0.72, maria) * 0.48
+              - smoothstep(0.52, 0.86, craters) * 0.22;
+          }
           float limb = 1.0 - smoothstep(0.45, 1.0, moonDistance / moonRadius) * 0.45;
           float lit = smoothstep(-0.92, 0.05, dot(moonSurface, normalize(vec2(0.66, 0.52))));
           color += vec3(0.99, 0.98, 0.90) * moonDisc * surface * limb * mix(0.10, 1.0, lit) * 1.6;
@@ -1034,7 +1045,15 @@
     }
 
     vec3 skyColor(vec3 direction, float detail) {
-      return mix(daySky(direction, detail), nightSky(direction, detail), u_night);
+      // At full day or full night, skip the other sky entirely: the moon's
+      // fbm surface (every daytime reflection ray) or the whole photo-sky
+      // pipeline (every night pixel) otherwise runs just to be weighted by
+      // zero. Single call sites keep the inlined shader small.
+      vec3 day = vec3(0.0);
+      vec3 night = vec3(0.0);
+      if (u_night < 0.999) day = daySky(direction, detail);
+      if (u_night > 0.001) night = nightSky(direction, detail);
+      return mix(day, night, u_night);
     }
 
     vec3 acesTonemap(vec3 color) {
