@@ -217,7 +217,7 @@
       return sky;
     }
 
-    vec3 photoMountainColor(vec2 screenUv, float ridge, float depth) {
+    vec3 photoMountainColor(vec2 screenUv, float ridge, float flankSlope, float depth) {
       float horizon = 0.395;
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
       float x = sceneX(screenUv.x);
@@ -271,7 +271,9 @@
       // magnification, so the finest detail must come from a procedural
       // octave evaluated per screen pixel, like a game-engine detail map.
       float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
-      photo *= 1.0 + (canopyGrain - 0.5) * mix(0.10, 0.22, depth);
+      float canopyFine = fbm(vec2(sceneX(screenUv.x) * 96.0, screenUv.y * 150.0) + vec2(depth * 5.0, 3.0));
+      photo *= 1.0 + (canopyGrain - 0.5) * mix(0.10, 0.22, depth)
+        + (canopyFine - 0.5) * mix(0.08, 0.18, depth);
 
       // Derive the light-facing normal from the photographed material. Using
       // the 2D skyline derivative here turns every ridge sample into a vertical
@@ -288,7 +290,7 @@
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
       vec3 chroma = mix(vec3(luminance), photo, mix(0.76, 0.96, depth));
       vec3 coastalHaze = vec3(0.15, 0.25, 0.34);
-      float rightExposure = mix(1.0, 1.16, smoothstep(0.34, 0.58, x) * depth);
+      float rightExposure = 1.0;
       // The sunrise references show backlit slopes: mostly dark silhouette
       // material with texture, not sunlit green faces. Keep the exposure low
       // and let the warm rim light below carry the sunrise.
@@ -306,13 +308,16 @@
       float slopeLight = smoothstep(0.28, 0.84, diffuse) * sunriseReach;
       graded += vec3(0.66, 0.47, 0.28) * slopeLight * (0.115 + height * 0.115) * mix(1.0, 0.72, depth);
 
-      // The broad inner face of the right headland turns toward the left-hand
-      // sun. Open that plane up, then let it fall back into cooler shadow along
-      // the long eastern tail instead of silhouetting the whole mountain.
-      float rightHeadland = depth * smoothstep(0.36, 0.49, x);
-      float rightSunFace = rightHeadland * (1.0 - smoothstep(0.64, 0.94, x)) * mix(0.72, 1.0, height);
-      graded *= 1.0 + rightHeadland * 0.10 + rightSunFace * 0.22;
-      graded += vec3(0.50, 0.38, 0.25) * rightSunFace * (0.080 + height * 0.060);
+      // The sun rises at the far left, so light must follow geometry: each
+      // ridge's west flank (rising toward its peak) catches the sunrise
+      // while the east flank falls into shade. flankSlope is the ridge
+      // profile's derivative — positive where the crest climbs rightward.
+      float sunReach = 0.35 + 0.65 * exp(-screenUv.x * 1.1);
+      float flankLit = smoothstep(0.05, 0.8, flankSlope);
+      float flankShade = smoothstep(0.05, 0.9, -flankSlope);
+      graded *= 1.0 + flankLit * mix(0.20, 0.34, depth) * sunReach;
+      graded *= 1.0 - flankShade * mix(0.12, 0.24, depth);
+      graded += vec3(0.55, 0.40, 0.24) * flankLit * (0.06 + height * 0.11) * sunReach;
 
       // Where the ridge profile is only a sliver the full atlas column
       // compresses into jagged noise; dissolve ONLY those few pixels into
@@ -343,7 +348,8 @@
       day *= 0.90 + detail * 0.18;
       // The far range is a haze layer: let the stable procedural gradient
       // carry more weight so stretched-photo artifacts stay invisible.
-      day = mix(day, photoMountainColor(screenUv, ridge, 0.0), u_mountain_photo_ready * 0.72);
+      float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
+      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.72);
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
@@ -357,7 +363,8 @@
       vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
       day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
-      day = mix(day, photoMountainColor(screenUv, ridge, 1.0), u_mountain_photo_ready * 0.96);
+      float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
+      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 1.0), u_mountain_photo_ready * 0.96);
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       return mix(day, night, u_night);
     }
