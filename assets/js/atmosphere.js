@@ -63,7 +63,9 @@
     #define RAYMARCH_STEPS 32
     #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
-    #define SUN_SCREEN_Y 0.535
+    #define SUN_SCREEN_Y 0.512
+    #define MOON_SCREEN_X 0.70
+    #define MOON_SCREEN_Y 0.80
 
     float hash21(vec2 p) {
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
@@ -93,6 +95,7 @@
     }
 
     mat3 createRotationMatrixAxisAngle(vec3 axis, float angle);
+    float terrainDetail(vec2 screenUv, float seed, float depthScale);
 
     vec2 dirToScreenUV(vec3 dir) {
       vec3 unrotated = createRotationMatrixAxisAngle(vec3(1.0, 0.0, 0.0), -0.14) * dir;
@@ -100,6 +103,14 @@
       vec2 uv = (unrotated.xy / unrotated.z) * 1.5;
       vec2 ndc = uv / vec2(iResolution.x / iResolution.y, 1.0);
       return ndc * 0.5 + 0.5;
+    }
+
+    float sunGlare(vec2 screenUv) {
+      // Glare bleed around the sun position, shared by the sky and the
+      // mountain branch: the ridge silhouette must dissolve into the burst
+      // where they meet, as in the sunrise reference.
+      vec2 delta = (screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y)) / vec2(1.0, 1.55);
+      return exp(-pow(length(delta) / 0.075, 2.0));
     }
 
     float sceneX(float screenX) {
@@ -172,20 +183,35 @@
       // quickly into a cool blue sky. Keep the photographed cloud structure,
       // but veil it in the broad overexposure around the horizon.
       vec2 sunriseCenter = vec2(SUN_SCREEN_X, SUN_SCREEN_Y);
-      vec2 haloDelta = (vec2(viewX, screenUv.y) - sunriseCenter) / vec2(0.31, 0.205);
+      vec2 haloDelta = (vec2(viewX, screenUv.y) - sunriseCenter) / vec2(0.46, 0.235);
       float halo = exp(-dot(haloDelta, haloDelta) * 0.92);
       float horizonBand = exp(-skyHeight * 5.4) * leftField;
       float cloudLight = smoothstep(0.18, 0.66, luminance) * halo;
       vec3 paleGold = vec3(1.58, 1.32, 0.98);
-      float overexposure = clamp(halo * lowerSky * 0.86 + horizonBand * 0.38, 0.0, 0.94);
-      sky = mix(sky, paleGold, overexposure);
+      // The veil must stay clearly below white: when the whole corner
+      // saturates through the tonemapper, the sun has nothing brighter left
+      // to be and disappears into its own halo.
+      float overexposure = clamp(halo * lowerSky * 0.26 + horizonBand * 0.20, 0.0, 0.46);
+      sky = mix(sky, paleGold * 0.86, overexposure);
       sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
 
+      // The reference sunrise is not a disc: it is a blown white burst
+      // cresting the ridge, with faint crepuscular rays combing up through
+      // the cirrus. The core gaussian clips to white over a broad soft
+      // region by design; the ridge glare is added in the mountain branch.
       float sunDistance = length((vec2(viewX, screenUv.y) - sunriseCenter) / vec2(1.0, 1.55));
-      float sunAureole = exp(-pow(sunDistance / 0.058, 2.0));
-      float sunCore = exp(-pow(sunDistance / 0.016, 2.0));
-      sky += vec3(1.72, 1.30, 0.78) * sunAureole * 0.74;
-      sky += vec3(4.20, 3.70, 2.90) * sunCore * 1.35;
+      float rayAngle = atan(screenUv.y - sunriseCenter.y, viewX - sunriseCenter.x);
+      float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
+      float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
+      float rayReach = exp(-sunDistance * 4.6);
+      // Contrast, not more light, is what makes the core sear: a saturated
+      // amber mid-field REPLACES the sky tone around the burst (darker than
+      // the core), and only the core itself clips to white.
+      float goldField = exp(-pow(sunDistance / 0.20, 2.0));
+      sky = mix(sky, vec3(1.30, 0.98, 0.55) * mix(0.78, 1.02, goldField), goldField * 0.58);
+      sky += vec3(2.2, 1.6, 0.85) * exp(-pow(sunDistance / 0.070, 2.0)) * 0.70;
+      sky += vec3(7.5, 6.6, 5.2) * exp(-pow(sunDistance / 0.040, 2.0)) * 1.9;
+      sky += vec3(1.55, 1.30, 0.95) * rays * rayReach * 0.55;
       return sky;
     }
 
@@ -208,6 +234,10 @@
       float slopeProjection = (height - 0.5) * mix(0.18, 0.12, depth);
       sampleX = clamp(sampleX + slopeProjection + terrainWarp * (0.42 + height * 0.58), 0.015, 0.985);
       vec2 atlasUv = vec2(sampleX, mix(farY, nearY, depth));
+      // The ridge band minifies the atlas ~3:1 vertically; anisotropic
+      // filtering (enabled on the texture from JS) keeps the horizontal
+      // detail sharp through that minification. A shader LOD bias is the
+      // wrong tool here — it aliases the vertical axis into streaks.
       vec3 photo = srgbToLinear(texture2D(u_mountain_photo, atlasUv).rgb);
       vec2 atlasStep = vec2(0.0024, 0.0032);
       vec3 photoRight = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb);
@@ -215,15 +245,31 @@
       vec3 photoUp = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb);
       vec3 photoDown = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb);
       vec3 localAverage = (photoRight + photoLeft + photoUp + photoDown) * 0.25;
-      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 7.4, -0.22, 0.22);
+      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
       photo *= 1.0 + terrainRelief;
+
+      // The atlas is cut from the sunlit originals now — only a light
+      // blue-cut remains so the forest does not go cold under the grade.
+      photo *= mix(vec3(1.0), vec3(1.0, 1.03, 0.90), depth);
+
+      // A whisper of procedural variation on top of the real texture —
+      // slightly stronger than a whisper, so it survives half-resolution
+      // rendering on hi-DPI displays.
+      float surfaceDetail = terrainDetail(screenUv, mix(2.7, 7.1, depth), mix(0.72, 1.0, depth));
+      photo *= 0.86 + 0.28 * surfaceDetail;
+
+      // Render-resolution canopy grain: the photo patch tops out at ~1.6x
+      // magnification, so the finest detail must come from a procedural
+      // octave evaluated per screen pixel, like a game-engine detail map.
+      float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
+      photo *= 1.0 + (canopyGrain - 0.5) * mix(0.10, 0.22, depth);
 
       // Derive the light-facing normal from the photographed material. Using
       // the 2D skyline derivative here turns every ridge sample into a vertical
       // band; atlas gradients let sunlight follow actual gullies and folds.
       float gradientX = dot(photoRight - photoLeft, vec3(0.2126, 0.7152, 0.0722));
       float gradientY = dot(photoUp - photoDown, vec3(0.2126, 0.7152, 0.0722));
-      vec3 terrainNormal = normalize(vec3(-gradientX * 4.2, -gradientY * 2.8, 1.0));
+      vec3 terrainNormal = normalize(vec3(-gradientX * 6.0, -gradientY * 4.0, 1.0));
       // The sunrise is left of the frame but still on the camera-facing side
       // of the bay. Give left-facing slopes a low, frontal dawn light and let
       // the terrain turn away into shadow toward the right.
@@ -231,21 +277,25 @@
       float diffuse = clamp(dot(terrainNormal, sunriseDirection), 0.0, 1.0);
 
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      vec3 chroma = mix(vec3(luminance), photo, mix(0.74, 0.96, depth));
+      vec3 chroma = mix(vec3(luminance), photo, mix(0.76, 0.96, depth));
       vec3 coastalHaze = vec3(0.15, 0.25, 0.34);
-      float rightExposure = mix(1.0, 1.18, smoothstep(0.34, 0.58, x) * depth);
-      vec3 graded = chroma * mix(2.20, 2.72, depth) * rightExposure;
-      graded = mix(coastalHaze, graded, mix(0.62, 0.97, depth));
+      float rightExposure = mix(1.0, 1.16, smoothstep(0.34, 0.58, x) * depth);
+      // The sunrise references show backlit slopes: mostly dark silhouette
+      // material with texture, not sunlit green faces. Keep the exposure low
+      // and let the warm rim light below carry the sunrise.
+      vec3 graded = chroma * mix(1.30, 1.40, depth) * rightExposure;
+      graded = mix(coastalHaze, graded, mix(0.62, 0.90, depth));
 
       // Preserve the cool photographic material, but model the sunrise as
       // side/front light rather than a backlight. The broad diffuse term keeps
       // the actual terrain legible while the x-facing normal decides where
       // shadows fall.
       float sunriseReach = exp(-screenUv.x * 1.62);
-      graded = mix(vec3(0.10, 0.17, 0.24), graded, mix(0.70, 0.86, depth));
-      graded *= mix(0.74, 0.70, depth) + diffuse * mix(0.44, 0.34, depth);
+      vec3 shadowBase = mix(vec3(0.10, 0.17, 0.24), vec3(0.05, 0.085, 0.07), depth);
+      graded = mix(shadowBase, graded, mix(0.70, 0.88, depth));
+      graded *= mix(0.66, 0.62, depth) + diffuse * mix(0.56, 0.46, depth);
       float slopeLight = smoothstep(0.28, 0.84, diffuse) * sunriseReach;
-      graded += vec3(0.66, 0.47, 0.28) * slopeLight * (0.075 + height * 0.075) * mix(1.0, 0.72, depth);
+      graded += vec3(0.66, 0.47, 0.28) * slopeLight * (0.115 + height * 0.115) * mix(1.0, 0.72, depth);
 
       // The broad inner face of the right headland turns toward the left-hand
       // sun. Open that plane up, then let it fall back into cooler shadow along
@@ -254,16 +304,23 @@
       float rightSunFace = rightHeadland * (1.0 - smoothstep(0.64, 0.94, x)) * mix(0.72, 1.0, height);
       graded *= 1.0 + rightHeadland * 0.10 + rightSunFace * 0.22;
       graded += vec3(0.50, 0.38, 0.25) * rightSunFace * (0.080 + height * 0.060);
+
+      // Where the ridge profile is only a sliver the full atlas column
+      // compresses into jagged noise; dissolve ONLY those few pixels into
+      // haze — the headland's low tail must keep its forest.
+      float lowProfile = 1.0 - smoothstep(0.003, 0.016, ridge - 0.395);
+      graded = mix(graded, vec3(0.42, 0.52, 0.60), lowProfile * 0.45);
       return graded;
     }
 
     float terrainDetail(vec2 screenUv, float seed, float depthScale) {
+      // No sine strata here: a periodic horizontal term multiplied onto the
+      // photo layer reads as wood-grain stripes across the whole slope.
       vec2 point = vec2(sceneX(screenUv.x) * 11.0, screenUv.y * 19.0) * depthScale;
       float broad = fbm(point + vec2(seed, seed * 0.37));
       float fine = fbm(point * 2.45 + vec2(seed * 2.1, -seed));
       float ridges = 1.0 - abs(fine * 2.0 - 1.0);
-      float strata = 0.5 + 0.5 * sin((screenUv.y + broad * 0.018) * 235.0 + sceneX(screenUv.x) * 9.0);
-      return clamp(broad * 0.58 + ridges * 0.32 + strata * 0.10, 0.0, 1.0);
+      return clamp(broad * 0.62 + ridges * 0.38, 0.0, 1.0);
     }
 
     vec3 farMountainColor(vec2 screenUv) {
@@ -299,7 +356,7 @@
       return exp(-distance * distance);
     }
 
-    float settlementLights(vec2 screenUv, float ridge, float seed, float density) {
+    vec3 settlementLights(vec2 screenUv, float ridge, float seed, float density) {
       float horizon = 0.395;
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.008), 0.0, 1.0);
       float x = sceneX(screenUv.x);
@@ -310,40 +367,63 @@
         townCluster(x, 0.12, 0.045),
         max(townCluster(x, 0.20, 0.055), townCluster(x, 0.29, 0.04))
       );
+      // The right shore thins toward the open sea in the reference photo:
+      // a bright town at the headland's base, then progressively sparser
+      // clusters trailing off to the right.
       float rightPopulation = max(
         townCluster(x, 0.52, 0.055),
         max(
-          townCluster(x, 0.68, 0.075),
-          max(townCluster(x, 0.79, 0.06), townCluster(x, 0.91, 0.055))
+          townCluster(x, 0.66, 0.06) * 0.55,
+          max(townCluster(x, 0.79, 0.05) * 0.22, townCluster(x, 0.93, 0.045) * 0.12)
         )
       );
       float population = max(
         leftTown * clamp(0.10 + leftPopulation, 0.0, 1.0),
-        rightTown * clamp(0.16 + rightPopulation, 0.0, 1.0)
+        rightTown * clamp(0.04 + rightPopulation, 0.0, 1.0)
       );
 
-      // A dense, nearly continuous waterfront row. It is generated separately
-      // so shoreline buildings do not depend on a random hillside cell landing
-      // close enough to the water.
+      // A dense waterfront strip, generated separately so shoreline buildings
+      // do not depend on a random hillside cell landing close to the water.
+      // Two staggered rows thicken the strip inside town cores (the reference
+      // night photo shows towns as multi-row agglomerations, not a string).
       float shoreGrid = 265.0;
-      float shoreCell = floor(screenUv.x * shoreGrid);
-      float shoreX = (shoreCell + hash21(vec2(shoreCell, seed + 21.0))) / shoreGrid;
-      float shoreYpx = mix(0.34, 1.55, hash21(vec2(shoreCell, seed + 22.0)));
-      vec2 shoreDeltaPx = vec2(
-        (screenUv.x - shoreX) * iResolution.x,
-        (screenUv.y - horizon) * iResolution.y - shoreYpx
-      );
-      float shoreSizeClass = hash21(vec2(shoreCell, seed + 23.0));
-      float shoreSizeVariation = hash21(vec2(shoreCell, seed + 23.5));
-      float shoreRadius = mix(0.18, 0.35, shoreSizeVariation);
-      shoreRadius = mix(shoreRadius, mix(0.38, 0.58, shoreSizeVariation), step(0.78, shoreSizeClass));
-      shoreRadius = mix(shoreRadius, mix(0.62, 0.82, shoreSizeVariation), step(0.96, shoreSizeClass));
-      float shorePoint = 1.0 - smoothstep(shoreRadius, shoreRadius + mix(0.30, 0.46, shoreSizeClass), length(shoreDeltaPx));
-      float shoreOccupied = min(0.72, population * density * 0.62);
-      float shoreKeep = step(1.0 - shoreOccupied, hash21(vec2(shoreCell, seed + 24.0)));
-      float shoreBrightnessVariation = hash21(vec2(shoreCell, seed + 25.0));
-      float shoreBrightness = mix(0.38, 0.92, shoreBrightnessVariation * shoreBrightnessVariation) + step(0.96, shoreSizeClass) * 0.28;
-      float shoreline = shorePoint * shoreKeep * shoreBrightness;
+      float shorelineWarm = 0.0;
+      float shorelineCool = 0.0;
+      for (int row = 0; row < 2; row++) {
+        float rowSeed = seed + float(row) * 37.0;
+        float shoreCell = floor(screenUv.x * shoreGrid);
+        float shoreX = (shoreCell + hash21(vec2(shoreCell, rowSeed + 21.0))) / shoreGrid;
+        float shoreYpx = mix(0.34, 1.7, hash21(vec2(shoreCell, rowSeed + 22.0)))
+          + float(row) * mix(1.6, 3.4, hash21(vec2(shoreCell, rowSeed + 26.0)));
+        vec2 shoreDeltaPx = vec2(
+          (screenUv.x - shoreX) * iResolution.x,
+          (screenUv.y - horizon) * iResolution.y - shoreYpx
+        );
+        // Three widely separated size tiers — mostly window specks, some
+        // street lamps, rare big soft floodlights — so the strip reads as a
+        // light hierarchy instead of a string of identical dots. The feather
+        // grows with radius: small lights stay crisp, big ones bloom.
+        float shoreSizeClass = hash21(vec2(shoreCell, rowSeed + 23.0));
+        float shoreSizeVariation = hash21(vec2(shoreCell, rowSeed + 23.5));
+        float shoreRadius = mix(0.20, 0.36, shoreSizeVariation);
+        shoreRadius = mix(shoreRadius, mix(0.55, 0.95, shoreSizeVariation), step(0.78, shoreSizeClass));
+        shoreRadius = mix(shoreRadius, mix(1.30, 2.00, shoreSizeVariation), step(0.965, shoreSizeClass));
+        float shorePoint = 1.0 - smoothstep(shoreRadius, shoreRadius + 0.30 + shoreRadius * 0.55, length(shoreDeltaPx));
+        float rowGate = row == 0 ? 1.0 : smoothstep(0.5, 0.95, population);
+        // Squared population keeps town cores dense while the stretches
+        // between settlements fall back to genuine darkness, matching the
+        // clustered shoreline of the reference night photo.
+        float shoreOccupied = min(0.85, population * population * density * (row == 0 ? 1.15 : 0.85));
+        float shoreKeep = step(1.0 - shoreOccupied, hash21(vec2(shoreCell, rowSeed + 24.0)));
+        float shoreBrightnessVariation = hash21(vec2(shoreCell, rowSeed + 25.0));
+        float shoreBrightness = mix(0.30, 0.75, shoreBrightnessVariation * shoreBrightnessVariation);
+        shoreBrightness = mix(shoreBrightness, mix(0.90, 1.30, shoreBrightnessVariation), step(0.78, shoreSizeClass));
+        shoreBrightness = mix(shoreBrightness, mix(1.45, 1.95, shoreBrightnessVariation), step(0.965, shoreSizeClass));
+        float shoreCool = step(0.87, hash21(vec2(shoreCell, rowSeed + 27.0)));
+        float shoreLight = shorePoint * shoreKeep * shoreBrightness * rowGate;
+        shorelineWarm = max(shorelineWarm, shoreLight * (1.0 - shoreCool));
+        shorelineCool = max(shorelineCool, shoreLight * shoreCool);
+      }
 
       // Smaller hillside points gather into neighbourhoods and follow two
       // loose elevation contours instead of scattering evenly over the slope.
@@ -355,21 +435,33 @@
       vec2 deltaPx = (screenUv - lightUv) * iResolution.xy;
       float sizeClass = hash21(cell + seed + 8.3);
       float sizeVariation = hash21(cell + seed + 9.1);
-      float radiusPx = mix(0.08, 0.18, sizeVariation);
-      radiusPx = mix(radiusPx, mix(0.21, 0.36, sizeVariation), step(0.72, sizeClass));
-      radiusPx = mix(radiusPx, mix(0.40, 0.60, sizeVariation), step(0.95, sizeClass));
-      float point = 1.0 - smoothstep(radiusPx, radiusPx + mix(0.28, 0.48, sizeClass), length(deltaPx));
+      float radiusPx = mix(0.14, 0.26, sizeVariation);
+      radiusPx = mix(radiusPx, mix(0.42, 0.68, sizeVariation), step(0.75, sizeClass));
+      radiusPx = mix(radiusPx, mix(0.95, 1.35, sizeVariation), step(0.96, sizeClass));
+      float point = 1.0 - smoothstep(radiusPx, radiusPx + 0.28 + radiusPx * 0.5, length(deltaPx));
       float roadLow = exp(-abs(height - (0.16 + 0.045 * sin(x * 18.0 + seed))) * 24.0);
       float roadHigh = exp(-abs(height - (0.38 + 0.055 * sin(x * 13.0 + seed * 0.7))) * 21.0);
       float neighbourhood = smoothstep(0.47, 0.69, fbm(vec2(x * 8.0 + seed, height * 6.0)));
       float elevation = (1.0 - smoothstep(0.58, 0.88, height)) * max(roadLow, roadHigh * 0.66);
-      float hillsideOccupied = min(0.46, population * density * elevation * mix(0.32, 1.55, neighbourhood));
+      float hillsideOccupied = min(0.58, population * population * density * elevation * mix(0.42, 1.85, neighbourhood));
       float randomKeep = step(1.0 - hillsideOccupied, hash21(cell + seed + 12.4));
       float brightnessVariation = hash21(cell + seed + 16.7);
-      float brightness = mix(0.22, 0.88, brightnessVariation * brightnessVariation) + step(0.95, sizeClass) * 0.32;
+      float brightness = mix(0.22, 0.62, brightnessVariation * brightnessVariation);
+      brightness = mix(brightness, mix(0.85, 1.20, brightnessVariation), step(0.75, sizeClass));
+      brightness = mix(brightness, mix(1.40, 1.90, brightnessVariation), step(0.96, sizeClass));
+      float hillCool = step(0.88, hash21(cell + seed + 21.3));
       float shimmer = 0.975 + 0.025 * sin(iTime * 0.12 + hash21(cell + seed + 19.1) * 6.28318);
       float hillside = point * randomKeep * brightness;
-      return max(shoreline, hillside) * shimmer;
+      float warmLights = max(shorelineWarm, hillside * (1.0 - hillCool));
+      float coolLights = max(shorelineCool, hillside * hillCool);
+
+      // A settled slope also glows: windows and street lamps too small to
+      // resolve individually still lift the hillside around each town. The
+      // bloom concentrates in town cores and hugs the waterfront, leaving
+      // the stretches between settlements properly dark.
+      float townCore = population * population;
+      float glow = townCore * exp(-height * 8.5) * (0.45 + 0.55 * neighbourhood);
+      return vec3(warmLights * shimmer, coolLights * shimmer, glow);
     }
 
     float mountainMask(vec2 screenUv) {
@@ -385,11 +477,26 @@
     vec3 mountainLightColor(vec2 screenUv) {
       float farMask = farMountainMask(screenUv);
       float nearMask = nearMountainMask(screenUv);
-      float farLights = settlementLights(screenUv, farRidgeAt(screenUv.x), 13.7, 0.68) * farMask;
-      float nearLights = settlementLights(screenUv, nearRidgeAt(screenUv.x), 31.2, 1.18) * nearMask;
-      vec3 background = vec3(2.8, 1.35, 0.42) * farLights * (1.0 - nearMask);
-      vec3 foreground = vec3(4.1, 1.8, 0.48) * nearLights;
-      return (background + foreground) * u_night;
+      vec3 farLights = settlementLights(screenUv, farRidgeAt(screenUv.x), 13.7, 0.95);
+      vec3 nearLights = settlementLights(screenUv, nearRidgeAt(screenUv.x), 31.2, 1.18);
+      vec3 background = (vec3(4.4, 2.1, 0.62) * farLights.x + vec3(2.2, 2.7, 3.2) * farLights.y
+        + vec3(0.60, 0.30, 0.10) * farLights.z) * farMask * (1.0 - nearMask);
+      vec3 foreground = (vec3(6.2, 2.8, 0.75) * nearLights.x + vec3(3.0, 3.6, 4.2) * nearLights.y
+        + vec3(0.80, 0.40, 0.14) * nearLights.z) * nearMask;
+
+      // Red aviation beacons on the summit masts, as in the reference photo:
+      // one on the right headland's crest, one on the far range's peak.
+      vec3 beacons = vec3(0.0);
+      for (int b = 0; b < 2; b++) {
+        float bx = b == 0 ? 0.655 : 0.205;
+        float by = (b == 0 ? nearRidgeAt(bx) : farRidgeAt(bx)) - 0.004;
+        vec2 beaconDeltaPx = (screenUv - vec2(bx, by)) * iResolution.xy;
+        float pulse = 0.65 + 0.35 * sin(iTime * 0.9 + float(b) * 2.1);
+        float beacon = (1.0 - smoothstep(0.5, 1.2, length(beaconDeltaPx))) * pulse;
+        beacons += vec3(1.6, 0.14, 0.10) * beacon;
+      }
+
+      return (background + foreground + beacons) * u_night;
     }
 
     vec3 mountainColor(vec2 screenUv) {
@@ -416,10 +523,10 @@
         return vec4(0.0);
       }
       vec2 shipUv = vec2(point.x * 0.5 + 0.5, point.y);
-      // The ship is displayed at roughly one fifth of its source size, so one
-      // screen pixel spans several source texels. Sample across that actual
-      // footprint rather than taking nearly identical taps inside one mip texel.
-      vec2 shipTexel = vec2(3.0 / 512.0, 3.0 / 256.0);
+      // The mip chain (plus anisotropic filtering) already integrates the
+      // minified footprint; keep the manual taps tight or they double-blur
+      // the hull into mush.
+      vec2 shipTexel = vec2(1.2 / 512.0, 1.2 / 256.0);
       vec4 shipCenter = texture2D(u_ship, shipUv);
       vec4 shipLeft = texture2D(u_ship, shipUv - vec2(shipTexel.x, 0.0));
       vec4 shipRight = texture2D(u_ship, shipUv + vec2(shipTexel.x, 0.0));
@@ -442,9 +549,11 @@
         min(texture2D(u_ship, shipUv - vec2(0.0, edgeProbe.y)).a, texture2D(u_ship, shipUv + vec2(0.0, edgeProbe.y)).a)
       );
       float boundary = smoothstep(0.08, 0.82, alphaMaximum - edgeAlphaMinimum);
-      shipColor = mix(shipColor, max(shipColor, vec3(0.42, 0.48, 0.55)), boundary * 0.82);
+      // No color lift here: brightening edge pixels toward gray painted a
+      // white outline around the hull. Premultiplied filtering already keeps
+      // edge colors clean; a soft alpha feather is all the edge needs.
       float shipAlpha = smoothstep(0.10, 0.90, alphaSum / 6.0);
-      shipAlpha *= mix(1.0, 0.42, boundary);
+      shipAlpha *= mix(1.0, 0.60, boundary);
       return vec4(srgbToLinear(shipColor) * 1.48, shipAlpha * passageAlpha);
     }
 
@@ -475,15 +584,48 @@
         float life = smoothstep(0.0, 0.075, age) * (1.0 - smoothstep(0.58, 1.0, age));
         smoke += shape * breakup * life;
       }
-      return clamp(smoke * 0.24 * passageAlpha, 0.0, 0.40);
+      return clamp(smoke * 0.38 * passageAlpha, 0.0, 0.55);
     }
 
     vec3 compositeCruiseShip(vec2 screenUv, vec3 background) {
-      float smoke = cruiseShipSmoke(screenUv) * u_ship_ready * (1.0 - u_night);
-      background = mix(background, vec3(0.19, 0.24, 0.25), smoke);
-      vec4 ship = cruiseShipSample(screenUv);
-      ship.a *= u_ship_ready * (1.0 - u_night);
-      return mix(background, ship.rgb, ship.a);
+      float visibility = u_ship_ready * (1.0 - u_night);
+      if (visibility <= 0.001) return background;
+      // The ship and its smoke live in a narrow band above the waterline,
+      // its reflection in a band just below. Skipping everything else avoids
+      // evaluating six fbm smoke puffs for every sky and water pixel.
+      float aspect = iResolution.x / iResolution.y;
+      float coverage = aspect >= 1.5 ? 1.0 : max(aspect / 1.5, 0.48);
+      float shipHeight = (0.080 / coverage) * aspect / 2.0;
+      float shipWaterline = 0.390 - 4.0 / iResolution.y;
+      float reflectionDepth = shipHeight * 1.6;
+      if (screenUv.y < shipWaterline - reflectionDepth || screenUv.y > shipWaterline + shipHeight * 2.2) {
+        return background;
+      }
+      if (screenUv.y >= shipWaterline - 0.0005) {
+        float smoke = cruiseShipSmoke(screenUv) * visibility;
+        // Light warm-gray steam, not near-black: the plume must read against
+        // the dark slope behind the funnel.
+        background = mix(background, vec3(0.34, 0.37, 0.39), smoke);
+        vec4 ship = cruiseShipSample(screenUv);
+        // Aerial perspective: at this distance across the bay the liner sits
+        // behind a veil of morning haze; without it the photo-exposed sprite
+        // reads as pasted onto the scene.
+        ship.rgb = mix(ship.rgb, vec3(0.50, 0.62, 0.78), 0.12);
+        ship.a *= visibility;
+        return mix(background, ship.rgb, ship.a);
+      }
+      // A broken, wave-wobbled reflection seats the hull in the water.
+      float below = (shipWaterline - screenUv.y) / reflectionDepth;
+      vec2 mirrorUv = vec2(
+        screenUv.x + sin(screenUv.y * 240.0 + iTime * 1.3) * 0.0016,
+        2.0 * shipWaterline - screenUv.y
+      );
+      vec4 shipReflection = cruiseShipSample(mirrorUv);
+      float reflectionFade = (1.0 - below) * (1.0 - below);
+      float ripple = 0.75 + 0.25 * sin(screenUv.y * 620.0 + screenUv.x * 40.0 + iTime * 2.2);
+      shipReflection.a *= visibility * reflectionFade * 0.30 * ripple;
+      vec3 reflectionColor = mix(shipReflection.rgb * 0.55, vec3(0.30, 0.40, 0.52), 0.35);
+      return mix(background, reflectionColor, shipReflection.a);
     }
 
     float star(vec2 screenUv, vec2 cellId, vec2 grid) {
@@ -639,6 +781,22 @@
       vec2 screenUv = dirToScreenUV(direction);
       if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.395 && screenUv.y <= 1.0) {
         color = mix(color, photoSkyColor(screenUv), u_day_photo_ready * 0.96);
+
+        // Wind-combed sunrise cirrus over the photo sky: long streaks that
+        // ignite gold around the burst and cool to pale blue further out.
+        // The burst core keeps burning through them.
+        float sceneUvX = sceneX(screenUv.x);
+        vec2 flowUv = vec2(sceneUvX * 2.4 + iTime * 0.0016, screenUv.y * 6.5);
+        float comb = fbm(flowUv * vec2(1.0, 2.6) + vec2(fbm(flowUv * vec2(2.3, 1.2)) * 0.9, 0.0));
+        float strand = fbm(vec2(sceneUvX * 5.2 + iTime * 0.0011, screenUv.y * 18.0));
+        float cirrus = smoothstep(0.50, 0.78, comb * 0.66 + strand * 0.34);
+        cirrus *= smoothstep(0.47, 0.58, screenUv.y) * (1.0 - smoothstep(0.90, 1.0, screenUv.y));
+        vec2 cirrusSunDelta = (screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y)) / vec2(1.0, 1.55);
+        float sunProximity = exp(-length(cirrusSunDelta) * 3.2);
+        float coreProximity = exp(-pow(length(cirrusSunDelta) / 0.085, 2.0));
+        vec3 litCloud = mix(vec3(0.98, 1.02, 1.10), vec3(1.55, 1.18, 0.72), sunProximity);
+        float cloudStrength = cirrus * (0.30 + sunProximity * 0.35) * (1.0 - coreProximity * 0.6);
+        color = mix(color, litCloud, clamp(cloudStrength, 0.0, 0.62) * (0.4 + 0.6 * u_day_photo_ready));
       }
 
       if (u_day_photo_ready < 0.5 && screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
@@ -662,6 +820,31 @@
       float vertical = clamp(direction.y * 0.5 + 0.5, 0.0, 1.0);
       vec3 color = mix(vec3(0.03, 0.035, 0.05), vec3(0.015, 0.02, 0.04), vertical);
       if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y > 0.35 && screenUv.y <= 1.0) {
+        // A gibbous moon opposite the day scene's sunrise. It hangs high on
+        // the right so its glade lands on open water instead of the ridge.
+        vec2 moonDelta = (screenUv - vec2(MOON_SCREEN_X, MOON_SCREEN_Y))
+          * vec2(iResolution.x / iResolution.y, 1.0);
+        float moonDistance = length(moonDelta);
+        float moonRadius = 0.019;
+        float moonDisc = 1.0 - smoothstep(moonRadius * 0.97, moonRadius * 1.05, moonDistance);
+        if (moonDisc > 0.001) {
+          // Procedural lunar surface: low-frequency maria darken the basalt
+          // plains, finer speckle hints at crater fields, the limb darkens
+          // toward the edge and the terminator shades the lower-left.
+          vec2 moonSurface = moonDelta / moonRadius;
+          float maria = fbm(moonSurface * 2.4 + vec2(4.7, 1.3));
+          float craters = fbm(moonSurface * 6.5 + vec2(9.2, 3.8));
+          float surface = 1.0
+            - smoothstep(0.38, 0.72, maria) * 0.48
+            - smoothstep(0.52, 0.86, craters) * 0.22;
+          float limb = 1.0 - smoothstep(0.45, 1.0, moonDistance / moonRadius) * 0.45;
+          float lit = smoothstep(-0.92, 0.05, dot(moonSurface, normalize(vec2(0.66, 0.52))));
+          color += vec3(0.99, 0.98, 0.90) * moonDisc * surface * limb * mix(0.10, 1.0, lit) * 1.6;
+        }
+        // Fade the halo out over the disc itself so it does not wash the
+        // maria contrast back out.
+        float moonHalo = exp(-moonDistance * 21.0) * (1.0 - moonDisc * 0.8);
+        color += vec3(0.30, 0.33, 0.38) * moonHalo * 0.24;
         vec2 grid = vec2(40.0, 30.0);
         vec2 baseCell = floor(screenUv * grid);
         float stars = 0.0;
@@ -710,6 +893,9 @@
           vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay));
           mountainComposite = mix(edgeSky, landscape, mountains);
         }
+        // Sunrise glare engulfs the ridge where it crosses the sun.
+        float glare = sunGlare(screenUv) * (1.0 - u_night) * u_day_photo_ready;
+        mountainComposite = mix(mountainComposite, vec3(1.42, 1.20, 0.88), glare * 0.85);
         fragmentColor = vec4(acesTonemap(mountainComposite * 1.25), 1.0);
         return;
       }
@@ -732,7 +918,7 @@
       float epsilon = max(0.01, distanceToWater * 0.004);
       vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH);
       float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
-      float daylightCalm = (1.0 - u_night) * 0.64;
+      float daylightCalm = (1.0 - u_night) * 0.58;
       normal = mix(normal, vec3(0.0, 1.0, 0.0), clamp(distanceFlatten + daylightCalm, 0.0, 0.95));
 
       float fresnelSharp = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-normal, ray)), 5.0);
@@ -768,15 +954,15 @@
         vec3 reflectedLights = mountainLightColor(lightScreen) * 0.50;
         reflectedLights += mountainLightColor(lightScreen - blurStep) * 0.25;
         reflectedLights += mountainLightColor(lightScreen + blurStep) * 0.25;
-        reflection += reflectedLights * 0.82;
+        reflection += reflectedLights * 1.2;
       }
 
-      vec3 scatteringBase = mix(vec3(0.008, 0.055, 0.13), vec3(0.02, 0.02, 0.03), u_night);
+      vec3 scatteringBase = mix(vec3(0.006, 0.06, 0.155), vec3(0.02, 0.02, 0.03), u_night);
       vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
       vec3 color = fresnel * reflection + scattering;
-      vec3 waterBody = mix(vec3(0.006, 0.05, 0.13), vec3(0.012, 0.014, 0.022), u_night);
+      vec3 waterBody = mix(vec3(0.005, 0.058, 0.16), vec3(0.012, 0.014, 0.022), u_night);
       color += waterBody * (1.0 - fresnel) * 0.72;
-      vec3 fogColor = mix(vec3(0.10, 0.29, 0.48), vec3(0.03, 0.035, 0.05), u_night);
+      vec3 fogColor = mix(vec3(0.075, 0.245, 0.46), vec3(0.03, 0.035, 0.05), u_night);
       color = mix(color, fogColor, 1.0 - exp(-distanceToWater * 0.02));
 
       // The low sun needs a corresponding path across the water. Keep it
@@ -797,7 +983,14 @@
       float brokenPath = mix(0.48, 1.0, smoothstep(0.30, 0.74, broadGlints * 0.68 + fineGlints * 0.32));
       float pathFade = smoothstep(0.01, 0.09, waterProgress) * (1.0 - smoothstep(0.82, 1.0, waterProgress));
       vec3 pathColor = mix(vec3(1.02, 0.70, 0.37), vec3(0.70, 0.68, 0.59), waterProgress);
-      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night) * 0.19;
+      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night) * 0.23;
+
+      // The moon gets the same treatment on the opposite side of the bay:
+      // a narrower silver glade woven through the same broken glint field.
+      float gladeCenter = MOON_SCREEN_X - waterProgress * 0.045 + pathDrift * 0.6;
+      float gladeDistance = (screenUv.x - gladeCenter) / (pathWidth * 0.78);
+      float moonGlade = exp(-gladeDistance * gladeDistance * 1.35);
+      color += vec3(0.68, 0.72, 0.80) * moonGlade * brokenPath * pathFade * u_night * 0.17;
 
       color = compositeCruiseShip(screenUv, color);
       fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night)), 1.0);
@@ -845,10 +1038,13 @@
       dayColor = clamp(dayColor, 0.0, 1.0);
 
       float nightNoise = gaussian(noiseSample, 0.0, 0.36);
-      float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.065, 0.0, 1.0);
-      vec3 monochrome = mix(vec3(0.02), vec3(1.0), nightGray);
-      float warmHighlight = smoothstep(0.04, 0.42, source.r - source.b) * smoothstep(0.34, 0.86, source.r);
-      vec3 nightColor = mix(monochrome, source.rgb, warmHighlight * 0.82);
+      float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.055, 0.0, 1.0);
+      // Moonlit nights on the bay read deep indigo, not neutral gray (see
+      // the night reference photo): duotone from indigo shadows to silver
+      // moonlight, with the warm town lights preserved below.
+      vec3 monochrome = mix(vec3(0.018, 0.026, 0.052), vec3(0.86, 0.90, 1.0), nightGray);
+      float warmHighlight = smoothstep(0.03, 0.36, source.r - source.b) * smoothstep(0.14, 0.62, source.r);
+      vec3 nightColor = mix(monochrome, source.rgb, warmHighlight * 0.88);
 
       gl_FragColor = vec4(mix(dayColor, nightColor, u_night), 1.0);
     }
@@ -962,6 +1158,9 @@
     dayPhotoReady = 1;
     refreshFrame();
   };
+  dayPhotoImage.onerror = function () {
+    console.error("atmosphere: day photo failed to load: " + dayPhotoImage.src);
+  };
   dayPhotoImage.src = canvas.dataset.dayScene || "/images/herceg-novi-day.webp";
 
   var mountainPhotoReady = 0;
@@ -979,9 +1178,21 @@
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, mountainPhotoImage);
     gl.generateMipmap(gl.TEXTURE_2D);
+    // The ridge band minifies this atlas ~3:1 vertically; without
+    // anisotropic filtering the mip chain blurs every rock and tree flat.
+    var anisotropic = gl.getExtension("EXT_texture_filter_anisotropic")
+      || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
+      || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+    if (anisotropic) {
+      var maxAnisotropy = gl.getParameter(anisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+      gl.texParameterf(gl.TEXTURE_2D, anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(8, maxAnisotropy));
+    }
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     mountainPhotoReady = 1;
     refreshFrame();
+  };
+  mountainPhotoImage.onerror = function () {
+    console.error("atmosphere: mountain atlas failed to load: " + mountainPhotoImage.src);
   };
   mountainPhotoImage.src = canvas.dataset.mountainScene || "/images/herceg-novi-mountains.webp";
 
@@ -1001,6 +1212,13 @@
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, shipImage);
     gl.generateMipmap(gl.TEXTURE_2D);
+    var shipAnisotropic = gl.getExtension("EXT_texture_filter_anisotropic")
+      || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic")
+      || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+    if (shipAnisotropic) {
+      var shipMaxAnisotropy = gl.getParameter(shipAnisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
+      gl.texParameterf(gl.TEXTURE_2D, shipAnisotropic.TEXTURE_MAX_ANISOTROPY_EXT, Math.min(4, shipMaxAnisotropy));
+    }
     gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
     shipReady = 1;
