@@ -235,9 +235,9 @@
       // through the photographed villages. It only ever existed to hide
       // stretch banding, which the zoned single-orientation atlas no longer
       // has. The featureless far haze keeps a whisper for variety.
-      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.022, 0.006, depth);
+      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.004, 0.006, depth);
       terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.003;
-      float slopeProjection = (height - 0.5) * mix(0.09, 0.03, depth);
+      float slopeProjection = (height - 0.5) * mix(0.02, 0.03, depth);
       // Warp peaks mid-slope and calms at both the waterline and the crest,
       // so the silhouette edge stays steady.
       float warpEnvelope = 0.42 + (height - height * height) * 1.2;
@@ -254,8 +254,11 @@
       vec3 photoUp = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb);
       vec3 photoDown = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb);
       vec3 localAverage = (photoRight + photoLeft + photoUp + photoDown) * 0.25;
+      // The far band is interpolation mush at this stretch — amplifying its
+      // "relief" just renders oily marks. Only the near layer has real
+      // detail worth lifting.
       float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
-      photo *= 1.0 + terrainRelief;
+      photo *= 1.0 + terrainRelief * mix(0.2, 1.0, depth);
 
       // The atlas is cut from the sunlit originals now — only a light
       // blue-cut remains so the forest does not go cold under the grade.
@@ -355,7 +358,7 @@
       // The far range is a haze layer: let the stable procedural gradient
       // carry more weight so stretched-photo artifacts stay invisible.
       float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
-      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.72);
+      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.55);
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
