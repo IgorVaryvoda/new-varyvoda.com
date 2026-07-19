@@ -597,36 +597,31 @@ img { max-width: 100%; }
   text-transform: uppercase;
 }
 
+/* A compact log anchored to the left text column: the headline, thesis,
+   and these two entries form one rail, and the open water to the right —
+   glade, lights, the crossing ship — stays unobstructed. */
 .intro-index {
   position: relative;
   isolation: isolate;
   display: grid;
-  grid-column: 1 / -1;
+  grid-column: 1;
   grid-row: 3;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   align-self: end;
+  justify-self: start;
+  width: min(58rem, 100%);
   margin-top: clamp(5rem, 10vh, 12rem);
-  border-top: 1px solid var(--rule-dark);
-  border-bottom: 1px solid var(--rule-dark);
+  padding: 0.3rem 2.2rem;
+  background: rgba(10, 14, 24, 0.42);
+  border: 1px solid var(--rule-dark);
+  backdrop-filter: blur(14px) saturate(0.85);
+  -webkit-backdrop-filter: blur(14px) saturate(0.85);
 }
 
-:root:not([data-theme="dark"]) .intro-index { border-bottom-color: var(--scene-panel-rule); }
-
-:root:not([data-theme="dark"]) .intro-index::before {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 100vw;
+:root:not([data-theme="dark"]) .intro-index {
   background: var(--scene-panel);
-  border-top: 1px solid var(--scene-panel-rule);
-  box-shadow: 0 -1.4rem 4rem rgba(53, 93, 109, 0.08);
-  content: "";
-  pointer-events: none;
-  transform: translateX(-50%);
-  backdrop-filter: blur(18px) saturate(0.8);
-  -webkit-backdrop-filter: blur(18px) saturate(0.8);
+  border-color: var(--scene-panel-rule);
+  box-shadow: 0 1rem 3.4rem rgba(53, 93, 109, 0.10);
 }
 
 .intro-index a {
@@ -636,18 +631,17 @@ img { max-width: 100%; }
   min-width: 0;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: baseline;
-  gap: clamp(1.6rem, 2.5vw, 3.2rem);
-  padding: 1.7rem 0 1.6rem;
+  gap: clamp(1.4rem, 2vw, 2.6rem);
+  padding: 1.6rem 0;
   text-decoration: none;
 }
 
 .intro-index a + a {
   margin-left: 0;
-  padding-left: clamp(2rem, 3vw, 4rem);
-  border-left: 1px solid var(--rule-dark);
+  border-top: 1px solid var(--rule-dark);
 }
 
-.intro-index a:first-child { padding-right: clamp(2rem, 3vw, 4rem); }
+:root:not([data-theme="dark"]) .intro-index a + a { border-top-color: var(--scene-panel-rule); }
 
 .intro-index strong {
   min-width: 0;
