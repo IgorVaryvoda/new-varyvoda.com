@@ -44,6 +44,8 @@
     uniform vec2 iResolution;
     uniform float iTime;
     uniform float u_night;
+    uniform float u_sunProgress;
+    uniform float u_sunScreenY;
     uniform float u_noiseScale;
     uniform sampler2D u_skyline;
     uniform sampler2D u_day_photo;
@@ -64,7 +66,6 @@
     #define RAYMARCH_STEPS 32
     #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
-    #define SUN_BASE_Y 0.512
     #define MOON_SCREEN_X 0.70
     #define MOON_SCREEN_Y 0.80
 
@@ -119,17 +120,13 @@
     }
 
     float sunProgress() {
-      // 0 = sun kissing the ridge, 1 = fully risen. Drives the position
-      // AND the light itself: reach, warmth, glare, and scene exposure all
-      // follow, so the rise plays as morning arriving, not a sprite move.
-      return smoothstep(0.0, 1.0, clamp((iTime - 30.0) / 480.0, 0.0, 1.0));
+      // Computed once per frame on the CPU; every per-pixel call site was
+      // re-running smoothstep+clamp several times per fragment.
+      return u_sunProgress;
     }
 
     float sunScreenY() {
-      // The sun starts kissing the ridge and clears it over the first
-      // minutes of a visit — too slow to catch moving, obvious if you
-      // glance back. It eases to a stop instead of drifting forever.
-      return SUN_BASE_Y + 0.11 * sunProgress();
+      return u_sunScreenY;
     }
 
     vec2 sunDelta(vec2 screenUv) {
@@ -517,6 +514,9 @@
         leftTown * clamp(0.10 + leftPopulation, 0.0, 1.0),
         rightTown * clamp(0.04 + rightPopulation, 0.0, 1.0)
       );
+      // Between settlements there is nothing to light — every downstream
+      // term scales by population, so skip the whole hashing machinery.
+      if (population < 0.002) return vec3(0.0);
 
       // A dense waterfront strip, generated separately so shoreline buildings
       // do not depend on a random hillside cell landing close to the water.
@@ -527,6 +527,10 @@
       float shorelineCool = 0.0;
       // All pixel-space sizes below were tuned at a ~900px-tall render.
       float pxScale = iResolution.y / 900.0;
+      // The waterfront strip lives within a few pixels of the horizon;
+      // hillside pixels above it must not pay for two rows of hashing.
+      float heightPx = (screenUv.y - horizon) * iResolution.y;
+      if (heightPx < 16.0 * pxScale) {
       for (int row = 0; row < 2; row++) {
         float rowSeed = seed + float(row) * 37.0;
         float shoreCell = floor(screenUv.x * shoreGrid);
@@ -562,6 +566,7 @@
         float shoreLight = shorePoint * shoreKeep * shoreBrightness * rowGate;
         shorelineWarm = max(shorelineWarm, shoreLight * (1.0 - shoreCool));
         shorelineCool = max(shorelineCool, shoreLight * shoreCool);
+      }
       }
 
       // Smaller hillside points gather into neighbourhoods and follow two
@@ -1266,37 +1271,40 @@
     }
   `;
 
-  function compile(type, source) {
-    var shader = gl.createShader(type);
-    gl.shaderSource(shader, source);
-    gl.compileShader(shader);
-    if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-      console.error(gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);
-      return null;
-    }
-    return shader;
-  }
+  // Querying compile/link status forces a synchronous wait, so none happens
+  // here: with KHR_parallel_shader_compile the driver compiles this large
+  // shader on its own threads while textures decode and calibration runs,
+  // and the first draw performs the one-time validation instead.
+  gl.getExtension("KHR_parallel_shader_compile");
 
   function link(vertexSourceText, fragmentSourceText) {
-    var vertex = compile(gl.VERTEX_SHADER, vertexSourceText);
-    var fragment = compile(gl.FRAGMENT_SHADER, fragmentSourceText);
-    if (!vertex || !fragment) return null;
+    var vertex = gl.createShader(gl.VERTEX_SHADER);
+    gl.shaderSource(vertex, vertexSourceText);
+    gl.compileShader(vertex);
+    var fragment = gl.createShader(gl.FRAGMENT_SHADER);
+    gl.shaderSource(fragment, fragmentSourceText);
+    gl.compileShader(fragment);
     var linked = gl.createProgram();
     gl.attachShader(linked, vertex);
     gl.attachShader(linked, fragment);
     gl.linkProgram(linked);
-    if (!gl.getProgramParameter(linked, gl.LINK_STATUS)) {
-      console.error(gl.getProgramInfoLog(linked));
-      return null;
-    }
     return linked;
   }
 
   var oceanProgram = link(vertexSource, oceanFragmentSource);
-  if (!oceanProgram) {
-    canvas.classList.add("ambient-canvas-fallback");
-    return;
+  var programValidated = false;
+
+  function validateProgramOnce() {
+    if (programValidated) return contextAvailable;
+    programValidated = true;
+    if (!gl.getProgramParameter(oceanProgram, gl.LINK_STATUS)) {
+      console.error(gl.getProgramInfoLog(oceanProgram));
+      canvas.classList.add("ambient-canvas-fallback");
+      contextAvailable = false;
+      return false;
+    }
+    initLocations();
+    return true;
   }
 
   var oceanBuffer = gl.createBuffer();
@@ -1306,20 +1314,29 @@
     -1, 1, 1, -1, 1, 1
   ]), gl.STATIC_DRAW);
 
-  var oceanPosition = gl.getAttribLocation(oceanProgram, "position");
-  var oceanResolution = gl.getUniformLocation(oceanProgram, "iResolution");
-  var oceanTime = gl.getUniformLocation(oceanProgram, "iTime");
-  var oceanNight = gl.getUniformLocation(oceanProgram, "u_night");
-  var oceanNoiseScale = gl.getUniformLocation(oceanProgram, "u_noiseScale");
-  var oceanSkyline = gl.getUniformLocation(oceanProgram, "u_skyline");
-  var oceanDayPhoto = gl.getUniformLocation(oceanProgram, "u_day_photo");
-  var oceanDayPhotoReady = gl.getUniformLocation(oceanProgram, "u_day_photo_ready");
-  var oceanMountainPhoto = gl.getUniformLocation(oceanProgram, "u_mountain_photo");
-  var oceanMountainPhotoReady = gl.getUniformLocation(oceanProgram, "u_mountain_photo_ready");
-  var oceanShip = gl.getUniformLocation(oceanProgram, "u_ship");
-  var oceanShipReady = gl.getUniformLocation(oceanProgram, "u_ship_ready");
-  var oceanRipples = gl.getUniformLocation(oceanProgram, "u_ripples");
-  var oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
+  var oceanPosition, oceanResolution, oceanTime, oceanNight, oceanNoiseScale,
+    oceanSkyline, oceanDayPhoto, oceanDayPhotoReady, oceanMountainPhoto,
+    oceanMountainPhotoReady, oceanShip, oceanShipReady, oceanRipples,
+    oceanRippleCount, oceanSunProgress, oceanSunScreenY;
+
+  function initLocations() {
+    oceanPosition = gl.getAttribLocation(oceanProgram, "position");
+    oceanResolution = gl.getUniformLocation(oceanProgram, "iResolution");
+    oceanTime = gl.getUniformLocation(oceanProgram, "iTime");
+    oceanNight = gl.getUniformLocation(oceanProgram, "u_night");
+    oceanNoiseScale = gl.getUniformLocation(oceanProgram, "u_noiseScale");
+    oceanSkyline = gl.getUniformLocation(oceanProgram, "u_skyline");
+    oceanDayPhoto = gl.getUniformLocation(oceanProgram, "u_day_photo");
+    oceanDayPhotoReady = gl.getUniformLocation(oceanProgram, "u_day_photo_ready");
+    oceanMountainPhoto = gl.getUniformLocation(oceanProgram, "u_mountain_photo");
+    oceanMountainPhotoReady = gl.getUniformLocation(oceanProgram, "u_mountain_photo_ready");
+    oceanShip = gl.getUniformLocation(oceanProgram, "u_ship");
+    oceanShipReady = gl.getUniformLocation(oceanProgram, "u_ship_ready");
+    oceanRipples = gl.getUniformLocation(oceanProgram, "u_ripples");
+    oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
+    oceanSunProgress = gl.getUniformLocation(oceanProgram, "u_sunProgress");
+    oceanSunScreenY = gl.getUniformLocation(oceanProgram, "u_sunScreenY");
+  }
 
   var skylineTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
@@ -1559,13 +1576,54 @@
 
   var CAMERA_HEIGHT_JS = 1.5;
 
+  // The visible celestial body doubles as the theme toggle: the sun by day,
+  // the moon by night. Positions mirror the shader's SUN_SCREEN_X/SUN_BASE_Y
+  // and MOON_SCREEN_X/MOON_SCREEN_Y defines (including their aspect
+  // corrections) and must move with them. The hit radius is tap-sized —
+  // well past the discs, still far from where water clicks land.
+  function celestialBodyAt(clientX, clientY, time) {
+    var bounds = canvas.getBoundingClientRect();
+    if (!bounds.width || !bounds.height) return false;
+    var uvX = (clientX - bounds.left) / bounds.width;
+    var uvY = 1 - (clientY - bounds.top) / bounds.height;
+    var aspect = bounds.width / bounds.height;
+    if (document.documentElement.dataset.theme === "dark") {
+      return Math.hypot((uvX - 0.70) * aspect, uvY - 0.80) < 0.05;
+    }
+    var progress = Math.min(Math.max((time - 30) / 480, 0), 1);
+    progress = progress * progress * (3 - 2 * progress);
+    var sunY = 0.512 + 0.11 * progress;
+    return Math.hypot((uvX - 0.075) * aspect / 1.6, uvY - sunY) < 0.05;
+  }
+
+  function sceneTimeForHit() {
+    return reducedMotion ? 3 : currentSceneTime(performance.now());
+  }
+
   window.addEventListener("pointerdown", function (event) {
-    if (!animationEligible() || event.target.closest("a, button, input, textarea, select, label")) return;
-    var time = currentSceneTime(performance.now());
+    if (!contextAvailable || event.target.closest("a, button, input, textarea, select, label")) return;
+    var time = sceneTimeForHit();
+    if (celestialBodyAt(event.clientX, event.clientY, time)) {
+      if (window.varyvodaTheme) window.varyvodaTheme.toggle();
+      return;
+    }
+    if (!animationEligible()) return;
     var hit = screenToWater(event.clientX, event.clientY, time);
     if (!hit) return;
     ripples.push({ x: hit.x, z: hit.z, time: time, amplitude: 0.18 });
     if (ripples.length > maxRipples) ripples.shift();
+  }, { passive: true });
+
+  var celestialHover = false;
+
+  window.addEventListener("pointermove", function (event) {
+    if (!contextAvailable || event.pointerType !== "mouse") return;
+    var over = !event.target.closest("a, button, input, textarea, select, label") &&
+      celestialBodyAt(event.clientX, event.clientY, sceneTimeForHit());
+    if (over !== celestialHover) {
+      celestialHover = over;
+      document.documentElement.style.cursor = over ? "pointer" : "";
+    }
   }, { passive: true });
 
   function currentSceneTime(now) {
@@ -1622,6 +1680,7 @@
   }
 
   function drawFrame(now, sceneTime, animateTheme) {
+    if (!validateProgramOnce()) return;
     resize();
     var targetNight = document.documentElement.dataset.theme === "dark" ? 1 : 0;
     if (animateTheme) {
@@ -1639,6 +1698,10 @@
     gl.uniform2f(oceanResolution, canvas.width, canvas.height);
     gl.uniform1f(oceanTime, sceneTime);
     gl.uniform1f(oceanNight, nightBlend);
+    var riseT = Math.min(1, Math.max(0, (sceneTime - 30) / 480));
+    var riseProgress = riseT * riseT * (3 - 2 * riseT);
+    gl.uniform1f(oceanSunProgress, riseProgress);
+    gl.uniform1f(oceanSunScreenY, 0.512 + 0.11 * riseProgress);
     gl.uniform1f(oceanNoiseScale, (window.devicePixelRatio || 1) < 1.5 ? 1.7 : 1.0);
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
