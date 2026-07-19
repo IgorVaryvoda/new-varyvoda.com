@@ -59,10 +59,10 @@
     #define DRAG_MULT 0.38
     #define WATER_DEPTH 1.0
     #define CAMERA_HEIGHT 1.5
-    #define ITERATIONS_RAYMARCH 8
-    #define ITERATIONS_NORMAL 16
-    #define RAYMARCH_STEPS 32
-    #define FBM_OCTAVES 4
+    #define ITERATIONS_RAYMARCH 6
+    #define ITERATIONS_NORMAL 8
+    #define RAYMARCH_STEPS 20
+    #define FBM_OCTAVES 3
     #define SUN_SCREEN_X 0.075
     #define SUN_BASE_Y 0.512
     #define MOON_SCREEN_X 0.70
