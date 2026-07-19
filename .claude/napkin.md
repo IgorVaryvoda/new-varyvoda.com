@@ -23,6 +23,10 @@
 
 | 2026-07-19 | user | Crest halo survived FIVE fixes because three causes compounded: haze rows in the near crop's left third (spread crest-wide by mirror tiling), fade targeting the band mean (skewed light by the shore strip), and farMountainColor's degenerate pale output bleeding into the near ridge's edge feather where no far ridge exists | Layered compositing must weight each layer by ITS OWN mask (never plain near-over-far mix). Fade targets must be the local region's tone. Crop starts must clear contamination across the ENTIRE x-range — mirror tiling spreads any local defect everywhere. Verify at native res + nearest-neighbor zoom, the user's actual magnification |
 
+| 2026-07-19 | user | "Sun isn't the light source" persisted through the flank-lighting fix (repeated 3x) | Two structural causes: (1) mirror-tiled atlas REVERSES the photo's baked micro-shading on half of every face — never mirror-tile lit photographic material, stretch single-orientation instead; (2) an even crest rim reads as ambient — rim must gate on flank-facing-sun (0.10+0.90*flankLit) with strong sunReach falloff. Directional light needs macro (flank lit/shade) + rim + consistent baked micro-shading all agreeing |
+
+| 2026-07-19 | self | Judged day-mode sharpness from animated SwiftShader screenshots — adaptQuality had already ratcheted renderScale down, so "mush/terracing" was partly the 0.66 bilinear upscale | For sharpness judgments, screenshot with playwright reduced_motion="reduce": adaptQuality is bypassed and one full-res frame renders at scene time t=3 (ship mid-bay at x≈0.71) |
+
 ## User Preferences
 - Igor tunes the atmosphere shader interactively with reference photos of the real Herceg Novi view (his own Shutterstock shots + web finds); match the photos, not generic "pretty shader" defaults.
 - Night mode: deep indigo moonlit duotone with warm golden town lights — NOT neutral-gray noir.
@@ -35,6 +39,10 @@
 - System `playwright` module isn't importable; `uv run --with playwright` (browsers already cached) is the reliable path.
 - hittheroadket.com 403s WebFetch but serves plain `curl` with a Firefox UA.
 - PIL crops of screenshots to judge sub-pixel details (settlement lights are fractions of a px).
+- Verified burst recipe: amber only reads if its REPLACEMENT tone sits below the ACES shoulder — vec3(1.02,0.66,0.28) field at weight 0.70 with the veil capped 0.32; measure R−B in screenshots (target ≥30/255 in the ring, was 8 when washed).
+- Day water: fog toward pale haze vec3(0.21,0.33,0.45) + a shore-mirror band (mirror y about 0.395, mountainSurfaceColorFast hazed 45%, ~0.026 uv deep) fixed the inverted perspective AND the razor waterline. Pin grazing rows to the flat plane (screen-space horizonProximity → flat normal + plane-intersect distance for fog) to kill per-pixel raymarch dither dashes.
+- Relative tints beat absolute for overlays crossing dark/bright backdrops: ship smoke = fixed gray against slope, background*0.90 against sky, gated by background luminance smoothstep(0.30,0.75).
+- Blown atlas texels: gate relief+grain amplification by (1−luminance) smoothstep(0.40,0.78) and soft-limit chroma outliers (offset/(1+3·max(0,len−0.15))) — kills torn-paper villages and magenta demosaic specks without touching the forest.
 
 ## Domain Notes
 - Shader: `assets/js/atmosphere.js` — ocean raymarch (afl_ext weaves) + photo-derived Herceg Novi scene; heavily art-directed, comments record deliberate choices — read them before "fixing".
@@ -42,3 +50,4 @@
 - Mountain atlas `herceg-novi-mountains.webp` (2048²): uploaded with FLIP_Y, so shader nearY 0.52–0.98 = PNG top half (shaded navy forest — needs green rebalance in grading), farY = PNG bottom half.
 - Settlement lights radii are in *render* pixels; hi-DPI renders at 0.5 scale, so sub-0.2px radii vanish after upscale.
 - Night post-pass duotone gates color through `warmHighlight` (r−b) — warm lights must be bright enough post-ACES to survive.
+- adaptQuality (atmosphere.js) is a one-way ratchet: renderScale 1.0→0.8→0.66 never recovers, and the `delta > 24` slow-frame test assumes 60Hz vsync — 30Hz monitors or macOS Low Power Mode (rAF throttled to 30fps) count EVERY frame slow and always land at 0.66 on any GPU. Candidate root cause for recurring "fuzzy" reports.

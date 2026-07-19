@@ -105,11 +105,20 @@
       return ndc * 0.5 + 0.5;
     }
 
+    vec2 sunDelta(vec2 screenUv) {
+      // The burst was tuned on a 1440x900 canvas; without this correction
+      // its screen-uv gaussians stretch into a wide ellipse on ultrawide
+      // monitors (the moon already aspect-corrects the same way).
+      vec2 delta = screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y);
+      delta.x *= (iResolution.x / iResolution.y) / 1.6;
+      return delta;
+    }
+
     float sunGlare(vec2 screenUv) {
       // Glare bleed around the sun position, shared by the sky and the
       // mountain branch: the ridge silhouette must dissolve into the burst
       // where they meet, as in the sunrise reference.
-      vec2 delta = (screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y)) / vec2(1.0, 1.55);
+      vec2 delta = sunDelta(screenUv) / vec2(1.0, 1.55);
       return exp(-pow(length(delta) / 0.075, 2.0));
     }
 
@@ -184,16 +193,17 @@
       // the far-left edge, its core is nearly white, and the warmth falls away
       // quickly into a cool blue sky. Keep the photographed cloud structure,
       // but veil it in the broad overexposure around the horizon.
-      vec2 sunriseCenter = vec2(SUN_SCREEN_X, SUN_SCREEN_Y);
-      vec2 haloDelta = (vec2(viewX, screenUv.y) - sunriseCenter) / vec2(0.46, 0.235);
+      vec2 haloDelta = sunDelta(vec2(viewX, screenUv.y)) / vec2(0.46, 0.235);
       float halo = exp(-dot(haloDelta, haloDelta) * 0.92);
       float horizonBand = exp(-skyHeight * 5.4) * leftField;
       float cloudLight = smoothstep(0.18, 0.66, luminance) * halo;
       vec3 paleGold = vec3(1.58, 1.32, 0.98);
       // The veil must stay clearly below white: when the whole corner
       // saturates through the tonemapper, the sun has nothing brighter left
-      // to be and disappears into its own halo.
-      float overexposure = clamp(halo * lowerSky * 0.26 + horizonBand * 0.20, 0.0, 0.46);
+      // to be and disappears into its own halo. Measured at the old 0.46
+      // cap the entire corner sat on the ACES shoulder and the amber field
+      // below could not read at all.
+      float overexposure = clamp(halo * lowerSky * 0.22 + horizonBand * 0.16, 0.0, 0.32);
       sky = mix(sky, paleGold * 0.86, overexposure);
       sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
 
@@ -201,17 +211,19 @@
       // cresting the ridge, with faint crepuscular rays combing up through
       // the cirrus. The core gaussian clips to white over a broad soft
       // region by design; the ridge glare is added in the mountain branch.
-      float sunDistance = length((vec2(viewX, screenUv.y) - sunriseCenter) / vec2(1.0, 1.55));
-      float rayAngle = atan(screenUv.y - sunriseCenter.y, viewX - sunriseCenter.x);
+      float sunDistance = length(sunDelta(vec2(viewX, screenUv.y)) / vec2(1.0, 1.55));
+      float rayAngle = atan(screenUv.y - SUN_SCREEN_Y, viewX - SUN_SCREEN_X);
       float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
       float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
       float rayReach = exp(-sunDistance * 4.6);
       // Contrast, not more light, is what makes the core sear: a saturated
       // amber mid-field REPLACES the sky tone around the burst (darker than
-      // the core), and only the core itself clips to white.
+      // the core), and only the core itself clips to white. The amber must
+      // sit well below the ACES shoulder or its chroma compresses to gray —
+      // the old vec3(1.30, 0.98, 0.55) field measured R-B <= 8/255 on screen.
       float goldField = exp(-pow(sunDistance / 0.20, 2.0));
-      sky = mix(sky, vec3(1.30, 0.98, 0.55) * mix(0.78, 1.02, goldField), goldField * 0.58);
-      sky += vec3(2.2, 1.6, 0.85) * exp(-pow(sunDistance / 0.070, 2.0)) * 0.70;
+      sky = mix(sky, vec3(1.02, 0.66, 0.28) * mix(0.72, 1.0, goldField), goldField * 0.70);
+      sky += vec3(2.2, 1.6, 0.85) * exp(-pow(sunDistance / 0.055, 2.0)) * 0.50;
       sky += vec3(7.5, 6.6, 5.2) * exp(-pow(sunDistance / 0.040, 2.0)) * 1.9;
       sky += vec3(1.55, 1.30, 0.95) * rays * rayReach * 0.55;
       return sky;
@@ -248,6 +260,15 @@
       // detail sharp through that minification. A shader LOD bias is the
       // wrong tool here — it aliases the vertical axis into streaks.
       vec3 photo = srgbToLinear(texture2D(u_mountain_photo, atlasUv).rgb);
+      float rawLuminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
+      // Demosaic fringes around blown village texels carry extreme chroma
+      // (magenta specks on screen). Soft-limit chroma outliers only; forest
+      // texels sit far below the threshold and pass through untouched.
+      vec3 chromaOffset = photo - vec3(rawLuminance);
+      photo = vec3(rawLuminance) + chromaOffset / (1.0 + 3.0 * max(0.0, length(chromaOffset) - 0.15));
+      // Bright texels are already blown in the source: amplifying them with
+      // relief or grain turns settlements into torn white paper.
+      float highlightGuard = 1.0 - smoothstep(0.40, 0.78, rawLuminance);
       vec2 atlasStep = vec2(0.0024, 0.0032);
       vec3 photoRight = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb);
       vec3 photoLeft = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(atlasStep.x, 0.0)).rgb);
@@ -258,7 +279,7 @@
       // "relief" just renders oily marks. Only the near layer has real
       // detail worth lifting.
       float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
-      photo *= 1.0 + terrainRelief * mix(0.2, 1.0, depth);
+      photo *= 1.0 + terrainRelief * mix(0.2, 1.0, depth) * highlightGuard;
 
       // The atlas is cut from the sunlit originals now — only a light
       // blue-cut remains so the forest does not go cold under the grade.
@@ -275,8 +296,8 @@
       // octave evaluated per screen pixel, like a game-engine detail map.
       float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
       float canopyFine = fbm(vec2(sceneX(screenUv.x) * 96.0, screenUv.y * 150.0) + vec2(depth * 5.0, 3.0));
-      photo *= 1.0 + (canopyGrain - 0.5) * mix(0.10, 0.22, depth)
-        + (canopyFine - 0.5) * mix(0.08, 0.18, depth);
+      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.10, 0.22, depth)
+        + (canopyFine - 0.5) * mix(0.08, 0.18, depth)) * highlightGuard;
 
       // Derive the light-facing normal from the photographed material. Using
       // the 2D skyline derivative here turns every ridge sample into a vertical
@@ -293,11 +314,10 @@
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
       vec3 chroma = mix(vec3(luminance), photo, mix(0.76, 0.96, depth));
       vec3 coastalHaze = vec3(0.15, 0.25, 0.34);
-      float rightExposure = 1.0;
       // The sunrise references show backlit slopes: mostly dark silhouette
       // material with texture, not sunlit green faces. Keep the exposure low
       // and let the warm rim light below carry the sunrise.
-      vec3 graded = chroma * mix(1.30, 1.40, depth) * rightExposure;
+      vec3 graded = chroma * mix(1.30, 1.40, depth);
       graded = mix(coastalHaze, graded, mix(0.62, 0.90, depth));
 
       // Preserve the cool photographic material, but model the sunrise as
@@ -309,7 +329,6 @@
       graded = mix(shadowBase, graded, mix(0.70, 0.88, depth));
       graded *= mix(0.66, 0.62, depth) + diffuse * mix(0.56, 0.46, depth);
       float slopeLight = smoothstep(0.28, 0.84, diffuse) * sunriseReach;
-      graded += vec3(0.66, 0.47, 0.28) * slopeLight * (0.115 + height * 0.115) * mix(1.0, 0.72, depth);
 
       // The sun rises at the far left, so light must follow geometry: each
       // ridge's west flank (rising toward its peak) catches the sunrise
@@ -320,7 +339,14 @@
       float flankShade = smoothstep(0.05, 0.9, -flankSlope);
       graded *= 1.0 + flankLit * mix(0.26, 0.42, depth) * sunReach;
       graded *= 1.0 - flankShade * mix(0.24, 0.42, depth);
-      graded += vec3(0.55, 0.40, 0.24) * flankLit * (0.06 + height * 0.11) * sunReach;
+      // Warmth REPLACES tone instead of adding light: additive warm over the
+      // desaturated slate painted a flat airbrushed beige smear with no
+      // texture inside it. Warm-grading the photo itself keeps the canopy
+      // legible inside the light, and surfaceDetail lets it breathe.
+      float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(1.0, 0.72, depth)
+        + flankLit * (0.16 + height * 0.28) * sunReach;
+      warmAmount *= 0.55 + 0.75 * surfaceDetail;
+      graded = mix(graded, graded * vec3(2.0, 1.42, 0.70), clamp(warmAmount, 0.0, 0.85));
 
       // The backlit signature of the sunrise references: a warm rim burns
       // along crest segments that FACE the sun and dies on flat or shaded
@@ -567,8 +593,9 @@
       // The photographed ship faces right, so give it one slow passage across
       // the bay. Fade it outside the useful part of the frame before wrapping
       // instead of reversing direction or visibly jumping back to the start.
+      // The route starts at the middle range's foot and crosses the bay.
       float passage = fract((iTime + 149.0) / 320.0);
-      float shipX = mix(0.50, 0.94, passage);
+      float shipX = mix(0.43, 0.94, passage);
       float passageAlpha = smoothstep(0.0, 0.08, passage)
         * (1.0 - smoothstep(0.92, 1.0, passage));
       float aspect = iResolution.x / iResolution.y;
@@ -619,7 +646,7 @@
 
     float cruiseShipSmoke(vec2 screenUv) {
       float passage = fract((iTime + 149.0) / 320.0);
-      float shipX = mix(0.50, 0.94, passage);
+      float shipX = mix(0.43, 0.94, passage);
       float passageAlpha = smoothstep(0.0, 0.08, passage)
         * (1.0 - smoothstep(0.92, 1.0, passage));
       float aspect = iResolution.x / iResolution.y;
@@ -663,9 +690,14 @@
       }
       if (screenUv.y >= shipWaterline - 0.0005) {
         float smoke = cruiseShipSmoke(screenUv) * visibility;
-        // Light warm-gray steam, not near-black: the plume must read against
-        // the dark slope behind the funnel.
-        background = mix(background, vec3(0.34, 0.37, 0.39), smoke);
+        // Light warm-gray steam against the dark slope — but a fixed gray is
+        // darker than the sky, so where the plume climbs past the crest it
+        // read as a floating soot blot. Against bright backdrops the tint
+        // becomes a whisper-darker shade of whatever is behind it instead.
+        float backgroundLuminance = dot(background, vec3(0.2126, 0.7152, 0.0722));
+        vec3 smokeTone = mix(vec3(0.34, 0.37, 0.39), background * 0.90 + vec3(0.02),
+          smoothstep(0.30, 0.75, backgroundLuminance));
+        background = mix(background, smokeTone, smoke);
         vec4 ship = cruiseShipSample(screenUv);
         // Aerial perspective: at this distance across the bay the liner sits
         // behind a veil of morning haze; without it the photo-exposed sprite
@@ -855,7 +887,7 @@
         float strand = fbm(vec2(sceneUvX * 5.2 + iTime * 0.0011, screenUv.y * 18.0));
         float cirrus = smoothstep(0.50, 0.78, comb * 0.66 + strand * 0.34);
         cirrus *= smoothstep(0.47, 0.58, screenUv.y) * (1.0 - smoothstep(0.90, 1.0, screenUv.y));
-        vec2 cirrusSunDelta = (screenUv - vec2(SUN_SCREEN_X, SUN_SCREEN_Y)) / vec2(1.0, 1.55);
+        vec2 cirrusSunDelta = sunDelta(screenUv) / vec2(1.0, 1.55);
         float sunProximity = exp(-length(cirrusSunDelta) * 3.2);
         float coreProximity = exp(-pow(length(cirrusSunDelta) / 0.085, 2.0));
         vec3 litCloud = mix(vec3(0.98, 1.02, 1.10), vec3(1.55, 1.18, 0.72), sunProximity);
@@ -962,9 +994,11 @@
           vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay, 1.0));
           mountainComposite = mix(edgeSky, landscape, mountains);
         }
-        // Sunrise glare engulfs the ridge where it crosses the sun.
+        // Sunrise glare engulfs the ridge where it crosses the sun. The
+        // dissolve tone tracks the amber mid-field, not white, so the ridge
+        // melts into the burst's ring instead of punching a pale hole in it.
         float glare = sunGlare(screenUv) * (1.0 - u_night) * u_day_photo_ready;
-        mountainComposite = mix(mountainComposite, vec3(1.42, 1.20, 0.88), glare * 0.85);
+        mountainComposite = mix(mountainComposite, vec3(1.35, 1.04, 0.62), glare * 0.85);
         fragmentColor = vec4(acesTonemap(mountainComposite * 1.25), 1.0);
         return;
       }
@@ -984,9 +1018,16 @@
       float distanceToWater = raymarchWater(origin, highPosition, lowPosition, WATER_DEPTH);
       vec3 waterPosition = origin + ray * distanceToWater;
 
+      // At grazing rows near the waterline the raymarch distance flickers
+      // per pixel, dithering the fog weight and reflection hits into rows of
+      // dark dashes. Pin the last stretch to the flat plane instead.
+      float horizonProximity = 1.0 - smoothstep(0.0, 0.035, 0.395 - screenUv.y);
+      float stableDistance = mix(distanceToWater, highHit, horizonProximity);
+
       float epsilon = max(0.01, distanceToWater * 0.004);
       vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH);
       float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
+      distanceFlatten = max(distanceFlatten, horizonProximity * 0.95);
       float daylightCalm = (1.0 - u_night) * 0.58;
       normal = mix(normal, vec3(0.0, 1.0, 0.0), clamp(distanceFlatten + daylightCalm, 0.0, 0.95));
 
@@ -1034,8 +1075,22 @@
       vec3 color = fresnel * reflection + scattering;
       vec3 waterBody = mix(vec3(0.005, 0.058, 0.16), vec3(0.012, 0.014, 0.022), u_night);
       color += waterBody * (1.0 - fresnel) * 0.72;
-      vec3 fogColor = mix(vec3(0.075, 0.245, 0.46), vec3(0.03, 0.035, 0.05), u_night);
-      color = mix(color, fogColor, 1.0 - exp(-distanceToWater * 0.02));
+      // Day fog is pale haze, not deep blue: the old vec3(0.075, 0.245, 0.46)
+      // made the FAR water the darkest, most saturated blue in the scene —
+      // atmospheric perspective inverted, and a hard graphic band under the
+      // shore. Distance should wash toward the sky's horizon haze.
+      vec3 fogColor = mix(vec3(0.21, 0.33, 0.45), vec3(0.03, 0.035, 0.05), u_night);
+      color = mix(color, fogColor, 1.0 - exp(-stableDistance * 0.02));
+
+      // Fog at full strength erased every trace of the shore in the water,
+      // leaving a razor-straight cut along the entire waterline. A hazed
+      // mirror of the slopes hugs the first stretch below the shore and
+      // seats the land in the bay; night keeps its own stronger mirror.
+      float shoreBand = 1.0 - smoothstep(0.0, 0.026, 0.395 - screenUv.y);
+      vec2 shoreMirror = vec2(screenUv.x, 0.79 - screenUv.y);
+      float shoreMask = mountainMask(shoreMirror);
+      vec3 shoreTone = mix(mountainSurfaceColorFast(shoreMirror), fogColor, 0.45);
+      color = mix(color, shoreTone, shoreBand * shoreBand * shoreMask * 0.65 * (1.0 - u_night));
 
       // The low sun needs a corresponding path across the water. Keep it
       // broad and woven into the ocean bands, with a clock slow enough to read
@@ -1320,9 +1375,51 @@
 
   // Start at full native resolution — anything less bilinear-upscales the
   // canvas and reads as blur on every edge. If the GPU cannot sustain the
-  // frame rate, adaptQuality steps the scale down instead.
+  // frame rate, adaptQuality steps the scale down — and back up once the
+  // renderer proves itself, so a stretch of page-load jank cannot blur the
+  // scene for the whole session.
   var renderScale = 1.0;
   var slowFrameCount = 0;
+  var fastFrameCount = 0;
+  // The slow-frame threshold must be calibrated to the display: a hard
+  // 24ms budget reads a 30Hz monitor, or a Low Power Mode browser with
+  // requestAnimationFrame pinned to 30fps, as "slow GPU" and permanently
+  // downscales perfectly good hardware. A short burst of empty rAFs before
+  // the render loop starts measures the real frame cadence.
+  var frameBudget = 24;
+  var settleUntil = 0;
+  var calibrated = false;
+  var calibrationStarted = false;
+  var recoveryProbesLeft = 2;
+  var probeDeadline = 0;
+
+  function startCalibration() {
+    if (calibrationStarted) return;
+    calibrationStarted = true;
+    var samples = [];
+    var started = performance.now();
+    function tick(timestamp) {
+      samples.push(timestamp);
+      if (samples.length < 13 && timestamp - started < 700) {
+        window.requestAnimationFrame(tick);
+        return;
+      }
+      var deltas = [];
+      for (var index = 1; index < samples.length; index++) {
+        deltas.push(samples[index] - samples[index - 1]);
+      }
+      deltas.sort(function (a, b) { return a - b; });
+      if (deltas.length >= 6) {
+        frameBudget = Math.min(50, Math.max(24, deltas[Math.floor(deltas.length / 2)] * 1.6));
+      }
+      calibrated = true;
+      // Page-load jank (layout, image decode, the texture-load refresh
+      // draws) must not count against the renderer.
+      settleUntil = performance.now() + 1200;
+      updateAnimationState(performance.now());
+    }
+    window.requestAnimationFrame(tick);
+  }
 
   function resize() {
     var width = canvas.clientWidth || window.innerWidth;
@@ -1338,17 +1435,34 @@
   }
 
   function adaptQuality(now) {
-    if (reducedMotion) return;
+    if (reducedMotion || now < settleUntil) return;
     var delta = now - lastFrame;
     // Sustained misses trigger a downscale. Severe misses count heavier so
     // a truly slow renderer converges in a few frames, while a single
     // tab-wake stall decays away against normal frames.
-    if (delta > 24) slowFrameCount += delta > 100 ? 4 : 1;
-    else if (slowFrameCount > 0) slowFrameCount--;
+    if (delta > frameBudget) {
+      slowFrameCount += delta > frameBudget * 4 ? 4 : 1;
+      fastFrameCount = 0;
+    } else {
+      if (slowFrameCount > 0) slowFrameCount--;
+      fastFrameCount++;
+    }
     if (slowFrameCount >= 12 && renderScale > 0.67) {
       renderScale = renderScale > 0.9 ? 0.8 : 0.66;
       slowFrameCount = 0;
+      fastFrameCount = 0;
+      // A downscale soon after a recovery probe means the probe failed;
+      // stop probing before the scale starts oscillating.
+      if (now < probeDeadline) recoveryProbesLeft--;
       console.info("atmosphere: render scale reduced to " + renderScale + " to hold frame rate");
+      resize();
+    } else if (fastFrameCount >= 480 && renderScale < 0.99 && recoveryProbesLeft > 0) {
+      // ~8 seconds of consistently on-budget frames earns one step back up.
+      renderScale = renderScale < 0.7 ? 0.8 : 1.0;
+      slowFrameCount = 0;
+      fastFrameCount = 0;
+      probeDeadline = now + 5000;
+      console.info("atmosphere: render scale restored to " + renderScale);
       resize();
     }
   }
@@ -1407,7 +1521,7 @@
   }
 
   function animationEligible() {
-    return !reducedMotion && contextAvailable && !document.hidden &&
+    return calibrated && !reducedMotion && contextAvailable && !document.hidden &&
       (!observerReady || observerFallback || intersectingSurfaces.size > 0);
   }
 
@@ -1450,12 +1564,12 @@
       activeSegmentStart = now;
       lastFrame = now;
     }
+    adaptQuality(now);
     drawFrame(now, currentSceneTime(now), true);
     scheduleFrame();
   }
 
   function drawFrame(now, sceneTime, animateTheme) {
-    adaptQuality(now);
     resize();
     var targetNight = document.documentElement.dataset.theme === "dark" ? 1 : 0;
     if (animateTheme) {
@@ -1535,6 +1649,9 @@
     if (reducedMotion || !animationEligible()) refreshFrame();
   });
   document.addEventListener("visibilitychange", function () {
+    // A page that loaded in a background tab gets no rAF ticks; calibrate
+    // once it first becomes visible.
+    if (!document.hidden && !reducedMotion) startCalibration();
     updateAnimationState(performance.now());
   });
   canvas.addEventListener("webglcontextlost", function (event) {
@@ -1544,7 +1661,7 @@
     canvas.classList.add("ambient-canvas-fallback");
   });
 
-  var sceneSelector = ".site-header, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
+  var sceneSelector = ".site-header, .scene-hero, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
   var sceneSurfaces = document.querySelectorAll(sceneSelector);
   if (typeof window.IntersectionObserver === "undefined" || sceneSurfaces.length === 0) {
     observerFallback = true;
@@ -1563,6 +1680,10 @@
   }
 
   resize();
-  if (reducedMotion) refreshFrame();
-  else updateAnimationState(performance.now());
+  if (reducedMotion) {
+    calibrated = true;
+    refreshFrame();
+  } else if (!document.hidden) {
+    startCalibration();
+  }
 })();
