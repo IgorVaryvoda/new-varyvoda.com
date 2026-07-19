@@ -56,14 +56,15 @@
     uniform float u_ship_ready;
     uniform vec4 u_ripples[8];
     uniform int u_rippleCount;
+    uniform vec2 u_waveDirections[16];
 
     #define PI 3.14159265359
     #define DRAG_MULT 0.38
     #define WATER_DEPTH 1.0
     #define CAMERA_HEIGHT 1.5
-    #define ITERATIONS_RAYMARCH 8
-    #define ITERATIONS_NORMAL 16
-    #define RAYMARCH_STEPS 32
+    #define ITERATIONS_RAYMARCH 6
+    #define ITERATIONS_NORMAL 12
+    #define RAYMARCH_STEPS 24
     #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
     #define MOON_SCREEN_X 0.70
@@ -73,15 +74,12 @@
       return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
     }
 
+    uniform sampler2D u_noise;
+
     float noise21(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
-      float a = hash21(i);
-      float b = hash21(i + vec2(1.0, 0.0));
-      float c = hash21(i + vec2(0.0, 1.0));
-      float d = hash21(i + vec2(1.0, 1.0));
-      return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+      // Value noise baked into a repeating LUT: one filtered fetch replaces
+      // four hashes (each a sin) and three lerps. fbm is four of these.
+      return texture2D(u_noise, p * 0.00390625).r;
     }
 
     float fbm(vec2 p) {
@@ -300,7 +298,8 @@
       // filtering (enabled on the texture from JS) keeps the horizontal
       // detail sharp through that minification. A shader LOD bias is the
       // wrong tool here — it aliases the vertical axis into streaks.
-      vec3 photo = srgbToLinear(texture2D(u_mountain_photo, atlasUv).rgb);
+      vec3 photoRaw = texture2D(u_mountain_photo, atlasUv).rgb;
+      vec3 photo = srgbToLinear(photoRaw);
       float rawLuminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
       // Demosaic fringes around blown village texels carry extreme chroma
       // (magenta specks on screen). Soft-limit chroma outliers only; forest
@@ -311,17 +310,26 @@
       // relief or grain turns settlements into torn white paper.
       float highlightGuard = 1.0 - smoothstep(0.40, 0.78, rawLuminance);
       vec2 atlasStep = vec2(0.0024, 0.0032);
-      vec3 photoRight = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb);
-      vec3 photoLeft = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(atlasStep.x, 0.0)).rgb);
-      vec3 photoUp = srgbToLinear(texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb);
-      vec3 photoDown = srgbToLinear(texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb);
+      // The neighbor taps feed only relative detail (average, relief,
+      // gradient normals) — gamma-2 space costs one multiply per texel
+      // where the exact 2.2 conversion costs three pow calls. The squared
+      // center tap keeps every delta in the same space.
+      vec3 photoCenter2 = photoRaw * photoRaw;
+      vec3 photoRight = texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb;
+      photoRight *= photoRight;
+      vec3 photoLeft = texture2D(u_mountain_photo, atlasUv - vec2(atlasStep.x, 0.0)).rgb;
+      photoLeft *= photoLeft;
+      vec3 photoUp = texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb;
+      photoUp *= photoUp;
+      vec3 photoDown = texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb;
+      photoDown *= photoDown;
       vec3 localAverage = (photoRight + photoLeft + photoUp + photoDown) * 0.25;
       // The far band is interpolation mush at this stretch — amplifying its
       // "relief" just renders oily marks. Only the near layer has real
       // detail worth lifting.
       // The far band carries transplanted canopy grain now — real material,
       // worth amplifying (the old 0.2 floor guarded interpolation mush).
-      float terrainRelief = clamp(dot(photo - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
+      float terrainRelief = clamp(dot(photoCenter2 - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
       photo *= 1.0 + terrainRelief * mix(0.45, 1.0, depth) * highlightGuard;
 
       // The atlas is cut from the sunlit originals now — only a light
@@ -857,13 +865,19 @@
       return sum;
     }
 
-    float getWavesBaseAtTime(vec2 position, int iterations, float waveTime) {
-      vec2 samplePosition = position;
-      vec2 swellDirection = normalize(vec2(-0.25, 1.0));
+    float wavePhaseAt(vec2 samplePosition, float waveTime) {
+      // The phase field's 0.055 scale means march steps and normal-tap
+      // offsets move it by well under a hundredth of a radian — computing
+      // it per wave evaluation burned an fbm and a sin ~27 times per pixel.
       vec2 phaseFlow = samplePosition * 0.055 + vec2(waveTime * 0.012, -waveTime * 0.009);
       float wavePhaseShift = (fbm(phaseFlow) - 0.5) * 1.25;
       wavePhaseShift += sin(dot(samplePosition, vec2(0.037, -0.051)) + waveTime * 0.015) * 0.16;
-      float iteration = 0.0;
+      return wavePhaseShift;
+    }
+
+    float getWavesBaseAtTime(vec2 position, int iterations, float waveTime, float wavePhaseShift) {
+      // Directions are per-iteration constants uploaded from JS — the old
+      // per-call sin/cos/normalize chain rebuilt them 16 times per sample.
       float frequency = 1.0;
       float timeMultiplier = 2.0;
       float weight = 1.0;
@@ -871,7 +885,7 @@
       float weights = 0.0;
       for (int i = 0; i < 16; i++) {
         if (i >= iterations) break;
-        vec2 direction = normalize(mix(vec2(sin(iteration), cos(iteration)), swellDirection, 0.18));
+        vec2 direction = u_waveDirections[i];
         vec2 result = wavedx(position, direction, frequency, waveTime * timeMultiplier + wavePhaseShift);
         position += direction * result.y * weight * DRAG_MULT;
         values += result.x * weight;
@@ -879,48 +893,48 @@
         weight = mix(weight, 0.0, 0.2);
         frequency *= 1.18;
         timeMultiplier *= 1.07;
-        iteration += 1232.399963;
       }
       float baseWaves = values / weights;
       return baseWaves;
     }
 
-    float getWavesBase(vec2 position, int iterations) {
-      return getWavesBaseAtTime(position, iterations, iTime);
+    float getWavesBase(vec2 position, int iterations, float wavePhaseShift) {
+      return getWavesBaseAtTime(position, iterations, iTime, wavePhaseShift);
     }
 
-    float getWaves(vec2 position, int iterations) {
-      return getWavesBase(position, iterations) + getRipples(position);
+    float getWaves(vec2 position, int iterations, float wavePhaseShift) {
+      return getWavesBase(position, iterations, wavePhaseShift) + getRipples(position);
     }
 
-    float raymarchWater(vec3 camera, vec3 start, vec3 end, float depth) {
+    float raymarchWater(vec3 camera, vec3 start, vec3 end, float depth, float wavePhaseShift) {
       vec3 position = start;
       vec3 direction = normalize(end - start);
       for (int i = 0; i < RAYMARCH_STEPS; i++) {
-        float height = getWavesBase(position.xz, ITERATIONS_RAYMARCH) * depth - depth;
+        float height = getWavesBase(position.xz, ITERATIONS_RAYMARCH, wavePhaseShift) * depth - depth;
         if (height + 0.01 > position.y) return distance(position, camera);
         position += direction * (position.y - height);
       }
       return distance(start, camera);
     }
 
-    vec3 normalAt(vec2 position, float epsilon, float depth) {
+    vec3 normalAt(vec2 position, float epsilon, float depth, float wavePhaseShift) {
       vec2 ex = vec2(epsilon, 0.0);
-      float height = getWaves(position.xy, ITERATIONS_NORMAL) * depth;
+      float height = getWaves(position.xy, ITERATIONS_NORMAL, wavePhaseShift) * depth;
       vec3 center = vec3(position.x, height, position.y);
       return normalize(cross(
-        center - vec3(position.x - epsilon, getWaves(position.xy - ex.xy, ITERATIONS_NORMAL) * depth, position.y),
-        center - vec3(position.x, getWaves(position.xy + ex.yx, ITERATIONS_NORMAL) * depth, position.y + epsilon)
+        center - vec3(position.x - epsilon, getWaves(position.xy - ex.xy, ITERATIONS_NORMAL, wavePhaseShift) * depth, position.y),
+        center - vec3(position.x, getWaves(position.xy + ex.yx, ITERATIONS_NORMAL, wavePhaseShift) * depth, position.y + epsilon)
       ));
     }
 
     vec3 slowLightNormalAt(vec2 position, float epsilon, float depth, float waveTime) {
       vec2 ex = vec2(epsilon, 0.0);
-      float height = getWavesBaseAtTime(position.xy, 8, waveTime) * depth;
+      float wavePhaseShift = wavePhaseAt(position, waveTime);
+      float height = getWavesBaseAtTime(position.xy, 8, waveTime, wavePhaseShift) * depth;
       vec3 center = vec3(position.x, height, position.y);
       return normalize(cross(
-        center - vec3(position.x - epsilon, getWavesBaseAtTime(position.xy - ex.xy, 8, waveTime) * depth, position.y),
-        center - vec3(position.x, getWavesBaseAtTime(position.xy + ex.yx, 8, waveTime) * depth, position.y + epsilon)
+        center - vec3(position.x - epsilon, getWavesBaseAtTime(position.xy - ex.xy, 8, waveTime, wavePhaseShift) * depth, position.y),
+        center - vec3(position.x, getWavesBaseAtTime(position.xy + ex.yx, 8, waveTime, wavePhaseShift) * depth, position.y + epsilon)
       ));
     }
 
@@ -1120,7 +1134,8 @@
       float lowHit = intersectPlane(origin, ray, vec3(0.0, -WATER_DEPTH, 0.0), vec3(0.0, 1.0, 0.0));
       vec3 highPosition = origin + ray * highHit;
       vec3 lowPosition = origin + ray * lowHit;
-      float distanceToWater = raymarchWater(origin, highPosition, lowPosition, WATER_DEPTH);
+      float wavePhaseShift = wavePhaseAt(highPosition.xz, iTime);
+      float distanceToWater = raymarchWater(origin, highPosition, lowPosition, WATER_DEPTH, wavePhaseShift);
       vec3 waterPosition = origin + ray * distanceToWater;
 
       // At grazing rows near the waterline the raymarch distance flickers
@@ -1130,7 +1145,7 @@
       float stableDistance = mix(distanceToWater, highHit, horizonProximity);
 
       float epsilon = max(0.01, distanceToWater * 0.004);
-      vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH);
+      vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH, wavePhaseShift);
       float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
       distanceFlatten = max(distanceFlatten, horizonProximity * 0.95);
       float daylightCalm = (1.0 - u_night) * 0.58;
@@ -1317,7 +1332,7 @@
   var oceanPosition, oceanResolution, oceanTime, oceanNight, oceanNoiseScale,
     oceanSkyline, oceanDayPhoto, oceanDayPhotoReady, oceanMountainPhoto,
     oceanMountainPhotoReady, oceanShip, oceanShipReady, oceanRipples,
-    oceanRippleCount, oceanSunProgress, oceanSunScreenY;
+    oceanRippleCount, oceanSunProgress, oceanSunScreenY, oceanWaveDirections, oceanNoise;
 
   function initLocations() {
     oceanPosition = gl.getAttribLocation(oceanProgram, "position");
@@ -1336,7 +1351,66 @@
     oceanRippleCount = gl.getUniformLocation(oceanProgram, "u_rippleCount");
     oceanSunProgress = gl.getUniformLocation(oceanProgram, "u_sunProgress");
     oceanSunScreenY = gl.getUniformLocation(oceanProgram, "u_sunScreenY");
+    oceanWaveDirections = gl.getUniformLocation(oceanProgram, "u_waveDirections");
+    oceanNoise = gl.getUniformLocation(oceanProgram, "u_noise");
   }
+
+  // The ocean's 16 wave directions are fixed constants; the shader used to
+  // rebuild each with sin/cos/normalize on every wave sample.
+  function waveDirectionValues() {
+    var values = new Float32Array(32);
+    var swellX = -0.25 / Math.hypot(-0.25, 1.0);
+    var swellY = 1.0 / Math.hypot(-0.25, 1.0);
+    var iteration = 0;
+    for (var index = 0; index < 16; index++) {
+      var x = Math.sin(iteration) * 0.82 + swellX * 0.18;
+      var y = Math.cos(iteration) * 0.82 + swellY * 0.18;
+      var length = Math.hypot(x, y);
+      values[index * 2] = x / length;
+      values[index * 2 + 1] = y / length;
+      iteration += 1232.399963;
+    }
+    return values;
+  }
+  var waveDirections = waveDirectionValues();
+
+  // Value-noise LUT: 512px at two texels per noise unit, smoothstep
+  // interpolation baked in, wrapping at a 256-unit period.
+  var noiseTexture = gl.createTexture();
+  (function buildNoiseTexture() {
+    var size = 512;
+    var data = new Uint8Array(size * size);
+    function hash(x, y) {
+      var s = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+      return s - Math.floor(s);
+    }
+    for (var py = 0; py < size; py++) {
+      for (var px = 0; px < size; px++) {
+        var x = px * 0.5;
+        var y = py * 0.5;
+        var ix = Math.floor(x) % 256;
+        var iy = Math.floor(y) % 256;
+        var fx = x - Math.floor(x);
+        var fy = y - Math.floor(y);
+        fx = fx * fx * (3 - 2 * fx);
+        fy = fy * fy * (3 - 2 * fy);
+        var a = hash(ix, iy);
+        var b = hash((ix + 1) % 256, iy);
+        var c = hash(ix, (iy + 1) % 256);
+        var d = hash((ix + 1) % 256, (iy + 1) % 256);
+        var value = (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy;
+        data[py * size + px] = Math.max(0, Math.min(255, Math.round(value * 255)));
+      }
+    }
+    gl.bindTexture(gl.TEXTURE_2D, noiseTexture);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, size, size, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, data);
+    gl.pixelStorei(gl.UNPACK_ALIGNMENT, 4);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.REPEAT);
+  })();
 
   var skylineTexture = gl.createTexture();
   gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
@@ -1703,6 +1777,9 @@
     gl.uniform1f(oceanSunProgress, riseProgress);
     gl.uniform1f(oceanSunScreenY, 0.512 + 0.11 * riseProgress);
     gl.uniform1f(oceanNoiseScale, (window.devicePixelRatio || 1) < 1.5 ? 1.7 : 1.0);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, noiseTexture);
+    gl.uniform1i(oceanNoise, 0);
     gl.activeTexture(gl.TEXTURE1);
     gl.bindTexture(gl.TEXTURE_2D, skylineTexture);
     gl.uniform1i(oceanSkyline, 1);
@@ -1718,6 +1795,7 @@
     gl.bindTexture(gl.TEXTURE_2D, mountainPhotoTexture);
     gl.uniform1i(oceanMountainPhoto, 4);
     gl.uniform1f(oceanMountainPhotoReady, mountainPhotoReady);
+    gl.uniform2fv(oceanWaveDirections, waveDirections);
     gl.uniform4fv(oceanRipples, rippleUniforms());
     gl.uniform1i(oceanRippleCount, ripples.length);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
