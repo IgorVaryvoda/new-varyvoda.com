@@ -357,8 +357,11 @@
       day *= 0.90 + detail * 0.18;
       // The far range is a haze layer: let the stable procedural gradient
       // carry more weight so stretched-photo artifacts stay invisible.
-      float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
-      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.55);
+      // Skip the whole photo pipeline at full night — it mixes to nothing.
+      if (u_night < 0.999) {
+        float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
+        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.55);
+      }
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       return mix(day, night, u_night);
     }
@@ -372,8 +375,10 @@
       vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
       day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
-      float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
-      day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 1.0), u_mountain_photo_ready * 0.96);
+      if (u_night < 0.999) {
+        float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
+        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 1.0), u_mountain_photo_ready * 0.96);
+      }
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       return mix(day, night, u_night);
     }
@@ -513,6 +518,9 @@
     }
 
     vec3 mountainLightColor(vec2 screenUv) {
+      // The entire settlement machinery multiplies by u_night at the end —
+      // skip it wholesale in day mode instead of computing it into zero.
+      if (u_night <= 0.001) return vec3(0.0);
       float farMask = farMountainMask(screenUv);
       float nearMask = nearMountainMask(screenUv);
       vec3 farLights = settlementLights(screenUv, farRidgeAt(screenUv.x), 13.7, 0.95);
@@ -540,6 +548,19 @@
 
     vec3 mountainColor(vec2 screenUv) {
       return mountainSurfaceColor(screenUv) + mountainLightColor(screenUv);
+    }
+
+    vec3 mountainSurfaceColorFast(vec2 screenUv) {
+      // Procedural-only tones for wave-distorted reflections, where the
+      // full photographic pipeline would be invisible anyway.
+      float farM = farMountainMask(screenUv);
+      float nearM = nearMountainMask(screenUv);
+      float nearWeight = nearM;
+      float farWeight = farM * (1.0 - nearM);
+      vec3 farTone = mix(vec3(0.12, 0.18, 0.22), vec3(0.035, 0.045, 0.058), u_night);
+      vec3 nearTone = mix(vec3(0.05, 0.10, 0.09), vec3(0.012, 0.018, 0.024), u_night);
+      vec3 color = farTone * farWeight + nearTone * nearWeight;
+      return color / max(nearWeight + farWeight, 0.001);
     }
 
     vec4 cruiseShipSample(vec2 screenUv) {
@@ -806,7 +827,7 @@
       return result * (1.0 + pow(1.0 - rayDirection.y, 3.0));
     }
 
-    vec3 daySky(vec3 direction) {
+    vec3 daySky(vec3 direction, float detail) {
       vec3 sunDirection = normalize(vec3(-0.62, 0.10, 0.78));
       float altitude = clamp(direction.y * 1.65, 0.0, 1.0);
       vec3 horizon = vec3(0.48, 0.48, 0.62);
@@ -825,7 +846,9 @@
 
         // Wind-combed sunrise cirrus over the photo sky: long streaks that
         // ignite gold around the burst and cool to pale blue further out.
-        // The burst core keeps burning through them.
+        // The burst core keeps burning through them. Skipped for reflection
+        // rays — wave distortion erases them anyway.
+        if (detail > 0.5) {
         float sceneUvX = sceneX(screenUv.x);
         vec2 flowUv = vec2(sceneUvX * 2.4 + iTime * 0.0016, screenUv.y * 6.5);
         float comb = fbm(flowUv * vec2(1.0, 2.6) + vec2(fbm(flowUv * vec2(2.3, 1.2)) * 0.9, 0.0));
@@ -838,9 +861,10 @@
         vec3 litCloud = mix(vec3(0.98, 1.02, 1.10), vec3(1.55, 1.18, 0.72), sunProximity);
         float cloudStrength = cirrus * (0.30 + sunProximity * 0.35) * (1.0 - coreProximity * 0.6);
         color = mix(color, litCloud, clamp(cloudStrength, 0.0, 0.62) * (0.4 + 0.6 * u_day_photo_ready));
+        }
       }
 
-      if (u_day_photo_ready < 0.5 && screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
+      if (detail > 0.5 && u_day_photo_ready < 0.5 && screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
         float sceneUvX = sceneX(screenUv.x);
         vec2 broadUv = vec2(sceneUvX * 2.35 + iTime * 0.0016, screenUv.y * 5.4);
         float broad = fbm(broadUv);
@@ -856,7 +880,7 @@
       return color;
     }
 
-    vec3 nightSky(vec3 direction) {
+    vec3 nightSky(vec3 direction, float detail) {
       vec2 screenUv = dirToScreenUV(direction);
       float vertical = clamp(direction.y * 0.5 + 0.5, 0.0, 1.0);
       vec3 color = mix(vec3(0.03, 0.035, 0.05), vec3(0.015, 0.02, 0.04), vertical);
@@ -886,24 +910,28 @@
         // maria contrast back out.
         float moonHalo = exp(-moonDistance * 21.0) * (1.0 - moonDisc * 0.8);
         color += vec3(0.30, 0.33, 0.38) * moonHalo * 0.24;
-        vec2 grid = vec2(40.0, 30.0);
-        vec2 baseCell = floor(screenUv * grid);
-        float stars = 0.0;
-        for (int y = -1; y <= 1; y++) {
-          for (int x = -1; x <= 1; x++) {
-            vec2 cell = baseCell + vec2(float(x), float(y));
-            if (cell.y < 0.0 || cell.y >= grid.y) continue;
-            cell.x = mod(cell.x + grid.x, grid.x);
-            stars += star(screenUv, cell, grid);
+        // Stars are invisible in wave-broken reflections — skip the
+        // 9-cell loop for reflection rays.
+        if (detail > 0.5) {
+          vec2 grid = vec2(40.0, 30.0);
+          vec2 baseCell = floor(screenUv * grid);
+          float stars = 0.0;
+          for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+              vec2 cell = baseCell + vec2(float(x), float(y));
+              if (cell.y < 0.0 || cell.y >= grid.y) continue;
+              cell.x = mod(cell.x + grid.x, grid.x);
+              stars += star(screenUv, cell, grid);
+            }
           }
+          color += vec3(1.0, 0.97, 0.9) * stars * smoothstep(0.35, 0.55, screenUv.y);
         }
-        color += vec3(1.0, 0.97, 0.9) * stars * smoothstep(0.35, 0.55, screenUv.y);
       }
       return color;
     }
 
-    vec3 skyColor(vec3 direction) {
-      return mix(daySky(direction), nightSky(direction), u_night);
+    vec3 skyColor(vec3 direction, float detail) {
+      return mix(daySky(direction, detail), nightSky(direction, detail), u_night);
     }
 
     vec3 acesTonemap(vec3 color) {
@@ -931,7 +959,7 @@
         vec3 mountainComposite = landscape;
         if (mountains < 0.999) {
           vec3 edgeRay = getRay(fragmentCoordinate);
-          vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay));
+          vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay, 1.0));
           mountainComposite = mix(edgeSky, landscape, mountains);
         }
         // Sunrise glare engulfs the ridge where it crosses the sun.
@@ -943,7 +971,7 @@
 
       vec3 ray = getRay(fragmentCoordinate);
       if (ray.y >= 0.0) {
-        vec3 sky = compositeCruiseShip(screenUv, skyColor(ray));
+        vec3 sky = compositeCruiseShip(screenUv, skyColor(ray, 1.0));
         fragmentColor = vec4(acesTonemap(sky * mix(1.28, 2.0, u_night)), 1.0);
         return;
       }
@@ -969,7 +997,7 @@
 
       vec3 reflectionDirection = normalize(reflect(ray, normal));
       reflectionDirection.y = abs(reflectionDirection.y);
-      vec3 reflection = skyColor(reflectionDirection);
+      vec3 reflection = skyColor(reflectionDirection, 0.0);
       vec2 reflectionScreen = dirToScreenUV(reflectionDirection);
       if (reflectionScreen.x >= 0.0 && reflectionScreen.x <= 1.0 && reflectionScreen.y >= 0.0 && reflectionScreen.y <= 1.0) {
         // Daylight water catches far more sky than mountain. A full-strength
@@ -977,25 +1005,28 @@
         // the sun is behind the ridge; keep that stronger mirror only at night.
         float mountainReflection = mountainMask(reflectionScreen);
         float reflectionWeight = mountainReflection * mix(0.38, 0.92, u_night);
-        reflection = mix(reflection, mountainSurfaceColor(reflectionScreen), reflectionWeight);
+        reflection = mix(reflection, mountainSurfaceColorFast(reflectionScreen), reflectionWeight);
       }
 
       // Reuse the woven ocean geometry for reflected lights, but evaluate it
       // on a slower clock and remove the camera's forward drift. This retains
       // the broken streak shape without making it chase every surface wave.
-      vec2 lightWavePosition = waterPosition.xz - vec2(iTime * 0.2, 0.0);
-      float lightEpsilon = max(0.035, distanceToWater * 0.009);
-      vec3 lightNormal = slowLightNormalAt(lightWavePosition, lightEpsilon, WATER_DEPTH, iTime * 0.14);
-      lightNormal = normalize(mix(lightNormal, vec3(0.0, 1.0, 0.0), 0.91));
-      vec3 lightReflectionDirection = normalize(reflect(ray, lightNormal));
-      lightReflectionDirection.y = abs(lightReflectionDirection.y);
-      vec2 lightScreen = dirToScreenUV(lightReflectionDirection);
-      if (lightScreen.x >= 0.0 && lightScreen.x <= 1.0 && lightScreen.y >= 0.0 && lightScreen.y <= 1.0) {
-        vec2 blurStep = vec2(1.9 / iResolution.x, 0.0);
-        vec3 reflectedLights = mountainLightColor(lightScreen) * 0.50;
-        reflectedLights += mountainLightColor(lightScreen - blurStep) * 0.25;
-        reflectedLights += mountainLightColor(lightScreen + blurStep) * 0.25;
-        reflection += reflectedLights * 1.2;
+      // The whole block only matters at night — skip it in daylight.
+      if (u_night > 0.001) {
+        vec2 lightWavePosition = waterPosition.xz - vec2(iTime * 0.2, 0.0);
+        float lightEpsilon = max(0.035, distanceToWater * 0.009);
+        vec3 lightNormal = slowLightNormalAt(lightWavePosition, lightEpsilon, WATER_DEPTH, iTime * 0.14);
+        lightNormal = normalize(mix(lightNormal, vec3(0.0, 1.0, 0.0), 0.91));
+        vec3 lightReflectionDirection = normalize(reflect(ray, lightNormal));
+        lightReflectionDirection.y = abs(lightReflectionDirection.y);
+        vec2 lightScreen = dirToScreenUV(lightReflectionDirection);
+        if (lightScreen.x >= 0.0 && lightScreen.x <= 1.0 && lightScreen.y >= 0.0 && lightScreen.y <= 1.0) {
+          vec2 blurStep = vec2(1.9 / iResolution.x, 0.0);
+          vec3 reflectedLights = mountainLightColor(lightScreen) * 0.50;
+          reflectedLights += mountainLightColor(lightScreen - blurStep) * 0.25;
+          reflectedLights += mountainLightColor(lightScreen + blurStep) * 0.25;
+          reflection += reflectedLights * 1.2;
+        }
       }
 
       vec3 scatteringBase = mix(vec3(0.006, 0.06, 0.155), vec3(0.02, 0.02, 0.03), u_night);
