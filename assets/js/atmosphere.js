@@ -105,11 +105,18 @@
       return ndc * 0.5 + 0.5;
     }
 
+    float sunProgress() {
+      // 0 = sun kissing the ridge, 1 = fully risen. Drives the position
+      // AND the light itself: reach, warmth, glare, and scene exposure all
+      // follow, so the rise plays as morning arriving, not a sprite move.
+      return smoothstep(0.0, 1.0, clamp((iTime - 30.0) / 480.0, 0.0, 1.0));
+    }
+
     float sunScreenY() {
       // The sun starts kissing the ridge and clears it over the first
       // minutes of a visit — too slow to catch moving, obvious if you
       // glance back. It eases to a stop instead of drifting forever.
-      return SUN_BASE_Y + 0.11 * smoothstep(0.0, 1.0, clamp((iTime - 30.0) / 480.0, 0.0, 1.0));
+      return SUN_BASE_Y + 0.11 * sunProgress();
     }
 
     vec2 sunDelta(vec2 screenUv) {
@@ -125,8 +132,10 @@
       // Glare bleed around the sun position, shared by the sky and the
       // mountain branch: the ridge silhouette must dissolve into the burst
       // where they meet, as in the sunrise reference.
+      // The glare tightens as the sun detaches from the ridge — a risen
+      // sun no longer swallows the silhouette below it.
       vec2 delta = sunDelta(screenUv) / vec2(1.0, 1.55);
-      return exp(-pow(length(delta) / 0.075, 2.0));
+      return exp(-pow(length(delta) / mix(0.075, 0.05, sunProgress()), 2.0));
     }
 
     float sceneX(float screenX) {
@@ -210,7 +219,8 @@
       // to be and disappears into its own halo. Measured at the old 0.46
       // cap the entire corner sat on the ACES shoulder and the amber field
       // below could not read at all.
-      float overexposure = clamp(halo * lowerSky * 0.22 + horizonBand * 0.16, 0.0, 0.32);
+      float overexposure = clamp(halo * lowerSky * 0.22
+        + horizonBand * 0.16 * mix(1.0, 0.55, sunProgress()), 0.0, 0.32);
       sky = mix(sky, paleGold * 0.86, overexposure);
       sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
 
@@ -339,7 +349,8 @@
       // side/front light rather than a backlight. The broad diffuse term keeps
       // the actual terrain legible while the x-facing normal decides where
       // shadows fall.
-      float sunriseReach = exp(-screenUv.x * 1.62);
+      // As the sun climbs, its light reaches further across the bay.
+      float sunriseReach = exp(-screenUv.x * mix(1.62, 1.0, sunProgress()));
       vec3 shadowBase = mix(vec3(0.09, 0.155, 0.19), vec3(0.05, 0.085, 0.07), depth);
       graded = mix(shadowBase, graded, mix(0.80, 0.88, depth));
       // The photograph already carries its own baked lighting. Re-lighting
@@ -354,7 +365,7 @@
       // ridge's west flank (rising toward its peak) catches the sunrise
       // while the east flank falls into shade. flankSlope is the ridge
       // profile's derivative — positive where the crest climbs rightward.
-      float sunReach = 0.22 + 0.78 * exp(-screenUv.x * 1.35);
+      float sunReach = 0.22 + 0.78 * exp(-screenUv.x * mix(1.35, 0.85, sunProgress()));
       float flankLit = smoothstep(0.05, 0.8, flankSlope);
       float flankShade = smoothstep(0.05, 0.9, -flankSlope);
       graded *= 1.0 + flankLit * mix(0.26, 0.42, depth) * sunReach;
@@ -369,19 +380,24 @@
       float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(0.55, 0.72, depth)
         + flankLit * (0.16 + height * 0.28) * sunReach * mix(0.6, 1.0, depth);
       warmAmount *= 0.75 + 0.40 * surfaceDetail;
-      graded = mix(graded, graded * vec3(2.0, 1.42, 0.70), clamp(warmAmount, 0.0, 0.6));
+      // Low sun paints deep amber; risen sun bleaches toward gold-white.
+      vec3 warmTone = mix(vec3(2.0, 1.42, 0.70), vec3(1.55, 1.32, 1.02), sunProgress());
+      graded = mix(graded, graded * warmTone, clamp(warmAmount, 0.0, 0.6));
 
       // The backlit signature of the sunrise references: a warm rim burns
       // along crest segments that FACE the sun and dies on flat or shaded
       // stretches — an even crest glow just reads as ambient light.
-      float crestRim = smoothstep(0.78, 0.985, height);
+      // The rim burn belongs to the backlit minutes; once the sun clears
+      // the ridge the crest is lit like everything else and the rim fades.
+      float crestRim = smoothstep(0.78, 0.985, height) * mix(1.0, 0.35, sunProgress());
       graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.15, 0.40, depth) * (0.10 + 0.90 * flankLit);
 
-      // Where the ridge profile is only a sliver the full atlas column
-      // compresses into jagged noise; dissolve ONLY those few pixels into
-      // haze — the headland's low tail must keep its forest.
-      float lowProfile = 1.0 - smoothstep(0.003, 0.016, ridge - 0.395);
-      graded = mix(graded, vec3(0.42, 0.52, 0.60), lowProfile * 0.45);
+      // Where the ridge tapers, the land dissolves into sea haze — a broad,
+      // squared falloff so it reads as atmospheric depth. The old narrow
+      // hard fade left the saddle a pale vertical seam and the headland's
+      // long tail a flat dark wedge stretching to the frame edge.
+      float lowProfile = 1.0 - smoothstep(0.004, 0.045, ridge - 0.395);
+      graded = mix(graded, vec3(0.44, 0.52, 0.58), lowProfile * lowProfile * 0.55);
       return graded;
     }
 
@@ -609,8 +625,14 @@
       float nearM = nearMountainMask(screenUv);
       float nearWeight = nearM;
       float farWeight = farM * (1.0 - nearM);
-      vec3 farTone = mix(vec3(0.12, 0.18, 0.22), vec3(0.035, 0.045, 0.058), u_night);
-      vec3 nearTone = mix(vec3(0.05, 0.10, 0.09), vec3(0.012, 0.018, 0.024), u_night);
+      // The ridge tails dissolve into sea haze above the waterline; their
+      // reflections must dissolve the same way or a dark mirror wedge
+      // hangs below an already-hazed tail.
+      float farTail = 1.0 - smoothstep(0.004, 0.045, farRidgeAt(screenUv.x) - 0.395);
+      float nearTail = 1.0 - smoothstep(0.004, 0.045, nearRidgeAt(screenUv.x) - 0.395);
+      vec3 dayHaze = vec3(0.30, 0.37, 0.43);
+      vec3 farTone = mix(mix(vec3(0.12, 0.18, 0.22), dayHaze, farTail * farTail * 0.6), vec3(0.035, 0.045, 0.058), u_night);
+      vec3 nearTone = mix(mix(vec3(0.05, 0.10, 0.09), dayHaze, nearTail * nearTail * 0.6), vec3(0.012, 0.018, 0.024), u_night);
       vec3 color = farTone * farWeight + nearTone * nearWeight;
       return color / max(nearWeight + farWeight, 0.001);
     }
@@ -1024,15 +1046,21 @@
         // dissolve tone tracks the amber mid-field, not white, so the ridge
         // melts into the burst's ring instead of punching a pale hole in it.
         float glare = sunGlare(screenUv) * (1.0 - u_night) * u_day_photo_ready;
-        mountainComposite = mix(mountainComposite, vec3(1.35, 1.04, 0.62), glare * 0.85);
-        fragmentColor = vec4(acesTonemap(mountainComposite * 1.25), 1.0);
+        // Keep the terrain breathing inside the dissolve: a flat amber
+        // replacement painted the ridge as a featureless khaki wedge.
+        float compositeLuma = dot(mountainComposite, vec3(0.2126, 0.7152, 0.0722));
+        vec3 glareTone = vec3(1.35, 1.04, 0.62) * (0.70 + 0.55 * min(compositeLuma, 0.8));
+        mountainComposite = mix(mountainComposite, glareTone, glare * 0.85);
+        float mountainLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
+        fragmentColor = vec4(acesTonemap(mountainComposite * 1.25 * mountainLift), 1.0);
         return;
       }
 
       vec3 ray = getRay(fragmentCoordinate);
       if (ray.y >= 0.0) {
         vec3 sky = compositeCruiseShip(screenUv, skyColor(ray, 1.0));
-        fragmentColor = vec4(acesTonemap(sky * mix(1.28, 2.0, u_night)), 1.0);
+        float skyLift = 1.0 + 0.10 * sunProgress() * (1.0 - u_night);
+        fragmentColor = vec4(acesTonemap(sky * mix(1.28, 2.0, u_night) * skyLift), 1.0);
         return;
       }
 
@@ -1136,7 +1164,10 @@
       float brokenPath = mix(0.48, 1.0, smoothstep(0.30, 0.74, broadGlints * 0.68 + fineGlints * 0.32));
       float pathFade = smoothstep(0.01, 0.09, waterProgress) * (1.0 - smoothstep(0.82, 1.0, waterProgress));
       vec3 pathColor = mix(vec3(1.02, 0.70, 0.37), vec3(0.70, 0.68, 0.59), waterProgress);
-      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night) * 0.23;
+      // The path strengthens as the sun climbs and pours more light onto
+      // the water.
+      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night)
+        * mix(0.23, 0.34, sunProgress());
 
       // The moon gets the same treatment on the opposite side of the bay:
       // a narrower silver glade woven through the same broken glint field.
@@ -1146,7 +1177,8 @@
       color += vec3(0.68, 0.72, 0.80) * moonGlade * brokenPath * pathFade * u_night * 0.17;
 
       color = compositeCruiseShip(screenUv, color);
-      fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night)), 1.0);
+      float waterLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
+      fragmentColor = vec4(acesTonemap(color * mix(1.12, 1.9, u_night) * waterLift), 1.0);
     }
 
     void main() {
