@@ -27,6 +27,8 @@
 
 | 2026-07-19 | self | Judged day-mode sharpness from animated SwiftShader screenshots — adaptQuality had already ratcheted renderScale down, so "mush/terracing" was partly the 0.66 bilinear upscale | For sharpness judgments, screenshot with playwright reduced_motion="reduce": adaptQuality is bypassed and one full-res frame renders at scene time t=3 (ship mid-bay at x≈0.71) |
 
+| 2026-07-19 | self | Ran `agent-browser close --all` to reset my session — it also killed Igor's other saved sessions (sirv-spin-*, spin-settings-*) | Close only your own session with plain `agent-browser close`; never `--all` |
+
 ## User Preferences
 - Igor tunes the atmosphere shader interactively with reference photos of the real Herceg Novi view (his own Shutterstock shots + web finds); match the photos, not generic "pretty shader" defaults.
 - Night mode: deep indigo moonlit duotone with warm golden town lights — NOT neutral-gray noir.
@@ -37,6 +39,7 @@
 - Skyline mask edit for composition: taper r channel (cos ramp) 0.86→0.93 so the right headland ends into open horizon (Igor's Image #12); night lights/masks follow automatically.
 - Screenshot loop: `hugo server --renderToMemory` + `uv run --with playwright python shot.py` (headless chromium needs `--enable-unsafe-swiftshader`). Set theme via `document.documentElement.dataset.theme` + dispatch `varyvoda:themechange`, wait ~1.5s for the 180ms night blend.
 - System `playwright` module isn't importable; `uv run --with playwright` (browsers already cached) is the reliable path.
+- Real-GPU profiling: `agent-browser open --headed <url>` uses Igor's RTX 3060 Ti (headless = SwiftShader, useless for perf). `eval` keeps a persistent JS context (wrap in IIFEs or const redeclarations error); rAF-sampling via a Promise works. Igor's display is 75Hz, DPR 1. Verified the full adaptQuality cycle live: sustained 35ms/frame stalls → 0.8 → 0.66, then auto-restore to 1.0 in ~13s; isolated stalls correctly decay without downscaling.
 - hittheroadket.com 403s WebFetch but serves plain `curl` with a Firefox UA.
 - PIL crops of screenshots to judge sub-pixel details (settlement lights are fractions of a px).
 - Verified burst recipe: amber only reads if its REPLACEMENT tone sits below the ACES shoulder — vec3(1.02,0.66,0.28) field at weight 0.70 with the veil capped 0.32; measure R−B in screenshots (target ≥30/255 in the ring, was 8 when washed).
