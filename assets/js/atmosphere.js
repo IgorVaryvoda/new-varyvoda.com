@@ -484,9 +484,16 @@
     }
 
     vec3 mountainSurfaceColor(vec2 screenUv) {
-      float nearMask = nearMountainMask(screenUv);
-      vec3 color = farMountainColor(screenUv);
-      return mix(color, nearMountainColor(screenUv), nearMask);
+      // Weight each layer by its own mask. A plain near-over-far mix pulls
+      // farMountainColor into the near ridge's edge feather even where the
+      // far layer has no ridge at all — its degenerate pale haze painted a
+      // fringe along the entire headland crest.
+      float farWeightMask = farMountainMask(screenUv);
+      float nearWeight = nearMountainMask(screenUv);
+      float farWeight = farWeightMask * (1.0 - nearWeight);
+      vec3 color = farMountainColor(screenUv) * farWeight
+        + nearMountainColor(screenUv) * nearWeight;
+      return color / max(nearWeight + farWeight, 0.001);
     }
 
     vec3 mountainLightColor(vec2 screenUv) {
