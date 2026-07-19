@@ -1,47 +1,20 @@
 {{ $projects := where .Site.RegularPages "Section" "projects" }}
 {{ $latestPosts := first 1 (where .Site.RegularPages "Type" "posts") }}
-{{ $featuredProjects := first 1 (where $projects ".Params.featured" true) }}
 
 <div class="builder-home">
-  <section class="index-section home-intro">
-    <div class="intro-copy">
-      <h1>{{ .Site.Params.author }}</h1>
-      <p class="intro-thesis">I build products. Some for work, some because I can’t help myself.</p>
-    </div>
-    {{ with .Site.Params.avatarURL }}
-      <figure class="author-mark">
-        <div class="author-portrait-shell">
-          <a class="author-portrait" href="/about/" aria-label="About Igor Varyvoda">
-            <img src="{{ . | relURL }}" alt="Igor Varyvoda" decoding="async">
-            <span class="author-portrait-cue" aria-hidden="true">About me →</span>
-          </a>
-          <nav class="author-portrait-menu" aria-label="Quick navigation">
-            <a href="/about/"><span>01</span>About</a>
-            <a href="/projects/"><span>02</span>Work</a>
-            <a href="/posts/"><span>03</span>Writing</a>
-            <a href="/contact/"><span>04</span>Contact</a>
-          </nav>
-        </div>
-        <figcaption>Made in Ukraine. Based in Montenegro.</figcaption>
-      </figure>
+  <section class="scene-hero" aria-label="Introduction">
+    <h1 class="visually-hidden">{{ .Site.Params.author }}</h1>
+    <p class="scene-sentence">
+      I&rsquo;m Igor Varyvoda. I build products&nbsp;&mdash; some for
+      <a href="/projects/">work</a>, some because I
+      <a href="/posts/">can&rsquo;t help myself</a>.
+    </p>
+    <p class="scene-corner scene-corner--origin">Made in Ukraine. Based in Montenegro.</p>
+    {{ range $latestPosts }}
+      <a class="scene-corner scene-corner--latest" href="{{ .RelPermalink }}">
+        Latest&nbsp;&mdash; {{ .Title }} <span aria-hidden="true">→</span>
+      </a>
     {{ end }}
-
-    <nav class="intro-index" aria-label="Featured content">
-      {{ range $latestPosts }}
-        <a href="{{ .RelPermalink }}">
-          <span class="intro-index-label">Latest note</span>
-          <strong>{{ .Title }}</strong>
-          <span class="intro-index-action">Read <span aria-hidden="true">→</span></span>
-        </a>
-      {{ end }}
-      {{ range $featuredProjects }}
-        <a href="{{ .RelPermalink }}">
-          <span class="intro-index-label">Featured project</span>
-          <strong>{{ .Title }}</strong>
-          <span class="intro-index-action">View <span aria-hidden="true">→</span></span>
-        </a>
-      {{ end }}
-    </nav>
   </section>
 
   <div class="tide-gate" aria-hidden="true"><span></span></div>

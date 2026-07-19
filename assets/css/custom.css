@@ -398,7 +398,135 @@ img { max-width: 100%; }
 
 .text-link:hover { color: var(--accent); opacity: 0.7; }
 
-/* Homepage */
+/* Homepage — the scene is the star. One sentence floats in the sky band
+   above the waterline; the frame's corners carry the chrome, and nothing
+   else sits on the water. */
+.scene-hero {
+  position: relative;
+  display: grid;
+  min-height: calc(100svh - 8rem);
+  place-items: center;
+}
+
+.visually-hidden {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.scene-sentence {
+  max-width: 68rem;
+  margin: 0;
+  padding: 0 2rem;
+  color: var(--ink);
+  font-family: var(--reading);
+  font-size: clamp(2.1rem, 2.3vw, 2.9rem);
+  font-style: italic;
+  line-height: 1.6;
+  letter-spacing: var(--tracking-reading-display);
+  text-align: center;
+  text-wrap: balance;
+  transform: translateY(-9vh);
+}
+
+/* Hover: the link lights up like one of the shoreline lamps — warm gold
+   at night, sunrise amber by day — and its underline becomes a small
+   piece of the sea, drifting like the water below. */
+:root {
+  --link-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23eec27f' stroke-width='1.5'/%3E%3C/svg%3E");
+  --link-hover-ink: #f0cd92;
+  --link-hover-halo: rgba(238, 194, 127, 0.42);
+}
+
+:root:not([data-theme="dark"]) {
+  --link-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23a3581f' stroke-width='1.5'/%3E%3C/svg%3E");
+  --link-hover-ink: #8d4a15;
+  --link-hover-halo: rgba(214, 138, 58, 0.38);
+}
+
+.scene-sentence a {
+  padding-bottom: 0.26em;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.32em;
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+.scene-sentence a:hover,
+.scene-sentence a:focus-visible,
+a.scene-corner--latest:hover,
+a.scene-corner--latest:focus-visible {
+  color: var(--link-hover-ink);
+  background-image: var(--link-wave);
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+  background-size: 2.4rem 0.8rem;
+  text-decoration: none;
+  text-shadow: 0 0 1.6rem var(--link-hover-halo), 0 0 0.5rem var(--link-hover-halo);
+  animation: link-wave-drift 1.4s linear infinite;
+}
+
+a.scene-corner--latest:hover,
+a.scene-corner--latest:focus-visible {
+  background-size: 1.8rem 0.6rem;
+  animation-duration: 1.8s;
+}
+
+@keyframes link-wave-drift {
+  to { background-position-x: 2.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-sentence a:hover,
+  .scene-sentence a:focus-visible,
+  a.scene-corner--latest:hover,
+  a.scene-corner--latest:focus-visible { animation: none; }
+}
+
+.scene-corner {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.6rem;
+  margin: 0;
+  color: var(--slate);
+  font-family: var(--mono);
+  font-size: var(--type-compact-label);
+  letter-spacing: 0.07em;
+  line-height: 1.5;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.scene-corner--origin { left: 0; }
+
+/* Over the day water the corners read like hull lettering: near-white
+   with a soft dark separation shadow, not slate sinking into the blue. */
+:root:not([data-theme="dark"]) .scene-corner {
+  color: rgba(243, 248, 252, 0.94);
+  text-shadow: 0 1px 1.2rem rgba(8, 28, 46, 0.55), 0 0 0.3rem rgba(8, 28, 46, 0.4);
+}
+
+:root:not([data-theme="dark"]) a.scene-corner--latest:hover,
+:root:not([data-theme="dark"]) a.scene-corner--latest:focus-visible {
+  color: #ffe3b8;
+}
+
+.scene-corner--latest {
+  right: 0;
+  max-width: 46%;
+  text-align: right;
+  transition: color 160ms ease;
+}
+
+
+/* Legacy hero (kept for reference by older pages) */
 .home-intro {
   grid-template-columns: minmax(0, 1fr) 17rem;
   grid-template-rows: auto 1fr auto;
@@ -2003,6 +2131,11 @@ img { max-width: 100%; }
   }
   .intro-index strong { grid-column: 1 / -1; grid-row: 2; }
   .intro-index a + a { margin-left: 0; padding-left: 0; border-top: 1px solid var(--rule); border-left: 0; }
+
+  .scene-hero { min-height: calc(100svh - 6.4rem); }
+  .scene-sentence { font-size: 2.3rem; transform: translateY(-11vh); }
+  .scene-corner--origin { max-width: 44%; }
+  .scene-corner--latest { max-width: 50%; }
 
   .tide-gate { height: 8rem; }
   .tide-gate::after { content: none; }
