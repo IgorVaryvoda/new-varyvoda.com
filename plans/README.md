@@ -43,6 +43,11 @@ same layout files.
 | 020 | Make the Sirv opt-in work for every content type | P1 | S | 015 implementation | DONE (`5e28c13`, reviewed+approved 2026-07-19) |
 | 021 | Stop failed atmospheric rendering and complete fallback handoff | P1 | S | 018 implementation | DONE (`01515a3`, reviewed+approved 2026-07-19) |
 | 022 | Preserve Normalize print parity and current dependency census | P2 | S | 017 implementation | DONE (`17c1b34`, reviewed+approved 2026-07-19) |
+| 023 | Emit correct social share metadata from the base template | P1 | S | — | LANDED 6c9032f (`669c350` on improve/023-social-share-metadata, reviewed+approved 2026-07-20; 2 revision rounds consumed by plan-authoring defects — truncate semantics — executor stopped correctly each time) |
+| 027 | Explicit Open Graph tags fed by the normalized description | P1 | S | 023 | LANDED 6c9032f (`88e5c31` on improve/027-explicit-opengraph, reviewed+approved 2026-07-20; 1 revision — plan's verifier over-matched list pages) |
+| 024 | Remove empty taxonomy pages, own robots.txt, honest sitemap | P1 | S | 027 (lane) | LANDED 6c9032f (`70c81d9` on improve/024-crawl-surface-hygiene, reviewed+approved 2026-07-20; sol's future-series-usage finding dismissed: documented trade-off, loud failure mode) |
+| 025 | Brand strings and page descriptions | P1 | S | 023, 024 | LANDED 6c9032f (`b9ebb2b` on improve/025-brand-strings, reviewed+approved 2026-07-20; strings verbatim; note: EOF blank-line trim in help-ukraine.md accepted as harmless) |
+| 026 | BlogPosting/Person/WebSite schema + 2019→2026 forward link | P2 | S | 024, 025 | LANDED 6c9032f (`b292dff`+`92ecd70` on improve/026-structured-data, reviewed+approved 2026-07-20; sol's dateModified-fallback finding dismissed: matches article:modified_time behavior, "no info" not wrong info) |
 
 Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJECTED (with one-line rationale)
 
@@ -60,6 +65,35 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **015 → 020 → 016 → 017** form the media/head lane: review rejected 015's post-only runtime ownership, so 020 corrects the cumulative implementation before image/head work continues.
 - **018 → 021**: review rejected 018's skyline-error loop after its revision budget; 021 is the corrective cumulative branch to integrate instead.
 - **017 → 022**: review rejected 017 after its verifier revision budget; 022 applies the already-confirmed print/census/EOF corrections on top of its implementation.
+
+## 2026-07-20 SEO audit
+
+Plans 023–026 were selected together after a focused SEO audit at commit
+`186db1d` (whole-repo for the SEO category; rendered build output and the
+live edge were both inspected; no subagents — every finding advisor-verified).
+Execute as ONE cumulative lane, one Codex worker at a time:
+023 → 027 → 024 → 025 → 026, each branching from the previous approved
+branch. (027 was inserted after 023's adversarial diff review confirmed
+og:description still shipped the raw Summary through the internal Open
+Graph template — reversing the advisor's earlier "keep the internal
+template" call.)
+Rationale: 023/025 share `baseof.html`-adjacent head semantics, 024/025 share
+`config.toml`, 024/026 share `content/posts/image-seo.md` — parallel worktrees
+from a common base would hand the operator textual merge conflicts.
+
+SEO findings considered and rejected (do not re-audit):
+
+- **Mixed-case URL `/experts-nuxt-Sirv/`** (lowercase variant 404s): changing
+  the URL risks existing backlinks for near-zero gain; Hugo aliases are
+  meta-refresh pages, not 301s. Left as-is; plan 025 explicitly marks the
+  `url:` key out of scope.
+- **Redirect/host hygiene**: apex→www 301, http→https 301, `/about`→`/about/`
+  308 all verified healthy on the live edge (2026-07-20). Nothing to do.
+- **`og:image:width/height` meta**: dimensions of the Sirv-cropped default
+  OG image are not knowable at build time without a fetch; low value, skipped.
+- **Removing `_internal/opengraph.html`**: it still supplies og:title/url/
+  type/article:* correctly and emits no og:image on this site (verified);
+  replacing it wholesale is churn.
 
 ## 2026-07-18 loading-speed audit
 
