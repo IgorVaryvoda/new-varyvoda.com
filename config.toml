@@ -6,6 +6,7 @@ defaultcontentlanguage = "en"
 pygmentsstyle = "bw"
 pygmentscodefences = true
 pygmentscodefencesguesssyntax = true
+disableKinds = ["taxonomy", "term"]
 
 disqusShortname = "varyvoda"
 [markup.goldmark.renderer]

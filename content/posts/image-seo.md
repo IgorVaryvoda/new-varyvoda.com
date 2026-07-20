@@ -3,6 +3,8 @@ title: "Image SEO for E-commerce"
 date: 2019-06-13T22:52:03+01:00
 draft: false
 canonicalUrl: "https://sirv.com/blog/image-seo-for-ecommerce/"
+sitemap:
+  disable: true
 ---
 
 <div class="full-image__container"><div class="full-image__content">

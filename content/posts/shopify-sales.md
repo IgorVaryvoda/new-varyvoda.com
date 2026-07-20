@@ -3,6 +3,8 @@ title: "9 Actionable tips to increase Shopify sales"
 date: 2020-11-24T22:52:03+01:00
 draft: false
 canonicalUrl: "https://sirv.com/blog/increase-shopify-sales/"
+sitemap:
+  disable: true
 ---
 <img src="https://sirv.sirv.com/blog/Shopify%20Sales/online_shopping.svg" alt="Increase Shopify sales - graphic">
 
