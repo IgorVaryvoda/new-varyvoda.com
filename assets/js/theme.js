@@ -43,16 +43,21 @@
 
   applyTheme(storedTheme() || (media.matches ? "dark" : "light"));
 
+  function toggleTheme() {
+    var nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+    setStoredTheme(nextTheme);
+    applyTheme(nextTheme);
+  }
+
+  // The atmosphere shader lets a click on the sun or moon flip the theme.
+  window.varyvodaTheme = { toggle: toggleTheme };
+
   function bindControl() {
     var control = document.querySelector("[data-theme-toggle]");
     if (!control) return;
 
     syncControl(root.dataset.theme);
-    control.addEventListener("click", function () {
-      var nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
-      setStoredTheme(nextTheme);
-      applyTheme(nextTheme);
-    });
+    control.addEventListener("click", toggleTheme);
   }
 
   if (document.readyState === "loading") {
