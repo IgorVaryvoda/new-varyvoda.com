@@ -1,3 +1,20 @@
+{{ $sameAs := slice }}
+{{ range .Site.Params.social }}{{ $sameAs = $sameAs | append .url }}{{ end }}
+{{ $person := dict
+  "@context" "https://schema.org"
+  "@type" "Person"
+  "name" .Site.Params.author
+  "url" .Site.BaseURL
+  "sameAs" $sameAs
+}}
+{{ $website := dict
+  "@context" "https://schema.org"
+  "@type" "WebSite"
+  "name" .Site.Title
+  "url" .Site.BaseURL
+}}
+<script type="application/ld+json">{{ $person | jsonify | safeJS }}</script>
+<script type="application/ld+json">{{ $website | jsonify | safeJS }}</script>
 {{ $projects := where .Site.RegularPages "Section" "projects" }}
 {{ $latestPosts := first 1 (where .Site.RegularPages "Type" "posts") }}
 
