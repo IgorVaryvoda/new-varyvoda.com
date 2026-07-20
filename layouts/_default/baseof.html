@@ -65,6 +65,7 @@
   <body class="builder-index page-{{ if .IsHome }}home{{ else }}inner{{ end }} kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ with .File }} view-{{ .BaseFileName | urlize }}{{ end }}{{ with .Params.hero_flow }} has-system-hero{{ end }}{{ if and .IsSection (eq .Section "projects") }} has-work-atlas{{ end }}"{{ if .Site.Params.enableTwemoji }} onload='twemoji.parse(document.body)'{{ end }}>
     <a class="skip-link" href="#main-content">Skip to content</a>
     <canvas class="ambient-canvas" data-atmosphere data-skyline="{{ "/images/herceg-novi-skyline.png" | relURL }}?v=4" data-day-scene="{{ "/images/herceg-novi-day.webp" | relURL }}" data-mountain-scene="{{ "/images/herceg-novi-mountains.webp" | relURL }}?v=19" aria-hidden="true"></canvas>
+    {{ if .IsHome }}<span class="celestial-hint" data-celestial-hint aria-hidden="true"></span>{{ end }}
     <main class="site-shell">
       {{ partial "header.html" . }}
       <div class="content" id="main-content">

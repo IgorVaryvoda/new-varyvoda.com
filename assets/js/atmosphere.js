@@ -1717,6 +1717,54 @@
     }
   }, { passive: true });
 
+  // First-visit hint pointing at the clickable sun/moon. Only rendered on the
+  // homepage, and only until the visitor toggles the theme once — any toggle
+  // (disc or footer control) writes varyvoda-theme, which retires it for good.
+  // Percent coordinates mirror celestialBodyAt's centers; the sun holds its
+  // base height until scene time 30s, long after the hint is gone.
+  (function () {
+    var hint = document.querySelector("[data-celestial-hint]");
+    if (!hint) return;
+    try {
+      var stored = window.localStorage.getItem("varyvoda-theme");
+      if (stored === "dark" || stored === "light") return;
+    } catch (_) {}
+
+    var hideTimer = null;
+
+    function hideHint() {
+      hint.classList.remove("celestial-hint--visible");
+      window.clearTimeout(hideTimer);
+      window.removeEventListener("varyvoda:themechange", hideHint);
+    }
+
+    function showHint() {
+      var dark = document.documentElement.dataset.theme === "dark";
+      hint.textContent = dark ? "Click the moon for daylight" : "Click the sun for nightfall";
+      hint.classList.toggle("celestial-hint--moon", dark);
+      hint.classList.toggle("celestial-hint--sun", !dark);
+      hint.style.left = (dark ? 70 : 7.5) + "%";
+      hint.style.top = ((1 - (dark ? 0.80 : 0.512)) * 100) + "%";
+      hint.classList.add("celestial-hint--visible");
+      window.addEventListener("varyvoda:themechange", hideHint);
+      hideTimer = window.setTimeout(hideHint, 9000);
+    }
+
+    // Wait for the scene's first drawn frame before starting the countdown —
+    // a hint pointing into a canvas that hasn't rendered yet is noise. Give
+    // up quietly if the shader never comes up.
+    var readyChecks = 0;
+    var readyPoll = window.setInterval(function () {
+      readyChecks += 1;
+      if (canvas.classList.contains("shader-ready")) {
+        window.clearInterval(readyPoll);
+        window.setTimeout(showHint, 2500);
+      } else if (readyChecks > 100) {
+        window.clearInterval(readyPoll);
+      }
+    }, 300);
+  })();
+
   function currentSceneTime(now) {
     return (activeElapsed + (activeSegmentStart === null ? 0 : now - activeSegmentStart)) * 0.001;
   }
