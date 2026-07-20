@@ -1,0 +1,30 @@
+{{- /*
+  Responsive <img> for site-local images (front-matter paths starting with "/").
+  Expects a dict: src, alt, sizes, fallbackWidth, and optionally loading
+  (defaults to lazy) and fetchpriority. The asset must live under assets/.
+*/ -}}
+{{- $asset := resources.Get (strings.TrimPrefix "/" .src) -}}
+{{- if $asset -}}
+  {{- $srcset := slice -}}
+  {{- range slice 480 800 1200 1600 -}}
+    {{- if lt . $asset.Width -}}
+      {{- $variant := $asset.Resize (printf "%dx" .) -}}
+      {{- $srcset = $srcset | append (printf "%s %dw" $variant.RelPermalink .) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $srcset = $srcset | append (printf "%s %dw" $asset.RelPermalink $asset.Width) -}}
+  {{- $fallback := $asset -}}
+  {{- if lt .fallbackWidth $asset.Width -}}
+    {{- $fallback = $asset.Resize (printf "%dx" .fallbackWidth) -}}
+  {{- end -}}
+  <img
+    src="{{ $fallback.RelPermalink }}"
+    srcset="{{ delimit $srcset ", " }}"
+    sizes="{{ .sizes }}"
+    alt="{{ .alt }}"
+    loading="{{ .loading | default "lazy" }}"
+    {{- with .fetchpriority }} fetchpriority="{{ . }}"{{ end }}
+    decoding="async">
+{{- else -}}
+  <img src="{{ .src }}" alt="{{ .alt }}" loading="{{ .loading | default "lazy" }}" decoding="async">
+{{- end -}}

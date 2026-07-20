@@ -38,7 +38,7 @@
           <figure class="work-atlas-visual">
             <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
             {{ if hasPrefix . "/" }}
-              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"{{ if eq $index 0 }} fetchpriority="high"{{ end }} decoding="async">
+              {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $project.Title) "sizes" (cond (eq $index 0) "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw") "fallbackWidth" (cond (eq $index 0) 1000 640) "loading" (cond (eq $index 0) "eager" "lazy") "fetchpriority" (cond (eq $index 0) "high" "")) }}
             {{ else }}
               <img
                 src="{{ . }}?w={{ if eq $index 0 }}1000{{ else }}640{{ end }}"

@@ -37,7 +37,7 @@
             <span>{{ $.Params.hero_frame_status | default "Project view" }}</span>
           </div>
           {{ if hasPrefix . "/" }}
-            <img src="{{ . }}" alt="{{ $.Title }} interface" fetchpriority="high" decoding="async">
+            {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 1000 "loading" "eager" "fetchpriority" "high") }}
           {{ else }}
             <img
               src="{{ . }}?w=1000"
@@ -91,7 +91,7 @@
   <div class="project-stage">
     {{ $img := $.Params.image }}
     {{ if hasPrefix $img "/" }}
-      <img src="{{ $img }}" alt="{{ $.Title }} screenshot" loading="lazy" decoding="async">
+      {{ partial "responsive-local-image.html" (dict "src" $img "alt" (printf "%s screenshot" $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(86vw, 1600px)" "fallbackWidth" 1000) }}
     {{ else }}
       <img
         src="{{ $img }}?w=1000"

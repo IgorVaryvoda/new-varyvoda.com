@@ -37,7 +37,7 @@
         {{ with .Params.image }}
         <a class="build-visual" href="{{ $project.RelPermalink }}" aria-label="View the Sirv AI Studio project">
           {{ if hasPrefix . "/" }}
-            <img src="{{ . }}" alt="Sirv AI Studio interface" loading="lazy" decoding="async">
+            {{ partial "responsive-local-image.html" (dict "src" . "alt" "Sirv AI Studio interface" "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)" "fallbackWidth" 800) }}
           {{ else }}
             <img
               src="{{ . }}?w=800"
@@ -105,7 +105,7 @@
           <figure class="selected-project-visual">
             <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
             {{ if hasPrefix . "/" }}
-              <img src="{{ . }}" alt="{{ $project.Title }} interface" loading="lazy" decoding="async">
+              {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $project.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 800) }}
             {{ else }}
               <img
                 src="{{ . }}?w=800"

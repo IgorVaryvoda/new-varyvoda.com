@@ -18,23 +18,24 @@
     {{ template "_internal/opengraph.html" . }}
     <title>{{ block "title" . }}{{ .Site.Title }}{{ end }}</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    {{ $normalize := resources.Get "css/normalize.css" }}
+    {{ $fonts := resources.Get "css/fonts.css" }}
     {{ if hugo.IsServer }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
+      <link rel="stylesheet" href="{{ $normalize.RelPermalink }}" media="screen">
       <link rel="stylesheet" href="{{ $styles.RelPermalink }}" media="screen">
       {{ $custom := resources.Get "css/custom.css" | fingerprint }}
       <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen">
+      <link rel="stylesheet" href="{{ $fonts.RelPermalink }}">
     {{ else }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css") }}
-      {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $styles.RelPermalink }}" integrity="{{ $styles.Data.Integrity }}" crossorigin="anonymous" media="screen">
-      {{ $custom := resources.Get "css/custom.css" | minify | fingerprint }}
-      <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen">
+      {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
+      {{ $custom := resources.Get "css/custom.css" }}
+      {{ $bundle := slice $normalize $styles $custom $fonts | resources.Concat "css/site.css" | minify | fingerprint }}
+      <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ end }}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.earthroulette.com">
     {{ if or .IsHome (and .IsSection (eq .Section "projects")) }}
       <link rel="preconnect" href="https://iantiark.sirv.com">
@@ -42,7 +43,6 @@
     {{ if and .IsPage (eq .Section "posts") (in .RawContent "data-type=") }}
       <link rel="preconnect" href="https://scripts.sirv.com" crossorigin>
     {{ end }}
-    <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
     {{ if hugo.IsServer }}
       {{ $themeScript := resources.Get "js/theme.js" }}
       <script src="{{ $themeScript.RelPermalink }}"></script>

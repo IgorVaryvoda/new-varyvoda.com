@@ -18,6 +18,23 @@
     return;
   }
 
+  // GPU-less environments (Lighthouse/PageSpeed bots, VMs, remote desktops)
+  // expose WebGL through a software rasterizer where one frame costs seconds
+  // of CPU — take the CSS gradient fallback instead of running the scene.
+  // SwiftShader-based testing opts back in with ?atmosphere=force.
+  if (!/[?&]atmosphere=force/.test(window.location.search)) {
+    var rendererInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    var rendererName = String(gl.getParameter(
+      rendererInfo ? rendererInfo.UNMASKED_RENDERER_WEBGL : gl.RENDERER
+    ));
+    if (/swiftshader|llvmpipe|softpipe|software|basic render/i.test(rendererName)) {
+      canvas.classList.add("ambient-canvas-fallback");
+      var loseContext = gl.getExtension("WEBGL_lose_context");
+      if (loseContext) loseContext.loseContext();
+      return;
+    }
+  }
+
   var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var contextAvailable = true;
   var frameRequest = null;
