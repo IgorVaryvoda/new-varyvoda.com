@@ -1,5 +1,6 @@
 ---
 title: "Maximizing Performance in a Vue/Nuxt Project with Sirv"
+description: "How I pushed a Vue/Nuxt site to top performance with Sirv: on-the-fly image optimization, lazy loading, CDN delivery, and a faster contentful paint."
 date: 2023-09-30
 url: /experts-nuxt-Sirv/
 draft: false

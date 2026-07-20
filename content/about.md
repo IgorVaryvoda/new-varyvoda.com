@@ -1,6 +1,7 @@
 ---
 template: page
 title: About me
+description: "Made in Ukraine, based in Montenegro. A decade building and promoting Sirv, now creating Sirv AI Studio end to end — plus tools that solve my own problems."
 slug: about
 draft: false
 ---

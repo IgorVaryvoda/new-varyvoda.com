@@ -1,5 +1,5 @@
 baseurl = "https://www.varyvoda.com"
-title = "Igor Varyvoda's Website"
+title = "Igor Varyvoda"
 theme = "hugo-coder"
 languagecode = "en"
 defaultcontentlanguage = "en"
@@ -17,8 +17,7 @@ disqusShortname = "varyvoda"
 [params]
   author = "Igor Varyvoda"
   info = "Products, systems, writing"
-  description = "Sensible marketing blog by Igor Varyvoda."
-  keywords = "blog,developer,personal"
+  description = "Igor Varyvoda builds products — AI tooling for e-commerce imagery, travel apps, personal utilities — and writes about the systems behind them."
   avatarurl = "https://iantiark.sirv.com/pic.jpg?w=300"
   #gravatar = "igor@varyvoda.com"
 
