@@ -3,6 +3,22 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ .Site.BaseURL }}"},{"@type":"ListItem","position":2,"name":"Writing","item":"{{ .Site.BaseURL }}posts/"},{"@type":"ListItem","position":3,"name":"{{ .Title }}","item":"{{ .Permalink }}"}]}
 </script>
+{{ $ogImage := .Params.ogImage | default "https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900" }}
+{{ $canonical := .Params.canonicalUrl | default .Permalink }}
+{{ $desc := .Description | default (.Summary | plainify | truncate 160) }}
+{{ $article := dict
+  "@context" "https://schema.org"
+  "@type" "BlogPosting"
+  "headline" .Title
+  "description" $desc
+  "url" $canonical
+  "mainEntityOfPage" $canonical
+  "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00")
+  "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00")
+  "image" $ogImage
+  "author" (dict "@type" "Person" "name" .Site.Params.author "url" ("about/" | absURL))
+}}
+<script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
 <article class="article-page article-page--editorial">
   <header class="article-hero">
     <div class="article-hero-inner">

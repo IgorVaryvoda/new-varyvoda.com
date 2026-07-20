@@ -2,10 +2,13 @@
 title: "Image SEO for E-commerce"
 date: 2019-06-13T22:52:03+01:00
 draft: false
+lastmod: 2026-07-20
 canonicalUrl: "https://sirv.com/blog/image-seo-for-ecommerce/"
 sitemap:
   disable: true
 ---
+
+> **Update, July 2026:** I re-audited every piece of advice in this guide, seven years on — what survived, what died, and what changed. Read the follow-up: [Image SEO in 2026: Everything That Changed Since 2019](/posts/image-seo-2026/).
 
 <div class="full-image__container"><div class="full-image__content">
 <img src="https://sirv-cdn.sirv.com/blog/image%20seo/2456071.png" alt="Illustration for image seo for e-commerce article." />
