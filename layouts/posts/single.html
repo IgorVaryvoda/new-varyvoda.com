@@ -5,7 +5,7 @@
 </script>
 {{ $ogImage := .Params.ogImage | default "https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900" }}
 {{ $canonical := .Params.canonicalUrl | default .Permalink }}
-{{ $desc := .Description | default (.Summary | plainify | truncate 160) }}
+{{ $desc := .Description | default (.Summary | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace | truncate 160) }}
 {{ $article := dict
   "@context" "https://schema.org"
   "@type" "BlogPosting"
