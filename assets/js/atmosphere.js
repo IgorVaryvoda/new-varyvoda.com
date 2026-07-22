@@ -80,7 +80,7 @@
     #define WATER_DEPTH 1.0
     #define CAMERA_HEIGHT 1.5
     #define ITERATIONS_RAYMARCH 6
-    #define ITERATIONS_NORMAL 12
+    #define ITERATIONS_NORMAL 16
     #define RAYMARCH_STEPS 24
     #define FBM_OCTAVES 4
     #define SUN_SCREEN_X 0.075
@@ -165,6 +165,24 @@
       vec2 delta = sunDelta(screenUv);
       delta.y *= 1.25;
       return exp(-pow(length(delta) / mix(0.075, 0.05, sunProgress()), 2.0));
+    }
+
+    vec3 sunDirection3D() {
+      // The 3D ray through the sun's screen position: the one light vector
+      // the water's specular, refraction, and subsurface terms all agree on.
+      // Everything else about the sun is painted in screen space, so this is
+      // derived from the same screen anchor rather than the other way round.
+      vec2 uv = (vec2(SUN_SCREEN_X, sunScreenY()) * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
+      return CAMERA_TILT * normalize(vec3(uv, 1.5));
+    }
+
+    vec3 lowSunColor(float elevation) {
+      // afl_ext's getSunColorDirectly (shadertoy M3fGDl, public domain):
+      // amber right at the horizon, bleaching toward gold-white as the sun
+      // climbs. Drives every sunlight term on the day water.
+      float st = 1.0 / (1.0 + max(elevation, 0.0) * 11.0);
+      vec3 tone = max(vec3(0.0), vec3(1.0) - st * 4.0 * pow(vec3(0.196, 0.435, 0.6), vec3(2.4)));
+      return tone * 4.0;
     }
 
     float sceneX(float screenX) {
@@ -1161,12 +1179,31 @@
       float horizonProximity = 1.0 - smoothstep(0.0, 0.035, 0.395 - screenUv.y);
       float stableDistance = mix(distanceToWater, highHit, horizonProximity);
 
-      float epsilon = max(0.01, distanceToWater * 0.004);
+      float epsilon = max(0.008, distanceToWater * 0.0028);
       vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH, wavePhaseShift);
       float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
       distanceFlatten = max(distanceFlatten, horizonProximity * 0.95);
-      float daylightCalm = (1.0 - u_night) * 0.58;
+      // Daylight used to flatten normals 58% toward up for a calm-bay look —
+      // which also erased the per-facet fresnel variation that makes sunlit
+      // water sparkle. Keep only a light touch; distance flattening already
+      // handles the far field (M3fGDl port, 2026-07-22).
+      float daylightCalm = (1.0 - u_night) * 0.08;
       normal = mix(normal, vec3(0.0, 1.0, 0.0), clamp(distanceFlatten + daylightCalm, 0.0, 0.95));
+
+      // Micro facets live on a SEPARATE normal used only by the sun terms:
+      // folding them into the base normal raised fresnel everywhere and
+      // sheened the whole bay gray. The base normal keeps the water dark and
+      // smooth; the glint normal makes individual wavelets catch the sun.
+      float microReach = (1.0 - smoothstep(3.0, 60.0, distanceToWater)) * (1.0 - u_night);
+      vec3 glintNormal = normal;
+      if (microReach > 0.001) {
+        vec2 microUv = waterPosition.xz * 4.5 + vec2(iTime * 0.35, -iTime * 0.22);
+        vec3 micro = vec3(fbm(microUv) - 0.5, 0.0, fbm(microUv + vec2(37.7, 11.3)) - 0.5);
+        glintNormal = normalize(normal + micro * 0.55 * microReach);
+      }
+
+      vec3 sunDir = sunDirection3D();
+      vec3 lowSun = lowSunColor(sunDir.y) * (1.0 - u_night);
 
       float fresnelSharp = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-normal, ray)), 5.0);
       float fresnelFlat = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(vec3(0.0, 1.0, 0.0), -ray)), 5.0);
@@ -1177,7 +1214,7 @@
       reflectionDirection.y = abs(reflectionDirection.y);
       // Grazing rows are repainted almost entirely by the fog — computing
       // the full sky/mirror/lights reflection there is wasted work.
-      float fogAmount = 1.0 - exp(-stableDistance * 0.02);
+      float fogAmount = 1.0 - exp(-stableDistance * mix(0.013, 0.02, u_night));
       vec3 reflection = vec3(0.0);
       if (fogAmount < 0.985) {
       reflection = skyColor(reflectionDirection, 0.0);
@@ -1211,18 +1248,66 @@
           reflection += reflectedLights * 1.2;
         }
       }
+
       }
 
-      vec3 scatteringBase = mix(vec3(0.006, 0.06, 0.155), vec3(0.02, 0.02, 0.03), u_night);
+      // Day water body is DARK — near-black olive troughs are what make the
+      // fresnel glints and subsurface glow read. All of the day water's light
+      // now comes from the sky it reflects and the sun shining through it
+      // (M3fGDl port).
+      vec3 scatteringBase = mix(vec3(0.0025, 0.022, 0.05), vec3(0.02, 0.02, 0.03), u_night);
       vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
       vec3 color = fresnel * reflection + scattering;
-      vec3 waterBody = mix(vec3(0.005, 0.058, 0.16), vec3(0.012, 0.014, 0.022), u_night);
+      vec3 waterBody = mix(vec3(0.003, 0.03, 0.075), vec3(0.012, 0.014, 0.022), u_night);
       color += waterBody * (1.0 - fresnel) * 0.72;
+
+      // Subsurface scattering, the pair of terms that make M3fGDl's water
+      // look like water: crests between the camera and the sun transmit
+      // teal-green light along the refracted ray, and wave height adds a
+      // faint body glow gated by sun elevation.
+      if (u_night < 0.999) {
+        // The reflected sun itself: a tight specular spike (afl_ext's
+        // pow-1228 train, relaxed for our calmer facets) in HDR range so
+        // ACES shapes it into hard golden glints along the sun's azimuth.
+        // Fresnel comes from the glint facet, not the smooth base normal —
+        // a tilted wavelet is what the sun actually flashes off.
+        vec3 glintReflection = normalize(reflect(ray, glintNormal));
+        glintReflection.y = abs(glintReflection.y);
+        float glintDot = max(0.0, dot(glintReflection, sunDir));
+        float glintFresnel = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-glintNormal, ray)), 5.0);
+        // Same ACES lesson as the sun burst: additive gold on pale blue
+        // clips to white and reads as nothing. The train is a saturated
+        // amber tone REPLACEMENT in a wide lobe around the sun's mirror
+        // direction, and only the sparkle cores on top clip to white.
+        float trainField = pow(glintDot, 18.0);
+        // Both the darkening and the amber replacement must ride the
+        // day/night blend: gated only by the 0.999 cutoff they held full
+        // strength through the whole fade and the glow outlived the day.
+        float dayBlend = 1.0 - u_night;
+        // Darken the pale sky mirror under the train first — replacement
+        // over a bright base only ever reaches khaki.
+        color *= 1.0 - trainField * 0.38 * dayBlend;
+        vec3 amber = vec3(1.02, 0.66, 0.28) * (0.40 + 0.85 * glintFresnel + 0.9 * trainField);
+        color = mix(color, amber, clamp(trainField * 1.5, 0.0, 0.92) * 0.85 * dayBlend);
+        color += lowSun * pow(glintDot, 300.0) * 16.0 * glintFresnel;
+
+        vec3 refracted = normalize(refract(ray, glintNormal, 0.66));
+        float crestGlow = pow(max(0.0, dot(refracted, sunDir)), 16.0);
+        float elevationGate = 1.0 - 1.0 / (1.0 + 5.0 * max(0.0, sunDir.y));
+        color += vec3(0.5, 0.9, 0.8) * crestGlow * lowSun * 30.0 * elevationGate;
+        float relativeHeight = (waterPosition.y + WATER_DEPTH) / WATER_DEPTH;
+        color += vec3(0.01, 0.33, 0.55) * 0.34 * lowSun * (0.3 + relativeHeight) * 0.3 * max(0.0, sunDir.y);
+      }
       // Day fog is pale haze, not deep blue: the old vec3(0.075, 0.245, 0.46)
       // made the FAR water the darkest, most saturated blue in the scene —
       // atmospheric perspective inverted, and a hard graphic band under the
       // shore. Distance should wash toward the sky's horizon haze.
-      vec3 fogColor = mix(vec3(0.21, 0.33, 0.45), vec3(0.03, 0.035, 0.05), u_night);
+      vec3 fogColor = mix(vec3(0.145, 0.215, 0.30), vec3(0.03, 0.035, 0.05), u_night);
+      // Sunrise haze: distance fog on the sun's side of the bay carries the
+      // burst's warmth, so the far water pools gold under the sun instead of
+      // cutting to neutral blue-gray at the fog line.
+      float fogWarmth = exp(-pow((screenUv.x - SUN_SCREEN_X) / 0.20, 2.0)) * (1.0 - u_night);
+      fogColor = mix(fogColor, vec3(0.86, 0.62, 0.38), fogWarmth * 0.58);
       color = mix(color, fogColor, fogAmount);
 
       // Fog at full strength erased every trace of the shore in the water,
@@ -1257,8 +1342,11 @@
       vec3 pathColor = mix(vec3(1.02, 0.70, 0.37), vec3(0.70, 0.68, 0.59), waterProgress);
       // The path strengthens as the sun climbs and pours more light onto
       // the water.
+      // Physical glints own the near and mid train now; the painted path
+      // only carries the far pool where fog has flattened the geometry.
+      float pathZone = mix(0.35, 1.0, smoothstep(0.12, 0.55, fogAmount));
       color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night)
-        * mix(0.23, 0.34, sunProgress());
+        * mix(0.30, 0.42, sunProgress()) * pathZone;
 
       // The moon gets the same treatment on the opposite side of the bay:
       // a narrower silver glade woven through the same broken glint field.
