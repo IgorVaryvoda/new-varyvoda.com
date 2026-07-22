@@ -2,7 +2,7 @@
 title: "Two theories of a programmer"
 date: 2026-07-02
 draft: false
-description: "The old theory says a programmer types the code they thought of. The new theory says a programmer exercises editorial judgment over a fleet that types."
+description: "One theory of a programmer types the code it thought of. The other edits a fleet that types. Makers thrive, typists don't, and the data shows why."
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 ---
 
@@ -110,6 +110,8 @@ The old theory says a programmer is a person who types out the code they thought
 
 This isn't a story about talent. It's a story about what happens when you change your theory of the job, instead of only changing your tooling.
 
+One theory breeds typists. The other breeds makers. The data below decides which one survives.
+
 ## Read the shapes, not the totals
 
 Nearly every engineering chart in the world is a metronome: a steady band of commits per week, team-wide, quarter after quarter. That is the signature of manual work — output is linear in hours, and hours are constant. Charts have looked like that for fifty years, and there is nothing wrong with it except the one thing that shape can never do: bend.
@@ -157,7 +159,15 @@ Sit with that for a second. On an ordinary repository, CI bots sit near the top 
 
 ## What survives
 
-To be fair to the old way: volume isn't value, and ten times the commits can be ten times the entropy. The craft virtues — coherence, taste, knowing *why* — did not become obsolete. They got promoted, from the line level to the system level. The old way got coherence for free, because one mind touched every line. The new way recovers it only by writing the mind down: product soul documents, design contracts, workflow rules. That, incidentally, is why tacit, undocumented seniority does not survive contact with a fleet — and why the people who thrive in the new mode are the ones who could always say what they wanted before they typed it.
+To be fair to the old way: volume isn't value, and ten times the commits can be ten times the entropy. The craft virtues — coherence, taste, knowing *why* — did not become obsolete. They got promoted, from the line level to the system level.
+
+Put names on the two ends of that promotion. The role that is doomed is the ticket translator: take a ticket someone else wrote, translate it into code and hand it back. That translation layer is exactly what a fleet does, faster and without complaint. A job defined as typing out other people's decisions has nothing left to defend.
+
+The role that is thriving is the maker. Taste, so you know what good looks like before it exists. Product vision, so you don't wait to be handed a spec. Enough business sense to know why the thing should exist at all. And the reach to ship end-to-end, from schema to pixel to the announcement post. None of that got automated. All of it got amplified. When typing is nearly free, the person who knows what to type is worth more, not less.
+
+The old way got coherence for free, because one mind touched every line. The new way recovers it only by writing the mind down: product soul documents, design contracts, workflow rules. That, incidentally, is why tacit, undocumented seniority does not survive contact with a fleet — and why the people who thrive in the new mode are the ones who could always say what they wanted before they typed it.
+
+The honest cost is the ladder. The ticket years were the apprenticeship: translating other people's decisions was how a junior grew into an architect. The fleet just automated the apprenticeship, and nobody has a convincing answer yet for where the next generation of makers comes from.
 
 In five years nobody will pretend to be AI-assisted. They'll pretend they always were. And the teams whose charts never bent won't have a tooling gap to close — they'll have a theory to change.
 
