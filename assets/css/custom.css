@@ -458,6 +458,8 @@ img { max-width: 100%; }
 }
 
 .scene-sentence {
+  position: relative;
+  isolation: isolate;
   max-width: 68rem;
   margin: 0;
   padding: 0 2rem;
@@ -470,6 +472,32 @@ img { max-width: 100%; }
   text-align: center;
   text-wrap: balance;
   transform: translateY(-9vh);
+}
+
+/* The light scene can place the second line over the photographed ridge on
+   short or unusually proportioned screens. Keep the sentence as floating
+   ink, but put a soft bank of bay mist behind it so the contrast does not
+   depend on which part of the landscape happens to sit under each word. */
+:root:not([data-theme="dark"]) .scene-sentence {
+  text-shadow:
+    0 0 0.3rem rgba(238, 246, 247, 0.98),
+    0 0 1rem rgba(238, 246, 247, 0.84);
+}
+
+:root:not([data-theme="dark"]) .scene-sentence::before {
+  position: absolute;
+  inset: -1.6rem -3.2rem;
+  z-index: -1;
+  content: "";
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(238, 246, 247, 0.9) 0 66%,
+    rgba(238, 246, 247, 0.72) 80%,
+    rgba(238, 246, 247, 0.34) 91%,
+    transparent 100%
+  );
+  filter: blur(0.4rem);
 }
 
 /* Hover: the link lights up like one of the shoreline lamps — warm gold
