@@ -1,7 +1,6 @@
 (function () {
   var storageKey = "varyvoda-theme";
   var root = document.documentElement;
-  var media = window.matchMedia("(prefers-color-scheme: dark)");
 
   function storedTheme() {
     try {
@@ -41,7 +40,7 @@
     window.dispatchEvent(new CustomEvent("varyvoda:themechange", { detail: { theme: theme } }));
   }
 
-  applyTheme(storedTheme() || (media.matches ? "dark" : "light"));
+  applyTheme(storedTheme() || "dark");
 
   function toggleTheme() {
     var nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
@@ -65,8 +64,4 @@
   } else {
     bindControl();
   }
-
-  media.addEventListener("change", function (event) {
-    if (!storedTheme()) applyTheme(event.matches ? "dark" : "light");
-  });
 })();
