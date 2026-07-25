@@ -1,7 +1,7 @@
 ---
 title: "Sirv AI Studio"
 date: 2026-07-02
-lastmod: 2026-07-10
+lastmod: 2026-07-24
 draft: false
 featured: true
 hero: true
@@ -371,6 +371,55 @@ weight: 1
     grid-template-columns: 1fr;
   }
 }
+.project-description .studio-timeline ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-description .studio-timeline li {
+  display: grid;
+  grid-template-columns: 5.4rem 1fr;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--sv-line);
+}
+
+.project-description .studio-timeline li:first-child {
+  border-top: 0;
+  padding-top: 0.2rem;
+}
+
+.project-description .studio-timeline time {
+  color: var(--sv-cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-top: 0.15rem;
+  white-space: nowrap;
+}
+
+.project-description .studio-timeline b {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--sv-text);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.project-description .studio-timeline span {
+  display: block;
+  color: var(--sv-muted);
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+  .project-description .studio-timeline li {
+    grid-template-columns: 4.4rem 1fr;
+    gap: 0.7rem;
+  }
+}
 </style>
 
 ## It started over a beer
@@ -397,41 +446,28 @@ The next morning I was up at six. `Initial commit from Create Next App` landed a
 
 That pace turned out to be the project's resting heart rate, not a launch spike. Six days in: the workflow orchestrator canvas — the drag-and-drop pipeline builder that's still the center of the product. Twelve days in: durable background jobs on Inngest. Eighteen days: an MCP server, before most people knew what MCP was. Twenty-five days: the embedded Shopify app. December closed at 602 commits, and the repo already had the skeleton of everything Studio is today.
 
-The quietest month of the run — February, spent wiring billing, supplier intake, permissions, and the unglamorous plumbing that turns a demo into a business — still carried 316 of my commits. In the first 220 calendar days there were exactly five blank ones. By the July 10 snapshot the repo had reached 9,452 commits, 6,638 under my primary author identity.
+The quietest month of the run — February, spent wiring billing, supplier intake, permissions, and the unglamorous plumbing that turns a demo into a business — still carried 316 of my commits. In the first 235 calendar days there were exactly five blank ones. By the July 24 snapshot the repo had reached 11,950 commits, 8,317 under my primary author identity.
 
 <figure class="studio-visual studio-cumulative" aria-labelledby="studio-cumulative-title">
   <div class="studio-visual-head">
     <span id="studio-cumulative-title">cumulative commits</span>
-    <strong>Dec 2, 2025 → Jul 2, 2026 · original seven-month snapshot</strong>
+    <strong>Dec 2, 2025 → Jul 24, 2026 · my commits, cumulative</strong>
   </div>
-  <svg viewBox="0 0 920 344" role="img" aria-label="Historical cumulative commit curve showing the first 5,501 commits by Igor Varyvoda through July 2, 2026, with milestones for MVP day, MCP server, Stripe, team joins, supplier portal, and the April migration.">
-    <defs>
-      <linearGradient id="studio-area" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#66d9ef" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#66d9ef" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="70" y1="300.0" x2="894" y2="300.0"/><line x1="70" y1="252.7" x2="894" y2="252.7"/><line x1="70" y1="205.5" x2="894" y2="205.5"/><line x1="70" y1="158.2" x2="894" y2="158.2"/><line x1="70" y1="110.9" x2="894" y2="110.9"/><line x1="70" y1="63.7" x2="894" y2="63.7"/></g>
-    <g fill="#94a6b4" font-size="11.5"><text x="60" y="304.0" text-anchor="end">0</text><text x="60" y="256.7" text-anchor="end">1k</text><text x="60" y="209.5" text-anchor="end">2k</text><text x="60" y="162.2" text-anchor="end">3k</text><text x="60" y="114.9" text-anchor="end">4k</text><text x="60" y="67.7" text-anchor="end">5k</text><text x="70.0" y="330" text-anchor="middle">Dec</text><text x="186.6" y="330" text-anchor="middle">Jan</text><text x="307.1" y="330" text-anchor="middle">Feb</text><text x="415.9" y="330" text-anchor="middle">Mar</text><text x="536.4" y="330" text-anchor="middle">Apr</text><text x="653.0" y="330" text-anchor="middle">May</text><text x="773.5" y="330" text-anchor="middle">Jun</text><text x="890.1" y="330" text-anchor="middle">Jul</text></g>
-    <path d="M 70.0 298.5 L 73.9 297.5 L 77.8 296.1 L 81.7 295.5 L 85.5 294.6 L 89.4 293.6 L 93.3 293.0 L 97.2 291.5 L 101.1 290.9 L 105.0 289.5 L 108.9 288.1 L 112.8 287.6 L 116.6 287.1 L 120.5 286.8 L 124.4 286.4 L 128.3 285.2 L 132.2 283.3 L 136.1 281.6 L 140.0 281.0 L 143.8 280.4 L 147.7 279.9 L 151.6 279.1 L 155.5 278.4 L 159.4 276.6 L 163.3 274.7 L 167.2 274.1 L 171.1 273.4 L 174.9 272.0 L 178.8 271.7 L 182.7 271.5 L 186.6 270.6 L 190.5 269.3 L 194.4 268.5 L 198.3 267.2 L 202.2 266.8 L 206.0 265.9 L 209.9 264.5 L 213.8 263.1 L 217.7 262.4 L 221.6 262.1 L 225.5 261.8 L 229.4 261.7 L 233.2 260.9 L 237.1 259.9 L 241.0 259.2 L 244.9 258.4 L 248.8 257.9 L 252.7 257.9 L 256.6 257.4 L 260.5 254.5 L 264.3 253.7 L 268.2 252.9 L 272.1 252.3 L 276.0 251.6 L 279.9 250.6 L 283.8 249.8 L 287.7 248.9 L 291.5 247.9 L 295.4 247.4 L 299.3 246.9 L 303.2 246.4 L 307.1 245.0 L 311.0 244.4 L 314.9 244.4 L 318.8 244.1 L 322.6 243.8 L 326.5 243.1 L 330.4 242.9 L 334.3 242.8 L 338.2 242.5 L 342.1 242.2 L 346.0 242.0 L 349.8 241.5 L 353.7 241.1 L 357.6 240.8 L 361.5 240.5 L 365.4 240.1 L 369.3 239.7 L 373.2 239.4 L 377.1 238.8 L 380.9 238.4 L 384.8 237.8 L 388.7 237.4 L 392.6 237.3 L 396.5 237.0 L 400.4 235.7 L 404.3 234.2 L 408.2 233.2 L 412.0 231.5 L 415.9 231.1 L 419.8 230.9 L 423.7 230.1 L 427.6 229.6 L 431.5 228.3 L 435.4 226.8 L 439.2 225.7 L 443.1 225.5 L 447.0 224.3 L 450.9 223.7 L 454.8 223.1 L 458.7 222.1 L 462.6 221.4 L 466.5 221.3 L 470.3 221.1 L 474.2 220.9 L 478.1 220.4 L 482.0 219.7 L 485.9 219.4 L 489.8 218.6 L 493.7 217.7 L 497.5 217.3 L 501.4 216.3 L 505.3 214.8 L 509.2 213.9 L 513.1 212.4 L 517.0 211.5 L 520.9 210.3 L 524.8 209.4 L 528.6 208.4 L 532.5 207.7 L 536.4 205.7 L 540.3 202.8 L 544.2 201.9 L 548.1 201.9 L 552.0 201.3 L 555.8 200.6 L 559.7 200.3 L 563.6 198.0 L 567.5 189.4 L 571.4 185.8 L 575.3 181.9 L 579.2 181.0 L 583.1 178.6 L 586.9 175.5 L 590.8 174.3 L 594.7 172.8 L 598.6 170.6 L 602.5 165.1 L 606.4 163.4 L 610.3 161.4 L 614.2 159.8 L 618.0 157.6 L 621.9 155.4 L 625.8 153.6 L 629.7 153.5 L 633.6 153.4 L 637.5 152.3 L 641.4 149.4 L 645.2 146.9 L 649.1 144.5 L 653.0 143.6 L 656.9 139.4 L 660.8 135.8 L 664.7 134.5 L 668.6 133.3 L 672.5 131.6 L 676.3 130.0 L 680.2 126.7 L 684.1 125.6 L 688.0 125.4 L 691.9 124.8 L 695.8 122.0 L 699.7 118.8 L 703.5 116.4 L 707.4 114.4 L 711.3 113.7 L 715.2 113.2 L 719.1 112.2 L 723.0 111.0 L 726.9 110.2 L 730.8 109.5 L 734.6 108.5 L 738.5 108.1 L 742.4 106.3 L 746.3 102.9 L 750.2 101.7 L 754.1 100.8 L 758.0 100.5 L 761.8 100.2 L 765.7 99.6 L 769.6 98.2 L 773.5 95.4 L 777.4 94.7 L 781.3 94.7 L 785.2 94.7 L 789.1 93.6 L 792.9 91.7 L 796.8 91.0 L 800.7 90.2 L 804.6 90.2 L 808.5 90.0 L 812.4 88.4 L 816.3 87.4 L 820.2 85.2 L 824.0 80.0 L 827.9 77.9 L 831.8 76.8 L 835.7 74.6 L 839.6 71.8 L 843.5 68.7 L 847.4 66.5 L 851.2 63.8 L 855.1 60.8 L 859.0 59.1 L 862.9 56.7 L 866.8 53.9 L 870.7 52.8 L 874.6 49.5 L 878.5 48.0 L 882.3 46.7 L 886.2 42.5 L 890.1 40.2 L 894.0 40.0 L 894.0 300 L 70.0 300 Z" fill="url(#studio-area)"/>
-    <path d="M 70.0 298.5 L 73.9 297.5 L 77.8 296.1 L 81.7 295.5 L 85.5 294.6 L 89.4 293.6 L 93.3 293.0 L 97.2 291.5 L 101.1 290.9 L 105.0 289.5 L 108.9 288.1 L 112.8 287.6 L 116.6 287.1 L 120.5 286.8 L 124.4 286.4 L 128.3 285.2 L 132.2 283.3 L 136.1 281.6 L 140.0 281.0 L 143.8 280.4 L 147.7 279.9 L 151.6 279.1 L 155.5 278.4 L 159.4 276.6 L 163.3 274.7 L 167.2 274.1 L 171.1 273.4 L 174.9 272.0 L 178.8 271.7 L 182.7 271.5 L 186.6 270.6 L 190.5 269.3 L 194.4 268.5 L 198.3 267.2 L 202.2 266.8 L 206.0 265.9 L 209.9 264.5 L 213.8 263.1 L 217.7 262.4 L 221.6 262.1 L 225.5 261.8 L 229.4 261.7 L 233.2 260.9 L 237.1 259.9 L 241.0 259.2 L 244.9 258.4 L 248.8 257.9 L 252.7 257.9 L 256.6 257.4 L 260.5 254.5 L 264.3 253.7 L 268.2 252.9 L 272.1 252.3 L 276.0 251.6 L 279.9 250.6 L 283.8 249.8 L 287.7 248.9 L 291.5 247.9 L 295.4 247.4 L 299.3 246.9 L 303.2 246.4 L 307.1 245.0 L 311.0 244.4 L 314.9 244.4 L 318.8 244.1 L 322.6 243.8 L 326.5 243.1 L 330.4 242.9 L 334.3 242.8 L 338.2 242.5 L 342.1 242.2 L 346.0 242.0 L 349.8 241.5 L 353.7 241.1 L 357.6 240.8 L 361.5 240.5 L 365.4 240.1 L 369.3 239.7 L 373.2 239.4 L 377.1 238.8 L 380.9 238.4 L 384.8 237.8 L 388.7 237.4 L 392.6 237.3 L 396.5 237.0 L 400.4 235.7 L 404.3 234.2 L 408.2 233.2 L 412.0 231.5 L 415.9 231.1 L 419.8 230.9 L 423.7 230.1 L 427.6 229.6 L 431.5 228.3 L 435.4 226.8 L 439.2 225.7 L 443.1 225.5 L 447.0 224.3 L 450.9 223.7 L 454.8 223.1 L 458.7 222.1 L 462.6 221.4 L 466.5 221.3 L 470.3 221.1 L 474.2 220.9 L 478.1 220.4 L 482.0 219.7 L 485.9 219.4 L 489.8 218.6 L 493.7 217.7 L 497.5 217.3 L 501.4 216.3 L 505.3 214.8 L 509.2 213.9 L 513.1 212.4 L 517.0 211.5 L 520.9 210.3 L 524.8 209.4 L 528.6 208.4 L 532.5 207.7 L 536.4 205.7 L 540.3 202.8 L 544.2 201.9 L 548.1 201.9 L 552.0 201.3 L 555.8 200.6 L 559.7 200.3 L 563.6 198.0 L 567.5 189.4 L 571.4 185.8 L 575.3 181.9 L 579.2 181.0 L 583.1 178.6 L 586.9 175.5 L 590.8 174.3 L 594.7 172.8 L 598.6 170.6 L 602.5 165.1 L 606.4 163.4 L 610.3 161.4 L 614.2 159.8 L 618.0 157.6 L 621.9 155.4 L 625.8 153.6 L 629.7 153.5 L 633.6 153.4 L 637.5 152.3 L 641.4 149.4 L 645.2 146.9 L 649.1 144.5 L 653.0 143.6 L 656.9 139.4 L 660.8 135.8 L 664.7 134.5 L 668.6 133.3 L 672.5 131.6 L 676.3 130.0 L 680.2 126.7 L 684.1 125.6 L 688.0 125.4 L 691.9 124.8 L 695.8 122.0 L 699.7 118.8 L 703.5 116.4 L 707.4 114.4 L 711.3 113.7 L 715.2 113.2 L 719.1 112.2 L 723.0 111.0 L 726.9 110.2 L 730.8 109.5 L 734.6 108.5 L 738.5 108.1 L 742.4 106.3 L 746.3 102.9 L 750.2 101.7 L 754.1 100.8 L 758.0 100.5 L 761.8 100.2 L 765.7 99.6 L 769.6 98.2 L 773.5 95.4 L 777.4 94.7 L 781.3 94.7 L 785.2 94.7 L 789.1 93.6 L 792.9 91.7 L 796.8 91.0 L 800.7 90.2 L 804.6 90.2 L 808.5 90.0 L 812.4 88.4 L 816.3 87.4 L 820.2 85.2 L 824.0 80.0 L 827.9 77.9 L 831.8 76.8 L 835.7 74.6 L 839.6 71.8 L 843.5 68.7 L 847.4 66.5 L 851.2 63.8 L 855.1 60.8 L 859.0 59.1 L 862.9 56.7 L 866.8 53.9 L 870.7 52.8 L 874.6 49.5 L 878.5 48.0 L 882.3 46.7 L 886.2 42.5 L 890.1 40.2 L 894.0 40.0" fill="none" stroke="#66d9ef" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <g><circle cx="70.0" cy="298.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="140.0" cy="281.0" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="338.2" cy="242.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="404.3" cy="234.2" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="540.3" cy="202.8" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="567.5" cy="189.4" r="5" fill="#0a1018" stroke="#f9c97a" stroke-width="2"/><circle cx="894.0" cy="40.0" r="5.5" fill="#0a1018" stroke="#a6e3a1" stroke-width="2"/></g>
-    <g><line x1="70.0" y1="291.5" x2="70.0" y2="282.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="72.0" y="276.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="start">MVP day</text><line x1="140.0" y1="274.0" x2="140.0" y2="265.0" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="140.0" y="259.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">MCP server</text><line x1="338.2" y1="235.5" x2="338.2" y2="226.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="338.2" y="220.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">Stripe</text><line x1="404.3" y1="241.2" x2="404.3" y2="250.2" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="404.3" y="264.2" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">team joins</text><line x1="540.3" y1="209.8" x2="540.3" y2="218.8" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="540.3" y="232.8" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">supplier portal</text><line x1="567.5" y1="182.4" x2="567.5" y2="173.4" stroke="#f9c97a" stroke-width="1" opacity="0.5"/><text x="557.5" y="163.4" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="end">182-commit day</text><text x="882.0" y="45.0" fill="#a6e3a1" font-size="13" font-weight="800" text-anchor="end">5,500</text></g>
-  </svg>
-  <figcaption>This is the original seven-month curve: my first 5,501 commits through July 2. The <a href="/projects/sirv-studio/build-record/">live build record</a> continues through the July 10 snapshot and breaks the work into 48 dated milestones.</figcaption>
+  <svg viewBox="0 0 920 344" role="img" aria-label="Cumulative commits by Igor Varyvoda from December 2, 2025 through July 24, 2026, reaching 8,317, with milestones for MVP day, the MCP server, the supplier portal, teammates joining, and the April migration."><defs><linearGradient id="studio-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#66d9ef" stop-opacity="0.22"/><stop offset="100%" stop-color="#66d9ef" stop-opacity="0"/></linearGradient></defs><g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="70" y1="300.0" x2="894" y2="300.0"/><line x1="70" y1="238.4" x2="894" y2="238.4"/><line x1="70" y1="176.9" x2="894" y2="176.9"/><line x1="70" y1="115.3" x2="894" y2="115.3"/><line x1="70" y1="53.8" x2="894" y2="53.8"/></g><g fill="#94a6b4" font-size="11.5"><text x="60" y="304.0" text-anchor="end">0</text><text x="60" y="242.4" text-anchor="end">2k</text><text x="60" y="180.9" text-anchor="end">4k</text><text x="60" y="119.3" text-anchor="end">6k</text><text x="60" y="57.8" text-anchor="end">8k</text><text x="70.0" y="330" text-anchor="middle">Dec</text><text x="175.6" y="330" text-anchor="middle">Jan</text><text x="284.8" y="330" text-anchor="middle">Feb</text><text x="383.4" y="330" text-anchor="middle">Mar</text><text x="492.6" y="330" text-anchor="middle">Apr</text><text x="598.2" y="330" text-anchor="middle">May</text><text x="707.4" y="330" text-anchor="middle">Jun</text><text x="813.0" y="330" text-anchor="middle">Jul</text></g><path d="M 70.0 299.0 L 73.5 298.4 L 77.0 297.4 L 80.6 297.1 L 84.1 296.5 L 87.6 295.8 L 91.1 295.4 L 94.6 294.5 L 98.2 294.1 L 101.7 293.1 L 105.2 292.2 L 108.7 291.9 L 112.3 291.6 L 115.8 291.4 L 119.3 291.1 L 122.8 290.3 L 126.3 289.1 L 129.9 288.0 L 133.4 287.6 L 136.9 287.3 L 140.4 286.9 L 143.9 286.4 L 147.5 285.9 L 151.0 284.8 L 154.5 283.5 L 158.0 283.1 L 161.6 282.7 L 165.1 281.8 L 168.6 281.6 L 172.1 281.5 L 175.6 280.9 L 179.2 280.0 L 182.7 279.5 L 186.2 278.6 L 189.7 278.4 L 193.2 277.8 L 196.8 276.9 L 200.3 276.0 L 203.8 275.5 L 207.3 275.3 L 210.9 275.1 L 214.4 275.0 L 217.9 274.5 L 221.4 273.9 L 224.9 273.4 L 228.5 272.9 L 232.0 272.6 L 235.5 272.6 L 239.0 272.3 L 242.5 270.4 L 246.1 269.9 L 249.6 269.3 L 253.1 268.9 L 256.6 268.5 L 260.2 267.8 L 263.7 267.3 L 267.2 266.7 L 270.7 266.1 L 274.2 265.7 L 277.8 265.4 L 281.3 265.1 L 284.8 264.2 L 288.3 263.8 L 291.8 263.8 L 295.4 263.6 L 298.9 263.4 L 302.4 262.9 L 305.9 262.8 L 309.5 262.7 L 313.0 262.5 L 316.5 262.4 L 320.0 262.2 L 323.5 261.9 L 327.1 261.6 L 330.6 261.4 L 334.1 261.2 L 337.6 261.0 L 341.1 260.7 L 344.7 260.5 L 348.2 260.2 L 351.7 259.9 L 355.2 259.5 L 358.8 259.2 L 362.3 259.2 L 365.8 259.0 L 369.3 258.1 L 372.8 257.2 L 376.4 256.5 L 379.9 255.4 L 383.4 255.2 L 386.9 255.0 L 390.4 254.5 L 394.0 254.1 L 397.5 253.3 L 401.0 252.4 L 404.5 251.6 L 408.1 251.5 L 411.6 250.7 L 415.1 250.3 L 418.6 249.9 L 422.1 249.2 L 425.7 248.8 L 429.2 248.8 L 432.7 248.6 L 436.2 248.5 L 439.7 248.1 L 443.3 247.7 L 446.8 247.5 L 450.3 247.0 L 453.8 246.4 L 457.4 246.2 L 460.9 245.5 L 464.4 244.5 L 467.9 243.9 L 471.4 242.9 L 475.0 242.4 L 478.5 241.6 L 482.0 241.0 L 485.5 240.3 L 489.0 239.9 L 492.6 238.6 L 496.1 236.7 L 499.6 236.1 L 503.1 236.1 L 506.6 235.7 L 510.2 235.2 L 513.7 235.1 L 517.2 233.6 L 520.7 228.0 L 524.3 225.6 L 527.8 223.1 L 531.3 222.5 L 534.8 221.0 L 538.3 218.9 L 541.9 218.2 L 545.4 217.1 L 548.9 215.7 L 552.4 212.1 L 555.9 211.0 L 559.5 209.8 L 563.0 208.7 L 566.5 207.3 L 570.0 205.8 L 573.6 204.7 L 577.1 204.6 L 580.6 204.6 L 584.1 203.8 L 587.6 201.9 L 591.2 200.3 L 594.7 198.7 L 598.2 198.1 L 601.7 195.4 L 605.2 193.0 L 608.8 192.2 L 612.3 191.4 L 615.8 190.4 L 619.3 189.3 L 622.9 187.1 L 626.4 186.5 L 629.9 186.3 L 633.4 185.9 L 636.9 184.1 L 640.5 182.0 L 644.0 180.4 L 647.5 179.2 L 651.0 178.7 L 654.5 178.3 L 658.1 177.7 L 661.6 176.9 L 665.1 176.4 L 668.6 176.0 L 672.2 175.3 L 675.7 175.0 L 679.2 173.9 L 682.7 171.6 L 686.2 170.9 L 689.8 170.3 L 693.3 170.1 L 696.8 169.9 L 700.3 169.6 L 703.8 168.6 L 707.4 166.8 L 710.9 166.3 L 714.4 166.3 L 717.9 166.3 L 721.5 165.6 L 725.0 164.4 L 728.5 163.9 L 732.0 163.4 L 735.5 163.4 L 739.1 163.3 L 742.6 162.2 L 746.1 161.6 L 749.6 160.2 L 753.1 156.8 L 756.7 155.4 L 760.2 154.7 L 763.7 153.2 L 767.2 151.4 L 770.8 149.4 L 774.3 148.0 L 777.8 146.2 L 781.3 144.3 L 784.8 143.2 L 788.4 141.6 L 791.9 139.8 L 795.4 139.0 L 798.9 136.9 L 802.4 135.9 L 806.0 135.0 L 809.5 132.3 L 813.0 130.7 L 816.5 124.8 L 820.1 120.5 L 823.6 111.6 L 827.1 102.1 L 830.6 98.7 L 834.1 97.7 L 837.7 96.2 L 841.2 94.4 L 844.7 81.8 L 848.2 78.0 L 851.7 73.4 L 855.3 66.0 L 858.8 61.9 L 862.3 61.1 L 865.8 57.0 L 869.4 55.0 L 872.9 54.6 L 876.4 54.4 L 879.9 53.8 L 883.4 53.4 L 887.0 50.3 L 890.5 44.3 L 894.0 44.0 L 894.0 300 L 70.0 300 Z" fill="url(#studio-area)"/><path d="M 70.0 299.0 L 73.5 298.4 L 77.0 297.4 L 80.6 297.1 L 84.1 296.5 L 87.6 295.8 L 91.1 295.4 L 94.6 294.5 L 98.2 294.1 L 101.7 293.1 L 105.2 292.2 L 108.7 291.9 L 112.3 291.6 L 115.8 291.4 L 119.3 291.1 L 122.8 290.3 L 126.3 289.1 L 129.9 288.0 L 133.4 287.6 L 136.9 287.3 L 140.4 286.9 L 143.9 286.4 L 147.5 285.9 L 151.0 284.8 L 154.5 283.5 L 158.0 283.1 L 161.6 282.7 L 165.1 281.8 L 168.6 281.6 L 172.1 281.5 L 175.6 280.9 L 179.2 280.0 L 182.7 279.5 L 186.2 278.6 L 189.7 278.4 L 193.2 277.8 L 196.8 276.9 L 200.3 276.0 L 203.8 275.5 L 207.3 275.3 L 210.9 275.1 L 214.4 275.0 L 217.9 274.5 L 221.4 273.9 L 224.9 273.4 L 228.5 272.9 L 232.0 272.6 L 235.5 272.6 L 239.0 272.3 L 242.5 270.4 L 246.1 269.9 L 249.6 269.3 L 253.1 268.9 L 256.6 268.5 L 260.2 267.8 L 263.7 267.3 L 267.2 266.7 L 270.7 266.1 L 274.2 265.7 L 277.8 265.4 L 281.3 265.1 L 284.8 264.2 L 288.3 263.8 L 291.8 263.8 L 295.4 263.6 L 298.9 263.4 L 302.4 262.9 L 305.9 262.8 L 309.5 262.7 L 313.0 262.5 L 316.5 262.4 L 320.0 262.2 L 323.5 261.9 L 327.1 261.6 L 330.6 261.4 L 334.1 261.2 L 337.6 261.0 L 341.1 260.7 L 344.7 260.5 L 348.2 260.2 L 351.7 259.9 L 355.2 259.5 L 358.8 259.2 L 362.3 259.2 L 365.8 259.0 L 369.3 258.1 L 372.8 257.2 L 376.4 256.5 L 379.9 255.4 L 383.4 255.2 L 386.9 255.0 L 390.4 254.5 L 394.0 254.1 L 397.5 253.3 L 401.0 252.4 L 404.5 251.6 L 408.1 251.5 L 411.6 250.7 L 415.1 250.3 L 418.6 249.9 L 422.1 249.2 L 425.7 248.8 L 429.2 248.8 L 432.7 248.6 L 436.2 248.5 L 439.7 248.1 L 443.3 247.7 L 446.8 247.5 L 450.3 247.0 L 453.8 246.4 L 457.4 246.2 L 460.9 245.5 L 464.4 244.5 L 467.9 243.9 L 471.4 242.9 L 475.0 242.4 L 478.5 241.6 L 482.0 241.0 L 485.5 240.3 L 489.0 239.9 L 492.6 238.6 L 496.1 236.7 L 499.6 236.1 L 503.1 236.1 L 506.6 235.7 L 510.2 235.2 L 513.7 235.1 L 517.2 233.6 L 520.7 228.0 L 524.3 225.6 L 527.8 223.1 L 531.3 222.5 L 534.8 221.0 L 538.3 218.9 L 541.9 218.2 L 545.4 217.1 L 548.9 215.7 L 552.4 212.1 L 555.9 211.0 L 559.5 209.8 L 563.0 208.7 L 566.5 207.3 L 570.0 205.8 L 573.6 204.7 L 577.1 204.6 L 580.6 204.6 L 584.1 203.8 L 587.6 201.9 L 591.2 200.3 L 594.7 198.7 L 598.2 198.1 L 601.7 195.4 L 605.2 193.0 L 608.8 192.2 L 612.3 191.4 L 615.8 190.4 L 619.3 189.3 L 622.9 187.1 L 626.4 186.5 L 629.9 186.3 L 633.4 185.9 L 636.9 184.1 L 640.5 182.0 L 644.0 180.4 L 647.5 179.2 L 651.0 178.7 L 654.5 178.3 L 658.1 177.7 L 661.6 176.9 L 665.1 176.4 L 668.6 176.0 L 672.2 175.3 L 675.7 175.0 L 679.2 173.9 L 682.7 171.6 L 686.2 170.9 L 689.8 170.3 L 693.3 170.1 L 696.8 169.9 L 700.3 169.6 L 703.8 168.6 L 707.4 166.8 L 710.9 166.3 L 714.4 166.3 L 717.9 166.3 L 721.5 165.6 L 725.0 164.4 L 728.5 163.9 L 732.0 163.4 L 735.5 163.4 L 739.1 163.3 L 742.6 162.2 L 746.1 161.6 L 749.6 160.2 L 753.1 156.8 L 756.7 155.4 L 760.2 154.7 L 763.7 153.2 L 767.2 151.4 L 770.8 149.4 L 774.3 148.0 L 777.8 146.2 L 781.3 144.3 L 784.8 143.2 L 788.4 141.6 L 791.9 139.8 L 795.4 139.0 L 798.9 136.9 L 802.4 135.9 L 806.0 135.0 L 809.5 132.3 L 813.0 130.7 L 816.5 124.8 L 820.1 120.5 L 823.6 111.6 L 827.1 102.1 L 830.6 98.7 L 834.1 97.7 L 837.7 96.2 L 841.2 94.4 L 844.7 81.8 L 848.2 78.0 L 851.7 73.4 L 855.3 66.0 L 858.8 61.9 L 862.3 61.1 L 865.8 57.0 L 869.4 55.0 L 872.9 54.6 L 876.4 54.4 L 879.9 53.8 L 883.4 53.4 L 887.0 50.3 L 890.5 44.3 L 894.0 44.0" fill="none" stroke="#66d9ef" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="70.0" cy="299.0" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="126.3" cy="289.1" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="313.0" cy="262.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="443.3" cy="247.7" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="520.7" cy="228.0" r="5" fill="#0a1018" stroke="#f9c97a" stroke-width="2"/><circle cx="894.0" cy="44.0" r="5.5" fill="#0a1018" stroke="#a6e3a1" stroke-width="2"/></g><g><line x1="70.0" y1="292.0" x2="70.0" y2="283.0" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="78.0" y="277.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="start">MVP day</text><line x1="126.3" y1="282.1" x2="126.3" y2="273.1" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="126.3" y="267.1" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">MCP server</text><line x1="313.0" y1="255.5" x2="313.0" y2="246.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="313.0" y="240.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">supplier portal</text><line x1="443.3" y1="254.7" x2="443.3" y2="263.7" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="443.3" y="275.7" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">team joins</text><line x1="520.7" y1="221.0" x2="520.7" y2="212.0" stroke="#f9c97a" stroke-width="1" opacity="0.5"/><text x="520.7" y="206.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">migration</text><text x="888.0" y="49.0" fill="#a6e3a1" font-size="13" font-weight="800" text-anchor="end">8,317</text></g></svg>
+  <figcaption>Every one of my commits from day one to the July 24 snapshot — 8,317 of them, on a curve that steepens rather than flattens. The <a href="/projects/sirv-studio/build-record/">build record</a> breaks the same run into 48 dated milestones.</figcaption>
 </figure>
 
 <figure class="studio-visual studio-snapshot" aria-labelledby="studio-snapshot-title">
   <div class="studio-visual-head">
     <span id="studio-snapshot-title">repository snapshot</span>
-    <strong>dev @ 20eef964 · Jul 10, 2026</strong>
+    <strong>dev @ 86a69aac · Jul 24, 2026</strong>
   </div>
   <div class="studio-snapshot-grid">
-    <div class="studio-snapshot-card"><strong>9,452</strong><span>commits in the repo</span></div>
-    <div class="studio-snapshot-card"><strong>6,638</strong><span>under my primary author identity</span></div>
-    <div class="studio-snapshot-card"><strong>215 / 220</strong><span>calendar days with a commit</span></div>
-    <div class="studio-snapshot-card"><strong>4,751</strong><span>tracked test and spec files</span></div>
-    <div class="studio-snapshot-card"><strong>263</strong><span>Drizzle migrations</span></div>
+    <div class="studio-snapshot-card"><strong>11,950</strong><span>commits in the repo</span></div>
+    <div class="studio-snapshot-card"><strong>8,317</strong><span>under my primary author identity</span></div>
+    <div class="studio-snapshot-card"><strong>230 / 235</strong><span>calendar days with a commit</span></div>
+    <div class="studio-snapshot-card"><strong>5,244</strong><span>tracked test and spec files</span></div>
+    <div class="studio-snapshot-card"><strong>286</strong><span>Drizzle migrations</span></div>
     <div class="studio-snapshot-card"><strong>47</strong><span>tools in the MCP server</span></div>
   </div>
   <figcaption>A moving snapshot, not decorative numerology. The build record includes the exact command behind each count.</figcaption>
@@ -439,12 +475,38 @@ The quietest month of the run — February, spent wiring billing, supplier intak
 
 I built Studio from `create-next-app` on a December morning to the production platform it is today: the AI tool layer, workflow orchestrator, supplier portal, Shopify publishing pipeline, MCP and API platform, and the reliability machinery underneath. Along the way [Max Wish](https://www.linkedin.com/in/max-wish/) and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) took ownership of critical parts: the design system and data grid, and the QA proof machine. This page is the product story. The separate [build record](/projects/sirv-studio/build-record/) carries the forensic version, with 48 dated milestones and every large number tied to a counting rule.
 
+<figure class="studio-visual studio-timeline" aria-labelledby="studio-timeline-title">
+  <div class="studio-visual-head">
+    <span id="studio-timeline-title">what shipped, in order</span>
+    <strong>Dec 2, 2025 → Jul 2026 · condensed from 48 milestones</strong>
+  </div>
+  <ol>
+    <li><time>Dec 2</time><div><b>A product before lunch</b><span>Image tools, auth, billing, rate limits, Sirv storage, batch mode, and compare mode all land on day one.</span></div></li>
+    <li><time>Dec 18</time><div><b>Durable jobs and the first MCP server</b><span>Long runs leave the request cycle for Inngest and stream progress; agents get a real tool surface before most people knew what MCP was.</span></div></li>
+    <li><time>Dec 27</time><div><b>Five entry surfaces in four days</b><span>Shopify, Zapier, n8n, MCP OAuth, and the OpenAI Apps SDK — the platform can be driven from a store, an automation, or an agent.</span></div></li>
+    <li><time>Jan 20</time><div><b>The asset library lands in a day</b><span>Assets, tags, filters, R2 storage, product links, and operation history — the DAM underneath the AI tools.</span></div></li>
+    <li><time>Jan 26</time><div><b>Multi-org, roles, and share links</b><span>Nested collections, role-based access, and subfolder share navigation turn the library into a team product.</span></div></li>
+    <li><time>Feb 3</time><div><b>The first supplier portal</b><span>Scoped upload links, an approval queue, and before-and-after autofix review — intake becomes a pipeline, not an inbox.</span></div></li>
+    <li><time>Feb 16</time><div><b>SFTP, SAP, catalog import, live Shopify sync</b><span>Supplier delivery and product edits flow in through retry-safe GraphQL handling.</span></div></li>
+    <li><time>Mar 7</time><div><b>A real supplier spec, proven end to end</b><span>The Alkosto pipeline drives reusable validation, product assignment, autofix, review, and delivery.</span></div></li>
+    <li><time>Mar 19</time><div><b>Imports and side-effects go durable</b><span>Cancellable background jobs and an event outbox, so a retry can't casually duplicate work.</span></div></li>
+    <li><time>Apr 9</time><div><b>Next.js replaced in 72 hours, live</b><span>A route-by-route migration to TanStack Start on a billing, multi-tenant, job-running app — with users on it.</span></div></li>
+    <li><time>Apr 28</time><div><b>Workflows gain real triggers</b><span>Uploads, schedules, product changes, and authenticated webhooks start runs, with dry-runs and attempt history.</span></div></li>
+    <li><time>May 15</time><div><b>The product-content graph gets a constitution</b><span>One canonical path from org to source, product, variant, assignment, asset, publish projection, and readiness.</span></div></li>
+    <li><time>May 22</time><div><b>Workflows learn DAM and PIM operations</b><span>The orchestrator reads from and writes into the content system through a typed Effect-based operation kernel.</span></div></li>
+    <li><time>Jun 11</time><div><b>Risk-tiered quality gates</b><span>Edit, session, and ship gates keep feedback fast; an analytics command centre and a tool-owned coverage matrix ship.</span></div></li>
+    <li><time>Jun 26</time><div><b>The catalog-health loop becomes executable</b><span>A detected product gap connects to a controlled action: AI fix, supplier request, Shopify sync, or channel export.</span></div></li>
+    <li><time>Jul 4</time><div><b>The product points at activation</b><span>Catalog health leads the dashboard; named workflow recipes and drift-aware publish confirmation run on product selections.</span></div></li>
+  </ol>
+  <figcaption>Sixteen of the 48 milestones on the <a href="/projects/sirv-studio/build-record/">build record</a>, which dates each one to its commits. Tools became workflows, workflows grew a DAM and PIM, and supplier intake became governed publishing.</figcaption>
+</figure>
+
 ## What it does
 
 The product is organized around one loop: **ingest → fix → validate → review → publish → track**.
 
 - **30+ AI tools** for product content — background removal and replacement, upscaling, lifestyle-shot generation, ghost mannequin, virtual try-on (image and video), alt text, product descriptions, image translation, image-to-3D, video generation — backed by 57 registered models routed through fal.ai, OpenAI, and OpenRouter.
-- **A visual workflow orchestrator**: a drag-and-drop DAG builder with 39 registered step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
+- **A visual workflow orchestrator**: a drag-and-drop DAG builder with 40 registered step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
 - **A supplier portal**: brands give their suppliers an upload link or SFTP drop. Incoming files are validated against filename/SKU/spec rules, run through AI autofix, and routed into an approval queue — so supplier content goes through review instead of straight into the catalog.
 - **Marketplace compliance built in**: an image-review tool validates against Amazon, eBay, Walmart, and Shopify listing rules — dimensions, backgrounds, watermarks, frame fill — and one-click autofix repairs what fails.
 - **Asset and product management** (DAM + PIM) underneath it all — with search-by-image, duplicate detection, auto-tagging, and license tracking that can gate a publish — plus Stripe billing on top and integrations out the sides: Shopify, Zapier, n8n, a REST API, and MCP for AI agents.
@@ -469,7 +531,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
     </div>
     <div class="studio-toolwall-cat">
       <b class="is-violet">automate &amp; govern</b>
-      <span>batch · every tool, catalog-scale</span><span>orchestrator · 39 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
+      <span>batch · every tool, catalog-scale</span><span>orchestrator · 40 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
     </div>
     <div class="studio-toolwall-cat studio-toolwall-wide">
       <b>asset intelligence</b>
@@ -484,7 +546,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM, with 263 committed migrations in the July 10 snapshot. Background work runs on Inngest across sync, publishing, billing, imports, repair jobs, and workflow execution, self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 4,751 tracked test and spec files across unit, integration, contract, Storybook, and browser layers. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity, is about $70 a month.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM, with 286 committed migrations in the July 24 snapshot. Background work runs on Inngest across sync, publishing, billing, imports, repair jobs, and workflow execution, self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 5,244 tracked test and spec files across unit, integration, contract, Storybook, and browser layers. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity, is about $70 a month.
 
 <figure class="studio-visual studio-architecture" aria-labelledby="studio-architecture-title">
   <div class="studio-visual-head">
@@ -525,6 +587,43 @@ Studio ships a production MCP server (published on npm, stdio and hosted HTTP tr
 
 The design position: agents don't need raw endpoints, they need *operations inside a governed system*. So the agent surface gets the same context, permissions, approvals, budgets, and rollback as the UI. Auth is OAuth 2.0 with PKCE or API keys; every credit-spending or mutating tool re-authorizes server-side and fails closed if the workspace lacks entitlement; org scoping is validated against membership on every call; tools carry MCP safety annotations (read-only, destructive, idempotent) so agent runtimes can reason about blast radius. An agent can run a batch fix or execute a workflow — but it can't skip the review gate a human would hit.
 
+## The commits are the boring number
+
+Twelve thousand commits is the number people notice, and it's the least interesting one on this page. A commit is motion. The number that says something about software that writes to live stores and moves real money is the count of problems it was built to survive — and those are on the record too. For the last stretch of the project they're written down as plans: more than 900 of them now, nearly every one opening with a *Why this matters* paragraph that names the exact failure mode before a line changes, 261 tagged `bug`, ranked P0–P3 like any real backlog. Most are closed; a handful are still moving through the fleet — the plan is the paper trail either way. And the plans only reach back about a month: the first six months of hard problems live where they happened, in the git log and the changelog. A sampler from both, all real, each a trap a naive version walks straight into.
+
+**Money, where the tolerance is zero.**
+
+- **A two-phase charge that deducted nothing.** Tool jobs bill in two steps — reserve, then top up once the real cost is known — but both used an idempotency key derived from the job id alone, so the credit layer read the top-up as a replay and debited zero. The reconciliation you'd trust to catch it was blind: the wallet and the ledger agreed with each other, at the wrong number.
+- **A ledger you couldn't rebuild a balance from.** The credit `transactions` table had no sign discipline — the same type written positive, negative, and zero, `REFUND` mapping to both — so `balance = sum(ledger)` was simply impossible, and a disputed balance couldn't be reconstructed. The fix is a canonical signed journal that reconciles by construction, shadow-run for a full billing cycle before cutover.
+- **A free extra month on every upgrade.** Paying a mid-cycle proration invoice fired a Stripe `invoice.paid` webhook that fell through to the renewal path and granted a whole month of credits — and the invoice's brand-new id slipped straight past an idempotency key scoped to the invoice id. Full refills now fire only on true renewals.
+
+**Writing into a store you don't own.**
+
+- **Day 25, before there were users to lose.** The embedded Shopify app shipped its security with the MVP: HMAC-verified OAuth callbacks, an AES-256-GCM-encrypted state cookie, and mandatory session-token verification on the `x-shopify-shop` header, so nobody can pass someone else's store and act on it. (`fix: Shopify integration security hardening`, Dec 27, 2025.)
+- **Out-of-order webhooks that resurrected the dead.** Per-event idempotency dedupes a redelivered event; it does nothing to order two different ones. An older `products/update` arriving after a `products/delete` re-created assets for a product the merchant had deleted. Fixed with per-product keys, staleness checks, and a delete tombstone.
+- **A batch push that reported failure as success.** A partial failure fired the success path anyway — last toast wins — erasing the failed items, and a naive retry duplicated catalog images because Shopify's media API has no idempotency key. Every item now resolves to pushed, failed-and-retryable, pushed-with-warning, or indeterminate-don't-retry.
+
+**The failures that raise no error.**
+
+- **A dead-letter that reported success.** An outbox event that exhausted its ten retries returned a success value to the queue and alerted no one; a customer whose endpoint was down for a day lost every delivery, permanently and silently. The absence of an error was the bug.
+- **The 1,000-step wall.** Inngest caps a run at 1,000 durable steps. The natural one-step-per-item batch design worked in dev, then hit the ceiling on the 100k-item production jobs — so the fan-out was restructured to two steps per 100-item chunk (`42k / 100 = 420 chunks × 2 = 840 steps`, under the cap). (`fix: reduce Inngest step count to stay under 1000 limit`, Dec 25, 2025.)
+- **Uploads billed forever, invisible to quota.** A direct-to-R2 upload that was never confirmed left an object nobody tracked — unbounded storage billed to the org, absent from quota — and the obvious fix, a bucket expiry rule, would have deleted live assets sharing the same key prefix. Solved with app-level bookkeeping instead.
+
+**Tenant walls and agent blast radius.**
+
+- **A cross-tenant store hijack no single change caused.** Two individually-correct changes composed into it: one turned a fail-closed email collision into a fail-open reuse, the other left a synthetic store address registerable through public signup — so an attacker could pre-register it and have a real merchant's store bind into the attacker's org. Only adversarial review of the *composition* caught it.
+- **A bulk delete that destroyed first, checked ownership second.** The destructive R2 delete ran against the asset ids the client posted — filtered by permission, never by org — before the org-scoped database delete ran. A user in one org could irrecoverably wipe another org's version history.
+- **An `idempotentHint` that lied to agents.** Several credit-charging tools were annotated `idempotentHint: true`, telling an auto-retrying MCP client that repeating the call was free — so a transport timeout re-charged the customer and minted duplicate outputs, amplified across up to 100 images in the batch variants.
+- **The account-linking default that hands over accounts.** `allowDangerousEmailAccountLinking` silently merges an OAuth login into any existing account with the same email — instant takeover if an attacker controls an unverified provider. Disabled in the first security pass, alongside an IDOR fix scoping payment queries by `user_id`. (`Fix 8 security vulnerabilities`, Dec 18, 2025.)
+
+**Guardrails that caught what a review wouldn't.**
+
+- **Isolation tests that proved nothing.** The tests asserting cross-tenant isolation stubbed `db.execute`, so the org `WHERE` clauses that actually enforce it had never once run in CI. Rewritten to execute the real SQL against two seeded orgs, including the case where org A asks for org B's asset and must get nothing back.
+- **The money gate with zero real coverage.** The out-of-credits check — the workspace's entire payment boundary — was "tested" against a hardcoded rich user, so the branch that blocks a paid run never executed. A regression letting a zero-credit user fire a paid job would have shipped green.
+- **A type guard that never ran.** A `satisfies AppSession` annotation meant to keep every Storybook story honest sat in a directory outside the typechecked project, so it never fired — and every story had quietly been rendering a "connected" user as disconnected.
+
+None of this is the exotic part. It's the ordinary tax of software that touches money, live stores, and other people's data — the work that doesn't screenshot. It's also the honest answer to whether the throughput is real or just slop: the git log measures how much got written, and this measures what it had to get right.
+
 ## April, or: changing the wings mid-flight
 
 By spring, Studio had outgrown its framework. The answer wasn't a rewrite branch that ships "next quarter" — it was a live migration of a production app, with users on it.
@@ -554,9 +653,7 @@ A two-day framework migration isn't a typing achievement. It's what happens when
 
 ## How three people and a fleet ship this fast
 
-At the July 10 snapshot, the primary identities of the core three account for **9,308 commits**: 6,638 mine, 1,943 from Veniamin, and 727 from Max. Another 144 belong to additional contributors, bots, and alternate identities. Raw commit volume is not value, and agent-heavy histories make the number especially noisy. What matters is the shape: output accelerated as the production system around the agents matured.
-
-Commit volume is not value. But output with that shape needs explaining, and the explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** And the fleet has real infrastructure, not vibes:
+At the July 24 snapshot, the core three account for **11,792 commits**: 8,317 mine, 2,748 from Veniamin, 727 from Max, and 158 more from other contributors, bots, and alternate identities. Raw commit volume isn't value — agent-heavy histories make it especially noisy — but the *shape* is worth explaining: output accelerated as the system around the agents matured. The explanation is the method: **I run a fleet of AI coding agents the way a lead runs a team.** And the fleet has real infrastructure, not vibes:
 
 - **VibeQueue** — a task queue I built as a standalone product, with Veniamin adding its QA lanes — is the fleet's control plane. Agents claim work from it over MCP, check for duplicate tasks before opening new ones, and maintain todo checklists inside each task, the way an engineer works a ticket.
 - **The clanker army** turns a reviewed plan into isolated worker worktrees, runs them in supervised batches, and converges the results — with a terminal dashboard, a supervisor for detached workers, and an autopilot that keeps pulling eligible tasks off the queue.
@@ -576,11 +673,15 @@ The evidence it's a system and not a slogan is in other people's curves. When Ve
 
 ## The correction
 
-The repository's own July assessment opens with a line I agree with: **construction has outrun proof**.
+Every number on this page measures supply. Commits, step types, MCP tools, migrations, test files, problems solved — all of it counts what got built. The closest thing to a demand number anywhere here is one clause in the audit below: the supplier portal is live with a real enterprise customer. That is the entire demand side of a twelve-thousand-commit page, and you probably noticed before I said it.
 
-Studio has an unusually complete product-content loop, but too much breadth was still rollout-gated and too little was backed by named merchants using the loop every week. The same machine that made code cheap also made adding one more surface almost irresistible. Every new tool, channel, and workflow step then carried a tax in support, documentation, billing, and browser proof.
+The repo's own July assessment puts it in four words: **construction has outrun proof**.
 
-So the Q3 rule is a surface freeze. No casual new tools, channels, or step types. The fleet is pointed at activation, enforceable plan boundaries, onboarding, App Store quality, rollback proof, and getting real merchants from catalog scan to first approved Shopify publish. The build velocity is still the advantage. The target changed from more surface to more evidence.
+The mechanism is worth writing down because it isn't really about me. When implementation gets cheap, the bottleneck moves — and it doesn't move somewhere convenient. Every surface here was nearly free to build and is permanently expensive to own: each one owes documentation, support answers, billing edges, browser proof, and a migration every time the schema shifts underneath it. That bill comes due in a currency the fleet doesn't print. Agents write code. They don't generate demand, and they will never tell you what to stop building.
+
+So Q3 is a surface freeze — no new tools, channels, or step types without an explicit decision — and the same fleet is aimed at the unglamorous half: activation, onboarding, rollback proof, and walking real merchants from catalog scan to a first approved publish.
+
+The velocity was never the hard part. Aiming it is.
 
 ## So is it any good?
 
@@ -729,14 +830,14 @@ Studio also carries the less glamorous machinery a production platform needs: ex
     svg.appendChild(hit);
     var tip = makeTip(fig);
     var start = new Date(2025, 11, 2).getTime();
-    var totalDays = 212;
+    var totalDays = 234;
     hit.addEventListener("pointermove", function (ev) {
       var r = svg.getBoundingClientRect();
       var sx = (ev.clientX - r.left) * (920 / r.width);
       var idx = Math.round((sx - 70) / (824 / (N - 1)));
       idx = Math.max(0, Math.min(N - 1, idx));
       var p = pts[idx];
-      var commits = idx === N - 1 ? 5501 : Math.round((300 - p[1]) * 5000 / 236.3);
+      var commits = idx === N - 1 ? 8317 : Math.round((300 - p[1]) * 8317 / 256);
       var day = new Date(start + Math.round(idx * totalDays / (N - 1)) * 86400000);
       vline.setAttribute("x1", p[0]);
       vline.setAttribute("x2", p[0]);

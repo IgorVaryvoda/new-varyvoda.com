@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 <title>The build record of Sirv AI Studio — Igor Varyvoda</title>
-<meta name="description" content="From an empty repo at 06:35 to a production e-commerce platform: 220 days of commits, milestones, architecture, tests, migrations, and the operating system behind Sirv AI Studio.">
+<meta name="description" content="From an empty repo at 06:35 to a production e-commerce platform: 235 days of commits, milestones, architecture, tests, migrations, and the operating system behind Sirv AI Studio.">
 <link rel="canonical" href="https://www.varyvoda.com/projects/sirv-studio/build-record/">
 <meta property="og:title" content="At 06:35 there was an empty repo. By lunch there was a product.">
 <meta property="og:description" content="The forensic build record of Sirv AI Studio, based on the current dev branch and checked-in architecture.">
@@ -127,8 +127,8 @@
   .month-bars { margin-top: 34px; border-top: 1px solid var(--line-strong); }
   .month { display: grid; grid-template-columns: 68px minmax(0, 1fr) 82px; gap: 14px; align-items: center; padding: 13px 0; border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 11px; }
   .bar-track { display: flex; height: 21px; background: #e1e9e7; }
-  .bar-mine { width: calc(var(--mine) / 2278 * 100%); background: var(--violet); }
-  .bar-others { width: calc(var(--others) / 2278 * 100%); background: var(--cyan); }
+  .bar-mine { width: calc(var(--mine) / 4519 * 100%); background: var(--violet); }
+  .bar-others { width: calc(var(--others) / 4519 * 100%); background: var(--cyan); }
   .month .total { text-align: right; color: var(--ink-2); }
   .chart-key { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-family: var(--mono); font-size: 10px; color: var(--ink-2); }
   .chart-key span::before { content: ""; display: inline-block; width: 9px; height: 9px; margin-right: 6px; background: var(--violet); }
@@ -247,7 +247,7 @@
   }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"The build record of Sirv AI Studio","author":{"@type":"Person","name":"Igor Varyvoda","url":"https://www.varyvoda.com"},"datePublished":"2026-07-02","dateModified":"2026-07-10","mainEntityOfPage":"https://www.varyvoda.com/projects/sirv-studio/build-record/","image":"https://www.varyvoda.com/images/studio/sirv-studio-og.png"}
+{"@context":"https://schema.org","@type":"Article","headline":"The build record of Sirv AI Studio","author":{"@type":"Person","name":"Igor Varyvoda","url":"https://www.varyvoda.com"},"datePublished":"2026-07-02","dateModified":"2026-07-24","mainEntityOfPage":"https://www.varyvoda.com/projects/sirv-studio/build-record/","image":"https://www.varyvoda.com/images/studio/sirv-studio-og.png"}
 </script>
 </head>
 <body>
@@ -255,7 +255,7 @@
 
 <header class="shell topbar">
   <span><a href="https://www.varyvoda.com">varyvoda.com</a> / <a href="/projects/">projects</a> / <a href="/projects/sirv-studio/">sirv studio</a> / build record</span>
-  <span>dev @ 20eef964 &middot; snapshot 10 Jul 2026</span>
+  <span>dev @ 86a69aac &middot; snapshot 24 Jul 2026</span>
 </header>
 
 <main id="main">
@@ -272,20 +272,20 @@
 
     <div class="pulse-wrap">
       <div class="pulse-head">
-        <span>220 calendar days &middot; every vertical mark is one day</span>
+        <span>235 calendar days &middot; every vertical mark is one day</span>
         <span>height = my commits &middot; square-root scale &middot; no smoothing</span>
       </div>
       <div class="pulse-scroll">
-        <div id="pulse" class="pulse" role="img" aria-label="Daily commit pulse from December 2, 2025 to July 9, 2026. There were commits on 215 of 220 days, with the highest day at 287 commits."></div>
+        <div id="pulse" class="pulse" role="img" aria-label="Daily commit pulse from December 2, 2025 to July 24, 2026. There were commits on 230 of 235 days, with the highest day at 410 commits."></div>
       </div>
     </div>
 
     <div class="snapshot" aria-label="Repository snapshot metrics">
-      <div class="stat"><strong>9,452</strong><span>commits on dev</span></div>
-      <div class="stat"><strong>6,638</strong><span>under my primary author identity</span></div>
-      <div class="stat"><strong>215 / 220</strong><span>active calendar days</span></div>
-      <div class="stat"><strong>4,751</strong><span>tracked test and spec files</span></div>
-      <div class="stat"><strong>263</strong><span>Drizzle migrations</span></div>
+      <div class="stat"><strong>11,950</strong><span>commits on dev</span></div>
+      <div class="stat"><strong>8,317</strong><span>under my primary author identity</span></div>
+      <div class="stat"><strong>230 / 235</strong><span>active calendar days</span></div>
+      <div class="stat"><strong>5,244</strong><span>tracked test and spec files</span></div>
+      <div class="stat"><strong>286</strong><span>Drizzle migrations</span></div>
       <div class="stat"><strong>47</strong><span>tools in the MCP server</span></div>
     </div>
   </div>
@@ -328,16 +328,16 @@
       </section>
 
       <section id="velocity">
-        <div class="section-mark"><b>01</b><span>2 December 2025 → 9 July 2026</span></div>
+        <div class="section-mark"><b>01</b><span>2 December 2025 → 24 July 2026</span></div>
         <h2>The launch spike never ended.</h2>
         <div class="prose">
-          <p class="lede">There were five blank days in the first 220. February was the quiet month. It still carried 316 of my commits, mostly billing, entitlements, and the plumbing that turns a demo into a business.</p>
-          <p>The shape changes in March when other engineers enter the history. April contains the live framework migration. June and July show the QA and agent machinery at full speed. July is partial below, the first nine full days plus the snapshot commit just after midnight on the 10th, and it already exceeds every complete month except April.</p>
+          <p class="lede">There were five blank days in the first 235. February was the quiet month. It still carried 316 of my commits, mostly billing, entitlements, and the plumbing that turns a demo into a business.</p>
+          <p>The shape changes in March when other engineers enter the history. April contains the live framework migration. June and July show the QA and agent machinery at full speed. July is still partial below, cut off at the 24th, and it is already the largest month of the entire project.</p>
         </div>
 
         <div class="heat-panel">
           <div class="heat-meta"><span>daily activity / primary Igor author identity</span><span>hover a cell for exact count</span></div>
-          <div class="heat-scroll"><div id="heatmap" class="heatmap" role="img" aria-label="Calendar heatmap of Igor Varyvoda's commits from December 2, 2025 through July 9, 2026."></div></div>
+          <div class="heat-scroll"><div id="heatmap" class="heatmap" role="img" aria-label="Calendar heatmap of Igor Varyvoda's commits from December 2, 2025 through July 24, 2026."></div></div>
           <div class="heat-legend">
             <span>fewer</span><span class="cell" style="background:#dfe7e5"></span><span class="cell" style="background:#b9deda"></span><span class="cell" style="background:#68bdb8"></span><span class="cell" style="background:#087f87"></span><span class="cell" style="background:#5b43e6"></span><span class="cell" style="background:#e4542e"></span><span>more</span>
           </div>
@@ -351,14 +351,14 @@
           <div class="month" style="--mine:1337;--others:255"><span>Apr</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">1,592</span></div>
           <div class="month" style="--mine:979;--others:436"><span>May</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">1,415</span></div>
           <div class="month" style="--mine:1180;--others:1098"><span>Jun</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">2,278</span></div>
-          <div class="month" style="--mine:1189;--others:832"><span>Jul*</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">2,021</span></div>
+          <div class="month" style="--mine:2868;--others:1651"><span>Jul*</span><div class="bar-track"><i class="bar-mine"></i><i class="bar-others"></i></div><span class="total">4,519</span></div>
         </div>
-        <div class="chart-key"><span>my commits</span><span>other authors</span><span>* through the 00:33 snapshot on 10 July</span></div>
+        <div class="chart-key"><span>my commits</span><span>other authors</span><span>* through the 24 July snapshot</span></div>
       </section>
 
       <section id="milestones">
         <div class="section-mark"><b>02</b><span>The full build chronology</span></div>
-        <h2>This is what 220 days bought.</h2>
+        <h2>This is what 235 days bought.</h2>
         <p class="lede">The old page reduced the whole run to seven numbers. That missed the story. Below is the actual sequence: tools become workflows, workflows become a DAM and PIM, supplier intake becomes governed publishing, and the repo develops its own production line.</p>
 
         <div class="milestones">
@@ -433,13 +433,14 @@
           </div>
 
           <div class="month-chapter">
-            <div class="month-head"><span class="index">07</span><div><h3>July 2026</h3><p>Nine full days. The largest wave, then a deliberate correction.</p></div><span class="count">2,021 repo commits<br>1,189 mine<br>snapshot 10 Jul</span></div>
+            <div class="month-head"><span class="index">07</span><div><h3>July 2026</h3><p>The largest wave of the whole project, then a deliberate surface freeze.</p></div><span class="count">4,519 repo commits<br>2,868 mine<br>snapshot 24 Jul</span></div>
             <div class="milestone"><time>01–02 Jul</time><div><h3>Every major AI tool moves into one studio</h3><p>Background removal, upscale, generation, translation, product copy, video, fashion, and depth tools share one workspace with library search, attach targets, chaining, model-aware progress, and reduced-motion processing scenes.</p></div><code>6500481<br>ac3d1cd</code></div>
             <div class="milestone"><time>02 Jul</time><div><h3>New tools and a supplier expansion wave</h3><p>Image expand, relight, video upscale, generative fill, Fashn try-on, Kling, Seedance, and SVG vectorise arrive. Supplier search, live status, custom rejection reasons, quotas, onboarding email, and locked-plan states land beside them.</p></div><code>4057353<br>8873cd0</code></div>
             <div class="milestone"><time>02–03 Jul</time><div><h3>The QA Manager and transaction guard</h3><p>A supervised QA manager gets pause, snooze, breaker, cost, and heartbeat controls. A runtime guard now fails immediately if code tries to use the global database pool from inside a transaction, replacing two-minute deadlocks with a useful error.</p></div><code>4fbf953<br>af60353</code></div>
             <div class="milestone"><time>04 Jul</time><div><h3>The product points at activation</h3><p>Catalog health leads the dashboard. Named workflow recipes run on product selections. Drift-aware publish confirmation shows per-product results. The entire save, attach, approve, and publish loop gets analytics and consent-aware measurement.</p></div><code>a8cd589<br>9ab22a8</code></div>
             <div class="milestone"><time>05–06 Jul</time><div><h3>First-run experience replaces empty machinery</h3><p>Sample assets, an activation checklist, honest channel states, capability-led admin, privacy controls, quota email, and a catalog-health homepage give a new user a path instead of a wall of features.</p></div><code>01bd13a<br>0cb349d</code></div>
             <div class="milestone"><time>07–09 Jul</time><div><h3>Proof, rollback, and scope control</h3><p>Readiness gets a mobile first-run experience. Shopify rollback receives a full design spike. Retention jobs handle high-volume tables. The homepage tightens to the product wedge, and clanker convergence now quarantines workers that exceed their assigned scope.</p></div><code>9638f45<br>5ef05cd<br>e1d4d80</code></div>
+            <div class="milestone"><time>10–24 Jul</time><div><h3>The freeze turns to proof and activation</h3><p>No new tools. The fleet points at a coverage-expansion ledger with per-domain rollups, an activation-first overview with catalog health, recommended workflows and gap-cohort deep links, a Shopify-first homepage, and Sirv media embeds — evidence and onboarding instead of more surface.</p></div><code>afd5b02<br>bd1624e</code></div>
           </div>
         </div>
       </section>
@@ -454,11 +455,11 @@
         <div class="loop" aria-label="Sirv AI Studio product-content loop"><span>ingest</span><span>fix</span><span>attach</span><span>validate</span><span>review</span><span>publish</span><span>track</span></div>
 
         <div class="systems">
-          <div class="system"><span class="big">39</span><h3>workflow step types</h3><p>Image work, product operations, branching, human review, storage, and Shopify delivery in a typed graph.</p><span class="source">source: STEP_REGISTRY</span></div>
+          <div class="system"><span class="big">40</span><h3>workflow step types</h3><p>Image work, product operations, branching, human review, storage, and Shopify delivery in a typed graph.</p><span class="source">source: STEP_REGISTRY</span></div>
           <div class="system"><span class="big">47</span><h3>MCP tools</h3><p>AI agents can search assets, manage products, run workflows, sync Shopify, and use supplier operations without bypassing entitlements.</p><span class="source">source: mcp-server/README.md + registrations</span></div>
           <div class="system"><span class="big">64</span><h3>OpenAPI operations</h3><p>A published, ratcheted API surface. Every route is either documented or deliberately excluded with an owner and a reason.</p><span class="source">source: public/openapi.json operationId count</span></div>
-          <div class="system"><span class="big">263</span><h3>database migrations</h3><p>Products, variants, product-asset links, approvals, event intent, billing, jobs, integrations, and the history needed to recover from mistakes.</p><span class="source">source: drizzle/**/migration.sql</span></div>
-          <div class="system"><span class="big">4,751</span><h3>test and spec files</h3><p>Unit, integration, contract, edge-case, Storybook, and browser coverage. The number is large because the operating method depends on cheap regression detection.</p><span class="source">source: tracked *.test.* + *.spec.* files</span></div>
+          <div class="system"><span class="big">286</span><h3>database migrations</h3><p>Products, variants, product-asset links, approvals, event intent, billing, jobs, integrations, and the history needed to recover from mistakes.</p><span class="source">source: drizzle/**/migration.sql</span></div>
+          <div class="system"><span class="big">5,244</span><h3>test and spec files</h3><p>Unit, integration, contract, edge-case, Storybook, and browser coverage. The number is large because the operating method depends on cheap regression detection.</p><span class="source">source: tracked *.test.* + *.spec.* files</span></div>
           <div class="system"><span class="big">$70</span><h3>approximate monthly infrastructure</h3><p>Vercel, a self-hosted Inngest stack, PostgreSQL HA, Redis, and observability at the current capacity. Model usage is separate.</p><span class="source">source: current project operating estimate</span></div>
         </div>
       </section>
@@ -480,11 +481,11 @@
         </div>
 
         <div class="credit-grid" aria-label="Primary repository authors">
-          <div class="credit"><strong>6,638</strong><b>Igor Varyvoda</b><span>architecture, product, agent fleet</span></div>
-          <div class="credit"><strong>1,943</strong><b>Veniamin Krachun</b><span>QA harness and proof machine</span></div>
+          <div class="credit"><strong>8,317</strong><b>Igor Varyvoda</b><span>architecture, product, agent fleet</span></div>
+          <div class="credit"><strong>2,748</strong><b>Veniamin Krachun</b><span>QA harness and proof machine</span></div>
           <div class="credit"><strong>727</strong><b>Max Wish</b><span>design system and data grid</span></div>
         </div>
-        <p class="mono" style="margin:12px 0 0;font-size:9.5px;color:var(--ink-2)">Primary identities from git shortlog. Another 144 commits belong to additional contributors, bots, and alternate identities.</p>
+        <p class="mono" style="margin:12px 0 0;font-size:9.5px;color:var(--ink-2)">Primary identities from git shortlog. Another 158 commits belong to additional contributors, bots, and alternate identities.</p>
       </section>
 
       <section id="truth">
@@ -500,18 +501,18 @@
       <section id="evidence">
         <div class="section-mark"><b>06</b><span>Reproduce the arithmetic</span></div>
         <h2>Every big number has a counting rule.</h2>
-        <p class="lede">The codebase is private, but the claims are not hand-waved. This snapshot uses the current local <code class="mono">dev</code> branch at <code class="mono">20eef964</code>. Here is exactly what was counted.</p>
+        <p class="lede">The codebase is private, but the claims are not hand-waved. This snapshot uses the current local <code class="mono">dev</code> branch at <code class="mono">86a69aac</code>. Here is exactly what was counted.</p>
 
         <table class="ledger">
           <thead><tr><th>Claim</th><th>Counting rule</th><th>Result</th></tr></thead>
           <tbody>
-            <tr><td>repo commits</td><td><code>git rev-list --count HEAD</code></td><td>9,452</td></tr>
-            <tr><td>author split</td><td><code>git shortlog -sne HEAD</code></td><td>6,638 / 1,943 / 727</td></tr>
-            <tr><td>daily activity</td><td><code>git log --author='igor@varyvoda.com' --format='%ad' --date=short HEAD</code></td><td>215 active days</td></tr>
-            <tr><td>test files</td><td><code>git ls-files '**/*.test.*' '**/*.spec.*'</code></td><td>4,751</td></tr>
-            <tr><td>migrations</td><td><code>find drizzle -name migration.sql -type f</code></td><td>263</td></tr>
+            <tr><td>repo commits</td><td><code>git rev-list --count HEAD</code></td><td>11,950</td></tr>
+            <tr><td>author split</td><td><code>git shortlog -sne HEAD</code></td><td>8,317 / 2,748 / 727</td></tr>
+            <tr><td>daily activity</td><td><code>git log --author='igor@varyvoda.com' --format='%ad' --date=short HEAD</code></td><td>230 active days</td></tr>
+            <tr><td>test files</td><td><code>git ls-files '**/*.test.*' '**/*.spec.*'</code></td><td>5,244</td></tr>
+            <tr><td>migrations</td><td><code>find drizzle -name migration.sql -type f</code></td><td>286</td></tr>
             <tr><td>MCP tools</td><td><code>mcp-server/README.md</code> checked against tool registrations</td><td>47</td></tr>
-            <tr><td>workflow steps</td><td>definitions exported through <code>STEP_REGISTRY</code></td><td>39</td></tr>
+            <tr><td>workflow steps</td><td>definitions exported through <code>STEP_REGISTRY</code></td><td>40</td></tr>
             <tr><td>OpenAPI operations</td><td><code>operationId</code> entries in <code>public/openapi.json</code></td><td>64</td></tr>
           </tbody>
         </table>
@@ -531,17 +532,17 @@
 </main>
 
 <footer>
-  <div class="shell"><span>Repo snapshot: dev @ 20eef964 on 10 July 2026 &middot; my daily activity through 9 July</span><span>Igor Varyvoda &middot; <a href="https://www.varyvoda.com">varyvoda.com</a></span></div>
+  <div class="shell"><span>Repo snapshot: dev @ 86a69aac on 24 July 2026 &middot; my daily activity through 24 July</span><span>Igor Varyvoda &middot; <a href="https://www.varyvoda.com">varyvoda.com</a></span></div>
 </footer>
 
 <script>
 (function () {
-  var DATA = [["2025-12-02",31],["2025-12-03",21],["2025-12-04",31],["2025-12-05",12],["2025-12-06",19],["2025-12-07",21],["2025-12-08",13],["2025-12-09",31],["2025-12-10",14],["2025-12-11",30],["2025-12-12",29],["2025-12-13",10],["2025-12-14",11],["2025-12-15",7],["2025-12-16",8],["2025-12-17",26],["2025-12-18",39],["2025-12-19",36],["2025-12-20",14],["2025-12-21",11],["2025-12-22",11],["2025-12-23",18],["2025-12-24",14],["2025-12-25",38],["2025-12-26",40],["2025-12-27",14],["2025-12-28",14],["2025-12-29",29],["2025-12-30",7],["2025-12-31",3],["2026-01-01",20],["2026-01-02",28],["2026-01-03",16],["2026-01-04",28],["2026-01-05",9],["2026-01-06",19],["2026-01-07",30],["2026-01-08",29],["2026-01-09",15],["2026-01-10",6],["2026-01-11",6],["2026-01-12",3],["2026-01-13",16],["2026-01-14",21],["2026-01-15",16],["2026-01-16",17],["2026-01-17",9],["2026-01-19",11],["2026-01-20",62],["2026-01-21",16],["2026-01-22",17],["2026-01-23",13],["2026-01-24",16],["2026-01-25",21],["2026-01-26",16],["2026-01-27",19],["2026-01-28",21],["2026-01-29",11],["2026-01-30",10],["2026-01-31",10],["2026-02-01",31],["2026-02-02",12],["2026-02-03",1],["2026-02-04",5],["2026-02-05",8],["2026-02-06",14],["2026-02-07",5],["2026-02-08",2],["2026-02-09",6],["2026-02-10",5],["2026-02-11",5],["2026-02-12",11],["2026-02-13",9],["2026-02-14",6],["2026-02-15",6],["2026-02-16",8],["2026-02-17",9],["2026-02-18",6],["2026-02-19",12],["2026-02-20",9],["2026-02-21",12],["2026-02-22",10],["2026-02-23",1],["2026-02-24",6],["2026-02-25",28],["2026-02-26",32],["2026-02-27",21],["2026-02-28",36],["2026-03-01",8],["2026-03-02",4],["2026-03-03",17],["2026-03-04",12],["2026-03-05",27],["2026-03-06",31],["2026-03-07",24],["2026-03-08",4],["2026-03-09",25],["2026-03-10",14],["2026-03-11",13],["2026-03-12",21],["2026-03-13",13],["2026-03-14",3],["2026-03-15",4],["2026-03-16",4],["2026-03-17",12],["2026-03-18",13],["2026-03-19",7],["2026-03-20",17],["2026-03-21",19],["2026-03-22",8],["2026-03-23",22],["2026-03-24",31],["2026-03-25",19],["2026-03-26",33],["2026-03-27",18],["2026-03-28",26],["2026-03-29",19],["2026-03-30",21],["2026-03-31",15],["2026-04-01",42],["2026-04-02",61],["2026-04-03",19],["2026-04-05",14],["2026-04-06",15],["2026-04-07",5],["2026-04-08",49],["2026-04-09",182],["2026-04-10",76],["2026-04-11",83],["2026-04-12",19],["2026-04-13",50],["2026-04-14",66],["2026-04-15",25],["2026-04-16",33],["2026-04-17",46],["2026-04-18",117],["2026-04-19",36],["2026-04-20",41],["2026-04-21",35],["2026-04-22",46],["2026-04-23",47],["2026-04-24",37],["2026-04-25",3],["2026-04-26",1],["2026-04-27",25],["2026-04-28",60],["2026-04-29",54],["2026-04-30",50],["2026-05-01",19],["2026-05-02",88],["2026-05-03",78],["2026-05-04",26],["2026-05-05",27],["2026-05-06",34],["2026-05-07",35],["2026-05-08",70],["2026-05-09",22],["2026-05-10",5],["2026-05-11",13],["2026-05-12",60],["2026-05-13",66],["2026-05-14",52],["2026-05-15",41],["2026-05-16",15],["2026-05-17",12],["2026-05-18",21],["2026-05-19",24],["2026-05-20",17],["2026-05-21",15],["2026-05-22",21],["2026-05-23",10],["2026-05-24",37],["2026-05-25",73],["2026-05-26",24],["2026-05-27",18],["2026-05-28",8],["2026-05-29",6],["2026-05-30",11],["2026-05-31",31],["2026-06-01",58],["2026-06-02",16],["2026-06-05",22],["2026-06-06",41],["2026-06-07",16],["2026-06-08",16],["2026-06-10",4],["2026-06-11",35],["2026-06-12",21],["2026-06-13",45],["2026-06-14",110],["2026-06-15",45],["2026-06-16",23],["2026-06-17",48],["2026-06-18",58],["2026-06-19",66],["2026-06-20",46],["2026-06-21",58],["2026-06-22",62],["2026-06-23",36],["2026-06-24",52],["2026-06-25",58],["2026-06-26",24],["2026-06-27",70],["2026-06-28",32],["2026-06-29",28],["2026-06-30",90],["2026-07-01",50],["2026-07-02",193],["2026-07-03",141],["2026-07-04",287],["2026-07-05",278],["2026-07-06",111],["2026-07-07",32],["2026-07-08",49],["2026-07-09",48]];
+  var DATA = [["2025-12-02",31],["2025-12-03",21],["2025-12-04",31],["2025-12-05",12],["2025-12-06",19],["2025-12-07",21],["2025-12-08",13],["2025-12-09",31],["2025-12-10",14],["2025-12-11",30],["2025-12-12",29],["2025-12-13",10],["2025-12-14",11],["2025-12-15",7],["2025-12-16",8],["2025-12-17",26],["2025-12-18",39],["2025-12-19",36],["2025-12-20",14],["2025-12-21",11],["2025-12-22",11],["2025-12-23",18],["2025-12-24",14],["2025-12-25",38],["2025-12-26",40],["2025-12-27",14],["2025-12-28",14],["2025-12-29",29],["2025-12-30",7],["2025-12-31",3],["2026-01-01",20],["2026-01-02",28],["2026-01-03",16],["2026-01-04",28],["2026-01-05",9],["2026-01-06",19],["2026-01-07",30],["2026-01-08",29],["2026-01-09",15],["2026-01-10",6],["2026-01-11",6],["2026-01-12",3],["2026-01-13",16],["2026-01-14",21],["2026-01-15",16],["2026-01-16",17],["2026-01-17",9],["2026-01-19",11],["2026-01-20",62],["2026-01-21",16],["2026-01-22",17],["2026-01-23",13],["2026-01-24",16],["2026-01-25",21],["2026-01-26",16],["2026-01-27",19],["2026-01-28",21],["2026-01-29",11],["2026-01-30",10],["2026-01-31",10],["2026-02-01",31],["2026-02-02",12],["2026-02-03",1],["2026-02-04",5],["2026-02-05",8],["2026-02-06",14],["2026-02-07",5],["2026-02-08",2],["2026-02-09",6],["2026-02-10",5],["2026-02-11",5],["2026-02-12",11],["2026-02-13",9],["2026-02-14",6],["2026-02-15",6],["2026-02-16",8],["2026-02-17",9],["2026-02-18",6],["2026-02-19",12],["2026-02-20",9],["2026-02-21",12],["2026-02-22",10],["2026-02-23",1],["2026-02-24",6],["2026-02-25",28],["2026-02-26",32],["2026-02-27",21],["2026-02-28",36],["2026-03-01",8],["2026-03-02",4],["2026-03-03",17],["2026-03-04",12],["2026-03-05",27],["2026-03-06",31],["2026-03-07",24],["2026-03-08",4],["2026-03-09",25],["2026-03-10",14],["2026-03-11",13],["2026-03-12",21],["2026-03-13",13],["2026-03-14",3],["2026-03-15",4],["2026-03-16",4],["2026-03-17",12],["2026-03-18",13],["2026-03-19",7],["2026-03-20",17],["2026-03-21",19],["2026-03-22",8],["2026-03-23",22],["2026-03-24",31],["2026-03-25",19],["2026-03-26",33],["2026-03-27",18],["2026-03-28",26],["2026-03-29",19],["2026-03-30",21],["2026-03-31",15],["2026-04-01",42],["2026-04-02",61],["2026-04-03",19],["2026-04-05",14],["2026-04-06",15],["2026-04-07",5],["2026-04-08",49],["2026-04-09",182],["2026-04-10",76],["2026-04-11",83],["2026-04-12",19],["2026-04-13",50],["2026-04-14",66],["2026-04-15",25],["2026-04-16",33],["2026-04-17",46],["2026-04-18",117],["2026-04-19",36],["2026-04-20",41],["2026-04-21",35],["2026-04-22",46],["2026-04-23",47],["2026-04-24",37],["2026-04-25",3],["2026-04-26",1],["2026-04-27",25],["2026-04-28",60],["2026-04-29",54],["2026-04-30",50],["2026-05-01",19],["2026-05-02",88],["2026-05-03",78],["2026-05-04",26],["2026-05-05",27],["2026-05-06",34],["2026-05-07",35],["2026-05-08",70],["2026-05-09",22],["2026-05-10",5],["2026-05-11",13],["2026-05-12",60],["2026-05-13",66],["2026-05-14",52],["2026-05-15",41],["2026-05-16",15],["2026-05-17",12],["2026-05-18",21],["2026-05-19",24],["2026-05-20",17],["2026-05-21",15],["2026-05-22",21],["2026-05-23",10],["2026-05-24",37],["2026-05-25",73],["2026-05-26",24],["2026-05-27",18],["2026-05-28",8],["2026-05-29",6],["2026-05-30",11],["2026-05-31",31],["2026-06-01",58],["2026-06-02",16],["2026-06-05",22],["2026-06-06",41],["2026-06-07",16],["2026-06-08",16],["2026-06-10",4],["2026-06-11",35],["2026-06-12",21],["2026-06-13",45],["2026-06-14",110],["2026-06-15",45],["2026-06-16",23],["2026-06-17",48],["2026-06-18",58],["2026-06-19",66],["2026-06-20",46],["2026-06-21",58],["2026-06-22",62],["2026-06-23",36],["2026-06-24",52],["2026-06-25",58],["2026-06-26",24],["2026-06-27",70],["2026-06-28",32],["2026-06-29",28],["2026-06-30",90],["2026-07-01",50],["2026-07-02",193],["2026-07-03",141],["2026-07-04",288],["2026-07-05",308],["2026-07-06",111],["2026-07-07",32],["2026-07-08",49],["2026-07-09",57],["2026-07-10",410],["2026-07-11",126],["2026-07-12",147],["2026-07-13",241],["2026-07-14",135],["2026-07-15",23],["2026-07-16",134],["2026-07-17",66],["2026-07-18",11],["2026-07-19",9],["2026-07-20",17],["2026-07-21",14],["2026-07-22",100],["2026-07-23",196],["2026-07-24",10]]
   var byDate = {};
   DATA.forEach(function (entry) { byDate[entry[0]] = entry[1]; });
 
   var start = new Date("2025-12-02T00:00:00");
-  var end = new Date("2026-07-09T00:00:00");
+  var end = new Date("2026-07-24T00:00:00");
   var pulse = document.getElementById("pulse");
   var heatmap = document.getElementById("heatmap");
   var column = null;
@@ -561,7 +562,7 @@
     var count = byDate[iso] || 0;
     var pulseBar = document.createElement("span");
     pulseBar.className = "pulse-bar" + (count >= 180 ? " peak" : "");
-    pulseBar.style.setProperty("--h", Math.max(2, Math.sqrt(count) / Math.sqrt(287) * 100) + "%");
+    pulseBar.style.setProperty("--h", Math.max(2, Math.sqrt(count) / Math.sqrt(410) * 100) + "%");
     pulseBar.style.setProperty("--delay", Math.min(index * 3, 650) + "ms");
     pulseBar.title = iso + " · " + count + " commit" + (count === 1 ? "" : "s");
     pulse.appendChild(pulseBar);
