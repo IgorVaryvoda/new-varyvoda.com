@@ -34,6 +34,11 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
     #10131a;
 }
 
+.moat-figure,
+.moat-figure figcaption {
+  text-align: left;
+}
+
 .moat-figure figcaption {
   margin-top: 1.4rem;
   color: #8d93a2;
@@ -45,17 +50,27 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 .moat-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem;
+  gap: 2.4rem;
 }
 
 .moat-col h4 {
-  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 0.6rem;
   color: #b9c0cf;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.moat-dot {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  flex: none;
 }
 
 .moat-col ul {
@@ -65,28 +80,40 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 }
 
 .moat-col li {
-  padding: 0.55rem 0;
+  padding: 0.85rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: 1.35rem;
-  line-height: 1.5;
-}
-
-.moat-col li:first-child {
-  border-top: 0;
-}
-
-.moat-col--decay li {
   color: #8d93a2;
+  font-size: 1.25rem;
+  line-height: 1.55;
 }
 
-.moat-col--compound li {
-  color: #d9e2ec;
+.moat-col li strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-size: 1.35rem;
+  font-weight: 600;
 }
 
-.moat-dash {
+.moat-col--decay li strong {
+  color: #e8b04b;
+}
+
+.moat-col--compound li strong {
+  color: #54c98a;
+}
+
+.moat-dash > div {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-  gap: 1.6rem;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 1.4rem;
+  align-items: baseline;
+  padding: 0.8rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+}
+
+.moat-dash > div:first-child {
+  border-top: 0;
 }
 
 .moat-dash .n {
@@ -99,7 +126,6 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 }
 
 .moat-dash .l {
-  margin-top: 0.5rem;
   color: #b9c0cf;
   font-size: 1.3rem;
   line-height: 1.5;
@@ -133,23 +159,23 @@ State them plainly, so nobody mistakes them for strategy. Everything in the left
 <figure class="moat-figure">
   <div class="moat-split">
     <div class="moat-col moat-col--decay">
-      <h4>Decays in quarters</h4>
+      <h4><span class="moat-dot" style="background:#e8b04b"></span>Decays in quarters</h4>
       <ul>
-        <li>AI tool count — every tool wraps a model rented from the same vendors. fal.ai does not care who calls it.</li>
-        <li>Workflow step types — 39 today, copyable in a sprint.</li>
-        <li>UI polish — necessary for conversion, worthless for defense.</li>
-        <li>MCP support itself — a protocol implementation, weeks of work for anyone.</li>
-        <li>Model access and prompt quality — rented and leaky, respectively.</li>
+        <li><strong>AI tool count</strong> Every tool wraps a model rented from the same vendors. fal.ai does not care who calls it.</li>
+        <li><strong>Workflow step types</strong> 39 today, copyable in a sprint.</li>
+        <li><strong>UI polish</strong> Necessary for conversion, worthless for defense.</li>
+        <li><strong>MCP support itself</strong> A protocol implementation, weeks of work for anyone.</li>
+        <li><strong>Model access, prompt quality</strong> Rented and leaky, respectively.</li>
       </ul>
     </div>
     <div class="moat-col moat-col--compound">
-      <h4>Compounds in years</h4>
+      <h4><span class="moat-dot" style="background:#54c98a"></span>Compounds in years</h4>
       <ul>
-        <li>Operational history — every approval, publish, rollback, and supplier submission is a row that exists nowhere else.</li>
-        <li>The product graph — but only while it's more truthful than the platform's own data.</li>
-        <li>The supplier network — the only entry with true network effects.</li>
-        <li>The safety record — compounds slowly, destroyed in one afternoon.</li>
-        <li>Owned distribution — rankings and relationships that survive feature parity.</li>
+        <li><strong>Operational history</strong> Every approval, publish, rollback, and supplier submission is a row that exists nowhere else.</li>
+        <li><strong>The product graph</strong> Only while it's more truthful than the platform's own data.</li>
+        <li><strong>The supplier network</strong> The only entry with true network effects.</li>
+        <li><strong>The safety record</strong> Compounds slowly, destroyed in one afternoon.</li>
+        <li><strong>Owned distribution</strong> Rankings and relationships that survive feature parity.</li>
       </ul>
     </div>
   </div>
