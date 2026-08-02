@@ -2,7 +2,7 @@
 title: "Anything an agent fleet can rebuild in a quarter is not a moat"
 date: 2026-08-01
 draft: false
-description: "I built a DAM, a PIM, a supplier portal, and an MCP server in a year — which is exactly why none of them are moats. What compounds when construction is free."
+description: "I built a DAM, a PIM, a supplier portal, and an MCP server in seven months — which is exactly why none of them are moats. What compounds when construction is free."
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 ---
 
@@ -114,11 +114,11 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 
 <p class="moat-meta">1 Aug 2026 · doctrine written 2 Jul · sequel to Two theories of a programmer</p>
 
-<p class="moat-standfirst">In <a href="/posts/two-theories-of-a-programmer/">Two theories of a programmer</a> I argued that when a fleet does the typing, the scarce thing moves upstream — to judgment. This post is the same argument applied to companies. If one person with agents can build your product in a year, <strong>what exactly is your product worth?</strong></p>
+<p class="moat-standfirst">In <a href="/posts/two-theories-of-a-programmer/">Two theories of a programmer</a> I argued that when a fleet does the typing, the scarce thing moves upstream — to judgment. This post is the same argument applied to companies. If one person with agents can build your product in seven months, <strong>what exactly is your product worth?</strong></p>
 
 ## The demonstration
 
-Over roughly a year, I built [Sirv AI Studio](/projects/sirv-studio/): a digital asset manager, a PIM layer, a supplier portal, a workflow engine, and a 47-tool MCP server. A fleet did the typing; I did the deciding. This is not a boast — it's the problem statement. Because if I could do that, so can a competitor with the same tools. Whatever I shipped last quarter, someone else can ship next quarter.
+In seven months, I built [Sirv AI Studio](/projects/sirv-studio/): a digital asset manager, a PIM layer, a supplier portal, a workflow engine, and a 47-tool MCP server. A fleet did the typing; I did the deciding. This is not a boast — it's the problem statement. Because if I could do that, so can a competitor with the same tools. Whatever I shipped last quarter, someone else can ship next quarter.
 
 That collapses forty years of instinct about defensibility. The instinct says features are assets: every tool, every integration, every screen is a brick in the wall. The instinct was calibrated for a world where bricks were expensive. They aren't anymore. So I wrote a filter into Studio's strategy docs and it has survived every argument since:
 
