@@ -23,74 +23,78 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
   text-transform: uppercase;
 }
 
-.moat-figure {
-  margin: 3rem 0;
-  padding: clamp(1.5rem, 3vw, 2.2rem);
+.prose figure.moat-figure {
+  margin: 3.2rem 0;
+  padding: 1.8rem 2rem 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   background:
     linear-gradient(135deg, rgba(249, 201, 122, 0.1), transparent 36%),
     linear-gradient(315deg, rgba(102, 217, 239, 0.08), transparent 42%),
     #10131a;
-}
-
-.moat-figure,
-.moat-figure figcaption {
   text-align: left;
 }
 
-.moat-figure figcaption {
-  margin-top: 1.4rem;
+.prose figure.moat-figure figcaption {
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: #8d93a2;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   line-height: 1.55;
+  text-align: left;
 }
 
 .moat-split {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2.4rem;
+  gap: 0 2.6rem;
 }
 
 .moat-col h4 {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  margin: 0 0 0.6rem;
+  gap: 0.7rem;
+  margin: 0 0 0.4rem;
   color: #b9c0cf;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .moat-dot {
-  width: 0.85rem;
-  height: 0.85rem;
+  width: 0.8rem;
+  height: 0.8rem;
   border-radius: 999px;
   flex: none;
 }
 
-.moat-col ul {
+.prose .moat-col ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.moat-col li {
-  padding: 0.85rem 0;
+.prose .moat-col li {
+  margin: 0;
+  padding: 0.7rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   color: #8d93a2;
-  font-size: 1.25rem;
-  line-height: 1.55;
+  font-size: 1.22rem;
+  line-height: 1.5;
 }
 
-.moat-col li strong {
+.prose .moat-col li:first-child {
+  border-top: 0;
+}
+
+.prose .moat-col li strong {
   display: block;
-  margin-bottom: 0.15rem;
-  font-size: 1.35rem;
+  margin: 0 0 0.1rem;
+  font-size: 1.32rem;
   font-weight: 600;
 }
 
@@ -102,23 +106,29 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
   color: #54c98a;
 }
 
-.moat-dash > div {
+.prose .moat-dash > div {
   display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 1.4rem;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 1.2rem;
   align-items: baseline;
-  padding: 0.8rem 0;
+  margin: 0;
+  padding: 0.6rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   text-align: left;
 }
 
-.moat-dash > div:first-child {
+.prose .moat-dash > div:first-child {
   border-top: 0;
+  padding-top: 0;
+}
+
+.prose .moat-dash > div:last-child {
+  padding-bottom: 0.2rem;
 }
 
 .moat-dash .n {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #66d9ef;
   letter-spacing: 0.06em;
@@ -127,13 +137,17 @@ ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 
 .moat-dash .l {
   color: #b9c0cf;
-  font-size: 1.3rem;
+  font-size: 1.28rem;
   line-height: 1.5;
 }
 
 @media (max-width: 640px) {
   .moat-split {
     grid-template-columns: 1fr;
+  }
+
+  .moat-col + .moat-col h4 {
+    margin-top: 1.4rem;
   }
 }
 </style>
