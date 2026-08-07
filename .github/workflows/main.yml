@@ -11,6 +11,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
 
     - name: Setup Hugo
       uses: peaceiris/actions-hugo@v2
@@ -42,3 +44,13 @@ jobs:
 
     - name: Sync public directory to server
       run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
+
+    - name: Notify IndexNow of changed URLs
+      env:
+        INDEXNOW_BEFORE: ${{ github.event.before }}
+        INDEXNOW_AFTER: ${{ github.sha }}
+      run: |
+        python3 scripts/submit-indexnow.py \
+          --before "$INDEXNOW_BEFORE" \
+          --after "$INDEXNOW_AFTER" \
+          --key-file static/783cc6ce5ab0edd000732ed60336aa7c.txt
