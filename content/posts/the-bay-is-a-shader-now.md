@@ -3,6 +3,7 @@ title: "The bay outside my window is a shader now"
 date: 2026-07-22
 draft: false
 description: "I saw a raymarched ocean on earendil.com and wanted one. Now my homepage draws the bay I live on, and Lighthouse taught me who browses without a GPU."
+ogImage: "https://www.varyvoda.com/images/posts/the-bay-is-a-shader-now-og.jpg"
 ---
 
 A few days ago I opened [earendil.com](https://earendil.com/) and forgot why I came. Behind the landing page there's a live fragment shader: a raymarched ocean rolling under a night sky, stars, waves, the whole thing computed per pixel while you read.
