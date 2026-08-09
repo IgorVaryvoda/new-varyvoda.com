@@ -5,7 +5,7 @@ lastmod: 2026-08-09
 draft: true
 featured: false
 project_url: "https://work.sirv.studio"
-image: "/images/studio/studio-vibeq.webp"
+image: "/images/vibeq/vibeq-overview.jpg"
 description: "The shared task board and agent control plane behind Sirv Studio. Humans and agents work from the same queue, Sirvant enters through Slack, and every run has to leave evidence."
 hero_title: "vibeq"
 hero_kicker: "Human and agent work"
@@ -67,6 +67,9 @@ That changed the unit of work. A task was no longer only a title, status and ass
 
 I do not need a prettier Jira. I need to know what changed while I was looking somewhere else.
 
+<img src="/images/vibeq/vibeq-today.jpg" alt="VibeQ Today view showing the best next move, the live pulse, failing QA, stalled reviews and work that still needs evidence" width="1276" height="718" loading="lazy" decoding="async"/>
+<p><em>Today reduces the queue to one next move, then shows the work that is stuck, failing or still missing a receipt.</em></p>
+
 ## Then the agents moved in
 
 VibeQ treats agents as workers, not integrations hanging off the side of the real system.
@@ -76,6 +79,9 @@ The MCP server lets Codex, Claude and other agent runtimes search the queue, cre
 This became particularly useful once I started running the workflow described in [improve-codex](/projects/improve-codex/): audit a mature codebase, scrutinise the plans, execute them in isolated worktrees, attack the diffs and land only the work that survives. VibeQ holds the queue around that machinery. It remembers which plans exist, who is doing what, which branches are real and what still needs a human decision.
 
 The important boundary is that an agent seeing a task does not grant it authority. Creating, claiming, changing or closing work must follow the user's instruction and the task's approval state. VibeQ is the record of that authority, not an excuse to infer it.
+
+<img src="/images/vibeq/vibeq-activity.jpg" alt="VibeQ Activity view showing work health, human and agent presence, and a chronological ledger of task, branch and commit events" width="1280" height="720" loading="lazy" decoding="async"/>
+<p><em>The Activity ledger puts people and Sirvant in the same roster, then records the task, comment, branch and commit events underneath.</em></p>
 
 ## The board is no longer the product
 
@@ -108,6 +114,9 @@ The planner and the hands are also separate. Hermes or OMP owns the session and 
 That split matters more than the choice of model. One agent can plan while another executes. The ledger records both identities, because “Claude planned it and Codex typed it” is useful information when billing, permissions or a failure needs to be traced later.
 
 Sirvant can answer a Slack thread, act on a voice message, reproduce a bug, run a focused fix, open a pull request, sweep documentation, check Sentry or ask for approval. It can also review a pull request and run a bounded review-to-fix loop. The loop stops on a clean review, refuses a moved or unsafe branch, never force-pushes and has a hard round limit. Autonomy is useful when the exit conditions are part of the design.
+
+<img src="/images/vibeq/vibeq-sirvant.jpg" alt="Sirvant control room showing supervisor and runner health, failed runs, harness warnings, and the Hermes to Cloudflare execution topology" width="1280" height="720" loading="lazy" decoding="async"/>
+<p><em>Sirvant's control room: supervisor and runner health above, the durable Hermes-to-Cloudflare execution path below, and warnings where scheduled work can strand.</em></p>
 
 ## Delivery truth
 
