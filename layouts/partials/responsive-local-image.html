@@ -8,14 +8,14 @@
   {{- $srcset := slice -}}
   {{- range slice 480 800 1200 1600 -}}
     {{- if lt . $asset.Width -}}
-      {{- $variant := $asset.Resize (printf "%dx" .) -}}
+      {{- $variant := $asset.Resize (printf "%dx q92 Lanczos" .) -}}
       {{- $srcset = $srcset | append (printf "%s %dw" $variant.RelPermalink .) -}}
     {{- end -}}
   {{- end -}}
   {{- $srcset = $srcset | append (printf "%s %dw" $asset.RelPermalink $asset.Width) -}}
   {{- $fallback := $asset -}}
   {{- if lt .fallbackWidth $asset.Width -}}
-    {{- $fallback = $asset.Resize (printf "%dx" .fallbackWidth) -}}
+    {{- $fallback = $asset.Resize (printf "%dx q92 Lanczos" .fallbackWidth) -}}
   {{- end -}}
   <img
     src="{{ $fallback.RelPermalink }}"

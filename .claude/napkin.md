@@ -36,7 +36,10 @@
 | 2026-07-20 | sol | My plan verifications used `grep -c` on `--minify` output — whole page is ONE line, so counts can't detect duplicate tags, and `grep -c` exits 1 on the desired 0 | Use `grep -o \| wc -l` for occurrence counts and `! grep -q` for absence; also `jsonify` sorts keys alphabetically so never `grep \| head -1` a JSON field — parse it |
 | 2026-07-19 | self | Chased mid-range "scar" artifacts through 6 wrong causes (atlas brightness ×3, warm gate, procedural grain, diffuse relight) by eyeballing small crops — every "still identical" judgment was unverified | Debug renders NUMERICALLY first: np.abs(a−b) diff between experiment screenshots tells in seconds whether an edit did anything; a diagnostic checkerboard atlas pinpoints whether marks are texture content or shader-generated; stack magnified same-coordinate crops side-by-side before claiming "unchanged" |
 
+| 2026-08-11 | user | Kept the "Open VibeQ" project_url + footer link from upstream during the vibeq merge | VibeQ is team-private: no public link, no hero CTA, no mention of the public URL anywhere in the article ("nobody needs to know the public url except my team") |
+
 ## User Preferences
+- Igor's writing guidelines live at /home/igor/.hermes/skills/imported-nanoclaw-adapted/nanoclaw-soul-and-memory/references/nanoclaw-writing-guidelines.md (canonical block: references/claude-files/groups__main__sirv-astro-blog__CLAUDE.md, "Content Writing Guidelines"). Key: no em dashes, no semicolons in prose, no Oxford comma, short punchy + longer mix, 1-3 sentence paragraphs, no corporate slop words.
 - Igor tunes the atmosphere shader interactively with reference photos of the real Herceg Novi view (his own Shutterstock shots + web finds); match the photos, not generic "pretty shader" defaults.
 - Night mode: deep indigo moonlit duotone with warm golden town lights — NOT neutral-gray noir.
 - Direct "improve/refine the shader" asks are done in-session on main; the codex-exec plan workflow is for audit-driven plans in plans/.
