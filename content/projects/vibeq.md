@@ -36,6 +36,8 @@ project_chapters:
     href: "#a-local-commit-is-not-delivery"
   - label: "Snapshot"
     href: "#what-exists-now"
+  - label: "Next"
+    href: "#where-this-goes"
   - label: "Lesson"
     href: "#what-i-learned"
 tech_stack: ["React 19", "Cloudflare Workers", "D1", "R2", "Durable Objects", "Hermes"]
@@ -275,6 +277,14 @@ Those count surface area, which is the least interesting thing a repository can 
 VibeQ is private and tailored to the way we build Sirv Studio. It is also far more infrastructure than a normal two-person task board needs. Cloudflare Workers, D1, R2, Durable Objects, Containers and external supervisors are justified by the agent runtime, not by draggable cards.
 
 I would rather keep it specialized and honest than sand it into a generic SaaS product.
+
+## Where this goes
+
+VibeQ is becoming a full agentic orchestration engine.
+
+Today the flow mostly starts with a person. Someone asks in Slack, a webhook fires or a schedule ticks. The next step is the board dispatching work itself. A failing QA area, a stalled review, a fresh Sentry error or a task that promised a branch and never produced one should not wait for me to notice. The queue already knows. It should hand the job to Sirvant and let him fix it.
+
+That does not loosen the boundaries. The same rules hold: durable record first, scoped credentials, receipts on the way out and explicit approval for anything that touches production. I want the queue to notice, the agent to act and my own job to shrink to reviewing intent instead of chasing status.
 
 ## What I learned
 
