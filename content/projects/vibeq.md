@@ -197,7 +197,7 @@ The important boundary is that an agent seeing a task does not grant it authorit
 
 ## Sirvant is the front door
 
-In June, VibeQ changed category. River, the agent runtime, and **Sirvant**, its public Slack identity, landed in the same repository.
+In June, VibeQ changed category. **Sirvant**, the agent runtime with a public Slack identity, landed in the same repository.
 
 Sirvant is not a slash-command bot or a chat skin over the task API. It is a durable, open-ended work partner in the Sirv Slack workspace. Someone can ask a product question, send a voice note, continue an old thread, point at a bug, request a report or ask for a scoped fix. Sirvant is expected to understand the request, inspect the available systems and either answer or act.
 
