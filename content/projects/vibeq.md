@@ -4,7 +4,7 @@ date: 2026-03-05
 lastmod: 2026-08-11
 draft: false
 featured: true
-image: "/images/vibeq/vibeq-overview.jpg"
+image: "/images/vibeq/vibeq-overview.webp"
 ogImage: "https://www.varyvoda.com/images/vibeq/vibeq-today.jpg"
 description: "The control plane behind Sirv Studio: humans and agents work one queue, Slack is the cockpit and no run counts until the code is on the remote."
 hero_title: "vibeq"
