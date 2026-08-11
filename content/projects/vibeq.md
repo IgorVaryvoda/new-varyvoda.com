@@ -159,7 +159,7 @@ A normal task board tells you what somebody wrote on a card. I needed it to tell
 
 By April, the home screen had **Who's working on what**, a **Needs attention** radar, domain views and a triage queue. Tasks could show that work had gone quiet, that a review had stalled, that a blocker chain had formed. The one that earns its place on the home screen is the promised branch: a task moves to done, the summary says the fix is in and no pull request ever appears. On a normal board that gap stays invisible until somebody goes looking for the diff. Here it becomes a card with a name on it.
 
-The Activity view became a chronological record of people and agents creating, moving, discussing and shipping work. The design is [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/)'s. I did not build this alone.
+The Activity view became a chronological record of people and agents creating, moving, discussing and shipping work.
 
 Then the QA Monitor moved into the same interface, with Veniamin behind the QA side too. Instead of a green badge that says "tests passed", it tracks how old the proof is and which product areas have none. It exists to make weak proof visible before it gets mistaken for confidence.
 
@@ -181,7 +181,7 @@ That paid off once I started running the [improve-codex](/projects/improve-codex
 The important boundary is that an agent seeing a task does not grant it authority. Creating, claiming, changing or closing work must follow the user's instruction and the task's approval state. VibeQ is the record of that authority, not an excuse to infer it.
 
 <img src="/images/vibeq/vibeq-activity.jpg" alt="VibeQ Activity view showing work health, human and agent presence, and a chronological ledger of task, branch and commit events" width="1280" height="720" loading="lazy" decoding="async"/>
-<p><em>The Activity ledger puts people and Sirvant in the same roster, then records the task, comment, branch and commit events underneath.</em></p>
+<p><em>The Activity ledger puts people and Sirvant in the same roster, then records the task, comment, branch and commit events underneath. Designed by <a href="https://www.linkedin.com/in/veniamin-krachun/">Veniamin Krachun</a>.</em></p>
 
 ## Sirvant is the front door
 
