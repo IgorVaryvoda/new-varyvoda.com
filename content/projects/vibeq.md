@@ -22,6 +22,8 @@ hero_flow:
 project_chapters:
   - label: "Origin"
     href: "#i-needed-a-queue-i-could-trust"
+  - label: "Why not Linear"
+    href: "#why-not-linear"
   - label: "The board"
     href: "#the-board-grew-eyes"
   - label: "Agents"
@@ -152,6 +154,16 @@ Asking an agent to write code was already easy. Knowing what it did, who approve
 The agent part arrived on day one. VibeQ could turn rough text into tasks, attach screenshots and videos through Cloudflare R2 and expose the queue through MCP so coding agents could read and update the same work as the humans. Within the first week it had the ordinary board furniture: search, due dates, checklists, dependencies. That was never going to be the hard part.
 
 It was briefly called VibeQueue. I renamed the interface to VibeQ before discovering that renaming deployed Workers, databases and secrets for aesthetic consistency is a fine way to break a working system. The repository is still called `vibequeue`. The product is VibeQ. Both are correct.
+
+## Why not Linear
+
+Linear is a good product. So is Height. Jira exists. The honest answer has three parts, and none of them is "I can build a better board".
+
+I did not want to pay per seat. We are two humans about to be outnumbered by agents, and seat pricing punishes exactly that experiment. Every agent identity on the roster would be another subscription line for the privilege of running my own workers.
+
+I wanted the freedom to customize everything. A promised-branch card, a QA staleness monitor, an MCP surface for coding agents and a Slack-facing runtime in the same repository are not feature requests any vendor would take seriously. Here they are a normal week of work, wired exactly the way we operate.
+
+And I wanted to own the data. Every task, event, session, approval and artifact sits in my own D1 database and R2 bucket. The ledger is the whole point of the system. Renting it from someone else's API, behind someone else's rate limits and export rules, puts the most valuable byproduct of the work in the one place I cannot fully reach.
 
 ## The board grew eyes
 
