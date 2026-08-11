@@ -37,6 +37,7 @@
 | 2026-07-19 | self | Chased mid-range "scar" artifacts through 6 wrong causes (atlas brightness ×3, warm gate, procedural grain, diffuse relight) by eyeballing small crops — every "still identical" judgment was unverified | Debug renders NUMERICALLY first: np.abs(a−b) diff between experiment screenshots tells in seconds whether an edit did anything; a diagnostic checkerboard atlas pinpoints whether marks are texture content or shader-generated; stack magnified same-coordinate crops side-by-side before claiming "unchanged" |
 
 | 2026-08-11 | user | Kept the "Open VibeQ" project_url + footer link from upstream during the vibeq merge | VibeQ is team-private: no public link, no hero CTA, no mention of the public URL anywhere in the article ("nobody needs to know the public url except my team") |
+| 2026-08-11 | user | Put a teammate design credit inline in the body paragraph | Feature/design attributions go in the screenshot caption ("Designed by [Name](linkedin)"), like the sirv-studio captions, not in prose |
 
 ## User Preferences
 - Igor's writing guidelines live at /home/igor/.hermes/skills/imported-nanoclaw-adapted/nanoclaw-soul-and-memory/references/nanoclaw-writing-guidelines.md (canonical block: references/claude-files/groups__main__sirv-astro-blog__CLAUDE.md, "Content Writing Guidelines"). Key: no em dashes, no semicolons in prose, no Oxford comma, short punchy + longer mix, 1-3 sentence paragraphs, no corporate slop words.

@@ -176,7 +176,7 @@ VibeQ treats agents as workers, not integrations hanging off the side of the rea
 
 The MCP server lets Codex, Claude and other agent runtimes search the queue, create tasks, claim work, record progress, attach artifacts and close the loop. A human and an agent see the same task ID, same blockers, same unpushed branch. Agents appear in the activity roster beside us, because an agent's work in a separate console is work nobody reviews.
 
-That paid off once I started running the [improve-codex](/projects/improve-codex/) workflow: audit a mature codebase, scrutinize the plans, execute them in isolated worktrees, attack the diffs and land only the work that survives. VibeQ holds the queue around that machinery. It remembers which plans exist, who is doing what, which branches are real and what still needs a human decision.
+That paid off once I started running the [improve-codex](/projects/improve-codex/) workflow: audit a mature codebase, scrutinize the plans, execute them in isolated worktrees, attack the diffs and land only the work that survives. The execution muscle is the **Clanker Army**, the batch runner that lives inside the Sirv Studio repository. It compiles vetted plans into batches, polls VibeQ for orders and runs several isolated worktrees at once. VibeQ holds the queue around that machinery. It remembers which plans exist, who is doing what, which branches are real and what still needs a human decision.
 
 The important boundary is that an agent seeing a task does not grant it authority. Creating, claiming, changing or closing work must follow the user's instruction and the task's approval state. VibeQ is the record of that authority, not an excuse to infer it.
 
