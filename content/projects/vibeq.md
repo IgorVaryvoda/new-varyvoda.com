@@ -159,9 +159,9 @@ A normal task board tells you what somebody wrote on a card. I needed it to tell
 
 By April, the home screen had **Who's working on what**, a **Needs attention** radar, domain views and a triage queue. Tasks could show that work had gone quiet, that a review had stalled, that a blocker chain had formed. The one that earns its place on the home screen is the promised branch: a task moves to done, the summary says the fix is in and no pull request ever appears. On a normal board that gap stays invisible until somebody goes looking for the diff. Here it becomes a card with a name on it.
 
-The Activity view became a chronological record of people and agents creating, moving, discussing and shipping work.
+The Activity view became a chronological record of people and agents creating, moving, discussing and shipping work. The design is [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/)'s. I did not build this alone.
 
-Then the QA Monitor moved into the same interface. Instead of a green badge that says "tests passed", it tracks how old the proof is and which product areas have none. It exists to make weak proof visible before it gets mistaken for confidence.
+Then the QA Monitor moved into the same interface, with Veniamin behind the QA side too. Instead of a green badge that says "tests passed", it tracks how old the proof is and which product areas have none. It exists to make weak proof visible before it gets mistaken for confidence.
 
 That changed the unit of work. A task stopped being a title, status and assignee. It started carrying the branch, the pull request and whatever a reviewer would need to argue with the result.
 
