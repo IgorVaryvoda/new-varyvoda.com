@@ -1779,10 +1779,19 @@
     return reducedMotion ? 3 : currentSceneTime(performance.now());
   }
 
+  var sceneSelector = ".site-header, .scene-hero, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
+
+  function isSceneSurfaceTarget(target) {
+    return Boolean(target.closest(sceneSelector));
+  }
+
   window.addEventListener("pointerdown", function (event) {
     if (!contextAvailable || event.target.closest("a, button, input, textarea, select, label")) return;
     var time = sceneTimeForHit();
-    if (celestialBodyAt(event.clientX, event.clientY, time)) {
+    // The listener is window-wide because the canvas itself ignores pointer
+    // events. Do not let opaque article or project content inherit the
+    // celestial hotspot just because it crosses the same screen coordinates.
+    if (isSceneSurfaceTarget(event.target) && celestialBodyAt(event.clientX, event.clientY, time)) {
       if (window.varyvodaTheme) window.varyvodaTheme.toggle();
       return;
     }
@@ -1797,7 +1806,8 @@
 
   window.addEventListener("pointermove", function (event) {
     if (!contextAvailable || event.pointerType !== "mouse") return;
-    var over = !event.target.closest("a, button, input, textarea, select, label") &&
+    var over = isSceneSurfaceTarget(event.target) &&
+      !event.target.closest("a, button, input, textarea, select, label") &&
       celestialBodyAt(event.clientX, event.clientY, sceneTimeForHit());
     if (over !== celestialHover) {
       celestialHover = over;
@@ -1990,7 +2000,6 @@
     canvas.classList.add("ambient-canvas-fallback");
   });
 
-  var sceneSelector = ".site-header, .scene-hero, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
   var sceneSurfaces = document.querySelectorAll(sceneSelector);
   if (typeof window.IntersectionObserver === "undefined" || sceneSurfaces.length === 0) {
     observerFallback = true;
