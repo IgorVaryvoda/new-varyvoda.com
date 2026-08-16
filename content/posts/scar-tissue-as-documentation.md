@@ -45,6 +45,6 @@ Step back far enough and all the git incidents are one incident. A fleet that co
 
 The counterintuitive consequence is that I've stopped being embarrassed by the length of these files. A short rules file means one of two things: either the process is genuinely simple, or nobody has been running it hard enough to find out where it breaks. Mine are long because the fleet ships all day, every day, and has been for months. Scar tissue only forms where there's been load.
 
-I wrote [an audit post](/posts/pointing-the-fleet-at-itself/) about pointing the fleet at its own code. This folder is the older, humbler sibling of that idea: the fleet's rules pointed at the fleet's history. An audit tells you what's wrong now. The scar file tells you what will go wrong again the moment you delete a line from it.
+I sometimes point the fleet at its own code and make it prove the codebase is bad. This folder is the older, humbler sibling of that idea: the fleet's rules pointed at the fleet's history. An audit tells you what's wrong now. The scar file tells you what will go wrong again the moment you delete a line from it.
 
 Documentation describes the system you meant to build. Scar tissue describes the one you have.
