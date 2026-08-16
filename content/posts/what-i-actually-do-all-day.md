@@ -1,11 +1,11 @@
 ---
 title: "What I actually do all day"
-date: 2026-08-16
+date: 2026-08-18
 draft: false
-description: "Yesterday my push log shows 31 pushes across three repos, plus two new ones created eight seconds apart. I didn't type any of it. Here's what the day actually was."
+description: "One Saturday: 31 pushes across three repos, plus two new ones created eight seconds apart. I didn't type any of it. Here's what the day actually was."
 ---
 
-Yesterday was a Saturday. My GitHub log shows thirty-one pushes across three repositories, and two brand-new repositories created eight seconds apart at 20:04. First push at 06:41, last at 22:04.
+Last Saturday, my GitHub log shows thirty-one pushes across three repositories, and two brand-new repositories created eight seconds apart at 20:04. First push at 06:41, last at 22:04.
 
 I didn't type any of it. So the fair question — the one people actually mean when they ask about "AI-assisted development" — is: *then what were you doing all day?*
 

@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main  # Adjust with your branch
+  schedule:
+    - cron: '15 6 * * *'  # daily rebuild so future-dated posts publish on their day
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -46,6 +49,7 @@ jobs:
       run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
 
     - name: Notify IndexNow of changed URLs
+      if: github.event_name == 'push'
       env:
         INDEXNOW_BEFORE: ${{ github.event.before }}
         INDEXNOW_AFTER: ${{ github.sha }}
