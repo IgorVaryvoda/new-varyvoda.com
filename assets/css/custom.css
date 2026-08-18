@@ -41,6 +41,7 @@
   --tracking-display-xl: -0.02em;
   --tracking-reading-display: -0.01em;
   --leading-display-multiline: 0.88;
+  --leading-reading-display: 1.08;
   --type-compact-label: 1.1rem;
   --type-compact-action: 1.2rem;
   --canvas: 120rem;
@@ -2751,7 +2752,7 @@ a.scene-corner--latest:focus-visible {
   font-family: var(--reading);
   font-size: clamp(5.4rem, 6.5vw, 9rem);
   font-weight: 500;
-  line-height: 0.98;
+  line-height: var(--leading-reading-display);
   letter-spacing: var(--tracking-reading-display);
 }
 
@@ -2918,7 +2919,7 @@ a.scene-corner--latest:focus-visible {
   .article-hero-inner { min-height: 0; padding: 2.4rem 0 6rem; }
   .article-hero-top { align-items: flex-start; flex-direction: column; gap: 1.2rem; }
   .article-hero-title { padding: 7rem 0 5rem; }
-.article-page--editorial .article-hero-title h1 { font-size: clamp(4.6rem, 14.5vw, 6.4rem); line-height: 0.96; }
+  .article-page--editorial .article-hero-title h1 { font-size: clamp(4.2rem, 12vw, 5.4rem); }
   .article-hero-bottom { grid-template-columns: 1fr; align-items: start; gap: 3rem; }
   .article-hero-bottom .article-dek { font-size: 1.75rem; }
   .article-reading-surface { padding: 6rem 0 9rem; }
