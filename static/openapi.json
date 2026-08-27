@@ -1,0 +1,126 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "varyvoda.com Agent API",
+    "version": "1.0.0",
+    "description": "A read-only discovery endpoint for Igor Varyvoda's site. Site pages also support text/markdown content negotiation."
+  },
+  "servers": [
+    {
+      "url": "https://www.varyvoda.com"
+    }
+  ],
+  "security": [],
+  "paths": {
+    "/api": {
+      "get": {
+        "operationId": "getSiteIndex",
+        "summary": "Get the agent-readable site index",
+        "responses": {
+          "200": {
+            "description": "Site identity and machine-readable entry points",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SiteIndex"
+                }
+              }
+            }
+          },
+          "405": {
+            "$ref": "#/components/responses/MethodNotAllowed"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SiteIndex": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "description", "url", "resources"],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "resources": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["openapi", "sitemap", "projects", "writing", "markdown"],
+            "properties": {
+              "openapi": {
+                "type": "string",
+                "format": "uri"
+              },
+              "sitemap": {
+                "type": "string",
+                "format": "uri"
+              },
+              "projects": {
+                "type": "string",
+                "format": "uri"
+              },
+              "writing": {
+                "type": "string",
+                "format": "uri"
+              },
+              "markdown": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["code", "message", "resolution"],
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "resolution": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "MethodNotAllowed": {
+        "description": "The HTTP method is not supported",
+        "headers": {
+          "Allow": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}

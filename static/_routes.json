@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": [
+    "/css/*",
+    "/fonts/*",
+    "/images/*",
+    "/js/*",
+    "/783cc6ce5ab0edd000732ed60336aa7c.txt",
+    "/index.xml",
+    "/openapi.json",
+    "/projects/index.xml",
+    "/projects/sirv-studio/build-record/*",
+    "/posts/index.xml",
+    "/robots.txt",
+    "/sitemap.xml"
+  ]
+}

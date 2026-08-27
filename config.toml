@@ -9,6 +9,11 @@ pygmentscodefencesguesssyntax = true
 disableKinds = ["taxonomy", "term"]
 
 disqusShortname = "varyvoda"
+
+[outputs]
+  home = ["HTML", "RSS", "Markdown"]
+  section = ["HTML", "RSS", "Markdown"]
+  page = ["HTML", "Markdown"]
 [markup.goldmark.renderer]
   unsafe= true
 [markup.highlight]

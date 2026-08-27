@@ -20,12 +20,11 @@
 
 <div class="builder-home">
   <section class="scene-hero" aria-label="Introduction">
-    <h1 class="visually-hidden">{{ .Site.Params.author }}</h1>
-    <p class="scene-sentence">
+    <h1 class="scene-sentence">
       I&rsquo;m Igor Varyvoda. I build products&nbsp;&mdash; some for
       <a href="/projects/">work</a>, some because I
       <a href="/posts/">can&rsquo;t help myself</a>.
-    </p>
+    </h1>
     <p class="scene-corner scene-corner--origin">Made in Ukraine. Based in Montenegro.</p>
     {{ range $latestPosts }}
       <a class="scene-corner scene-corner--latest" href="{{ .RelPermalink }}">

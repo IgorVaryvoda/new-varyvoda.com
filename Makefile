@@ -16,6 +16,7 @@ drafts:
 
 quality-gate: build
 	$(HTMLTEST) -c .htmltest.yml
+	node scripts/test-agent-readiness.mjs
 
 install-tools:
 	mkdir -p bin
