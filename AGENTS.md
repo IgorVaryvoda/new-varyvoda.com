@@ -6,7 +6,7 @@ Igor's personal website/blog.
 - Path: `/home/igor/Projects/new-varyvoda.com`
 - Production: `https://www.varyvoda.com`
 - Stack: Hugo static site using a customized hugo-coder theme.
-- Deployment: GitHub Actions → rclone SFTP sync (.github/workflows/main.yml), fronted by Cloudflare. netlify.toml is legacy.
+- Deployment: Cloudflare Pages via the GitHub integration. GitHub Actions also validates and syncs a legacy SFTP mirror. `netlify.toml` is legacy.
 
 ## Commands
 
@@ -37,4 +37,4 @@ hugo list drafts
 
 ## Current caveats
 
-- Production Hugo is pinned in .github/workflows/main.yml; keep local Hugo on the same version for reproducible output.
+- Keep Hugo `0.161.1` aligned across local builds, Cloudflare Pages production/preview environment variables, and `.github/workflows/main.yml`.

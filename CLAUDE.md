@@ -72,10 +72,9 @@ Main config: `/config.toml`
 
 ## Deployment
 
-Deployed via GitHub Actions (.github/workflows/main.yml):
-- On push to main: builds with pinned Hugo 0.161.1 extended, then rclone-syncs public/ to an SFTP server
-- The site is fronted by Cloudflare
-- netlify.toml is legacy/suspected-dead config — see plans/002-deploy-consolidation.md
+- Cloudflare Pages is production. Its GitHub integration builds `main` with `HUGO_VERSION=0.161.1` and publishes `public/` plus `functions/`.
+- GitHub Actions independently validates the same Hugo build, syncs a legacy SFTP mirror, checks production, and submits changed URLs to IndexNow.
+- `netlify.toml` is legacy.
 
 ## Important Notes
 

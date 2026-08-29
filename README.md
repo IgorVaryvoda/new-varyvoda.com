@@ -74,12 +74,14 @@ node scripts/test-agent-readiness.mjs
 
 ## Deployment
 
-Pushes to `main`, daily scheduled runs, and manual dispatches run `.github/workflows/main.yml`:
+Cloudflare Pages is production. Its GitHub integration builds `main` with Hugo `0.161.1+extended` and publishes `public/` plus the Pages Function.
+
+Pushes to `main`, daily scheduled runs, and manual dispatches also run `.github/workflows/main.yml`:
 
 1. Build with Hugo `0.161.1+extended`.
 2. Validate project records, generated HTML, links, and machine-readable output.
-3. Sync `public/` to the production server over SFTP with rclone.
-4. Smoke-test the new homepage, projects, first-business record, Studio, writing, and fingerprinted CSS.
+3. Sync `public/` to the legacy SFTP mirror with rclone.
+4. Smoke-test the Cloudflare Pages site after its deployment settles.
 5. Submit changed URLs to IndexNow on push events.
 
-Cloudflare fronts production. `netlify.toml` is legacy. Header and cache policy lives at the edge; see `docs/edge-headers.md`. Run `bash scripts/check-headers.sh` for the strict policy audit or `STRICT_HEADERS=0 bash scripts/check-headers.sh` for the reachability/header smoke used after deployment.
+`netlify.toml` is legacy. Header and cache policy lives at the edge; see `docs/edge-headers.md`. Run `bash scripts/check-headers.sh` for the strict policy audit or `STRICT_HEADERS=0 bash scripts/check-headers.sh` for the reachability/header smoke used after deployment.
