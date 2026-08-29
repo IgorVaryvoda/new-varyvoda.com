@@ -25,7 +25,7 @@
         <header class="contact-heading">
           <p class="eyebrow">Contact</p>
           <h1>Tell me about it.</h1>
-          <p>Want to ask about one of my projects, discuss advertising, or just get in touch?</p>
+          <p>Product work, difficult collaboration, a bug in something I maintain, or anything else worth a real conversation.</p>
           <div class="contact-links">
             {{ range sort .Site.Params.social "weight" }}
               <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
@@ -38,15 +38,16 @@
             <a href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the contact form</a>
           </div>
           <div class="contact-brief">
-            <p class="contact-brief-lead">Whatever it is, send it over.</p>
+            <p class="contact-brief-lead">Choose the useful route.</p>
             <ol>
-              <li><span>01</span><strong>Questions about my projects</strong></li>
-              <li><span>02</span><strong>Advertising and partnerships</strong></li>
-              <li><span>03</span><strong>Anything else</strong></li>
+              <li><span>01</span><strong>Discuss a product or leadership role</strong></li>
+              <li><span>02</span><strong>Collaborate on something difficult</strong></li>
+              <li><span>03</span><strong>Report a problem with one of my products</strong></li>
+              <li><span>04</span><strong>Ask or tell me something else</strong></li>
             </ol>
             <div class="contact-brief-action">
               <a class="project-primary-action" href="{{ .Params.form_url }}" target="_blank" rel="noopener">Open the contact form</a>
-              <p>A short Typeform. I read every response.</p>
+              <p>Or email <a href="mailto:{{ .Params.email }}">{{ .Params.email }}</a>. I read both.</p>
             </div>
           </div>
         </div>

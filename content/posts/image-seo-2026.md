@@ -2,6 +2,7 @@
 title: "Image SEO in 2026: Everything That Changed Since 2019"
 date: 2026-07-06
 draft: false
+content_type: "Guide"
 description: "Seven years ago I wrote a guide to image SEO for e-commerce. I re-audited every piece of advice in it. Some aged beautifully, some died, and the biggest shift is one nobody saw coming: the searcher is often not human anymore."
 ---
 

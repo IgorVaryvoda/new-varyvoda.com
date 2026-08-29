@@ -29,6 +29,7 @@ jobs:
     - name: Check links and HTML
       run: |
         curl -sfL https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz | tar -xz htmltest
+        node scripts/validate-projects.mjs
         ./htmltest -c .htmltest.yml
         node scripts/test-agent-readiness.mjs
 
@@ -48,6 +49,12 @@ jobs:
 
     - name: Sync public directory to server
       run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
+
+    - name: Post-deployment smoke check
+      env:
+        SITE: https://www.varyvoda.com
+        CACHE_BUSTER: ${{ github.sha }}
+      run: bash scripts/check-deploy.sh
 
     - name: Notify IndexNow of changed URLs
       if: github.event_name == 'push'

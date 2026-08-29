@@ -3,8 +3,11 @@ title: "VibeQ"
 date: 2026-03-05
 lastmod: 2026-08-18
 draft: false
-featured: true
+homepage_weight: 2
+atmosphere: true
+page_css: ["vibeq"]
 image: "/images/vibeq/vibeq-overview.webp"
+image_alt: "VibeQ overview showing active work, attention signals, and human-agent activity"
 ogImage: "https://www.varyvoda.com/images/vibeq/vibeq-today.jpg"
 description: "The control plane behind Sirv Studio: humans and agents work one queue, Slack is the cockpit and no run counts until the code is on the remote."
 hero_title: "vibeq"
@@ -43,111 +46,27 @@ project_chapters:
   - label: "Lesson"
     href: "#what-i-learned"
 tech_stack: ["React 19", "Cloudflare Workers", "D1", "R2", "Durable Objects", "Hermes"]
-status: "active"
+role: "Creator, product lead and principal builder"
+stewardship:
+  state: "evolving"
+  note: "The control plane changes as real agent runs, Slack conversations, and incidents expose missing evidence or weak recovery."
+last_tended: "2026-08-28"
+feedback_url: "/contact/?project=vibeq&type=question"
+proof:
+  - value: "One queue"
+    label: "Human and agent work"
+  - value: "5 ingress paths"
+    label: "Slack, MCP, API, cron, GitHub"
+users_changed: "Veniamin's QA work and the team's Slack habits changed the board from a task list into a shared control plane with proof age, attention signals, and incident history."
+imperfect: "It is an internal operating system, not a polished public SaaS. The runtime is still consolidating around fewer execution profiles, clearer recovery, and cheaper disposable work cells."
 highlights:
   - "One queue for human and agent work"
   - "Slack, MCP, API, cron and GitHub ingress"
   - "Replayable sessions with approvals and evidence"
   - "Disposable Cloudflare work cells for risky execution"
-weight: 2
+weight: 3
 ---
 
-<style>
-.project-description .vq-visual {
-  --vq-bg: #0a1018;
-  --vq-line: rgba(255, 255, 255, 0.12);
-  --vq-text: #edf7fb;
-  --vq-muted: #94a6b4;
-  --vq-cyan: #66d9ef;
-  --vq-green: #a6e3a1;
-  --vq-amber: #f9c97a;
-  position: relative;
-  margin: 3rem 0;
-  padding: clamp(1.4rem, 3vw, 2rem);
-  border: 1px solid var(--vq-line);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(102, 217, 239, 0.12), transparent 34%),
-    linear-gradient(315deg, rgba(166, 227, 161, 0.08), transparent 38%),
-    var(--vq-bg);
-  color: var(--vq-text);
-  overflow: hidden;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
-}
-
-.project-description .vq-visual::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 78%);
-}
-
-.project-description .vq-visual > * {
-  position: relative;
-  z-index: 1;
-}
-
-.project-description .vq-visual-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.4rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.project-description .vq-visual-head span {
-  color: var(--vq-cyan);
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.project-description .vq-visual-head strong {
-  color: var(--vq-muted);
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.project-description .vq-visual figcaption {
-  margin-top: 1.35rem;
-  color: var(--vq-muted);
-  font-size: 1.25rem;
-  line-height: 1.55;
-}
-
-.project-description .vq-workpath svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.project-description .vq-workpath text {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-@media (max-width: 760px) {
-  .project-description .vq-visual {
-    margin-left: -0.4rem;
-    margin-right: -0.4rem;
-  }
-
-  .project-description .vq-workpath {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .project-description .vq-workpath svg {
-    min-width: 660px;
-  }
-}
-</style>
 
 ## I needed a queue I could trust
 
@@ -217,14 +136,7 @@ Sirvant also has a real authority boundary. Read-only inspection is cheap. A req
 
 Interactive Slack work, scheduled automation and batch jobs all enter the same underlying system. The mode changes how work starts and where the result returns. It does not create a separate bot, memory or approval model.
 
-<figure class="vq-visual vq-workpath" aria-labelledby="vq-workpath-title">
-  <div class="vq-visual-head">
-    <span id="vq-workpath-title">work path</span>
-    <strong>request → durable record → evidence</strong>
-  </div>
-  <svg viewBox="0 0 920 620" role="img" aria-label="VibeQ work path: Slack, GitHub, API, schedule and the VibeQ interface enter one Cloudflare front door, become a durable work item in the VibeQ ledger, a Hermes or OMP supervisor runs a short thinking session, then answers directly or starts a disposable work cell, and evidence returns to VibeQ and Slack."><defs><marker id="vq-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#66d9ef"/></marker><marker id="vq-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a6e3a1"/></marker><linearGradient id="vq-node" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#152231"/><stop offset="100%" stop-color="#0d141e"/></linearGradient></defs><g><rect x="44" y="30" width="152" height="46" rx="8" fill="url(#vq-node)" stroke="rgba(102,217,239,0.5)"/><rect x="214" y="30" width="152" height="46" rx="8" fill="url(#vq-node)" stroke="rgba(255,255,255,0.16)"/><rect x="384" y="30" width="152" height="46" rx="8" fill="url(#vq-node)" stroke="rgba(255,255,255,0.16)"/><rect x="554" y="30" width="152" height="46" rx="8" fill="url(#vq-node)" stroke="rgba(255,255,255,0.16)"/><rect x="724" y="30" width="152" height="46" rx="8" fill="url(#vq-node)" stroke="rgba(255,255,255,0.16)"/><text x="120" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="middle">Slack</text><text x="290" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="middle">GitHub</text><text x="460" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="middle">API</text><text x="630" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="middle">Schedule</text><text x="800" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="middle">VibeQ UI</text></g><g stroke="rgba(102,217,239,0.45)" stroke-width="1.6" fill="none"><line x1="120" y1="76" x2="120" y2="96"/><line x1="290" y1="76" x2="290" y2="96"/><line x1="630" y1="76" x2="630" y2="96"/><line x1="800" y1="76" x2="800" y2="96"/><line x1="120" y1="96" x2="800" y2="96"/></g><g stroke="#66d9ef" stroke-width="2.2" fill="none" marker-end="url(#vq-arrow)" opacity="0.85"><line x1="460" y1="76" x2="460" y2="114"/><line x1="460" y1="182" x2="460" y2="208"/><line x1="460" y1="288" x2="460" y2="310"/><path d="M 460 378 L 460 392 Q 460 402 450 402 L 260 402 Q 250 402 250 412 L 250 422"/><path d="M 460 378 L 460 392 Q 460 402 470 402 L 660 402 Q 670 402 670 412 L 670 422"/></g><rect x="300" y="120" width="320" height="62" rx="10" fill="url(#vq-node)" stroke="rgba(102,217,239,0.38)"/><text x="460" y="146" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Cloudflare front door</text><text x="460" y="167" fill="#94a6b4" font-size="12" text-anchor="middle">signed ingress · secret boundary</text><rect x="300" y="214" width="320" height="70" rx="12" fill="#07131c" stroke="rgba(249,201,122,0.72)" stroke-width="2"/><text x="460" y="242" fill="#f9c97a" font-size="18" font-weight="800" text-anchor="middle">VibeQ ledger</text><text x="460" y="264" fill="#edf7fb" font-size="12" text-anchor="middle">durable work item · D1 state · R2 artifacts</text><rect x="300" y="316" width="320" height="62" rx="10" fill="url(#vq-node)" stroke="rgba(102,217,239,0.38)"/><text x="460" y="342" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Hermes / OMP supervisor</text><text x="460" y="363" fill="#94a6b4" font-size="12" text-anchor="middle">short-lived thinking session</text><rect x="110" y="426" width="280" height="62" rx="10" fill="url(#vq-node)" stroke="rgba(166,227,161,0.44)"/><text x="250" y="452" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Answer directly</text><text x="250" y="473" fill="#94a6b4" font-size="12" text-anchor="middle">reply lands in the thread</text><rect x="530" y="426" width="280" height="62" rx="10" fill="url(#vq-node)" stroke="rgba(203,166,247,0.44)"/><text x="670" y="452" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Disposable work cell</text><text x="670" y="473" fill="#94a6b4" font-size="12" text-anchor="middle">repo · browser · tests · CLI</text><g stroke="#a6e3a1" stroke-width="2.2" fill="none" marker-end="url(#vq-arrow-g)" opacity="0.85"><line x1="250" y1="488" x2="250" y2="540"/><line x1="670" y1="488" x2="670" y2="540"/></g><rect x="64" y="546" width="792" height="46" rx="23" fill="rgba(166,227,161,0.05)" stroke="rgba(166,227,161,0.22)"/><circle cx="96" cy="569" r="4" fill="#a6e3a1"/><text x="114" y="574" fill="#c9d6de" font-size="13" font-weight="700">evidence returns to VibeQ and Slack</text><text x="856" y="574" fill="#94a6b4" font-size="13" text-anchor="end">pushed branch · PR · artifacts · closeout</text></svg>
-  <figcaption>Every way in produces the same durable record. The thinking session is short-lived. The work cell is disposable. The evidence outlives both.</figcaption>
-</figure>
+{{< vibeq-workpath >}}
 
 Cloudflare receives signed ingress and guards the Slack and API secrets. VibeQ records session and task state in D1 and keeps larger artifacts in R2. A profile-matched Hermes or OMP supervisor claims the durable work item and starts the thinking session. If hands are needed, the normal path is a short-lived Cloudflare work cell with only the identity and permissions required for that job. A Hetzner Docker worker remains as a pinned fallback and cleanup lane. The risky environment can disappear when the work ends while VibeQ keeps the durable record.
 

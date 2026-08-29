@@ -3,9 +3,9 @@ title: "Viddl"
 date: 2020-05-01
 lastmod: 2026-07-18
 draft: false
-featured: false
 project_url: "https://viddl.me"
 image: "https://cdn.earthroulette.com/varyvoda/viddl.png"
+image_alt: "Viddl video downloader with a single URL input and download action"
 description: "A free video downloader I built because the alternatives were ad farms with a download button hidden somewhere inside. Paste a YouTube, X, Instagram, Facebook, Reddit, or Threads URL and get the MP4."
 hero_kicker: "No-ads utility"
 hero_intro: "I got tired of video downloaders that looked like malware, so I built the boring version: paste a link, get the video, leave."
@@ -20,13 +20,25 @@ hero_flow:
   - "Fetch the MP4"
   - "Get out"
 tech_stack: ["Web App", "Video", "PWA"]
-status: "archived"
+role: "Creator and sole builder"
+stewardship:
+  state: "long-running"
+  note: "Kept online and repaired when upstream services change; deliberately not expanded into a larger product."
+last_tended: "2026-05-11"
+feedback_url: "/contact/?project=viddl&type=bug"
+proof:
+  - value: "6"
+    label: "Supported social platforms"
+  - value: "2020–present"
+    label: "Continuously operated"
+users_changed: "Compatibility failures are the roadmap. When somebody reports a link that stopped resolving, the useful work is restoring that path rather than adding another screen."
+imperfect: "Viddl depends on upstream sites that change without warning. A supported service can break until the resolver catches up; that dependency is inherent to the product."
 highlights:
   - "YouTube, X, Instagram, Facebook, Reddit, and Threads"
   - "Free MP4 downloads without an account"
   - "No fake buttons or ad maze"
   - "Still online, deliberately low-maintenance"
-weight: 7
+weight: 12
 ---
 
 ## Why it exists

@@ -1,0 +1,13 @@
+<li>
+  <a href="{{ .RelPermalink }}">
+    <div class="writing-title-group">
+      <h3>{{ .Title }}</h3>
+      {{ if .Description }}<p>{{ .Description }}</p>{{ else }}<p>{{ .Summary | plainify | truncate 180 }}</p>{{ end }}
+    </div>
+    <div class="writing-meta">
+      <span>{{ .Params.content_type | default "Field note" }}</span>
+      <span>{{ .Date.Format "02 Jan 2006" }}</span>
+      <span>{{ .ReadingTime }} min</span>
+    </div>
+  </a>
+</li>

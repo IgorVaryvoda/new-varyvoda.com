@@ -4,6 +4,8 @@ description: "How I pushed a Vue/Nuxt site to top performance with Sirv: on-the-
 date: 2023-09-30
 url: /experts-nuxt-Sirv/
 draft: false
+content_type: "Guide"
+older_archive: true
 ogImage: "https://cdn.earthroulette.com/varyvoda/blog-images/boast2.png"
 ---
 My latest project is [Sirv Experts](https://experts.sirv.com), a directory of professionals proficient with Sirv that we can vouch for.

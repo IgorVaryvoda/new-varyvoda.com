@@ -2,6 +2,7 @@
 title: "What I actually do all day"
 date: 2026-08-18
 draft: false
+content_type: "Essay"
 description: "One Saturday: 31 pushes across three repos, plus two new ones created eight seconds apart. I didn't type any of it. Here's what the day actually was."
 ---
 

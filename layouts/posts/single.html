@@ -23,7 +23,7 @@
   <header class="article-hero">
     <div class="article-hero-inner">
       <div class="article-hero-top">
-        <p><a href="/posts/">Writing index</a><span>Field note</span></p>
+        <p><a href="/posts/">Writing index</a><span>{{ .Params.content_type | default "Field note" }}</span></p>
         <p><span>{{ .Date.Format "02 Jan 2006" }}</span><span>{{ .ReadingTime }} min read</span></p>
       </div>
 
@@ -42,7 +42,7 @@
   <section class="article-reading-surface" id="article-body">
     <div class="article-reading-inner">
       <aside class="article-rail" aria-label="Article contents">
-        <p class="article-rail-label">In this note</p>
+        <p class="article-rail-label">In this {{ .Params.content_type | default "note" | lower }}</p>
         {{ .TableOfContents }}
         <dl>
           <div><dt>Published</dt><dd>{{ .Date.Format "02 Jan 2006" }}</dd></div>
@@ -54,7 +54,7 @@
         {{ if .Params.featuredImage }}<img src="{{ .Params.featuredImage }}" alt="Featured image">{{ end }}
         {{ .Content }}
         <footer class="article-end">
-          <span>— End of note</span>
+          <span>— End of {{ .Params.content_type | default "note" | lower }}</span>
           <a href="/posts/">Back to writing index</a>
         </footer>
         {{ partial "posts/series.html" . }}

@@ -3,10 +3,10 @@ title: "Sirv Experts Directory"
 date: 2023-08-01
 lastmod: 2026-07-18
 draft: false
-featured: false
 project_url: "https://experts.sirv.com"
 app_store_url: "https://apps.apple.com/us/app/sirv-experts/id6451147499"
 image: "https://cdn.earthroulette.com/varyvoda/experts.png"
+image_alt: "Sirv Experts directory showing product-media specialists and location search"
 description: "A focused directory for finding product photographers, retouchers, 3D artists, videographers, and developers who already understand Sirv. Search locally or worldwide, inspect their work, and contact them directly."
 hero_title: "Sirv Experts"
 hero_kicker: "Discovery platform"
@@ -22,13 +22,24 @@ hero_flow:
   - "Check real work"
   - "Contact directly"
 tech_stack: ["Nuxt", "Directory", "Search", "Maps"]
-status: "active"
+role: "Creator and sole builder"
+stewardship:
+  state: "maintained"
+  note: "Listings, search, dependencies, and the public apps remain supported without forcing the directory into a larger marketplace."
+last_tended: "2026-07-07"
+feedback_url: "/contact/?project=sirv-experts&type=bug"
+proof:
+  - value: "9"
+    label: "Specialist categories"
+  - value: "Web + iOS"
+    label: "Public product surfaces"
+imperfect: "A focused directory is only as useful as its current listings. Geographic coverage remains uneven, and the product does not pretend a sparse market is a complete one."
 highlights:
   - "Nine specialist service categories"
   - "Local and worldwide expert search"
   - "Portfolios, reviews, and direct contact"
   - "Web directory and iOS app"
-weight: 3
+weight: 8
 ---
 
 ## The problem

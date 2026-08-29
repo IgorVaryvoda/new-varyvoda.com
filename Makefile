@@ -1,4 +1,4 @@
-.PHONY: dev dev-drafts build drafts quality-gate install-tools
+.PHONY: dev dev-drafts build drafts validate-projects quality-gate install-tools
 
 HTMLTEST := $(shell command -v htmltest 2>/dev/null || echo ./bin/htmltest)
 
@@ -14,7 +14,11 @@ build:
 drafts:
 	hugo list drafts
 
+validate-projects:
+	node scripts/validate-projects.mjs
+
 quality-gate: build
+	node scripts/validate-projects.mjs
 	$(HTMLTEST) -c .htmltest.yml
 	node scripts/test-agent-readiness.mjs
 

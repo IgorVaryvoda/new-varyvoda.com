@@ -1,0 +1,45 @@
+.work-atlas-intro-copy > p { max-width: 58rem; }
+.work-atlas-heading .quiet-meta { max-width: 42rem; text-align: right; }
+.project-system-grid--text { grid-template-columns: minmax(0, 78rem); }
+.project-system-grid--text .project-system-copy { max-width: 78rem; }
+
+.project-brief,
+.project-ownership,
+.project-honesty,
+.project-feedback { margin: 0 0 clamp(5rem, 7vw, 8rem); }
+
+.project-brief,
+.project-ownership { padding: clamp(2.4rem, 4vw, 4rem); background: var(--paper-raised); border-top: 2px solid var(--accent); }
+.project-brief > h2,
+.project-ownership > h2 { margin-top: 0.8rem; }
+.project-brief dl { margin: 2.5rem 0 0; border-top: 1px solid var(--rule); }
+.project-brief dl > div { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: 2rem; padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
+.project-brief dt { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.06em; text-transform: uppercase; }
+.project-brief dd { margin: 0; color: var(--ink); line-height: 1.6; }
+
+.ownership-list { margin-top: 2.5rem; border-top: 1px solid var(--rule); }
+.ownership-list > div { display: grid; grid-template-columns: minmax(14rem, 0.35fr) minmax(0, 1fr); gap: 2rem; padding: 1.8rem 0; border-bottom: 1px solid var(--rule); }
+.ownership-list h3,
+.ownership-list p { margin: 0; }
+.ownership-list h3 { font-size: 1.6rem; }
+.ownership-list p { color: var(--slate); }
+
+.project-proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1px; margin: 0 0 clamp(5rem, 7vw, 8rem); padding: 1px; background: var(--rule-dark); }
+.project-proof-grid > div { min-width: 0; padding: 2.2rem; background: var(--paper-raised); }
+.project-proof-grid strong,
+.project-proof-grid span { display: block; }
+.project-proof-grid strong { color: var(--accent); font-family: var(--display); font-size: 2.8rem; line-height: 1; }
+.project-proof-grid span { margin-top: 0.8rem; color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.05em; text-transform: uppercase; }
+
+.project-honesty { padding-top: 3rem; border-top: 1px solid var(--rule-dark); }
+.project-honesty h2 { margin-top: 0; }
+.project-feedback { padding: clamp(2.8rem, 5vw, 5rem); color: var(--harbor-ink); background: linear-gradient(135deg, var(--harbor), var(--harbor-deep)); border: 1px solid var(--harbor-rule); }
+.project-feedback h2 { margin: 0.8rem 0 1rem; color: var(--harbor-ink); }
+.project-feedback > p:not(.eyebrow) { color: var(--harbor-muted); }
+.project-feedback .project-primary-action { display: inline-flex; margin-top: 1.5rem; }
+
+@media (max-width: 680px) {
+  .project-brief dl > div,
+  .ownership-list > div { grid-template-columns: 1fr; gap: 0.6rem; }
+  .project-proof-grid { grid-template-columns: 1fr 1fr; }
+}

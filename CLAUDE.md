@@ -33,31 +33,26 @@ hugo new projects/my-project.md  # Create new project
 
 ### Content Structure
 - **Blog posts**: `/content/posts/` - Main blog content with markdown files
-- **Projects**: `/content/projects/` - Project showcases with metadata (featured, status, tech_stack, highlights)
+- **Projects**: `/content/projects/` - Project showcases with role, stewardship, proof, feedback, and case-study content
 - **Pages**: `/content/` - Static pages (about.md, contact.md)
 
 ### Custom Templates
 Site uses hugo-coder theme but has custom template overrides in `/layouts/`:
 
 - `/layouts/_default/baseof.html` - Base template with SEO metadata, dark mode only, custom OG image
-- `/layouts/partials/home.html` - Custom homepage with latest posts + featured projects grid
+- `/layouts/partials/home.html` - Custom homepage with current focus, career strip, living portfolio, care feed, and curated writing
 - `/layouts/posts/single.html` - Blog post template
 - `/layouts/projects/single.html` - Project detail page with breadcrumbs, tech stack badges, status indicators, and Sirv lazy loading
 - `/layouts/projects/list.html` - Projects listing page
 
 ### Styling
 - Theme SCSS files are in `/themes/hugo-coder/assets/scss/`
-- Custom styles are embedded in template files (home.html, projects/single.html)
+- Shared, route-family, component, and page-system styles live under `/assets/css/`
+- Large case-study visuals live in `/layouts/shortcodes/`; page-specific assets load through `page_css` and `page_js`
 - Site uses dark mode only (`hidecolorschemetoggle = true` in config)
 
 ### Project Metadata
-Projects use front matter with these special fields:
-- `featured: true` - Shows on homepage (displays first 4)
-- `status: active|archived|wip` - Color-coded status badges
-- `tech_stack: [...]` - Array of technologies (displayed as badges)
-- `highlights: [...]` - Key features list
-- `image: "url"` - Project thumbnail/screenshot
-- `project_url: "url"` - External project link
+Public projects require `role`, `stewardship`, `last_tended`, `description`, `image_alt`, `feedback_url`, and `proof`. Run `node scripts/validate-projects.mjs`; see `README.md` for the complete model.
 
 ### Image Handling
 - Sirv CDN is used for image optimization and lazy loading
@@ -86,5 +81,5 @@ Deployed via GitHub Actions (.github/workflows/main.yml):
 
 - Site is dark mode only (colorScheme = "dark", hidecolorschemetoggle = true)
 - Custom OG image: `https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900`
-- Homepage shows 5 latest posts and 4 featured projects
+- Homepage prominence is explicit: one `hero` current focus and projects ordered by `homepage_weight`
 - All project pages include schema.org breadcrumbs for SEO

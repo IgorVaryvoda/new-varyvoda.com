@@ -2,6 +2,9 @@
 title: "9 Actionable tips to increase Shopify sales"
 date: 2020-11-24T22:52:03+01:00
 draft: false
+content_type: "Guide"
+older_archive: true
+page_css: ["shopify-sales"]
 canonicalUrl: "https://sirv.com/blog/increase-shopify-sales/"
 sitemap:
   disable: true
@@ -490,10 +493,3 @@ James Parsons from Content Powered has an <a target="_blank" rel="noopener noref
 It's important to make a long-term investment in your customers. Keeping them happy is the ultimate goal, and that can be done by a) having a product that wows them, and b) providing a pleasant and seamless shopping experience. All of the tips above are provided to help you over-deliver on the customer experience, and, in turn, improve your e-commerce sales.
 
 Snap36 and Sirv are here to help you along the way. Get in touch with us to learn how to get your product imagery online quickly and enable your website to showcase high-resolution, high-caliber, and interactive spinning imagery.
-
-
-<style>
-.imgwide {
-    margin:20px auto;max-width:1100px;
-}
-</style>

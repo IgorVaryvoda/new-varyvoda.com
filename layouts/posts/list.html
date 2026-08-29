@@ -1,59 +1,53 @@
 {{ define "title" }}Writing · {{ .Site.Title }}{{ end }}
 {{ define "content" }}
 {{ $posts := .Pages.ByDate.Reverse }}
+{{ $current := where $posts ".Params.older_archive" "ne" true }}
+{{ $essays := where $current ".Params.content_type" "in" (slice "Essay" "Postmortem" "Field note") }}
+{{ $builds := where $current ".Params.content_type" "Build record" }}
+{{ $guides := where $current ".Params.content_type" "Guide" }}
+{{ $older := where $posts ".Params.older_archive" true }}
 <section class="writing-page">
   <header class="writing-masthead">
     <div class="writing-masthead-inner">
       <div class="writing-masthead-top">
         <div class="writing-lead-copy">
-          <p class="eyebrow">Notes from the work</p>
+          <p class="eyebrow">Essays, records, guides</p>
           <h1>Writing</h1>
-          {{ with .Content }}<div class="page-dek">{{ . }}</div>{{ end }}
+          {{ with .Content }}<div class="page-dek">{{ . }}</div>{{ else }}<p class="page-dek">The ideas behind the products, the systems that keep them running, and the lessons that survived the work.</p>{{ end }}
         </div>
-        <p class="writing-lead-meta"><span>{{ len .Pages }} notes</span><span>Newest first</span></p>
+        <p class="writing-lead-meta"><span>{{ len $posts }} pieces</span><span>Curated before chronological</span></p>
       </div>
-
-      {{ range first 1 $posts }}
-      <a class="writing-feature" href="{{ .RelPermalink }}">
-        <div class="writing-feature-meta">
-          <span>Latest note</span>
-          <span>{{ .Date.Format "02 Jan 2006" }}</span>
-          <span>{{ .ReadingTime }} min read</span>
-        </div>
-        <h2>{{ .Title }}</h2>
-        {{ if .Description }}<p>{{ .Description }}</p>{{ else }}<p>{{ .Summary | plainify | truncate 220 }}</p>{{ end }}
-        <span class="text-link">Read note</span>
-      </a>
-      {{ end }}
+      {{ partial "start-here.html" (dict "site" .Site "class" "writing-start") }}
     </div>
   </header>
 
-  <section class="writing-archive">
-    <div class="writing-archive-inner">
-      <header class="archive-heading writing-archive-heading">
-        <div><p class="eyebrow">Archive</p><h2>Earlier notes</h2></div>
-      </header>
-      <ol class="writing-index writing-index-full">
-        {{ range after 1 $posts }}
-        <li>
-          <a href="{{ .RelPermalink }}">
-            <div class="writing-title-group">
-              <h2>{{ .Title }}</h2>
-              {{ if .Description }}
-                <p>{{ .Description }}</p>
-              {{ else }}
-                <p>{{ .Summary | plainify | truncate 180 }}</p>
-              {{ end }}
-            </div>
-            <div class="writing-meta">
-              <span>{{ .Date.Format "02 Jan 2006" }}</span>
-              <span>{{ .ReadingTime }} min read</span>
-            </div>
-          </a>
-        </li>
-        {{ end }}
-      </ol>
+  <div class="writing-archive">
+    <div class="writing-archive-inner writing-groups">
+      {{ with $essays }}
+      <section class="writing-group" aria-labelledby="essays-title">
+        <header class="archive-heading writing-archive-heading"><div><p class="eyebrow">Ideas and experience</p><h2 id="essays-title">Essays</h2></div></header>
+        <ol class="writing-index writing-index-full">{{ range . }}{{ partial "writing-item.html" . }}{{ end }}</ol>
+      </section>
+      {{ end }}
+      {{ with $builds }}
+      <section class="writing-group" aria-labelledby="build-records-title">
+        <header class="archive-heading writing-archive-heading"><div><p class="eyebrow">How the work happened</p><h2 id="build-records-title">Build records</h2></div></header>
+        <ol class="writing-index writing-index-full">{{ range . }}{{ partial "writing-item.html" . }}{{ end }}</ol>
+      </section>
+      {{ end }}
+      {{ with $guides }}
+      <section class="writing-group" aria-labelledby="guides-title">
+        <header class="archive-heading writing-archive-heading"><div><p class="eyebrow">Practical reference</p><h2 id="guides-title">Technical guides</h2></div></header>
+        <ol class="writing-index writing-index-full">{{ range . }}{{ partial "writing-item.html" . }}{{ end }}</ol>
+      </section>
+      {{ end }}
+      {{ with $older }}
+      <section class="writing-group" aria-labelledby="older-title">
+        <header class="archive-heading writing-archive-heading"><div><p class="eyebrow">Earlier work</p><h2 id="older-title">Older archive</h2></div></header>
+        <ol class="writing-index writing-index-full">{{ range . }}{{ partial "writing-item.html" . }}{{ end }}</ol>
+      </section>
+      {{ end }}
     </div>
-  </section>
+  </div>
 </section>
 {{ end }}

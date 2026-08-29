@@ -2,7 +2,6 @@
 title: "CryptoTracker"
 date: 2020-11-01
 draft: true
-featured: false
 project_url: "https://cryptotracker.xyz"
 image: "https://iantiark.sirv.com/varyvoda/ct.png"
 description: "Good looking overview of top cryptocurrency prices. Simple, yet functional."

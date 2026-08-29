@@ -1,5 +1,5 @@
 {{ $sameAs := slice }}
-{{ range .Site.Params.social }}{{ $sameAs = $sameAs | append .url }}{{ end }}
+{{ range .Site.Params.social }}{{ if not (hasPrefix .url "mailto:") }}{{ $sameAs = $sameAs | append .url }}{{ end }}{{ end }}
 {{ $person := dict
   "@context" "https://schema.org"
   "@type" "Person"
@@ -17,14 +17,15 @@
 <script type="application/ld+json">{{ $website | jsonify | safeJS }}</script>
 {{ $projects := where .Site.RegularPages "Section" "projects" }}
 {{ $latestPosts := first 1 (where .Site.RegularPages "Type" "posts") }}
+{{ $homeProjects := sort (where $projects ".Params.homepage_weight" "ne" nil) ".Params.homepage_weight" }}
 
 <div class="builder-home">
-  <section class="scene-hero" aria-label="Introduction">
-    <h1 class="scene-sentence">
-      I&rsquo;m Igor Varyvoda. I build products&nbsp;&mdash; some for
-      <a href="/projects/">work</a>, some because I
-      <a href="/posts/">can&rsquo;t help myself</a>.
-    </h1>
+  <section class="scene-hero" aria-labelledby="home-title">
+    <div class="scene-message">
+      <h1 class="scene-sentence" id="home-title">I build products—and I keep them alive.</h1>
+      <p class="scene-intro">I’m Igor Varyvoda, a product builder and operator. I started with a profitable website that reached roughly 50,000 unique visitors a day, later ran developers and marketers across internet businesses, and now build Sirv Studio alongside a living portfolio of independent products.</p>
+      <p class="scene-personality">Some for work, some because I can’t help myself.</p>
+    </div>
     <p class="scene-corner scene-corner--origin">Made in Ukraine. Based in Montenegro.</p>
     {{ range $latestPosts }}
       <a class="scene-corner scene-corner--latest" href="{{ .RelPermalink }}">
@@ -41,8 +42,8 @@
     <div class="home-section-inner current-build-grid">
       <aside class="current-build-rail">
         <div>
-          <p class="eyebrow">Current project</p>
-          <p class="build-status"><span class="status-live">● Active</span><span>{{ .Date.Format "2006" }}</span></p>
+          <p class="eyebrow">{{ .Params.homepage_label | default "Current focus" }}</p>
+          <p class="build-status"><span class="stewardship-state">● {{ .Params.stewardship.state | humanize }}</span><span>Last tended {{ .Params.last_tended }}</span></p>
         </div>
       </aside>
 
@@ -51,25 +52,22 @@
           <h2 id="current-build-title">{{ .Title }}</h2>
         </header>
         {{ with .Params.image }}
-        <a class="build-visual" href="{{ $project.RelPermalink }}" aria-label="View the Sirv AI Studio project">
+        <a class="build-visual" href="{{ $project.RelPermalink }}" aria-label="{{ $project.Params.homepage_cta | default (printf "Explore %s" $project.Title) }}">
           {{ if hasPrefix . "/" }}
-            {{ partial "responsive-local-image.html" (dict "src" . "alt" "Sirv AI Studio interface" "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)" "fallbackWidth" 800) }}
+            {{ partial "responsive-local-image.html" (dict "src" . "alt" $project.Params.image_alt "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)" "fallbackWidth" 800) }}
           {{ else }}
-            <img
-              src="{{ . }}?w=800"
-              srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1500 1500w"
-              sizes="(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)"
-              alt="Sirv AI Studio interface"
-              loading="lazy"
-              decoding="async">
+            <img src="{{ . }}?w=800" srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1500 1500w" sizes="(max-width: 960px) calc(100vw - 3.6rem), min(78vw, 1500px)" alt="{{ $project.Params.image_alt }}" loading="lazy" decoding="async">
           {{ end }}
         </a>
         {{ end }}
         <div class="build-summary">
-          <p>{{ .Params.description }}</p>
+          <div>
+            <p>{{ .Params.description }}</p>
+            <p class="build-role">{{ .Params.role }}</p>
+          </div>
           <div class="build-meta">
             {{ with .Params.tech_stack }}<p class="quiet-meta">{{ delimit . " · " }}</p>{{ end }}
-            <a class="project-cta" href="{{ .RelPermalink }}">View project <span aria-hidden="true">→</span></a>
+            <a class="project-cta" href="{{ .RelPermalink }}">{{ .Params.homepage_cta | default "View project" }} <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -77,27 +75,19 @@
   </section>
   {{ end }}
 
-  <section class="recent-writing paper-band" aria-labelledby="recent-writing-title">
-    <div class="home-section-inner editorial-section-inner">
+  <section class="career-band paper-band" aria-labelledby="career-title">
+    <div class="home-section-inner">
       <header class="home-section-heading">
-        <div>
-          <p class="eyebrow">Writing</p>
-          <h2 id="recent-writing-title">Notes from the work</h2>
-        </div>
-        <a class="text-link" href="/posts/">All writing</a>
+        <div><p class="eyebrow">The through-line</p><h2 id="career-title">Five chapters, one practice.</h2></div>
+        <a class="text-link" href="/about/">Full story</a>
       </header>
-      <ol class="writing-index">
-        {{ range first 5 (where .Site.RegularPages "Type" "posts") }}
+      <ol class="career-strip">
+        {{ range $index, $chapter := hugo.Data.career }}
         <li>
-          <a href="{{ .RelPermalink }}">
-            <div class="writing-title-group">
-              <h3>{{ .Title }}</h3>
-              {{ with .Description }}<p>{{ . }}</p>{{ end }}
-            </div>
-            <div class="writing-meta">
-              <span>{{ .Date.Format "02 Jan 2006" }}</span>
-              <span>{{ .ReadingTime }} min</span>
-            </div>
+          <a href="{{ $chapter.url }}">
+            <span>{{ printf "%02d" (add $index 1) }} · {{ $chapter.phase }}</span>
+            <strong>{{ $chapter.title }}</strong>
+            <p>{{ $chapter.text }}</p>
           </a>
         </li>
         {{ end }}
@@ -108,43 +98,38 @@
   <section class="selected-work harbor-band" aria-labelledby="selected-work-title">
     <div class="home-section-inner">
       <header class="home-section-heading">
-        <div>
-          <p class="eyebrow">Selected work</p>
-          <h2 id="selected-work-title">Other things I’ve built</h2>
-        </div>
+        <div><p class="eyebrow">A living portfolio</p><h2 id="selected-work-title">Still here. Still tended.</h2></div>
         <a class="text-link" href="/projects/">Full index</a>
       </header>
+      <p class="portfolio-thesis">Some became businesses. Some stayed small and useful. None of these are presented as discarded experiments.</p>
       <div class="selected-work-list">
-        {{ range $index, $project := first 4 (where (where $projects ".Params.featured" true) ".Params.hero" "ne" true) }}
+        {{ range $index, $project := first 4 $homeProjects }}
         <a class="selected-project" href="{{ .RelPermalink }}">
           {{ with .Params.image }}
           <figure class="selected-project-visual">
-            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
             {{ if hasPrefix . "/" }}
-              {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $project.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 800) }}
+              {{ partial "responsive-local-image.html" (dict "src" . "alt" $project.Params.image_alt "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 800) }}
             {{ else }}
-              <img
-                src="{{ . }}?w=800"
-                srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1100 1100w, {{ . }}?w=1400 1400w"
-                sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw"
-                alt="{{ $project.Title }} interface"
-                loading="lazy"
-                decoding="async">
+              <img src="{{ . }}?w=800" srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1100 1100w, {{ . }}?w=1400 1400w" sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw" alt="{{ $project.Params.image_alt }}" loading="lazy" decoding="async">
             {{ end }}
+          </figure>
+          {{ else }}
+          <figure class="selected-project-visual selected-project-proof" aria-label="{{ $project.Params.image_alt }}">
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
+            {{ range first 1 $project.Params.proof }}<strong>{{ .value }}</strong><span>{{ .label }}</span>{{ end }}
           </figure>
           {{ end }}
           <div class="selected-project-copy">
-            <p class="selected-project-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ .Date.Format "2006" }}</span><span class="status-live">● {{ .Params.status | humanize }}</span></p>
+            <p class="selected-project-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ $project.Params.period | default ($project.Date.Format "2006") }}</span><span class="stewardship-state">● {{ $project.Params.stewardship.state | humanize }}</span></p>
             <h3>{{ .Params.hero_title | default .Title }}</h3>
             <p>{{ .Params.hero_intro | default .Params.description }}</p>
-            {{ with .Params.tech_stack }}<span class="quiet-meta">{{ delimit (first 4 .) " · " }}</span>{{ end }}
+            <span class="quiet-meta">{{ .Params.role }}</span>
             <span class="selected-project-action">Open project <b aria-hidden="true">→</b></span>
           </div>
           {{ with .Params.hero_flow }}
           <ol class="selected-project-flow" aria-label="{{ $project.Title }} workflow">
-            {{ range $stepIndex, $step := . }}
-            <li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>
-            {{ end }}
+            {{ range $stepIndex, $step := . }}<li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>{{ end }}
           </ol>
           {{ end }}
         </a>
@@ -153,4 +138,6 @@
     </div>
   </section>
 
+  {{ partial "recent-care.html" (dict "site" .Site "class" "paper-band") }}
+  {{ partial "start-here.html" (dict "site" .Site "class" "harbor-band" "home" true) }}
 </div>

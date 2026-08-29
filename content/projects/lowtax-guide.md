@@ -2,7 +2,6 @@
 title: "LowTax Guide"
 date: 2025-01-17
 draft: true
-featured: true
 project_url: "https://www.lowtax.guide"
 image: "https://cdn.earthroulette.com/varyvoda/lowtaxguide.png"
 description: "Compare 15+ countries for crypto-friendly taxes, visas, and banking. Find the best place to live and pay less tax on your crypto gains."

@@ -1,0 +1,27 @@
+.start-here {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: clamp(8rem, 10vw, 13rem) 0;
+  color: var(--harbor-ink);
+  background: linear-gradient(180deg, var(--harbor), var(--harbor-deep));
+}
+
+.start-here-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--harbor-rule); border-bottom: 1px solid var(--harbor-rule); }
+.start-here-grid > section { min-width: 0; padding: 2.4rem; }
+.start-here-grid > section + section { border-left: 1px solid var(--harbor-rule); }
+.start-here-grid h3 { margin: 0 0 2rem; color: var(--accent); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.08em; text-transform: uppercase; }
+.start-here-grid ol { margin: 0; padding: 0; list-style: none; }
+.start-here-grid li + li { border-top: 1px solid var(--harbor-rule); }
+.start-here-grid a { display: grid; gap: 0.6rem; padding: 1.6rem 0; }
+.start-here-grid strong { color: var(--harbor-ink); font-family: var(--reading); font-size: 1.65rem; line-height: 1.35; }
+.start-here-grid span { color: var(--harbor-muted); font-size: 1.25rem; line-height: 1.55; }
+.start-here-grid a:hover strong { color: var(--accent); }
+
+.writing-start { width: auto; margin: 0; padding: 0; background: transparent; }
+.writing-start .home-section-inner { width: 100%; }
+.writing-start .home-section-heading { margin-bottom: 3rem; }
+
+@media (max-width: 900px) {
+  .start-here-grid { grid-template-columns: 1fr; }
+  .start-here-grid > section + section { border-top: 1px solid var(--harbor-rule); border-left: 0; }
+}

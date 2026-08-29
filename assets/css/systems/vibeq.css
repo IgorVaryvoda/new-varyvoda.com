@@ -1,0 +1,94 @@
+.project-description .vq-visual {
+  --vq-bg: #0a1018;
+  --vq-line: rgba(255, 255, 255, 0.12);
+  --vq-text: #edf7fb;
+  --vq-muted: #94a6b4;
+  --vq-cyan: #66d9ef;
+  --vq-green: #a6e3a1;
+  --vq-amber: #f9c97a;
+  position: relative;
+  margin: 3rem 0;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  border: 1px solid var(--vq-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(102, 217, 239, 0.12), transparent 34%),
+    linear-gradient(315deg, rgba(166, 227, 161, 0.08), transparent 38%),
+    var(--vq-bg);
+  color: var(--vq-text);
+  overflow: hidden;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
+}
+
+.project-description .vq-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 78%);
+}
+
+.project-description .vq-visual > * {
+  position: relative;
+  z-index: 1;
+}
+
+.project-description .vq-visual-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.project-description .vq-visual-head span {
+  color: var(--vq-cyan);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.project-description .vq-visual-head strong {
+  color: var(--vq-muted);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.project-description .vq-visual figcaption {
+  margin-top: 1.35rem;
+  color: var(--vq-muted);
+  font-size: 1.25rem;
+  line-height: 1.55;
+}
+
+.project-description .vq-workpath svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.project-description .vq-workpath text {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (max-width: 760px) {
+  .project-description .vq-visual {
+    margin-left: -0.4rem;
+    margin-right: -0.4rem;
+  }
+
+  .project-description .vq-workpath {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-description .vq-workpath svg {
+    min-width: 660px;
+  }
+}

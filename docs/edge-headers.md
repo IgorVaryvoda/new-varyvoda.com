@@ -104,9 +104,9 @@ default-src 'self'; script-src 'self' 'unsafe-inline' https://scripts.sirv.com h
 
 Notes:
 
-- `'unsafe-inline'` is required today. The rendered site has
-  `onload=twemoji.parse(document.body)` on `<body>`, many inline `<style>`
-  blocks, and an inline `SirvOptions` script in `/posts/image-seo/`.
+- `'unsafe-inline'` is required today. The rendered site still has
+  `onload=twemoji.parse(document.body)` on `<body>`, legacy inline style
+  attributes, and an inline `SirvOptions` script in `/posts/image-seo/`.
 - Dropping `'unsafe-inline'` requires template/content work with nonces or
   moving the inline scripts/styles out of HTML. That is future work, not this
   rollout.
@@ -123,7 +123,7 @@ new deploys should be visible without a long browser TTL.
 
 | Match | Browser cache TTL / header | Reason |
 |---|---|---|
-| Path starts with `/css/` | `Cache-Control: public, max-age=31536000, immutable` | Hugo fingerprints CSS filenames, for example `coder.min.<hash>.css`, `coder-dark.min.<hash>.css`, and `custom.min.<hash>.css`. |
+| Path starts with `/css/` | `Cache-Control: public, max-age=31536000, immutable` | Hugo fingerprints the shared `site.min.<hash>.css` bundle and route-owned stylesheets. |
 | Path starts with `/js/` | `Cache-Control: public, max-age=31536000, immutable` | Safe for any future fingerprinted JS assets. |
 | Path starts with `/images/` | `Cache-Control: public, max-age=86400, must-revalidate` | Local image files are not consistently content-hashed. |
 | HTML and feeds | Leave current behavior | Avoid stale pages after SFTP deploys. |
@@ -137,12 +137,15 @@ new deploys should be visible without a long browser TTL.
 4. Set `Content-Security-Policy-Report-Only` to the value above.
 5. Go to Caching -> Cache Rules.
 6. Add the `/css/*`, `/js/*`, and `/images/*` cache rules from the table above.
-7. Run `bash scripts/check-headers.sh`.
+7. Run `bash scripts/check-headers.sh` for the strict policy audit.
 8. Leave CSP in report-only mode for at least 1 week and check the four key
    pages listed above.
 9. If the reports are clean, rename
    `Content-Security-Policy-Report-Only` to `Content-Security-Policy` and run
    `bash scripts/check-headers.sh` again.
 
-The current live site is expected to fail `scripts/check-headers.sh` until the
-Cloudflare response-header and cache rules are applied.
+The deployment smoke runs `STRICT_HEADERS=0 bash scripts/check-headers.sh`, so
+reachability, content type, baseline security headers, and CSS discovery still
+gate a deploy while missing CSP or immutable caching are reported as warnings.
+The strict command is expected to fail until the Cloudflare response-header
+and cache rules are applied.

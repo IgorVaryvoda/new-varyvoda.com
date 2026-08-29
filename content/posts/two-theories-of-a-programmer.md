@@ -2,103 +2,12 @@
 title: "Two theories of a programmer"
 date: 2026-07-02
 draft: false
+content_type: "Essay"
+page_css: ["two-theories"]
 description: "One theory of a programmer types the code it thought of. The other edits a fleet that types. Makers thrive, typists don't, and the data shows why."
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 ---
 
-<style>
-.two-theories-standfirst {
-  color: var(--slate);
-  font-size: 1.95rem;
-  line-height: 1.65;
-  margin-bottom: 2.2rem;
-}
-
-.two-theories-meta {
-  color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
-  letter-spacing: 0.08em;
-  margin-bottom: 1.4rem;
-  text-transform: uppercase;
-}
-
-.two-theories-figure {
-  margin: 3rem 0;
-  padding: clamp(1.5rem, 3vw, 2.2rem);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(249, 201, 122, 0.1), transparent 36%),
-    linear-gradient(315deg, rgba(102, 217, 239, 0.08), transparent 42%),
-    #10131a;
-}
-
-.two-theories-figure figcaption {
-  margin-top: 1.4rem;
-  color: #8d93a2;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
-  line-height: 1.55;
-}
-
-.two-theories-sparkpair,
-.two-theories-statpair {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem;
-}
-
-.two-theories-lab {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  margin-bottom: 1rem;
-  color: #b9c0cf;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.2rem;
-}
-
-.two-theories-dot {
-  width: 0.9rem;
-  height: 0.9rem;
-  border-radius: 999px;
-}
-
-.two-theories-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.28rem;
-  height: 8rem;
-}
-
-.two-theories-bars b {
-  flex: 1;
-  min-height: 1px;
-  border-radius: 3px 3px 0 0;
-}
-
-.two-theories-stat .n {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: clamp(3.8rem, 7vw, 5.8rem);
-  font-weight: 800;
-  line-height: 1;
-}
-
-.two-theories-stat .l {
-  margin-top: 1rem;
-  color: #b9c0cf;
-  font-size: 1.45rem;
-  line-height: 1.55;
-}
-
-@media (max-width: 640px) {
-  .two-theories-sparkpair,
-  .two-theories-statpair {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
 
 <p class="two-theories-meta">2 Jul 2026 · data: 23 Mar–2 Jul · one repo, three contributors, every commit counted</p>
 

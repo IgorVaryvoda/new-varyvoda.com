@@ -1,17 +1,10 @@
 # {{ .Site.Params.author }}
 
-I'm Igor Varyvoda. I build products — some for work, some because I can't help myself. Made in Ukraine. Based in Montenegro.
+I build products—and I keep them alive.
 
-{{ .Site.Params.description }}
+I'm Igor Varyvoda, a product builder and operator. I started with a profitable website that reached roughly 50,000 unique visitors a day, later ran developers and marketers across internet businesses, and now build Sirv Studio alongside a living portfolio of independent products.
 
-## Start here
-
-- [About]({{ "about/" | absURL }})
-- [Projects]({{ "projects/" | absURL }})
-- [Writing]({{ "posts/" | absURL }})
-- [Contact]({{ "contact/" | absURL }})
-
-## Current project
+## Current focus
 {{ range first 1 (where (where .Site.RegularPages "Section" "projects") ".Params.hero" true) }}
 
 ### [{{ .Title }}]({{ .Permalink }})
@@ -19,22 +12,37 @@ I'm Igor Varyvoda. I build products — some for work, some because I can't help
 {{ .Params.description }}
 {{ end }}
 
-## Recent writing
-{{ range first 5 (where .Site.RegularPages "Type" "posts") }}
+## Five chapters
+{{ range hugo.Data.career }}
 
-### [{{ .Title }}]({{ .Permalink }})
-
-{{ .Description | default (.Summary | plainify) }}
+- **{{ .phase }} — [{{ .title }}]({{ .url | absURL }})**: {{ .text }}
 {{ end }}
 
-## Selected work
-{{ range first 4 (where (where (where .Site.RegularPages "Section" "projects") ".Params.featured" true) ".Params.hero" "ne" true) }}
+## A living portfolio
+{{ $projects := where .Site.RegularPages "Section" "projects" }}
+{{ range first 4 (sort (where $projects ".Params.homepage_weight" "ne" nil) ".Params.homepage_weight") }}
 
 ### [{{ .Title }}]({{ .Permalink }})
 
-{{ .Params.description }}
+{{ .Params.description }} Stewardship: {{ .Params.stewardship.state | humanize }}.
+{{ end }}
+
+## Recently tended
+{{ range hugo.Data.care }}
+
+- **[{{ .title }}]({{ printf "projects/%s/" .project | absURL }})**, {{ .date }} — {{ .change }}
+{{ end }}
+
+## Start here
+{{ range hugo.Data.writing_start }}
+
+### {{ .group }}
+{{ range .items }}
+
+- [{{ .title }}]({{ .url | absURL }}) — {{ .note }}
+{{ end }}
 {{ end }}
 
 ---
 
-[Sitemap]({{ "sitemap.xml" | absURL }}) · [OpenAPI]({{ "openapi.json" | absURL }})
+[About]({{ "about/" | absURL }}) · [Projects]({{ "projects/" | absURL }}) · [Writing]({{ "posts/" | absURL }}) · [Contact]({{ "contact/" | absURL }}) · [Sitemap]({{ "sitemap.xml" | absURL }}) · [OpenAPI]({{ "openapi.json" | absURL }})

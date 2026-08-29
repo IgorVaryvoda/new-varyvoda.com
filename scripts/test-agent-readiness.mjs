@@ -57,7 +57,8 @@ for (const [header, expected] of vectors) {
 }
 
 const homeHtml = await readFile(new URL("../public/index.html", import.meta.url), "utf8");
-assert.match(homeHtml, /<h1 class=(?:"scene-sentence"|scene-sentence)>/);
+assert.match(homeHtml, /<h1\b[^>]*class=(?:"[^"]*scene-sentence[^"]*"|scene-sentence)(?:\s|>)/);
+assert.match(homeHtml, /I build products—and I keep them alive\./);
 assert.doesNotMatch(homeHtml, /<h1 class=(?:"visually-hidden"|visually-hidden)>/);
 const headingLevels = [...homeHtml.matchAll(/<h([1-6])\b/g)].map((match) => Number(match[1]));
 assert.equal(headingLevels.filter((level) => level === 1).length, 1);
@@ -71,8 +72,28 @@ const readableHome = homeHtml
   .replace(/\s+/g, " ")
   .trim();
 assert.ok(readableHome.length >= 500, `homepage has only ${readableHome.length} readable characters`);
+assert.match(homeHtml, /\/js\/atmosphere(?:\.min)?\.[a-f0-9]+\.js/);
 
-for (const path of ["index.md", "about/index.md", "posts/index.md", "projects/index.md", "projects/sirv-studio/index.md"]) {
+const aboutHtml = await readFile(new URL("../public/about/index.html", import.meta.url), "utf8");
+assert.match(aboutHtml, /page-static-scene/);
+assert.doesNotMatch(aboutHtml, /\/js\/atmosphere/);
+
+const studioHtml = await readFile(new URL("../public/projects/sirv-studio/index.html", import.meta.url), "utf8");
+assert.match(studioHtml, /\/css\/systems\/studio(?:\.min)?\.[a-f0-9]+\.css/);
+assert.match(studioHtml, /\/js\/pages\/studio(?:\.min)?\.[a-f0-9]+\.js/);
+assert.match(studioHtml, />Ownership</);
+assert.doesNotMatch(studioHtml, /\{\{</);
+
+const budjetHtml = await readFile(new URL("../public/projects/budjet/index.html", import.meta.url), "utf8");
+assert.match(budjetHtml, /page-static-scene/);
+assert.doesNotMatch(budjetHtml, /\/js\/atmosphere/);
+
+const writingHtml = await readFile(new URL("../public/posts/index.html", import.meta.url), "utf8");
+for (const heading of ["Start here.", "Essays", "Build records", "Technical guides", "Older archive"]) {
+  assert.match(writingHtml, new RegExp(`>${heading}<`));
+}
+
+for (const path of ["index.md", "about/index.md", "posts/index.md", "projects/index.md", "projects/first-internet-business/index.md", "projects/sirv-studio/index.md"]) {
   await access(new URL(`../public/${path}`, import.meta.url));
 }
 

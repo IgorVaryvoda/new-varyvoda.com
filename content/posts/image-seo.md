@@ -2,6 +2,8 @@
 title: "Image SEO for E-commerce"
 date: 2019-06-13T22:52:03+01:00
 draft: false
+content_type: "Guide"
+older_archive: true
 lastmod: 2026-07-20
 canonicalUrl: "https://sirv.com/blog/image-seo-for-ecommerce/"
 sitemap:

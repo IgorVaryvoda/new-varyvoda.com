@@ -1,0 +1,138 @@
+.shader-evidence {
+  margin: 3.2rem 0;
+}
+
+.shader-evidence-grid,
+.shader-notes,
+.shader-metrics {
+  display: grid;
+  gap: 1px;
+  padding: 1px;
+  background: var(--rule-dark);
+}
+
+.shader-evidence-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.shader-evidence-panel {
+  position: relative;
+  min-width: 0;
+  background: var(--stage);
+}
+
+.shader-evidence-panel img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.shader-evidence-label {
+  position: absolute;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  padding: 0.45rem 0.7rem;
+  color: #edf2f0;
+  background: rgba(8, 12, 15, 0.82);
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shader-evidence figcaption,
+.shader-scorecard figcaption {
+  margin-top: 1.2rem;
+  color: var(--slate);
+  font-family: var(--mono);
+  font-size: 1.15rem;
+  line-height: 1.55;
+}
+
+.shader-notes {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.shader-note {
+  padding: 1.8rem;
+  color: var(--ink);
+  background: var(--paper-raised);
+}
+
+.shader-note span,
+.shader-metric span:first-child {
+  display: block;
+  color: var(--slate);
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.shader-note q {
+  display: block;
+  margin-top: 1rem;
+  font-family: var(--reading);
+  font-size: 1.9rem;
+  font-style: italic;
+  line-height: 1.35;
+}
+
+.shader-note small {
+  display: block;
+  margin-top: 1rem;
+  color: var(--slate);
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.shader-scorecard {
+  margin: 3.2rem 0;
+  padding: clamp(1.8rem, 4vw, 3rem);
+  color: #edf2f0;
+  background: #0a1217;
+  border-top: 2px solid var(--accent);
+}
+
+.shader-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: rgba(216, 229, 228, 0.2);
+}
+
+.shader-metric {
+  padding: 1.8rem;
+  background: #0a1217;
+}
+
+.shader-metric strong {
+  display: block;
+  margin-top: 0.8rem;
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.shader-metric del {
+  color: #8b989c;
+  text-decoration-color: #d16b6b;
+}
+
+.shader-metric b {
+  color: #8aa8ff;
+  font-weight: 600;
+}
+
+.shader-metric span:first-child,
+.shader-scorecard figcaption {
+  color: #9baaad;
+}
+
+@media (max-width: 680px) {
+  .shader-evidence-grid,
+  .shader-notes,
+  .shader-metrics {
+    grid-template-columns: 1fr;
+  }
+}

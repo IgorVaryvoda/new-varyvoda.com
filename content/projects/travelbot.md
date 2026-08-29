@@ -3,11 +3,11 @@ title: "Travel Bot AI Assistant"
 date: 2025-03-15
 lastmod: 2026-07-18
 draft: false
-featured: true
 project_url: "https://www.travelbot.me"
 app_store_url: "https://apps.apple.com/us/app/travel-bot-assistant/id6504498653"
 play_store_url: "https://play.google.com/store/apps/details?id=me.travelbot.www"
 image: "https://cdn.earthroulette.com/varyvoda/travelbot.png"
+image_alt: "Travel Bot chat interface generating a day-by-day itinerary"
 description: "An AI travel planner I built on top of Earth Roulette's destination data. Describe the trip you want and it turns the conversation into a day-by-day itinerary with weather, flight, hotel, and local context."
 hero_title: "Travel Bot"
 hero_kicker: "AI travel assistant"
@@ -23,13 +23,24 @@ hero_flow:
   - "Build each day"
   - "Refine by chat"
 tech_stack: ["AI", "Chat", "Travel API", "PWA"]
-status: "active"
+role: "Creator and sole builder"
+stewardship:
+  state: "maintained"
+  note: "The apps, live data integrations, and itinerary flow remain supported."
+last_tended: "2026-05-10"
+feedback_url: "/contact/?project=travelbot&type=bug"
+proof:
+  - value: "1,000+"
+    label: "Android downloads"
+  - value: "5,000+"
+    label: "Earth Roulette destinations underneath"
+imperfect: "Itineraries are strongest when the traveller gives useful constraints. A vague prompt can still produce a polished but generic plan, so refinement remains part of the product."
 highlights:
   - "Day-by-day itineraries in under 30 seconds"
   - "Live weather, flight, and hotel context"
   - "5,000+ destinations from Earth Roulette"
   - "Web, iOS, and Android apps"
-weight: 2
+weight: 7
 ---
 
 ## Start with a sentence, not a form

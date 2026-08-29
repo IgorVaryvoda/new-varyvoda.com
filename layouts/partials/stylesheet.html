@@ -1,0 +1,7 @@
+{{ $resource := resources.Get . }}
+{{ if hugo.IsServer }}
+  <link rel="stylesheet" href="{{ $resource.RelPermalink }}" media="screen">
+{{ else }}
+  {{ $resource = $resource | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $resource.RelPermalink }}" integrity="{{ $resource.Data.Integrity }}" crossorigin="anonymous" media="screen">
+{{ end }}

@@ -2,6 +2,7 @@
 title: "Scar tissue as documentation"
 date: 2026-08-16
 draft: false
+content_type: "Essay"
 description: "My agent skills folder looks like documentation. It's actually a burn ward — every rule in it is a funeral for a specific incident that destroyed real work."
 ---
 

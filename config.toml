@@ -1,7 +1,7 @@
 baseurl = "https://www.varyvoda.com"
 title = "Igor Varyvoda"
 theme = "hugo-coder"
-languagecode = "en"
+locale = "en"
 defaultcontentlanguage = "en"
 pygmentsstyle = "bw"
 pygmentscodefences = true
@@ -21,8 +21,8 @@ disqusShortname = "varyvoda"
 
 [params]
   author = "Igor Varyvoda"
-  info = "Products, systems, writing"
-  description = "Igor Varyvoda builds products — AI tooling for e-commerce imagery, travel apps, personal utilities — and writes about the systems behind them."
+  info = "Product Builder and Operator"
+  description = "Igor Varyvoda builds and operates internet products. He grew his first commercial website to roughly 50,000 daily visitors, led cross-functional teams and growth at Magic Toolbox and Sirv, and created Sirv Studio."
   avatarurl = "https://iantiark.sirv.com/pic.jpg?w=300"
   #gravatar = "igor@varyvoda.com"
 
@@ -63,6 +63,10 @@ disqusShortname = "varyvoda"
   icon = "fa fa-github fa-2x"
   weight = 1
   url = "https://github.com/igorvaryvoda/"
+[[params.social]]
+  name = "Email"
+  weight = 2
+  url = "mailto:igor@varyvoda.com"
 
 # Menu links
 [[menu.main]]

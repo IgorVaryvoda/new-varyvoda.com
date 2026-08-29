@@ -3,9 +3,10 @@ title: "BudJet - Personal Finance Tracker"
 date: 2025-04-01
 lastmod: 2026-07-18
 draft: false
-featured: true
+homepage_weight: 4
 project_url: "https://www.budjet.app"
 image: "https://cdn.earthroulette.com/budjet/og.png"
+image_alt: "BudJet personal finance overview with transactions, budgets, and receipt data"
 description: "A personal finance tracker I built because I wanted one I would actually use. Scan a receipt, let AI extract and categorize the line items, then see where the money went without turning bookkeeping into a second job."
 hero_title: "BudJet"
 hero_kicker: "Built for daily use"
@@ -21,13 +22,25 @@ hero_flow:
   - "Share the budget"
   - "See the pattern"
 tech_stack: ["Nuxt 4", "Vue 3", "Supabase", "Gemini"]
-status: "active"
+role: "Creator and sole builder"
+stewardship:
+  state: "evolving"
+  note: "Used daily; user-reported issues, integrations, and the receipt workflow continue to improve."
+last_tended: "2026-07-16"
+feedback_url: "/contact/?project=budjet&type=bug"
+proof:
+  - value: "Daily"
+    label: "Personal use"
+  - value: "2025–present"
+    label: "Continuously operated"
+users_changed: "User reports have exposed import and categorization edge cases that screenshots never would. The receipt flow gets better by fixing those specific failures."
+imperfect: "Receipt extraction still needs a human check when merchants print unusual layouts or ambiguous line items. The goal is fast correction, not pretending the model is infallible."
 highlights:
   - "AI extraction and categorization down to receipt line items"
   - "Personal, household, and all-household views"
   - "Reports, subscriptions, savings goals, and recommendations"
   - "Web app, installable PWA, and Telegram bot"
-weight: 2
+weight: 5
 ---
 
 ## I wanted less bookkeeping

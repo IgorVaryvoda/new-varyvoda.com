@@ -2,155 +2,12 @@
 title: "Anything an agent fleet can rebuild in a quarter is not a moat"
 date: 2026-08-01
 draft: false
+content_type: "Essay"
+page_css: ["moat"]
 description: "I built a DAM, a PIM, a supplier portal, and an MCP server in seven months — which is exactly why none of them are moats. What compounds when construction is free."
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 ---
 
-<style>
-.moat-standfirst {
-  color: var(--slate);
-  font-size: 1.95rem;
-  line-height: 1.65;
-  margin-bottom: 2.2rem;
-}
-
-.moat-meta {
-  color: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.15rem;
-  letter-spacing: 0.08em;
-  margin-bottom: 1.4rem;
-  text-transform: uppercase;
-}
-
-.prose figure.moat-figure {
-  margin: 3.2rem 0;
-  padding: 1.8rem 2rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(249, 201, 122, 0.1), transparent 36%),
-    linear-gradient(315deg, rgba(102, 217, 239, 0.08), transparent 42%),
-    #10131a;
-  text-align: left;
-}
-
-.prose figure.moat-figure figcaption {
-  margin-top: 1.3rem;
-  padding-top: 1.1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: #8d93a2;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  line-height: 1.55;
-  text-align: left;
-}
-
-.moat-split {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 2.6rem;
-}
-
-.moat-col h4 {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin: 0 0 0.4rem;
-  color: #b9c0cf;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.moat-dot {
-  width: 0.8rem;
-  height: 0.8rem;
-  border-radius: 999px;
-  flex: none;
-}
-
-.prose .moat-col ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.prose .moat-col li {
-  margin: 0;
-  padding: 0.7rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  color: #8d93a2;
-  font-size: 1.22rem;
-  line-height: 1.5;
-}
-
-.prose .moat-col li:first-child {
-  border-top: 0;
-}
-
-.prose .moat-col li strong {
-  display: block;
-  margin: 0 0 0.1rem;
-  font-size: 1.32rem;
-  font-weight: 600;
-}
-
-.moat-col--decay li strong {
-  color: #e8b04b;
-}
-
-.moat-col--compound li strong {
-  color: #54c98a;
-}
-
-.prose .moat-dash > div {
-  display: grid;
-  grid-template-columns: 6.5rem 1fr;
-  gap: 1.2rem;
-  align-items: baseline;
-  margin: 0;
-  padding: 0.6rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: left;
-}
-
-.prose .moat-dash > div:first-child {
-  border-top: 0;
-  padding-top: 0;
-}
-
-.prose .moat-dash > div:last-child {
-  padding-bottom: 0.2rem;
-}
-
-.moat-dash .n {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #66d9ef;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
-.moat-dash .l {
-  color: #b9c0cf;
-  font-size: 1.28rem;
-  line-height: 1.5;
-}
-
-@media (max-width: 640px) {
-  .moat-split {
-    grid-template-columns: 1fr;
-  }
-
-  .moat-col + .moat-col h4 {
-    margin-top: 1.4rem;
-  }
-}
-</style>
 
 <p class="moat-meta">1 Aug 2026 · doctrine written 2 Jul · sequel to Two theories of a programmer</p>
 
@@ -226,16 +83,7 @@ A doctrine is only useful if it changes decisions. Four rules from mine that do:
 
 **Count moat, not features.** The quarterly dashboard that replaces the changelog as a scoreboard:
 
-<figure class="moat-figure">
-  <div class="moat-dash">
-    <div><div class="n">History</div><div class="l">Workspaces with 90-day operational history</div></div>
-    <div><div class="n">Graph</div><div class="l">Products under management</div></div>
-    <div><div class="n">Network</div><div class="l">Suppliers active across more than one workspace</div></div>
-    <div><div class="n">Trust</div><div class="l">Incident-free publish runs</div></div>
-    <div><div class="n">Reach</div><div class="l">Organic funnel entries</div></div>
-  </div>
-  <figcaption>Five numbers. If they're flat, the moat isn't growing — whatever shipped that quarter.</figcaption>
-</figure>
+{{< moat-dashboard >}}
 
 That last rule is the uncomfortable one, because a fleet makes shipping feel like winning. Five thousand commits a month is a new kind of productivity — and a new kind of temptation: construction as a vanity metric. The dashboard exists to ask the only question that matters at the end of a quarter — *did anything accumulate that a competitor's fleet can't rebuild?*
 

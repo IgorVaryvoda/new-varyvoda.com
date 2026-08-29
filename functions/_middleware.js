@@ -123,7 +123,7 @@ function apiResponse(request, url) {
 
   const body = {
     name: "Igor Varyvoda",
-    description: "Products, systems, and writing by Igor Varyvoda.",
+    description: "Products, systems, and writing by Igor Varyvoda, a product builder and operator who keeps a living portfolio of software.",
     url: `${url.origin}/`,
     resources: {
       openapi: `${url.origin}/openapi.json`,

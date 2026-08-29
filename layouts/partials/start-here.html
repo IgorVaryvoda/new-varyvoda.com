@@ -1,0 +1,20 @@
+<section class="start-here {{ .class }}" aria-labelledby="start-here-title">
+  <div class="home-section-inner">
+    <header class="home-section-heading">
+      <div><p class="eyebrow">Writing</p><h2 id="start-here-title">Start here.</h2></div>
+      {{ if .home }}<a class="text-link" href="/posts/">All writing</a>{{ end }}
+    </header>
+    <div class="start-here-grid">
+      {{ range hugo.Data.writing_start }}
+      <section>
+        <h3>{{ .group }}</h3>
+        <ol>
+          {{ range .items }}
+          <li><a href="{{ .url }}"><strong>{{ .title }}</strong>{{ with .description }}<span>{{ . }}</span>{{ end }}</a></li>
+          {{ end }}
+        </ol>
+      </section>
+      {{ end }}
+    </div>
+  </div>
+</section>

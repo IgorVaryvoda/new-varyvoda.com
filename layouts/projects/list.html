@@ -5,16 +5,16 @@
   <header class="work-masthead work-masthead--atlas">
     <div class="work-masthead-inner work-atlas-intro">
       <div class="work-atlas-topline">
-        <p class="project-masthead-meta"><span>Work index</span><span>{{ len $pages }} builds</span></p>
-        <p class="work-masthead-meta"><span>2018—{{ now.Format "2006" }}</span><span>Products · tools · experiments</span></p>
+        <p class="project-masthead-meta"><span>Living portfolio</span><span>{{ len $pages }} products</span></p>
+        <p class="work-masthead-meta"><span>Commercial · independent · formative</span><span>Built and tended</span></p>
       </div>
       <div class="work-atlas-thesis">
         <div>
-          <p class="eyebrow">Things I’ve built</p>
-          <h1>Products,<br>tools,<br>useful detours.</h1>
+          <p class="eyebrow">Things I stand behind</p>
+          <h1>A living<br>portfolio.</h1>
         </div>
         <div class="work-atlas-intro-copy">
-          <p>{{ .Params.description | default "Some for work, some because I couldn’t help myself." }}</p>
+          <p>{{ .Params.description }}</p>
           <a class="project-primary-action" href="#project-atlas">Open the index <span aria-hidden="true">↓</span></a>
         </div>
       </div>
@@ -24,11 +24,8 @@
   <section class="work-atlas" id="project-atlas">
     <div class="work-atlas-inner">
       <header class="work-atlas-heading">
-        <div>
-          <p class="eyebrow">The build index</p>
-          <h2>Pick a system.</h2>
-        </div>
-        <p class="quiet-meta">Each one started with a problem I wanted solved.</p>
+        <div><p class="eyebrow">The portfolio</p><h2>Choose a product.</h2></div>
+        <p class="quiet-meta">Stewardship describes the relationship now—not rank, affection, or success.</p>
       </header>
 
       <div class="work-atlas-grid">
@@ -36,36 +33,33 @@
         <a class="work-atlas-entry{{ if eq $index 0 }} work-atlas-entry--lead{{ end }}" href="{{ .RelPermalink }}">
           {{ with .Params.image }}
           <figure class="work-atlas-visual">
-            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.hero_frame_status | default ($project.Params.status | humanize) }}</span></figcaption>
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
             {{ if hasPrefix . "/" }}
-              {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $project.Title) "sizes" (cond (eq $index 0) "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw") "fallbackWidth" (cond (eq $index 0) 1000 640) "loading" (cond (eq $index 0) "eager" "lazy") "fetchpriority" (cond (eq $index 0) "high" "")) }}
+              {{ partial "responsive-local-image.html" (dict "src" . "alt" $project.Params.image_alt "sizes" (cond (eq $index 0) "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw") "fallbackWidth" (cond (eq $index 0) 1000 640) "loading" (cond (eq $index 0) "eager" "lazy") "fetchpriority" (cond (eq $index 0) "high" "")) }}
             {{ else }}
-              <img
-                src="{{ . }}?w={{ if eq $index 0 }}1000{{ else }}640{{ end }}"
-                srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1600 1600w"
-                sizes="{{ if eq $index 0 }}(max-width: 960px) calc(100vw - 3.6rem), 50vw{{ else }}(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw{{ end }}"
-                alt="{{ $project.Title }} interface"
-                loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"
-                {{- if eq $index 0 }} fetchpriority="high"{{ end }}
-                decoding="async">
+              <img src="{{ . }}?w={{ if eq $index 0 }}1000{{ else }}640{{ end }}" srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1200 1200w, {{ . }}?w=1600 1600w" sizes="{{ if eq $index 0 }}(max-width: 960px) calc(100vw - 3.6rem), 50vw{{ else }}(max-width: 680px) calc(100vw - 3.6rem), (max-width: 1100px) 50vw, 33vw{{ end }}" alt="{{ $project.Params.image_alt }}" loading="{{ if eq $index 0 }}eager{{ else }}lazy{{ end }}"{{ if eq $index 0 }} fetchpriority="high"{{ end }} decoding="async">
             {{ end }}
+            <span class="work-atlas-visual-action" aria-hidden="true">Open project <b>→</b></span>
+          </figure>
+          {{ else }}
+          <figure class="work-atlas-visual work-atlas-proof" aria-label="{{ $project.Params.image_alt }}">
+            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
+            {{ range first 1 $project.Params.proof }}<strong>{{ .value }}</strong><span>{{ .label }}</span>{{ end }}
             <span class="work-atlas-visual-action" aria-hidden="true">Open project <b>→</b></span>
           </figure>
           {{ end }}
 
           <div class="work-atlas-copy">
-            <p class="work-atlas-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ .Date.Format "2006" }}</span><span class="status-live">● {{ .Params.status | humanize }}</span></p>
+            <p class="work-atlas-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ $project.Params.period | default ($project.Date.Format "2006") }}</span><span class="stewardship-state">● {{ $project.Params.stewardship.state | humanize }}</span></p>
             <h3>{{ .Params.hero_title | default .Title }}</h3>
             <p>{{ .Params.hero_intro | default .Params.description }}</p>
-            {{ with .Params.tech_stack }}<span class="quiet-meta">{{ delimit (first 4 .) " · " }}</span>{{ end }}
+            <span class="quiet-meta">{{ .Params.role }}</span>
             <span class="work-atlas-action">Open project <b aria-hidden="true">→</b></span>
           </div>
 
           {{ with .Params.hero_flow }}
           <ol class="work-atlas-flow" aria-label="{{ $project.Title }} workflow">
-            {{ range $stepIndex, $step := . }}
-            <li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>
-            {{ end }}
+            {{ range $stepIndex, $step := . }}<li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>{{ end }}
           </ol>
           {{ end }}
         </a>
@@ -73,5 +67,7 @@
       </div>
     </div>
   </section>
+
+  {{ partial "recent-care.html" (dict "site" .Site "class" "harbor-band") }}
 </section>
 {{ end }}

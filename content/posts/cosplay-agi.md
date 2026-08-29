@@ -2,6 +2,7 @@
 title: "Cosplay AGI"
 date: 2026-08-20
 draft: false
+content_type: "Essay"
 description: "I have a skill whose literal trigger phrase is 'cosplay AGI.' The joke turned out to be load-bearing: everything I've built is a general intelligence made of prosthetics."
 ---
 

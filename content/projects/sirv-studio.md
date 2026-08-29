@@ -3,10 +3,13 @@ title: "Sirv AI Studio"
 date: 2026-07-02
 lastmod: 2026-07-24
 draft: false
-featured: true
 hero: true
+atmosphere: true
+page_css: ["studio"]
+page_js: ["studio"]
 project_url: "https://www.sirv.studio"
 image: "/images/studio/studio-create-prompt.webp"
+image_alt: "Sirv Studio AI batch creation interface"
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 description: "An AI product-content platform for e-commerce — I created it and built it end to end. Merchants scan their Shopify catalog, fix product content in AI batches, route supplier uploads through review, and publish safely with versioning and rollback."
 hero_note: "30+ AI tools, a workflow orchestrator, a production MCP server and API platform for AI agents, supplier portals, Stripe billing, and the reliability infrastructure underneath."
@@ -19,6 +22,8 @@ hero_frame_label: "Studio / create"
 hero_frame_status: "Live product"
 hero_secondary_url: "/projects/sirv-studio/build-record/"
 hero_secondary_label: "Read the build record"
+homepage_label: "Current focus"
+homepage_cta: "Explore Sirv Studio"
 hero_flow:
   - "Catalog scan"
   - "AI batch"
@@ -36,7 +41,32 @@ project_chapters:
   - label: "Verdict"
     href: "#so-is-it-any-good"
 tech_stack: ["React 19", "TanStack Start", "PostgreSQL", "Drizzle", "Inngest", "Stripe", "fal.ai"]
-status: "active"
+role: "Creator, product lead, architect and principal engineer"
+stewardship:
+  state: "primary-focus"
+  note: "Receiving concentrated product, engineering, and commercial energy."
+last_tended: "2026-08-29"
+feedback_url: "/contact/?project=sirv-studio&type=bug"
+proof:
+  - value: "Production"
+    label: "Enterprise supplier workflow"
+  - value: "47"
+    label: "Tools in the MCP server snapshot"
+summary:
+  problem: "Govern AI-assisted product content from intake through safe publication"
+  shipped: "Catalog scanning, AI batches, supplier portals, review, Shopify publishing, rollback, API and MCP"
+  real_use: "Enterprise supplier workflow in production"
+  team: "Igor, Max, Veniamin"
+  current_state: "Primary focus; actively evolving"
+collaborators:
+  - name: "Max Wish"
+    url: "https://www.linkedin.com/in/max-wish/"
+    contribution: "Major contributor across the internal design system and virtualized data grid, working alongside Igor across those systems."
+  - name: "Veniamin Krachun"
+    url: "https://www.linkedin.com/in/veniamin-krachun/"
+    contribution: "Owns QA, including the testing and verification infrastructure."
+users_changed: "The supplier portal became a governed intake and review system because a real enterprise workflow demanded more than a generic upload link."
+imperfect: "Construction has outrun proof. Activation, onboarding, rollback evidence, and the PIM's unfinished back half matter more now than adding another tool surface."
 highlights:
   - "Creator & architect, first commit to production"
   - "Supplier portal live with a real enterprise customer"
@@ -45,382 +75,6 @@ highlights:
 weight: 1
 ---
 
-<style>
-.project-description .studio-visual {
-  --sv-bg: #0a1018;
-  --sv-panel: #101823;
-  --sv-panel-2: #151f2b;
-  --sv-line: rgba(255, 255, 255, 0.12);
-  --sv-line-strong: rgba(102, 217, 239, 0.42);
-  --sv-text: #edf7fb;
-  --sv-muted: #94a6b4;
-  --sv-cyan: #66d9ef;
-  --sv-green: #a6e3a1;
-  --sv-amber: #f9c97a;
-  --sv-violet: #cba6f7;
-  --sv-red: #f38ba8;
-  position: relative;
-  margin: 3rem 0;
-  padding: clamp(1.4rem, 3vw, 2rem);
-  border: 1px solid var(--sv-line);
-  border-radius: 8px;
-  background:
-    linear-gradient(135deg, rgba(102, 217, 239, 0.12), transparent 34%),
-    linear-gradient(315deg, rgba(166, 227, 161, 0.08), transparent 38%),
-    var(--sv-bg);
-  color: var(--sv-text);
-  overflow: hidden;
-  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.34);
-}
-
-.project-description .studio-visual::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9), transparent 78%);
-}
-
-.project-description .studio-visual > * {
-  position: relative;
-  z-index: 1;
-}
-
-.project-description .studio-visual-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.4rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.project-description .studio-visual-head span {
-  color: var(--sv-cyan);
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.project-description .studio-visual-head strong {
-  color: var(--sv-muted);
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.project-description .studio-visual figcaption {
-  margin-top: 1.35rem;
-  color: var(--sv-muted);
-  font-size: 1.25rem;
-  line-height: 1.55;
-}
-
-.project-description .studio-dayone ol {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.project-description .studio-dayone li {
-  min-width: 0;
-  padding: 0.9rem 1rem 1rem;
-  border: 1px solid rgba(102, 217, 239, 0.2);
-  border-left: 3px solid var(--sv-cyan);
-  border-radius: 7px;
-  background: rgba(7, 16, 24, 0.72);
-}
-
-.project-description .studio-dayone time {
-  display: inline-grid;
-  place-items: center;
-  min-width: 4.9rem;
-  height: 2.4rem;
-  margin-bottom: 0.7rem;
-  border: 1px solid var(--sv-line-strong);
-  border-radius: 999px;
-  background: rgba(102, 217, 239, 0.1);
-  color: var(--sv-cyan);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.project-description .studio-dayone b,
-.project-description .studio-dayone span {
-  display: block;
-}
-
-.project-description .studio-dayone b {
-  margin-bottom: 0.2rem;
-  color: var(--sv-text);
-  font-size: 1.25rem;
-  line-height: 1.25;
-}
-
-.project-description .studio-dayone li > span {
-  color: var(--sv-muted);
-  font-size: 1.1rem;
-  line-height: 1.35;
-}
-
-.project-description .studio-snapshot-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.project-description .studio-snapshot-card {
-  min-width: 0;
-  padding: 1rem 1.05rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 7px;
-  background: rgba(7, 16, 24, 0.74);
-}
-
-.project-description .studio-snapshot-card strong,
-.project-description .studio-snapshot-card span {
-  display: block;
-}
-
-.project-description .studio-snapshot-card strong {
-  color: var(--sv-cyan);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  line-height: 1;
-  letter-spacing: -0.05em;
-}
-
-.project-description .studio-snapshot-card span {
-  margin-top: 0.55rem;
-  color: var(--sv-muted);
-  font-size: 1.05rem;
-  line-height: 1.35;
-}
-
-.project-description .studio-architecture svg,
-.project-description .studio-cumulative svg,
-.project-description .studio-april svg,
-.project-description .studio-scorecard svg {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.project-description .studio-architecture text,
-.project-description .studio-cumulative text,
-.project-description .studio-april text,
-.project-description .studio-scorecard text {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-}
-
-.project-description .studio-visual .studio-tip {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  display: none;
-  max-width: 320px;
-  padding: 0.6rem 0.8rem;
-  border: 1px solid var(--sv-line-strong);
-  border-radius: 7px;
-  background: rgba(7, 16, 24, 0.96);
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.45);
-  pointer-events: none;
-  text-align: left;
-}
-
-.project-description .studio-visual .studio-tip.is-on {
-  display: block;
-}
-
-.project-description .studio-visual .studio-tip b {
-  display: block;
-  color: var(--sv-cyan);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.3rem;
-  font-weight: 700;
-}
-
-.project-description .studio-visual .studio-tip span {
-  display: block;
-  color: var(--sv-text);
-  font-size: 1.15rem;
-  line-height: 1.4;
-}
-
-.project-description .studio-visual .studio-tip em {
-  display: block;
-  margin-top: 0.25rem;
-  color: var(--sv-muted);
-  font-size: 1.1rem;
-  font-style: normal;
-  line-height: 1.45;
-}
-
-.project-description .studio-visual [data-tip-label] {
-  cursor: pointer;
-  outline: none;
-}
-
-.project-description .studio-visual .sc-hot {
-  filter: brightness(1.35);
-}
-
-.project-description .studio-toolwall-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.9rem;
-}
-
-.project-description .studio-toolwall-cat {
-  min-width: 0;
-  padding: 1rem 1.1rem 1.1rem;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 7px;
-  background: rgba(7, 16, 24, 0.72);
-}
-
-.project-description .studio-toolwall-cat > b {
-  display: block;
-  margin-bottom: 0.8rem;
-  color: var(--sv-cyan);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.project-description .studio-toolwall-cat > b.is-green { color: var(--sv-green); }
-.project-description .studio-toolwall-cat > b.is-amber { color: var(--sv-amber); }
-.project-description .studio-toolwall-cat > b.is-violet { color: var(--sv-violet); }
-
-.project-description .studio-toolwall-wide {
-  grid-column: 1 / -1;
-}
-
-.project-description .studio-toolwall-cat span {
-  display: inline-block;
-  margin: 0 0.35rem 0.45rem 0;
-  padding: 0.3rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.04);
-  color: #cdd8e0;
-  font-size: 1.1rem;
-  line-height: 1.35;
-  white-space: nowrap;
-}
-
-
-@media (max-width: 760px) {
-  .project-description .studio-visual {
-    margin-left: -0.4rem;
-    margin-right: -0.4rem;
-  }
-
-  .project-description .studio-architecture,
-  .project-description .studio-cumulative {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .project-description .studio-architecture svg {
-    min-width: 660px;
-  }
-
-  .project-description .studio-cumulative svg {
-    min-width: 560px;
-  }
-
-  .project-description .studio-dayone ol {
-    grid-template-columns: 1fr;
-  }
-
-  .project-description .studio-snapshot-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .project-description .studio-april {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .project-description .studio-april svg {
-    min-width: 560px;
-  }
-
-  .project-description .studio-scorecard {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .project-description .studio-scorecard svg {
-    min-width: 700px;
-  }
-
-  .project-description .studio-toolwall-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.project-description .studio-timeline ol {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.project-description .studio-timeline li {
-  display: grid;
-  grid-template-columns: 5.4rem 1fr;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  border-top: 1px solid var(--sv-line);
-}
-
-.project-description .studio-timeline li:first-child {
-  border-top: 0;
-  padding-top: 0.2rem;
-}
-
-.project-description .studio-timeline time {
-  color: var(--sv-cyan);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 1.1rem;
-  font-weight: 700;
-  padding-top: 0.15rem;
-  white-space: nowrap;
-}
-
-.project-description .studio-timeline b {
-  display: block;
-  margin-bottom: 0.2rem;
-  color: var(--sv-text);
-  font-size: 1.25rem;
-  line-height: 1.3;
-}
-
-.project-description .studio-timeline span {
-  display: block;
-  color: var(--sv-muted);
-  font-size: 1.1rem;
-  line-height: 1.45;
-}
-
-@media (max-width: 760px) {
-  .project-description .studio-timeline li {
-    grid-template-columns: 4.4rem 1fr;
-    gap: 0.7rem;
-  }
-}
-</style>
 
 ## It started over a beer
 
@@ -523,14 +177,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM, with 286 committed migrations in the July 24 snapshot. Background work runs on Inngest across sync, publishing, billing, imports, repair jobs, and workflow execution, self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 5,244 tracked test and spec files across unit, integration, contract, Storybook, and browser layers. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity, is about $70 a month.
 
-<figure class="studio-visual studio-architecture" aria-labelledby="studio-architecture-title">
-  <div class="studio-visual-head">
-    <span id="studio-architecture-title">system map</span>
-    <strong>product surfaces → governed execution → external systems</strong>
-  </div>
-  <svg viewBox="0 0 920 552" role="img" aria-label="Sirv AI Studio architecture map: three product surfaces enter one governed core, which drives Postgres, Inngest jobs, AI providers, Shopify publishing, and Sirv storage, with observability across every hop."><defs><marker id="studio-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#66d9ef"/></marker><marker id="studio-arrow-g" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a6e3a1"/></marker><linearGradient id="studio-node" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#152231"/><stop offset="100%" stop-color="#0d141e"/></linearGradient></defs><g fill="#94a6b4" font-size="11" letter-spacing="0.14em"><text x="156" y="100" text-anchor="middle">SURFACES</text><text x="460" y="100" text-anchor="middle">CORE &amp; DATA</text><text x="764" y="100" text-anchor="middle">EXTERNAL SYSTEMS</text></g><g stroke="#66d9ef" stroke-width="2.2" fill="none" marker-end="url(#studio-arrow)" opacity="0.85"><path d="M 248 162 L 303.0 162 Q 313.0 162 313.0 172 L 313.0 258 Q 313.0 268 323.0 268 L 378 268"/><path d="M 248 280 L 378 280"/><path d="M 248 398 L 303.0 398 Q 313.0 398 313.0 388 L 313.0 302 Q 313.0 292 323.0 292 L 378 292"/><path d="M 542 268 L 595.0 268 Q 605.0 268 605.0 258 L 605.0 172 Q 605.0 162 615.0 162 L 668 162"/><path d="M 542 280 L 668 280"/><path d="M 542 292 L 595.0 292 Q 605.0 292 605.0 302 L 605.0 388 Q 605.0 398 615.0 398 L 668 398"/></g><g stroke="#66d9ef" stroke-width="2.2" fill="none" opacity="0.85" marker-end="url(#studio-arrow)" marker-start="url(#studio-arrow)"><line x1="460" y1="232" x2="460" y2="188"/><line x1="460" y1="328" x2="460" y2="372"/></g><rect x="64" y="128" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.45)"/><text x="156.0" y="156.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">TanStack app</text><text x="156.0" y="178.0" fill="#94a6b4" font-size="12" text-anchor="middle">merchant UI</text><rect x="64" y="246" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.45)"/><text x="156.0" y="274.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Supplier portal</text><text x="156.0" y="296.0" fill="#94a6b4" font-size="12" text-anchor="middle">intake + review</text><rect x="64" y="364" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(203,166,247,0.45)"/><text x="156.0" y="392.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">MCP + API</text><text x="156.0" y="414.0" fill="#94a6b4" font-size="12" text-anchor="middle">agent operations</text><rect x="372" y="124" width="176" height="64" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/><text x="460.0" y="150.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Postgres</text><text x="460.0" y="172.0" fill="#94a6b4" font-size="12" text-anchor="middle">products · assets · jobs</text><rect x="372" y="372" width="176" height="64" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.38)"/><text x="460.0" y="398.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Inngest</text><text x="460.0" y="420.0" fill="#94a6b4" font-size="12" text-anchor="middle">durable workflows</text><rect x="672" y="128" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(166,227,161,0.44)"/><text x="764.0" y="156.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">AI providers</text><text x="764.0" y="178.0" fill="#94a6b4" font-size="12" text-anchor="middle">image + text models</text><rect x="672" y="246" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(102,217,239,0.44)"/><text x="764.0" y="274.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Shopify</text><text x="764.0" y="296.0" fill="#94a6b4" font-size="12" text-anchor="middle">drift-safe publishing</text><rect x="672" y="364" width="184" height="68" rx="10" fill="url(#studio-node)" stroke="rgba(249,201,122,0.44)"/><text x="764.0" y="392.0" fill="#edf7fb" font-size="17" font-weight="700" text-anchor="middle">Sirv storage</text><text x="764.0" y="414.0" fill="#94a6b4" font-size="12" text-anchor="middle">assets + rollback</text><rect x="378" y="232" width="164" height="96" rx="12" fill="#07131c" stroke="rgba(249,201,122,0.72)" stroke-width="2"/><text x="460" y="270" fill="#f9c97a" font-size="18" font-weight="800" text-anchor="middle">Studio core</text><text x="460" y="292" fill="#edf7fb" font-size="12" text-anchor="middle">auth · credits</text><text x="460" y="310" fill="#edf7fb" font-size="12" text-anchor="middle">review gates</text><rect x="64" y="478" width="792" height="46" rx="23" fill="rgba(166,227,161,0.05)" stroke="rgba(166,227,161,0.22)"/><circle cx="96" cy="501" r="4" fill="#a6e3a1"/><text x="114" y="506" fill="#c9d6de" font-size="13" font-weight="700">observability across every hop</text><text x="856" y="506" fill="#94a6b4" font-size="13" text-anchor="end">Sentry · PostHog · Grafana</text></svg>
-  <figcaption>The important boundary is in the middle: UI, supplier uploads, API calls, and AI agents all enter the same governed core before jobs, providers, storage, or Shopify writes happen.</figcaption>
-</figure>
+{{< studio-architecture >}}
 
 Two teammates own critical pieces of this: [Max Wish](https://www.linkedin.com/in/max-wish/) built the internal design system and the custom virtualized data grid that powers the asset and product tables, and [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built out the E2E/QA harness that keeps the velocity you'll read about below honest.
 
@@ -609,24 +256,7 @@ By spring, Studio had outgrown its framework. The answer wasn't a rewrite branch
 
 The log tells it plainly. April 2: the supplier portal ships. April 8: `Add TanStack Start bootstrap slice` — the Next.js → TanStack Start migration begins. April 9: 182 commits in one day, the largest day of the project at that point, mid-migration, with a compatibility shim keeping the old framework's imports alive while routes moved one by one. April 10: `build: remove final next runtime dependencies`. The runtime swap of a billing, multi-tenant, background-job-running platform took about seventy-two hours, and nothing froze. The same month carried 1,337 commits from me alone.
 
-<figure class="studio-visual studio-april" aria-labelledby="studio-april-title">
-  <div class="studio-visual-head">
-    <span id="studio-april-title">April migration close-up</span>
-    <strong>Apr 6–13 · commits per day</strong>
-  </div>
-  <svg viewBox="0 0 920 270" role="img" aria-label="Commits per day from April 6 through 13; April 8 to 10 is the Next.js to TanStack Start migration window, with the migration stretch peaking at 182 commits on April 9.">
-    <rect x="291.5" y="26" width="288.2" height="216" rx="10" fill="rgba(102,217,239,0.055)" stroke="rgba(102,217,239,0.22)"/>
-    <text x="435.6" y="16" fill="#66d9ef" font-size="11" font-weight="700" letter-spacing="0.1em" text-anchor="middle">72-HOUR MIGRATION WINDOW</text>
-    <g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="90" y1="180.5" x2="880" y2="180.5"/><line x1="90" y1="131.1" x2="880" y2="131.1"/><line x1="90" y1="81.6" x2="880" y2="81.6"/></g>
-    <g><text x="80" y="184.5" fill="#94a6b4" font-size="11" text-anchor="end">50</text><text x="80" y="135.1" fill="#94a6b4" font-size="11" text-anchor="end">100</text><text x="80" y="85.6" fill="#94a6b4" font-size="11" text-anchor="end">150</text></g>
-    <line x1="90" y1="230" x2="880" y2="230" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <g><rect id="apr-b1" x="116.4" y="215.2" width="46" height="14.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b2" x="215.1" y="225.1" width="46" height="4.9" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b3" x="313.9" y="181.5" width="46" height="48.5" rx="5" fill="#66d9ef"/><rect id="apr-b4" x="412.6" y="50.0" width="46" height="180.0" rx="5" fill="#f9c97a"/><rect id="apr-b5" x="511.4" y="154.8" width="46" height="75.2" rx="5" fill="#66d9ef"/><rect id="apr-b6" x="610.1" y="147.9" width="46" height="82.1" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b7" x="708.9" y="211.2" width="46" height="18.8" rx="5" fill="rgba(102,217,239,0.55)"/><rect id="apr-b8" x="807.6" y="180.5" width="46" height="49.5" rx="5" fill="rgba(102,217,239,0.55)"/></g>
-    <g><text x="139.4" y="207.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">15</text><text x="238.1" y="217.1" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">5</text><text x="336.9" y="173.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">49</text><text x="435.6" y="42.0" fill="#f9c97a" font-size="13" font-weight="700" text-anchor="middle">182</text><text x="534.4" y="146.8" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">76</text><text x="633.1" y="139.9" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">83</text><text x="731.9" y="203.2" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">19</text><text x="830.6" y="172.5" fill="#edf7fb" font-size="13" font-weight="700" text-anchor="middle">50</text></g>
-    <g><text x="139.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 6</text><text x="238.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 7</text><text x="336.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 8</text><text x="435.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 9</text><text x="534.4" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 10</text><text x="633.1" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 11</text><text x="731.9" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 12</text><text x="830.6" y="254" fill="#94a6b4" font-size="11.5" text-anchor="middle">Apr 13</text></g>
-    <g><rect x="90.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b1" data-tip-value="15 commits" data-tip-label="Apr 6"/><rect x="189.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b2" data-tip-value="5 commits" data-tip-label="Apr 7"/><rect x="287.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b3" data-tip-value="49 commits" data-tip-label="Apr 8" data-tip-note="Add TanStack Start bootstrap slice — the migration begins"/><rect x="386.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b4" data-tip-value="182 commits" data-tip-label="Apr 9" data-tip-note="The migration's biggest day, and the project peak at that point"/><rect x="485.4" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b5" data-tip-value="76 commits" data-tip-label="Apr 10" data-tip-note="Final Next runtime dependencies removed"/><rect x="584.1" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b6" data-tip-value="83 commits" data-tip-label="Apr 11"/><rect x="682.9" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b7" data-tip-value="19 commits" data-tip-label="Apr 12"/><rect x="781.6" y="26" width="98" height="204" fill="rgba(0,0,0,0)" data-bar="#apr-b8" data-tip-value="50 commits" data-tip-label="Apr 13"/></g>
-  </svg>
-  <figcaption>The highlighted window is the live Next.js → TanStack Start migration: bootstrap on Apr 8, the 182-commit spike on Apr 9, final Next runtime dependencies removed on Apr 10.</figcaption>
-</figure>
+{{< studio-april >}}
 
 A two-day framework migration isn't a typing achievement. It's what happens when the test suite is dense enough to catch every regression an automated refactor introduces, and the review gates are strict enough to trust the throughput. Which brings up the part of this story that's actually about method.
 
@@ -634,14 +264,7 @@ A two-day framework migration isn't a typing achievement. It's what happens when
 
 The quietest month of the run — February, spent wiring billing, supplier intake, permissions, and the unglamorous plumbing that turns a demo into a business — still carried 316 of my commits. In the first 235 calendar days there were exactly five blank ones.
 
-<figure class="studio-visual studio-cumulative" aria-labelledby="studio-cumulative-title">
-  <div class="studio-visual-head">
-    <span id="studio-cumulative-title">cumulative commits</span>
-    <strong>Dec 2, 2025 → Jul 24, 2026 · my commits, cumulative</strong>
-  </div>
-  <svg viewBox="0 0 920 344" role="img" aria-label="Cumulative commits by Igor Varyvoda from December 2, 2025 through July 24, 2026, reaching 8,317, with milestones for MVP day, the MCP server, the supplier portal, teammates joining, and the April migration."><defs><linearGradient id="studio-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#66d9ef" stop-opacity="0.22"/><stop offset="100%" stop-color="#66d9ef" stop-opacity="0"/></linearGradient></defs><g stroke="rgba(255,255,255,0.09)" stroke-width="1"><line x1="70" y1="300.0" x2="894" y2="300.0"/><line x1="70" y1="238.4" x2="894" y2="238.4"/><line x1="70" y1="176.9" x2="894" y2="176.9"/><line x1="70" y1="115.3" x2="894" y2="115.3"/><line x1="70" y1="53.8" x2="894" y2="53.8"/></g><g fill="#94a6b4" font-size="11.5"><text x="60" y="304.0" text-anchor="end">0</text><text x="60" y="242.4" text-anchor="end">2k</text><text x="60" y="180.9" text-anchor="end">4k</text><text x="60" y="119.3" text-anchor="end">6k</text><text x="60" y="57.8" text-anchor="end">8k</text><text x="70.0" y="330" text-anchor="middle">Dec</text><text x="175.6" y="330" text-anchor="middle">Jan</text><text x="284.8" y="330" text-anchor="middle">Feb</text><text x="383.4" y="330" text-anchor="middle">Mar</text><text x="492.6" y="330" text-anchor="middle">Apr</text><text x="598.2" y="330" text-anchor="middle">May</text><text x="707.4" y="330" text-anchor="middle">Jun</text><text x="813.0" y="330" text-anchor="middle">Jul</text></g><path d="M 70.0 299.0 L 73.5 298.4 L 77.0 297.4 L 80.6 297.1 L 84.1 296.5 L 87.6 295.8 L 91.1 295.4 L 94.6 294.5 L 98.2 294.1 L 101.7 293.1 L 105.2 292.2 L 108.7 291.9 L 112.3 291.6 L 115.8 291.4 L 119.3 291.1 L 122.8 290.3 L 126.3 289.1 L 129.9 288.0 L 133.4 287.6 L 136.9 287.3 L 140.4 286.9 L 143.9 286.4 L 147.5 285.9 L 151.0 284.8 L 154.5 283.5 L 158.0 283.1 L 161.6 282.7 L 165.1 281.8 L 168.6 281.6 L 172.1 281.5 L 175.6 280.9 L 179.2 280.0 L 182.7 279.5 L 186.2 278.6 L 189.7 278.4 L 193.2 277.8 L 196.8 276.9 L 200.3 276.0 L 203.8 275.5 L 207.3 275.3 L 210.9 275.1 L 214.4 275.0 L 217.9 274.5 L 221.4 273.9 L 224.9 273.4 L 228.5 272.9 L 232.0 272.6 L 235.5 272.6 L 239.0 272.3 L 242.5 270.4 L 246.1 269.9 L 249.6 269.3 L 253.1 268.9 L 256.6 268.5 L 260.2 267.8 L 263.7 267.3 L 267.2 266.7 L 270.7 266.1 L 274.2 265.7 L 277.8 265.4 L 281.3 265.1 L 284.8 264.2 L 288.3 263.8 L 291.8 263.8 L 295.4 263.6 L 298.9 263.4 L 302.4 262.9 L 305.9 262.8 L 309.5 262.7 L 313.0 262.5 L 316.5 262.4 L 320.0 262.2 L 323.5 261.9 L 327.1 261.6 L 330.6 261.4 L 334.1 261.2 L 337.6 261.0 L 341.1 260.7 L 344.7 260.5 L 348.2 260.2 L 351.7 259.9 L 355.2 259.5 L 358.8 259.2 L 362.3 259.2 L 365.8 259.0 L 369.3 258.1 L 372.8 257.2 L 376.4 256.5 L 379.9 255.4 L 383.4 255.2 L 386.9 255.0 L 390.4 254.5 L 394.0 254.1 L 397.5 253.3 L 401.0 252.4 L 404.5 251.6 L 408.1 251.5 L 411.6 250.7 L 415.1 250.3 L 418.6 249.9 L 422.1 249.2 L 425.7 248.8 L 429.2 248.8 L 432.7 248.6 L 436.2 248.5 L 439.7 248.1 L 443.3 247.7 L 446.8 247.5 L 450.3 247.0 L 453.8 246.4 L 457.4 246.2 L 460.9 245.5 L 464.4 244.5 L 467.9 243.9 L 471.4 242.9 L 475.0 242.4 L 478.5 241.6 L 482.0 241.0 L 485.5 240.3 L 489.0 239.9 L 492.6 238.6 L 496.1 236.7 L 499.6 236.1 L 503.1 236.1 L 506.6 235.7 L 510.2 235.2 L 513.7 235.1 L 517.2 233.6 L 520.7 228.0 L 524.3 225.6 L 527.8 223.1 L 531.3 222.5 L 534.8 221.0 L 538.3 218.9 L 541.9 218.2 L 545.4 217.1 L 548.9 215.7 L 552.4 212.1 L 555.9 211.0 L 559.5 209.8 L 563.0 208.7 L 566.5 207.3 L 570.0 205.8 L 573.6 204.7 L 577.1 204.6 L 580.6 204.6 L 584.1 203.8 L 587.6 201.9 L 591.2 200.3 L 594.7 198.7 L 598.2 198.1 L 601.7 195.4 L 605.2 193.0 L 608.8 192.2 L 612.3 191.4 L 615.8 190.4 L 619.3 189.3 L 622.9 187.1 L 626.4 186.5 L 629.9 186.3 L 633.4 185.9 L 636.9 184.1 L 640.5 182.0 L 644.0 180.4 L 647.5 179.2 L 651.0 178.7 L 654.5 178.3 L 658.1 177.7 L 661.6 176.9 L 665.1 176.4 L 668.6 176.0 L 672.2 175.3 L 675.7 175.0 L 679.2 173.9 L 682.7 171.6 L 686.2 170.9 L 689.8 170.3 L 693.3 170.1 L 696.8 169.9 L 700.3 169.6 L 703.8 168.6 L 707.4 166.8 L 710.9 166.3 L 714.4 166.3 L 717.9 166.3 L 721.5 165.6 L 725.0 164.4 L 728.5 163.9 L 732.0 163.4 L 735.5 163.4 L 739.1 163.3 L 742.6 162.2 L 746.1 161.6 L 749.6 160.2 L 753.1 156.8 L 756.7 155.4 L 760.2 154.7 L 763.7 153.2 L 767.2 151.4 L 770.8 149.4 L 774.3 148.0 L 777.8 146.2 L 781.3 144.3 L 784.8 143.2 L 788.4 141.6 L 791.9 139.8 L 795.4 139.0 L 798.9 136.9 L 802.4 135.9 L 806.0 135.0 L 809.5 132.3 L 813.0 130.7 L 816.5 124.8 L 820.1 120.5 L 823.6 111.6 L 827.1 102.1 L 830.6 98.7 L 834.1 97.7 L 837.7 96.2 L 841.2 94.4 L 844.7 81.8 L 848.2 78.0 L 851.7 73.4 L 855.3 66.0 L 858.8 61.9 L 862.3 61.1 L 865.8 57.0 L 869.4 55.0 L 872.9 54.6 L 876.4 54.4 L 879.9 53.8 L 883.4 53.4 L 887.0 50.3 L 890.5 44.3 L 894.0 44.0 L 894.0 300 L 70.0 300 Z" fill="url(#studio-area)"/><path d="M 70.0 299.0 L 73.5 298.4 L 77.0 297.4 L 80.6 297.1 L 84.1 296.5 L 87.6 295.8 L 91.1 295.4 L 94.6 294.5 L 98.2 294.1 L 101.7 293.1 L 105.2 292.2 L 108.7 291.9 L 112.3 291.6 L 115.8 291.4 L 119.3 291.1 L 122.8 290.3 L 126.3 289.1 L 129.9 288.0 L 133.4 287.6 L 136.9 287.3 L 140.4 286.9 L 143.9 286.4 L 147.5 285.9 L 151.0 284.8 L 154.5 283.5 L 158.0 283.1 L 161.6 282.7 L 165.1 281.8 L 168.6 281.6 L 172.1 281.5 L 175.6 280.9 L 179.2 280.0 L 182.7 279.5 L 186.2 278.6 L 189.7 278.4 L 193.2 277.8 L 196.8 276.9 L 200.3 276.0 L 203.8 275.5 L 207.3 275.3 L 210.9 275.1 L 214.4 275.0 L 217.9 274.5 L 221.4 273.9 L 224.9 273.4 L 228.5 272.9 L 232.0 272.6 L 235.5 272.6 L 239.0 272.3 L 242.5 270.4 L 246.1 269.9 L 249.6 269.3 L 253.1 268.9 L 256.6 268.5 L 260.2 267.8 L 263.7 267.3 L 267.2 266.7 L 270.7 266.1 L 274.2 265.7 L 277.8 265.4 L 281.3 265.1 L 284.8 264.2 L 288.3 263.8 L 291.8 263.8 L 295.4 263.6 L 298.9 263.4 L 302.4 262.9 L 305.9 262.8 L 309.5 262.7 L 313.0 262.5 L 316.5 262.4 L 320.0 262.2 L 323.5 261.9 L 327.1 261.6 L 330.6 261.4 L 334.1 261.2 L 337.6 261.0 L 341.1 260.7 L 344.7 260.5 L 348.2 260.2 L 351.7 259.9 L 355.2 259.5 L 358.8 259.2 L 362.3 259.2 L 365.8 259.0 L 369.3 258.1 L 372.8 257.2 L 376.4 256.5 L 379.9 255.4 L 383.4 255.2 L 386.9 255.0 L 390.4 254.5 L 394.0 254.1 L 397.5 253.3 L 401.0 252.4 L 404.5 251.6 L 408.1 251.5 L 411.6 250.7 L 415.1 250.3 L 418.6 249.9 L 422.1 249.2 L 425.7 248.8 L 429.2 248.8 L 432.7 248.6 L 436.2 248.5 L 439.7 248.1 L 443.3 247.7 L 446.8 247.5 L 450.3 247.0 L 453.8 246.4 L 457.4 246.2 L 460.9 245.5 L 464.4 244.5 L 467.9 243.9 L 471.4 242.9 L 475.0 242.4 L 478.5 241.6 L 482.0 241.0 L 485.5 240.3 L 489.0 239.9 L 492.6 238.6 L 496.1 236.7 L 499.6 236.1 L 503.1 236.1 L 506.6 235.7 L 510.2 235.2 L 513.7 235.1 L 517.2 233.6 L 520.7 228.0 L 524.3 225.6 L 527.8 223.1 L 531.3 222.5 L 534.8 221.0 L 538.3 218.9 L 541.9 218.2 L 545.4 217.1 L 548.9 215.7 L 552.4 212.1 L 555.9 211.0 L 559.5 209.8 L 563.0 208.7 L 566.5 207.3 L 570.0 205.8 L 573.6 204.7 L 577.1 204.6 L 580.6 204.6 L 584.1 203.8 L 587.6 201.9 L 591.2 200.3 L 594.7 198.7 L 598.2 198.1 L 601.7 195.4 L 605.2 193.0 L 608.8 192.2 L 612.3 191.4 L 615.8 190.4 L 619.3 189.3 L 622.9 187.1 L 626.4 186.5 L 629.9 186.3 L 633.4 185.9 L 636.9 184.1 L 640.5 182.0 L 644.0 180.4 L 647.5 179.2 L 651.0 178.7 L 654.5 178.3 L 658.1 177.7 L 661.6 176.9 L 665.1 176.4 L 668.6 176.0 L 672.2 175.3 L 675.7 175.0 L 679.2 173.9 L 682.7 171.6 L 686.2 170.9 L 689.8 170.3 L 693.3 170.1 L 696.8 169.9 L 700.3 169.6 L 703.8 168.6 L 707.4 166.8 L 710.9 166.3 L 714.4 166.3 L 717.9 166.3 L 721.5 165.6 L 725.0 164.4 L 728.5 163.9 L 732.0 163.4 L 735.5 163.4 L 739.1 163.3 L 742.6 162.2 L 746.1 161.6 L 749.6 160.2 L 753.1 156.8 L 756.7 155.4 L 760.2 154.7 L 763.7 153.2 L 767.2 151.4 L 770.8 149.4 L 774.3 148.0 L 777.8 146.2 L 781.3 144.3 L 784.8 143.2 L 788.4 141.6 L 791.9 139.8 L 795.4 139.0 L 798.9 136.9 L 802.4 135.9 L 806.0 135.0 L 809.5 132.3 L 813.0 130.7 L 816.5 124.8 L 820.1 120.5 L 823.6 111.6 L 827.1 102.1 L 830.6 98.7 L 834.1 97.7 L 837.7 96.2 L 841.2 94.4 L 844.7 81.8 L 848.2 78.0 L 851.7 73.4 L 855.3 66.0 L 858.8 61.9 L 862.3 61.1 L 865.8 57.0 L 869.4 55.0 L 872.9 54.6 L 876.4 54.4 L 879.9 53.8 L 883.4 53.4 L 887.0 50.3 L 890.5 44.3 L 894.0 44.0" fill="none" stroke="#66d9ef" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><g><circle cx="70.0" cy="299.0" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="126.3" cy="289.1" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="313.0" cy="262.5" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="443.3" cy="247.7" r="5" fill="#0a1018" stroke="#66d9ef" stroke-width="2"/><circle cx="520.7" cy="228.0" r="5" fill="#0a1018" stroke="#f9c97a" stroke-width="2"/><circle cx="894.0" cy="44.0" r="5.5" fill="#0a1018" stroke="#a6e3a1" stroke-width="2"/></g><g><line x1="70.0" y1="292.0" x2="70.0" y2="283.0" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="78.0" y="277.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="start">MVP day</text><line x1="126.3" y1="282.1" x2="126.3" y2="273.1" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="126.3" y="267.1" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">MCP server</text><line x1="313.0" y1="255.5" x2="313.0" y2="246.5" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="313.0" y="240.5" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">supplier portal</text><line x1="443.3" y1="254.7" x2="443.3" y2="263.7" stroke="#66d9ef" stroke-width="1" opacity="0.5"/><text x="443.3" y="275.7" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">team joins</text><line x1="520.7" y1="221.0" x2="520.7" y2="212.0" stroke="#f9c97a" stroke-width="1" opacity="0.5"/><text x="520.7" y="206.0" fill="#edf7fb" font-size="12" font-weight="700" text-anchor="middle">migration</text><text x="888.0" y="49.0" fill="#a6e3a1" font-size="13" font-weight="800" text-anchor="end">8,317</text></g></svg>
-  <figcaption>Every one of my commits from day one to the July 24 snapshot — 8,317 of them, on a curve that steepens rather than flattens. The <a href="/projects/sirv-studio/build-record/">build record</a> breaks the same run into 48 dated milestones.</figcaption>
-</figure>
+{{< commit-curve >}}
 
 <figure class="studio-visual studio-snapshot" aria-labelledby="studio-snapshot-title">
   <div class="studio-visual-head">
@@ -698,32 +321,7 @@ The verdict: **8.25 out of 10**.
 
 One honesty note before the chart: ten reviewer agents from the same model family, reading the same repository with related instructions, are ten adversarial passes — not ten independent opinions. That is exactly why the deep-dives exist: every heavy finding was re-verified at file level before the score stood, and the scores below should be read as a rigorous self-audit, not a third-party benchmark.
 
-<figure class="studio-visual studio-scorecard" aria-labelledby="studio-scorecard-title">
-  <div class="studio-visual-head">
-    <span id="studio-scorecard-title">the scorecard</span>
-    <strong>Jul 9, 2026 · 10 parallel reviewers</strong>
-  </div>
-  <svg viewBox="0 0 920 576" role="img" aria-label="Scorecard bar chart on a 0-to-10 scale with calibration lines at 5 (typical startup), 7 (solid production), and 9 (exceptional). Overall 8.25. Domains: testing and quality 8.5, data model 8.5, frontend and design system 8.5, architecture 8, security 8. Features: supplier portal 8.5, integrations and API 8.5, orchestrator 8.5, AI tools 8, DAM 8, billing 8, marketing and SEO 8, PIM 7.">
-    <g stroke="rgba(255,255,255,0.14)" stroke-width="1" stroke-dasharray="3 4"><line x1="570" y1="28" x2="570" y2="546"/><line x1="702" y1="28" x2="702" y2="546"/><line x1="834" y1="28" x2="834" y2="546"/></g>
-    <g fill="#94a6b4" font-size="10.5" text-anchor="middle"><text x="570" y="18">5 · typical startup</text><text x="702" y="18">7 · solid production</text><text x="834" y="18">9 · exceptional</text></g>
-    <rect id="sc-o" x="240" y="44" width="544.5" height="20" rx="5" fill="#66d9ef"/>
-    <text x="232" y="58" fill="#edf7fb" font-size="14" font-weight="700" text-anchor="end">Overall</text>
-    <text x="792.5" y="59" fill="#f9c97a" font-size="15" font-weight="800">8.25</text>
-    <text x="0" y="96" fill="#94a6b4" font-size="11" letter-spacing="0.14em">DOMAINS</text>
-    <g fill="rgba(102,217,239,0.72)"><rect id="sc-d1" x="240" y="112" width="561" height="16" rx="5"/><rect id="sc-d2" x="240" y="142" width="561" height="16" rx="5"/><rect id="sc-d3" x="240" y="172" width="561" height="16" rx="5"/><rect id="sc-d4" x="240" y="202" width="528" height="16" rx="5"/><rect id="sc-d5" x="240" y="232" width="528" height="16" rx="5"/></g>
-    <g fill="#cdd8e0" font-size="13" text-anchor="end"><text x="232" y="124">Testing &amp; quality</text><text x="232" y="154">Data model</text><text x="232" y="184">Frontend &amp; design system</text><text x="232" y="214">Architecture</text><text x="232" y="244">Security</text></g>
-    <g fill="#edf7fb" font-size="13" font-weight="700"><text x="809" y="124">8.5</text><text x="809" y="154">8.5</text><text x="809" y="184">8.5</text><text x="776" y="214">8</text><text x="776" y="244">8</text></g>
-    <text x="0" y="288" fill="#94a6b4" font-size="11" letter-spacing="0.14em">FEATURES</text>
-    <g fill="rgba(102,217,239,0.72)"><rect id="sc-f1" x="240" y="300" width="561" height="16" rx="5"/><rect id="sc-f2" x="240" y="330" width="561" height="16" rx="5"/><rect id="sc-f3" x="240" y="360" width="561" height="16" rx="5"/><rect id="sc-f4" x="240" y="390" width="528" height="16" rx="5"/><rect id="sc-f5" x="240" y="420" width="528" height="16" rx="5"/><rect id="sc-f6" x="240" y="450" width="528" height="16" rx="5"/><rect id="sc-f7" x="240" y="480" width="528" height="16" rx="5"/></g>
-    <rect id="sc-f8" x="240" y="510" width="462" height="16" rx="5" fill="#f9c97a"/>
-    <g fill="#cdd8e0" font-size="13" text-anchor="end"><text x="232" y="312">Supplier portal</text><text x="232" y="342">Integrations &amp; API</text><text x="232" y="372">Orchestrator</text><text x="232" y="402">AI tools</text><text x="232" y="432">DAM</text><text x="232" y="462">Billing</text><text x="232" y="492">Marketing &amp; SEO</text><text x="232" y="522">PIM</text></g>
-    <g fill="#edf7fb" font-size="13" font-weight="700"><text x="809" y="312">8.5</text><text x="809" y="342">8.5</text><text x="809" y="372">8.5</text><text x="776" y="402">8</text><text x="776" y="432">8</text><text x="776" y="462">8</text><text x="776" y="492">8</text><text x="710" y="522">7</text></g>
-    <line x1="240" y1="546" x2="900" y2="546" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
-    <g fill="#94a6b4" font-size="11.5" text-anchor="middle"><text x="240" y="564">0</text><text x="570" y="564">5</text><text x="702" y="564">7</text><text x="834" y="564">9</text><text x="900" y="564">10</text></g>
-    <g><rect x="0" y="38" width="920" height="32" fill="rgba(0,0,0,0)" data-bar="#sc-o" data-tip-value="8.25 / 10" data-tip-label="Overall" data-tip-note="Initial pass scored 8; revised to 8.25 after four file-level deep-dives re-verified the heaviest findings."/><rect x="0" y="105" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d1" data-tip-value="8.5 / 10" data-tip-label="Testing and quality" data-tip-note="Governed e2e coverage matrix with signed evidence receipts and real-worker idempotency proofs; the unit layer leans hard on mocks."/><rect x="0" y="135" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d2" data-tip-value="8.5 / 10" data-tip-label="Data model" data-tip-note="Composite tenant-parity foreign keys and 385 CHECK constraints make cross-tenant links structurally impossible; some legacy FK and index debt."/><rect x="0" y="165" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d3" data-tip-value="8.5 / 10" data-tip-label="Frontend and design system" data-tip-note="sid-kit ships 88 contract docs and OKLCH token math with inline WCAG rationale; a few 2,000-line components remain."/><rect x="0" y="195" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d4" data-tip-value="8 / 10" data-tip-label="Architecture" data-tip-note="Layering is machine-enforced: ~100 import-safety CI assertions, zero route-to-DB imports across 502 API routes; god files tracked but tolerated."/><rect x="0" y="225" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-d5" data-tip-value="8 / 10" data-tip-label="Security" data-tip-note="DNS-pinned SSRF defense, strict OAuth rotation, and a tenant-scoping CI gate; a hardening backlog is planned and queued."/><rect x="0" y="293" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f1" data-tip-value="8.5 / 10" data-tip-label="Supplier portal" data-tip-note="End-to-end intake, validation, review, and delivery with ~430 test files; live with a real enterprise customer."/><rect x="0" y="323" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f2" data-tip-value="8.5 / 10" data-tip-label="Integrations and API" data-tip-note="47-tool MCP server with its own OAuth provider, a ratcheted 64-operation OpenAPI surface, and a deep Shopify app."/><rect x="0" y="353" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f3" data-tip-value="8.5 / 10" data-tip-label="Orchestrator" data-tip-note="Durable DAG execution with review gates, pause/resume, and four refund reconciliation paths. Revised up from 8: the feared legacy path was dead code."/><rect x="0" y="383" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f4" data-tip-value="8 / 10" data-tip-label="AI tools" data-tip-note="One factory gives 34 tool routes retry, circuit breakers, dedupe, and credit handling; deterministic pixel rules replace paid AI calls where they can."/><rect x="0" y="413" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f5" data-tip-value="8 / 10" data-tip-label="DAM" data-tip-note="Wide format support, BM25 plus vector search, versions, licensing, share links; usage analytics still missing."/><rect x="0" y="443" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f6" data-tip-value="8 / 10" data-tip-label="Billing" data-tip-note="Idempotent ledger writes, dispute clawback, dual-provider entitlements; storage quotas still run in warn mode."/><rect x="0" y="473" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f7" data-tip-value="8 / 10" data-tip-label="Marketing and SEO" data-tip-note="A ~400-URL programmatic estate with an in-house SEO CMS and a full lifecycle funnel; the editorial leg barely exists."/><rect x="0" y="503" width="920" height="30" fill="rgba(0,0,0,0)" data-bar="#sc-f8" data-tip-value="7 / 10" data-tip-label="PIM" data-tip-note="Typed attributes, a readiness engine, and industrial import are real; variant editing and non-Shopify channel sync are unfinished. Revised up from 6.5."/></g>
-  </svg>
-  <figcaption>Every rating from the July 9 scorecard, on its stated calibration scale. Hover or tab across a bar for the one-line verdict behind the number; the amber bar is the honest weak spot.</figcaption>
-</figure>
+{{< studio-scorecard >}}
 
 The theme every reviewer independently landed on is the same one that explains the velocity chapter above: the guardrails are executable, not prose. Import-safety tests function as a machine-checked log of architecture decisions. The e2e coverage matrix refuses to count a flow as covered without a signed receipt from a real run. Org scoping is a static-analysis gate that fails pull requests. Tenancy is enforced by the schema itself, so cross-tenant data links are structurally impossible rather than merely discouraged. That apparatus is what lets fleet-scale output land at production quality — and the audit is the measurement of it.
 
@@ -736,131 +334,3 @@ Two findings stuck with me. First, when the deep-dives re-verified the audit's h
 Studio also carries the less glamorous machinery a production platform needs: exponential-backoff retries with jitter, per-operation circuit breakers on AI providers, content-based idempotency keys, Redis-backed rate limits, and restore-drilled database backups. That layer has no screenshots, but it's why the rest works.
 
 <a href="https://www.sirv.studio" target="_blank">Try Sirv AI Studio →</a> · [Check the build record →](/projects/sirv-studio/build-record/)
-
-<script>
-(function () {
-  function makeTip(fig) {
-    var tip = document.createElement("div");
-    tip.className = "studio-tip";
-    fig.appendChild(tip);
-    return tip;
-  }
-
-  function fillTip(tip, value, label, note) {
-    tip.textContent = "";
-    var b = document.createElement("b");
-    b.textContent = value;
-    tip.appendChild(b);
-    var s = document.createElement("span");
-    s.textContent = label;
-    tip.appendChild(s);
-    if (note) {
-      var e = document.createElement("em");
-      e.textContent = note;
-      tip.appendChild(e);
-    }
-  }
-
-  function placeTip(tip, fig, clientX, clientY) {
-    var r = fig.getBoundingClientRect();
-    var x = clientX - r.left + fig.scrollLeft - tip.offsetWidth / 2;
-    x = Math.max(8, Math.min(x, r.width + fig.scrollLeft - tip.offsetWidth - 8));
-    var y = clientY - r.top - tip.offsetHeight - 16;
-    if (y < 6) y = clientY - r.top + 18;
-    tip.style.left = x + "px";
-    tip.style.top = y + "px";
-  }
-
-  function bindMarks(fig) {
-    var tip = makeTip(fig);
-    fig.querySelectorAll("[data-tip-label]").forEach(function (el) {
-      var barSel = el.getAttribute("data-bar");
-      var bar = barSel ? fig.querySelector(barSel) : el;
-      el.setAttribute("tabindex", "0");
-      function show(ev) {
-        fillTip(tip, el.getAttribute("data-tip-value"), el.getAttribute("data-tip-label"), el.getAttribute("data-tip-note"));
-        tip.classList.add("is-on");
-        if (bar) bar.classList.add("sc-hot");
-        var cx, cy;
-        if (ev && ev.type !== "focus" && typeof ev.clientX === "number") {
-          cx = ev.clientX;
-          cy = ev.clientY;
-        } else {
-          var box = (bar || el).getBoundingClientRect();
-          cx = box.left + box.width / 2;
-          cy = box.top;
-        }
-        placeTip(tip, fig, cx, cy);
-      }
-      function hide() {
-        tip.classList.remove("is-on");
-        if (bar) bar.classList.remove("sc-hot");
-      }
-      el.addEventListener("pointerenter", show);
-      el.addEventListener("pointermove", show);
-      el.addEventListener("pointerleave", hide);
-      el.addEventListener("focus", show);
-      el.addEventListener("blur", hide);
-    });
-  }
-
-  document.querySelectorAll(".studio-scorecard, .studio-april").forEach(bindMarks);
-
-  var fig = document.querySelector(".studio-cumulative");
-  var svg = fig && fig.querySelector("svg");
-  var curve = svg && svg.querySelector('path[stroke="#66d9ef"][fill="none"]');
-  if (curve) {
-    var nums = (curve.getAttribute("d").match(/-?[\d.]+/g) || []).map(Number);
-    var pts = [];
-    for (var i = 0; i < nums.length; i += 2) pts.push([nums[i], nums[i + 1]]);
-    var N = pts.length;
-    var NS = "http://www.w3.org/2000/svg";
-    var marker = document.createElementNS(NS, "g");
-    marker.setAttribute("style", "display:none");
-    var vline = document.createElementNS(NS, "line");
-    vline.setAttribute("y1", "40");
-    vline.setAttribute("y2", "300");
-    vline.setAttribute("stroke", "rgba(102,217,239,0.45)");
-    vline.setAttribute("stroke-dasharray", "3 4");
-    var dot = document.createElementNS(NS, "circle");
-    dot.setAttribute("r", "5");
-    dot.setAttribute("fill", "#66d9ef");
-    dot.setAttribute("stroke", "#0a1018");
-    dot.setAttribute("stroke-width", "2");
-    marker.appendChild(vline);
-    marker.appendChild(dot);
-    svg.appendChild(marker);
-    var hit = document.createElementNS(NS, "rect");
-    hit.setAttribute("x", "70");
-    hit.setAttribute("y", "20");
-    hit.setAttribute("width", "824");
-    hit.setAttribute("height", "290");
-    hit.setAttribute("fill", "rgba(0,0,0,0)");
-    svg.appendChild(hit);
-    var tip = makeTip(fig);
-    var start = new Date(2025, 11, 2).getTime();
-    var totalDays = 234;
-    hit.addEventListener("pointermove", function (ev) {
-      var r = svg.getBoundingClientRect();
-      var sx = (ev.clientX - r.left) * (920 / r.width);
-      var idx = Math.round((sx - 70) / (824 / (N - 1)));
-      idx = Math.max(0, Math.min(N - 1, idx));
-      var p = pts[idx];
-      var commits = idx === N - 1 ? 8317 : Math.round((300 - p[1]) * 8317 / 256);
-      var day = new Date(start + Math.round(idx * totalDays / (N - 1)) * 86400000);
-      vline.setAttribute("x1", p[0]);
-      vline.setAttribute("x2", p[0]);
-      dot.setAttribute("cx", p[0]);
-      dot.setAttribute("cy", p[1]);
-      marker.setAttribute("style", "");
-      fillTip(tip, commits.toLocaleString("en-US") + " commits", day.toLocaleDateString("en-US", { month: "short", day: "numeric" }));
-      tip.classList.add("is-on");
-      placeTip(tip, fig, r.left + p[0] * r.width / 920, r.top + p[1] * r.height / 344);
-    });
-    hit.addEventListener("pointerleave", function () {
-      marker.setAttribute("style", "display:none");
-      tip.classList.remove("is-on");
-    });
-  }
-})();
-</script>

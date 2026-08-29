@@ -2,6 +2,7 @@
 title: "Claude Audits, Codex Types: Anatomy of a Fleet Skill"
 date: 2026-07-06
 draft: false
+content_type: "Build record"
 description: "improve-codex is a small open-source skill that turns the 'editorial judgment over a fleet' theory into a working pipeline: an expensive model audits and reviews, cheap sandboxed executors type, and a second model family attacks every plan and every diff — nothing lands without a verdict."
 ---
 

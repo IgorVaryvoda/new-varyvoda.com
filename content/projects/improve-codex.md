@@ -2,9 +2,9 @@
 title: "improve-codex"
 date: 2026-07-18
 draft: false
-featured: false
 project_url: "https://github.com/IgorVaryvoda/improve-codex"
 image: "https://opengraph.githubassets.com/varyvoda-projects/IgorVaryvoda/improve-codex"
+image_alt: "improve-codex open-source repository overview"
 description: "An agent skill that audits a codebase, turns the findings into executable plans, and sends each plan to a sandboxed Codex worker in its own git worktree. The main agent reviews everything; nothing lands automatically."
 hero_title: "improve-codex"
 hero_title_size: "compact"
@@ -21,13 +21,24 @@ hero_flow:
   - "Execute in worktrees"
   - "Review every diff"
 tech_stack: ["Agent Skills", "Codex CLI", "Shell", "Git Worktrees"]
-status: "active"
+role: "Creator and maintainer"
+stewardship:
+  state: "evolving"
+  note: "The workflow changes when real audits, reviewers, or worktree executions expose a weak guardrail."
+last_tended: "2026-08-16"
+feedback_url: "https://github.com/IgorVaryvoda/improve-codex/issues"
+proof:
+  - value: "4 stages"
+    label: "Audit, plan, execute, review"
+  - value: "Isolated"
+    label: "One git worktree per plan"
+imperfect: "It deliberately stops before merge and depends on strong repository-specific verification. That makes it slower than an autonomous code bot and much harder to let damage the main checkout."
 highlights:
   - "One isolated git worktree per plan"
   - "Sandboxed, browser-free, CPU-capped Codex executors"
   - "Independent plan and diff reviews"
   - "Approved work waits for a human merge decision"
-weight: 6
+weight: 11
 ---
 
 I wanted the useful parts of an agent workflow separated properly: one model understands the codebase and writes the plan, Codex handles the implementation, and independent reviewers try to break the result.

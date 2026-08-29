@@ -3,6 +3,8 @@ title: "Actionable ways to help Ukraine"
 description: "Actionable ways to help Ukraine: verified donation routes, army support funds, and humanitarian resources, curated at UAHelp.me."
 date: 2022-04-09T00:52:03+01:00
 draft: false
+content_type: "Field note"
+older_archive: true
 ---
 
 Russia is waging an unprovoked and vicious war against Ukraine. Millions of people got displaced, tens of thousands of people lost their loved ones and once beautiful Ukrainian cities are getting razed to the ground.
@@ -79,4 +81,3 @@ There are several other curated lists that are nicely done, please check them ou
 - [Help Ukraine Now](https://www.helpuanow.org/)
 - [Another Help Ukraine Now :)](https://helpukrainenow.info/)
 - [Stand for Ukraine](https://standforukraine.com/)
-

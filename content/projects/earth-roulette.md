@@ -3,11 +3,12 @@ title: "Earth Roulette"
 date: 2021-06-15
 lastmod: 2026-07-18
 draft: false
-featured: true
+homepage_weight: 3
 project_url: "https://earthroulette.com"
 app_store_url: "https://apps.apple.com/us/app/earth-roulette-trip-explorer/id6449232498"
 play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casznm"
 image: "https://iantiark.sirv.com/varyvoda/er.png"
+image_alt: "Earth Roulette destination discovery interface with travel filters and a random destination"
 description: "A random destination generator I built for the moment when you want to travel but have no idea where. Spin through 5,000 places, narrow the chaos with useful filters, then turn the surprise into a trip."
 hero_kicker: "Built from scratch"
 hero_intro: "I built a button that sends you somewhere unexpected, then added enough real travel data to make the result useful rather than merely random."
@@ -22,7 +23,19 @@ hero_flow:
   - "Inspect the surprise"
   - "Plan the trip"
 tech_stack: ["Vue", "Travel Data", "Search", "API"]
-status: "active"
+role: "Creator and sole builder"
+stewardship:
+  state: "long-running"
+  note: "Destination data, integrations, and mobile flows are kept healthy while the product continues to grow selectively."
+last_tended: "2026-08-14"
+feedback_url: "/contact/?project=earth-roulette&type=bug"
+proof:
+  - value: "5,000+"
+    label: "Destinations"
+  - value: "2021–present"
+    label: "Continuously operated"
+users_changed: "Real travel planning pushed the product beyond a novelty button: filters, saved places, practical destination context, and mobile access all came from what people needed after the spin."
+imperfect: "The destination depth has outgrown parts of the navigation. There is more useful material in the database than the current interface makes easy to discover."
 highlights:
   - "5,000 destinations across every continent"
   - "Filters for budget, country, continent, and activity"

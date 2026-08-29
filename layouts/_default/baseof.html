@@ -1,3 +1,5 @@
+{{ $hasAtmosphere := or .IsHome (and (eq .Section "projects") .Params.atmosphere) }}
+{{ $documentTitle := cond .IsHome (printf "%s — %s" .Site.Title .Site.Params.info) .Title }}
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}">
   <head>
@@ -19,11 +21,11 @@
     <meta property="og:image" content="{{ $ogImage }}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="{{ $ogImage }}">
-    <meta name="twitter:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+    <meta name="twitter:title" content="{{ $documentTitle }}">
     <meta name="twitter:description" content="{{ $metaDescription }}">
     <meta property="og:url" content="{{ .Permalink }}">
     <meta property="og:site_name" content="{{ .Site.Title }}">
-    <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}">
+    <meta property="og:title" content="{{ $documentTitle }}">
     <meta property="og:description" content="{{ $metaDescription }}">
     <meta property="og:locale" content="{{ .Site.Language.Lang }}">
     {{ if .IsPage }}
@@ -34,6 +36,7 @@
     {{ else }}
       <meta property="og:type" content="website">
     {{ end }}
+
     <title>{{ block "title" . }}{{ if .IsHome }}{{ .Site.Title }} — {{ .Site.Params.info }}{{ else }}{{ .Site.Title }}{{ end }}{{ end }}</title>
 
     {{ $normalize := resources.Get "css/normalize.css" }}
@@ -53,6 +56,21 @@
       {{ $bundle := slice $normalize $styles $custom $fonts | resources.Concat "css/site.css" | minify | fingerprint }}
       <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ end }}
+
+    {{ if .IsHome }}
+      {{ partial "stylesheet.html" "css/pages/home.css" }}
+      {{ partial "stylesheet.html" "css/components/portfolio.css" }}
+      {{ partial "stylesheet.html" "css/components/start-here.css" }}
+    {{ else if eq .Section "projects" }}
+      {{ partial "stylesheet.html" "css/pages/projects.css" }}
+      {{ partial "stylesheet.html" "css/components/portfolio.css" }}
+    {{ else if eq .Section "posts" }}
+      {{ partial "stylesheet.html" "css/pages/posts.css" }}
+      {{ partial "stylesheet.html" "css/components/start-here.css" }}
+    {{ else }}
+      {{ partial "stylesheet.html" "css/pages/pages.css" }}
+    {{ end }}
+    {{ range .Params.page_css }}{{ partial "stylesheet.html" (printf "css/systems/%s.css" .) }}{{ end }}
 
     <link rel="preconnect" href="https://cdn.earthroulette.com">
     {{ if or .IsHome (and .IsSection (eq .Section "projects")) }}
@@ -80,10 +98,12 @@
     {{ end }}
     {{ hugo.Generator }}
   </head>
-  <body class="builder-index page-{{ if .IsHome }}home{{ else }}inner{{ end }} kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ with .File }} view-{{ .BaseFileName | urlize }}{{ end }}{{ with .Params.hero_flow }} has-system-hero{{ end }}{{ if and .IsSection (eq .Section "projects") }} has-work-atlas{{ end }}"{{ if .Site.Params.enableTwemoji }} onload='twemoji.parse(document.body)'{{ end }}>
+  <body class="builder-index page-{{ if .IsHome }}home{{ else }}inner{{ end }} kind-{{ .Kind }}{{ with .Section }} section-{{ . }}{{ end }}{{ with .File }} view-{{ .BaseFileName | urlize }}{{ end }}{{ with .Params.hero_flow }} has-system-hero{{ end }}{{ if and .IsSection (eq .Section "projects") }} has-work-atlas{{ end }}{{ if $hasAtmosphere }} has-atmosphere{{ else }} page-static-scene{{ end }}"{{ if .Site.Params.enableTwemoji }} onload='twemoji.parse(document.body)'{{ end }}>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <canvas class="ambient-canvas" data-atmosphere data-skyline="{{ "/images/herceg-novi-skyline.png" | relURL }}?v=4" data-day-scene="{{ "/images/herceg-novi-day.webp" | relURL }}" data-mountain-scene="{{ "/images/herceg-novi-mountains.webp" | relURL }}?v=19" aria-hidden="true"></canvas>
-    {{ if .IsHome }}<span class="celestial-hint" data-celestial-hint aria-hidden="true"></span>{{ end }}
+    {{ if $hasAtmosphere }}
+      <canvas class="ambient-canvas" data-atmosphere data-skyline="{{ "/images/herceg-novi-skyline.png" | relURL }}?v=4" data-day-scene="{{ "/images/herceg-novi-day.webp" | relURL }}" data-mountain-scene="{{ "/images/herceg-novi-mountains.webp" | relURL }}?v=19" aria-hidden="true"></canvas>
+      {{ if .IsHome }}<span class="celestial-hint" data-celestial-hint aria-hidden="true"></span>{{ end }}
+    {{ end }}
     <main class="site-shell">
       {{ partial "header.html" . }}
       <div class="content" id="main-content">
@@ -98,13 +118,16 @@
       {{ $navigationScript := resources.Get "js/navigation.js" | minify | fingerprint }}
       <script src="{{ $navigationScript.RelPermalink }}" integrity="{{ $navigationScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
     {{ end }}
-    {{ if hugo.IsServer }}
-      {{ $atmosphereScript := resources.Get "js/atmosphere.js" | fingerprint }}
-      <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
-    {{ else }}
-      {{ $atmosphereScript := resources.Get "js/atmosphere.js" | minify | fingerprint }}
-      <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
+    {{ if $hasAtmosphere }}
+      {{ if hugo.IsServer }}
+        {{ $atmosphereScript := resources.Get "js/atmosphere.js" | fingerprint }}
+        <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{ else }}
+        {{ $atmosphereScript := resources.Get "js/atmosphere.js" | minify | fingerprint }}
+        <script src="{{ $atmosphereScript.RelPermalink }}" integrity="{{ $atmosphereScript.Data.Integrity }}" crossorigin="anonymous" defer></script>
+      {{ end }}
     {{ end }}
+    {{ range .Params.page_js }}{{ partial "script.html" (printf "js/pages/%s.js" .) }}{{ end }}
     {{ range .Site.Params.customJS }}<script src="{{ . | relURL }}"></script>{{ end }}
     {{ template "_internal/google_analytics.html" . }}
   </body>

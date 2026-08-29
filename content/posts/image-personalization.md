@@ -2,6 +2,8 @@
 title: "Image Personalization. Why it's Great and how to use it."
 date: 2018-08-03T22:52:03+01:00
 draft: false
+content_type: "Guide"
+older_archive: true
 canonicalUrl: "https://sirv.com/blog/image-personalization-examples/"
 sitemap:
   disable: true

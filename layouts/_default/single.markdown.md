@@ -2,9 +2,9 @@
 
 {{ with .Description }}{{ . }}
 {{ end }}{{ if eq .File.BaseFileName "contact" }}
-Want to ask about one of my projects, discuss advertising, or just get in touch?
+Discuss a product or leadership role, collaborate on something difficult, report a problem with maintained software, or ask me something else.
 
-[Open the contact form]({{ .Params.form_url }}) or find me on [GitHub](https://github.com/igorvaryvoda/), [LinkedIn](https://www.linkedin.com/in/igorvaryvoda/), or [Twitter](https://twitter.com/igorvaryvoda).
+[Open the contact form]({{ .Params.form_url }}), email [{{ .Params.email }}](mailto:{{ .Params.email }}), or find me on [GitHub](https://github.com/igorvaryvoda/) and [LinkedIn](https://www.linkedin.com/in/igorvaryvoda/).
 {{ else }}
 {{ .RawContent }}
 {{ end }}

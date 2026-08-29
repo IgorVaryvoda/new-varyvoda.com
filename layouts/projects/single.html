@@ -1,5 +1,7 @@
 {{ define "title" }}{{ .Title }} · {{ .Site.Title }}{{ end }}
 {{ define "content" }}
+{{ $period := .Params.period | default (.Date.Format "2006") }}
+{{ $state := .Params.stewardship.state | default "maintained" }}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"{{ .Site.BaseURL }}"},{"@type":"ListItem","position":2,"name":"Work","item":"{{ .Site.BaseURL }}projects/"},{"@type":"ListItem","position":3,"name":"{{ .Title }}","item":"{{ .Permalink }}"}]}
 </script>
@@ -10,20 +12,20 @@
       <div class="project-system-top">
         <p class="project-masthead-meta">
           <a href="/projects/">Work ←</a>
-          <span>{{ .Date.Format "2006" }}</span>
-          {{ with .Params.status }}<span class="status-live">● {{ . | humanize }}</span>{{ end }}
+          <span>{{ $period }}</span>
+          <span class="stewardship-state">● {{ $state | humanize }}</span>
         </p>
-        <p class="project-system-mark"><span>{{ .Params.hero_mark | default "Project system" }}</span><span>{{ .Params.hero_scope | default "Built independently" }}</span></p>
+        <p class="project-system-mark"><span>{{ .Params.hero_mark | default "Product system" }}</span><span>{{ .Params.hero_scope | default "Built independently" }}</span></p>
       </div>
 
-      <div class="project-system-grid">
+      <div class="project-system-grid{{ if not .Params.image }} project-system-grid--text{{ end }}">
         <div class="project-heading project-system-copy">
-          <p class="eyebrow">{{ with .Params.hero_kicker }}{{ . }}{{ else }}Product story{{ end }}</p>
+          <p class="eyebrow">{{ .Params.hero_kicker | default "Product story" }}</p>
           <h1{{ with .Params.hero_title_size }} class="project-system-title--{{ . }}"{{ end }}>{{ .Params.hero_title | default .Title }}</h1>
-          <p class="project-dek">{{ with .Params.hero_intro }}{{ . }}{{ else }}{{ $.Params.description }}{{ end }}</p>
+          <p class="project-dek">{{ .Params.hero_intro | default .Params.description }}</p>
           <div class="project-actions project-system-actions">
             {{ with .Params.project_url }}<a class="project-primary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }} <span aria-hidden="true">→</span></a>{{ end }}
-            {{ with .Params.hero_secondary_url }}<a class="project-secondary-action" href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read the build record" }} <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.hero_secondary_url }}<a class="project-secondary-action" href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read more" }} <span aria-hidden="true">→</span></a>{{ end }}
             {{ with .Params.github_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">→</span></a>{{ end }}
             {{ with .Params.app_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS <span aria-hidden="true">→</span></a>{{ end }}
             {{ with .Params.play_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android <span aria-hidden="true">→</span></a>{{ end }}
@@ -32,20 +34,11 @@
 
         {{ with .Params.image }}
         <figure class="project-system-visual">
-          <div class="project-system-windowbar">
-            <span>{{ $.Params.hero_frame_label | default $.Title }}</span>
-            <span>{{ $.Params.hero_frame_status | default "Project view" }}</span>
-          </div>
+          <div class="project-system-windowbar"><span>{{ $.Params.hero_frame_label | default $.Title }}</span><span>{{ $.Params.hero_frame_status | default ($state | humanize) }}</span></div>
           {{ if hasPrefix . "/" }}
-            {{ partial "responsive-local-image.html" (dict "src" . "alt" (printf "%s interface" $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 1000 "loading" "eager" "fetchpriority" "high") }}
+            {{ partial "responsive-local-image.html" (dict "src" . "alt" $.Params.image_alt "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 1000 "loading" "eager" "fetchpriority" "high") }}
           {{ else }}
-            <img
-              src="{{ . }}?w=1000"
-              srcset="{{ . }}?w=640 640w, {{ . }}?w=1000 1000w, {{ . }}?w=1600 1600w"
-              sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw"
-              alt="{{ $.Title }} interface"
-              fetchpriority="high"
-              decoding="async">
+            <img src="{{ . }}?w=1000" srcset="{{ . }}?w=640 640w, {{ . }}?w=1000 1000w, {{ . }}?w=1600 1600w" sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw" alt="{{ $.Params.image_alt }}" fetchpriority="high" decoding="async">
           {{ end }}
           {{ if or $.Params.project_url $.Params.hero_secondary_url $.Params.github_url $.Params.app_store_url $.Params.play_store_url }}
           <nav class="project-system-visual-actions" aria-label="{{ $.Title }} links">
@@ -61,87 +54,108 @@
       </div>
 
       <ol class="project-system-flow" aria-label="{{ .Title }} workflow">
-        {{ range $index, $step := .Params.hero_flow }}
-        <li><span>{{ printf "%02d" (add $index 1) }}</span><strong>{{ $step }}</strong></li>
-        {{ end }}
+        {{ range $index, $step := .Params.hero_flow }}<li><span>{{ printf "%02d" (add $index 1) }}</span><strong>{{ $step }}</strong></li>{{ end }}
       </ol>
       {{ else }}
-      <p class="project-masthead-meta">
-        <a href="/projects/">Work ↖</a>
-        <span>{{ .Date.Format "2006" }}</span>
-        {{ with .Params.status }}<span class="status-live">● {{ . | humanize }}</span>{{ end }}
-      </p>
+      <p class="project-masthead-meta"><a href="/projects/">Work ↖</a><span>{{ $period }}</span><span class="stewardship-state">● {{ $state | humanize }}</span></p>
       <div class="project-heading">
         <p class="eyebrow">Build record</p>
         <h1>{{ .Title }}</h1>
         <p class="project-dek">{{ .Params.description }}</p>
-        <div class="project-actions">
-          {{ with .Params.project_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Visit project</a>{{ end }}
-          {{ with .Params.github_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
-          {{ with .Params.app_store_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS</a>{{ end }}
-          {{ with .Params.play_store_url }}<a class="text-link" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android</a>{{ end }}
-        </div>
       </div>
       {{ end }}
     </div>
   </header>
 
-  {{ if not .Params.hero_flow }}
-  {{ with .Params.image }}
+  {{ if and (not .Params.hero_flow) .Params.image }}
   <div class="project-stage">
-    {{ $img := $.Params.image }}
+    {{ $img := .Params.image }}
     {{ if hasPrefix $img "/" }}
-      {{ partial "responsive-local-image.html" (dict "src" $img "alt" (printf "%s screenshot" $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(86vw, 1600px)" "fallbackWidth" 1000) }}
+      {{ partial "responsive-local-image.html" (dict "src" $img "alt" .Params.image_alt "sizes" "(max-width: 960px) calc(100vw - 3.6rem), min(86vw, 1600px)" "fallbackWidth" 1000) }}
     {{ else }}
-      <img
-        src="{{ $img }}?w=1000"
-        srcset="{{ $img }}?w=640 640w, {{ $img }}?w=1000 1000w, {{ $img }}?w=1600 1600w"
-        sizes="(max-width: 960px) calc(100vw - 3.6rem), min(86vw, 1600px)"
-        alt="{{ $.Title }} screenshot"
-        loading="lazy"
-        decoding="async">
+      <img src="{{ $img }}?w=1000" srcset="{{ $img }}?w=640 640w, {{ $img }}?w=1000 1000w, {{ $img }}?w=1600 1600w" sizes="(max-width: 960px) calc(100vw - 3.6rem), min(86vw, 1600px)" alt="{{ .Params.image_alt }}" loading="lazy" decoding="async">
     {{ end }}
   </div>
-  {{ end }}
   {{ end }}
 
   <div class="project-story index-section{{ with .Params.hero_flow }} project-story--system{{ end }}{{ with .Params.project_chapters }} project-story--chapters{{ end }}">
     {{ with .Params.project_chapters }}
     <aside class="project-facts project-chapters-rail">
       <p class="project-chapters-label">On this page</p>
-      <nav aria-label="Project chapters">
-        {{ range $index, $chapter := . }}
-        <a href="{{ $chapter.href }}"><span>{{ printf "%02d" (add $index 1) }}</span>{{ $chapter.label }}</a>
-        {{ end }}
-      </nav>
+      <nav aria-label="Project chapters">{{ range $index, $chapter := . }}<a href="{{ $chapter.href }}"><span>{{ printf "%02d" (add $index 1) }}</span>{{ $chapter.label }}</a>{{ end }}</nav>
       <div class="project-chapter-facts">
-        <span>Status / {{ $.Params.status | humanize }}</span>
-        <span>Started / {{ $.Date.Format "2006" }}</span>
+        <span>Stewardship / {{ $state | humanize }}</span>
+        <span>Started / {{ $period }}</span>
+        <span>Last tended / {{ $.Params.last_tended }}</span>
       </div>
     </aside>
     {{ else }}
     <aside class="project-facts artifact-rail">
       <span>Project facts</span>
-      {{ with .Params.status }}<span>Status / {{ . | humanize }}</span>{{ end }}
-      <span>Started / {{ .Date.Format "2006" }}</span>
+      <span>Stewardship / {{ $state | humanize }}</span>
+      <span>Started / {{ $period }}</span>
+      <span>Last tended / {{ .Params.last_tended }}</span>
+      <span>{{ .Params.role }}</span>
       {{ with .Params.tech_stack }}<span>{{ delimit . " · " }}</span>{{ end }}
       <i aria-hidden="true"></i>
     </aside>
     {{ end }}
     <div class="project-prose prose">
-      {{ if and (not .Params.project_chapters) (not .Params.hero_flow) }}
-      {{ with .Params.highlights }}
-      <aside class="project-highlights">
-        <p class="eyebrow">Selected evidence</p>
-        <ol>{{ range . }}<li>{{ . }}</li>{{ end }}</ol>
+      {{ with .Params.summary }}
+      <section class="project-brief" aria-labelledby="project-brief-title">
+        <p class="eyebrow">60-second summary</p>
+        <h2 id="project-brief-title">The shape of the product</h2>
+        <dl>
+          <div><dt>Role</dt><dd>{{ $.Params.role }}</dd></div>
+          <div><dt>Problem</dt><dd>{{ .problem }}</dd></div>
+          <div><dt>What shipped</dt><dd>{{ .shipped }}</dd></div>
+          <div><dt>Real use</dt><dd>{{ .real_use }}</dd></div>
+          <div><dt>Team</dt><dd>{{ .team }}</dd></div>
+          <div><dt>Current state</dt><dd>{{ .current_state }}</dd></div>
+        </dl>
+      </section>
+      {{ end }}
+
+      {{ with .Params.collaborators }}
+      <section class="project-ownership" aria-labelledby="project-ownership-title">
+        <p class="eyebrow">Ownership</p>
+        <h2 id="project-ownership-title">Who owns what</h2>
+        <div class="ownership-list">
+          <div><h3>Igor Varyvoda</h3><p>{{ $.Params.role }}. Conceived Studio and built and shipped the product end to end.</p></div>
+          {{ range . }}<div><h3>{{ with .url }}<a href="{{ . }}">{{ end }}{{ .name }}{{ with .url }}</a>{{ end }}</h3><p>{{ .contribution }}</p></div>{{ end }}
+        </div>
+      </section>
+      {{ end }}
+
+      {{ with .Params.proof }}
+      <aside class="project-proof-grid" aria-label="Project evidence">
+        {{ range . }}<div><strong>{{ .value }}</strong><span>{{ .label }}</span></div>{{ end }}
       </aside>
       {{ end }}
+
+      {{ if and (not .Params.project_chapters) (not .Params.hero_flow) }}
+      {{ with .Params.highlights }}<aside class="project-highlights"><p class="eyebrow">Selected evidence</p><ol>{{ range . }}<li>{{ . }}</li>{{ end }}</ol></aside>{{ end }}
       {{ end }}
+
       <div class="project-description">{{ .Content }}</div>
-      <footer class="article-end">
-        <span>— End of {{ if or .Params.project_chapters .Params.hero_flow }}product story{{ else }}build record{{ end }}</span>
-        <a href="/projects/">Back to work index ↑</a>
-      </footer>
+
+      {{ with .Params.users_changed }}
+      <section class="project-honesty"><h2>What users changed</h2><p>{{ . }}</p></section>
+      {{ end }}
+      {{ with .Params.imperfect }}
+      <section class="project-honesty"><h2>What remains imperfect</h2><p>{{ . }}</p></section>
+      {{ end }}
+
+      {{ with .Params.feedback_url }}
+      <aside class="project-feedback">
+        <p class="eyebrow">Found something broken or have an idea?</p>
+        <h2>I still maintain this product.</h2>
+        <p>Send me the problem and I’ll look at it.</p>
+        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>Report a problem <span aria-hidden="true">→</span></a>
+      </aside>
+      {{ end }}
+
+      <footer class="article-end"><span>— End of {{ if or .Params.project_chapters .Params.hero_flow }}product story{{ else }}build record{{ end }}</span><a href="/projects/">Back to work index ↑</a></footer>
     </div>
   </div>
 </article>
