@@ -578,18 +578,6 @@ a.scene-corner--latest:focus-visible {
   animation: link-wave-drift 1.4s linear infinite;
 }
 
-.scene-sentence a:hover,
-.scene-sentence a:focus-visible {
-  background-image: none;
-  text-decoration-line: underline;
-  text-decoration-style: wavy;
-  text-decoration-color: currentColor;
-  text-decoration-thickness: 1px;
-  text-decoration-skip-ink: none;
-  text-underline-offset: 0.16em;
-  animation: none;
-}
-
 a.scene-corner--latest:hover,
 a.scene-corner--latest:focus-visible {
   background-size: 1.8rem 0.6rem;
