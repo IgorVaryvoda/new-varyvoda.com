@@ -576,8 +576,14 @@ a.scene-corner--latest:focus-visible {
 
 .scene-sentence a:hover,
 .scene-sentence a:focus-visible {
-  background-position-y: calc(100% - 0.08em);
-  background-size: 2.4rem 0.55rem;
+  background-image: none;
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: currentColor;
+  text-decoration-thickness: 1px;
+  text-decoration-skip-ink: none;
+  text-underline-offset: 0.16em;
+  animation: none;
 }
 
 a.scene-corner--latest:hover,
