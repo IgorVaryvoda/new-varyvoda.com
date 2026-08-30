@@ -549,7 +549,6 @@ img { max-width: 100%; }
 }
 
 .scene-sentence a {
-  padding-bottom: 0.26em;
   color: inherit;
   text-decoration-line: underline;
   text-decoration-style: dotted;
@@ -571,6 +570,12 @@ a.scene-corner--latest:focus-visible {
   text-decoration: none;
   text-shadow: 0 0 1.6rem var(--link-hover-halo), 0 0 0.5rem var(--link-hover-halo);
   animation: link-wave-drift 1.4s linear infinite;
+}
+
+.scene-sentence a:hover,
+.scene-sentence a:focus-visible {
+  background-position-y: calc(100% - 0.08em);
+  background-size: 2.4rem 0.55rem;
 }
 
 a.scene-corner--latest:hover,
