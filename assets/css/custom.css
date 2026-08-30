@@ -2159,7 +2159,7 @@ body.builder-index .prose :where(p, li) { hyphens: none; overflow-wrap: break-wo
     align-items: stretch;
     gap: 0;
     padding: 0 var(--gutter) 1.6rem;
-    background: color-mix(in srgb, var(--paper-raised) 96%, transparent);
+    background: var(--paper-raised);
     border-bottom: 1px solid var(--rule-dark);
     box-shadow: 0 2.4rem 4.8rem var(--harbor-shadow);
     backdrop-filter: blur(18px) saturate(1.08);

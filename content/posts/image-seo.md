@@ -412,16 +412,23 @@ WebP browser support
 
 <p>The markup looks something like this:</p>
 
-<pre class="prettyprint"><img srcset="elva-fairy-320w.jpg,
+```html
+<img srcset="elva-fairy-320w.jpg,
         elva-fairy-480w.jpg 1.5x,
         elva-fairy-640w.jpg 2x"
-src="elva-fairy-640w.jpg" alt="Elva dressed as a fairy"></pre>
+     src="elva-fairy-640w.jpg"
+     alt="Elva dressed as a fairy">
+```
 
 <p>This is quite cumbersome, to say the least.</p>
 
 <p>Sirv offers a much more elegant solution. This is how I serve responsive, automatically scaled images in this blog post:</p>
 
-<pre class="prettyprint"><img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Product_schema_example.png?profile=screenshots-grey-border" alt="Google Images search result, showcasing the richness of product schema"/></pre>
+```html
+<img class="Sirv"
+     data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Product_schema_example.png?profile=screenshots-grey-border"
+     alt="Google Images search result, showcasing the richness of product schema">
+```
 
 <p>I use markup like this for every image in this post.</p>
 
