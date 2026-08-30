@@ -61,7 +61,7 @@ for (const [header, expected] of vectors) {
 
 const homeHtml = await readFile(new URL("../public/index.html", import.meta.url), "utf8");
 assert.match(homeHtml, /<h1\b[^>]*class=(?:"[^"]*scene-sentence[^"]*"|scene-sentence)(?:\s|>)/);
-assert.match(homeHtml, /I build products—and I keep them alive\./);
+assert.match(homeHtml, /I build <a\b[^>]*>products<\/a>—and I <a\b[^>]*>keep them alive<\/a>\./);
 assert.doesNotMatch(homeHtml, /<h1 class=(?:"visually-hidden"|visually-hidden)>/);
 const headingLevels = [...homeHtml.matchAll(/<h([1-6])\b/g)].map((match) => Number(match[1]));
 assert.equal(headingLevels.filter((level) => level === 1).length, 1);

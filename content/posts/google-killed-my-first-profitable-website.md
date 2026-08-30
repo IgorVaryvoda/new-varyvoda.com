@@ -3,12 +3,12 @@ title: "Google killed my first profitable website"
 date: 2026-08-30T00:00:00+02:00
 draft: false
 content_type: "Postmortem"
-description: "My first commercial website grew to roughly 50,000 unique visitors a day and became a profitable business. Then Google Panda removed the audience I thought I had earned."
+description: "My first commercial website became profitable. Then Google Panda removed the audience I thought I had earned."
 ---
 
 Before Sirv, before Studio, before I had a useful title for what I do, I built my first commercial website.
 
-It became a profitable business and reached roughly 50,000 unique visitors a day. Then Google changed its algorithm and most of that traffic disappeared.
+It became a profitable business. Then Google changed its algorithm and most of the traffic disappeared.
 
 That sequence taught me more about internet products than any clean success story could have.
 
@@ -20,9 +20,9 @@ There was no meaningful boundary between the product and its distribution. I wro
 
 That is still how I think about products. Engineering, distribution, and the business model are not separate departments in the product's actual life. They are one system, even when a company draws boxes around them.
 
-## Fifty thousand people a day changes the job
+## Scale changes the job
 
-At small scale, a broken page is annoying. At roughly 50,000 daily unique visitors, the same mistake is an incident.
+At small scale, a broken page is annoying. At meaningful scale, the same mistake is an incident.
 
 The site had to stay available. People had to find what they came for. Search engines had to understand the structure. The publishing flow had to keep moving. Traffic had to pay for the operation rather than merely decorate an analytics chart.
 

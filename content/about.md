@@ -8,7 +8,7 @@ draft: false
 
 Hey, I'm Igor. Made in Ukraine, based in Montenegro. I build products and keep them alive.
 
-I started with [my first commercial website](/projects/first-internet-business/). It became a profitable internet business and grew to roughly 50,000 unique visitors a day. That was where I learned web development, SEO, distribution, and monetization at the same time. Google Panda later taught me that distribution rented from a platform can disappear overnight.
+I started with [a profitable website](/projects/first-internet-business/) and learned web development, SEO, distribution, and monetization at the same time. Google Panda later taught me that rented distribution can disappear overnight.
 
 After that I ran developers, marketers, and work across several internet businesses and industries. The title was fuzzy; the responsibility wasn't. I coordinated the people, priorities, and execution across the portfolio.
 

@@ -4,14 +4,14 @@ slug: "first-internet-business"
 period: "Early web career"
 draft: false
 homepage_weight: 1
-description: "My first commercial website: a profitable e-book business that grew to roughly 50,000 unique visitors a day, then lost its distribution when Google Panda changed search."
+description: "A profitable e-book business, and what happened when Google Panda removed its distribution."
 hero_title: "The first business"
 hero_kicker: "My first commercial website"
-hero_intro: "I learned development, distribution, monetization, and platform risk in one profitable website that reached roughly 50,000 unique visitors a day."
+hero_intro: "I learned development, distribution, monetization, and platform risk by building and losing a profitable internet business."
 hero_mark: "Formative business"
 hero_scope: "Build to distribution"
 hero_frame_label: "First business / historical record"
-hero_frame_status: "50,000 daily visitors"
+hero_frame_status: "Profitable business"
 hero_secondary_url: "/posts/google-killed-my-first-profitable-website/"
 hero_secondary_label: "Read the postmortem"
 hero_flow:
@@ -27,10 +27,10 @@ last_tended: "Historical record"
 image_alt: "Historical record of Igor Varyvoda's first commercial website"
 feedback_url: "/contact/?project=first-internet-business&type=story"
 proof:
-  - value: "~50,000"
-    label: "Daily unique visitors at peak"
   - value: "Profitable"
     label: "Commercial internet business"
+  - value: "Google Panda"
+    label: "Platform-risk lesson"
 imperfect: "The business depended too heavily on search distribution it did not own. When that distribution changed, there was no equally strong direct audience underneath it."
 weight: 2
 ---
@@ -39,7 +39,7 @@ weight: 2
 
 That website was my first commercial business and my first real education in how internet products work. I was not learning development in one room and marketing in another. I was building pages, finding an audience, watching what people searched for, fixing what failed, and working out how traffic could support a business at the same time.
 
-It grew into a profitable e-book website with roughly 50,000 unique visitors on a normal day. That number mattered because it was not a launch spike or a screenshot. It was an operating load: people arriving, searching, downloading, leaving, and coming back while the site had to stay useful and available.
+It grew into a profitable e-book website. It was a real operating load: people arriving, searching, downloading, leaving, and coming back while the site had to stay useful and available.
 
 ## How it grew
 
@@ -49,7 +49,7 @@ The site made money by turning that sustained attention into a traffic-based bus
 
 ## What operating it taught me
 
-At roughly 50,000 daily visitors, a website stops being a personal coding exercise. Availability matters. Publishing systems matter. Search changes matter. Small technical mistakes become commercial mistakes because thousands of people hit them before you wake up.
+Once a website becomes a business, it stops being a personal coding exercise. Availability matters. Publishing systems matter. Search changes matter. Small technical mistakes become commercial mistakes.
 
 It also taught me that development and distribution are not separate disciplines. A technically elegant product nobody can find is unfinished. A page that ranks but disappoints the visitor is living on borrowed time. Product, engineering, marketing, and operations were already one job; I just did not have that vocabulary yet.
 

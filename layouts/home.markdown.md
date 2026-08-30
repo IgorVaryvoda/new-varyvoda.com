@@ -2,7 +2,7 @@
 
 I build products—and I keep them alive.
 
-I'm Igor Varyvoda, a product builder and operator. I started with a profitable website that reached roughly 50,000 unique visitors a day, later ran developers and marketers across internet businesses, and now build Sirv Studio alongside a living portfolio of independent products.
+I'm Igor Varyvoda, a product builder and operator behind Sirv Studio and a living portfolio of independent software.
 
 ## Current focus
 {{ range first 1 (where (where .Site.RegularPages "Section" "projects") ".Params.hero" true) }}
