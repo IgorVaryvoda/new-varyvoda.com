@@ -22,13 +22,13 @@ same layout files.
 | Plan | Title | Priority | Effort | Depends on | Status |
 |------|-------|----------|--------|------------|--------|
 | 001 | Untrack node_modules/junk, fix dead config keys, delete draft stub | P1 | S | — | DONE (`c9d12b6` on advisor/001-repo-hygiene, reviewed+approved 2026-07-03) |
-| 002 | One authoritative deploy pipeline, one pinned Hugo version, truthful docs | P1 | M | — | DONE (`2675204`, reviewed+approved 2026-07-03; operator checklist pending — see plan Step 6; conclusion: SFTP+Cloudflare is prod) |
+| 002 | One authoritative deploy pipeline, one pinned Hugo version, truthful docs | P1 | M | — | DONE (`2675204`, reviewed+approved 2026-07-03; operator confirmed the own-server SFTP target is production; Cloudflare is proxy only) |
 | 003 | Load Sirv.js once per page, deferred, from layouts only | P1 | S | — | DONE (`7b2e41d`, reviewed+approved 2026-07-03; revised during execution: full sirv.js build, not ?modules=lazyimage — three posts use zoom galleries) |
 | 004 | Fix image delivery on the case study and project grids | P2 | M | 003 | DONE (`ca5458f`, reviewed+approved 2026-07-03; OG PNG 140→85 KB) |
 | 005 | Drop icon font, defer twemoji, preconnect real origins | P2 | M | 003, 004 (soft) | DONE (`3300397`, reviewed+approved 2026-07-03; viewBoxes derived from FA font metrics — documented deviation, verified visually) |
 | 006 | Extract duplicated component CSS into one stylesheet | P2 | M | 003, 004, 005 | DONE (`d524bec`, reviewed+approved 2026-07-03; net −137 lines, visual parity vs prod confirmed by screenshot comparison) |
 | 007 | Make `make quality-gate` actually gate quality (htmltest) | P2 | M | 002 | DONE (`3cff26f`, reviewed+approved 2026-07-03; CheckImages off — Sirv lazy imgs have no src by design; 2 dead anchors fixed in image-seo) |
-| 008 | Security + caching headers at the real edge (runbook + verifier) | P3 | M | 002 (hard) | DONE (`4c006c3`, reviewed+approved 2026-07-03; operator must apply Cloudflare rules per docs/edge-headers.md, then re-run scripts/check-headers.sh) |
+| 008 | Security + caching headers at the real edge (runbook + verifier) | P3 | M | 002 (hard) | DONE (`4c006c3`, reviewed+approved 2026-07-03; operator must apply origin or proxy rules per docs/edge-headers.md, then re-run scripts/check-headers.sh) |
 | 009 | Spike: how should the build-record page live inside Hugo | P3 | M | — | DONE (`2ea3775`, reviewed+approved 2026-07-03; design doc at plans/notes/009-build-record-design.md; recommends Option B iff more evidence pages are planned — operator question open) |
 | 010 | Make the intended typography own every redesigned page | P1 | M | — | DONE (`5be6ec0`, reviewed+approved 2026-07-18) |
 | 011 | Give compact interface type a legible minimum scale | P1 | S | 010 | DONE (`5537083`, reviewed+approved 2026-07-18) |
@@ -57,7 +57,7 @@ Status values: TODO | IN PROGRESS | DONE | BLOCKED (with one-line reason) | REJE
 - **005 after 003/004** (soft): same files again; sequencing keeps diffs reviewable.
 - **006 last of the template plans**: it extracts CSS from the *final* markup — running it before 004/005 would mean re-extracting.
 - **007 after 002**: its CI step goes into the workflow that 002 confirms as the keeper.
-- **008 hard-depends on 002**: header configuration lives wherever production actually is; 008 assumes the SFTP+Cloudflare conclusion and STOPs otherwise.
+- **008 hard-depends on 002**: header configuration lives on the production server or its proxy; 008 assumes the own-server SFTP deployment and STOPs otherwise.
 - **001, 002, 003, 009 are mutually independent** and can start in any order (still run one at a time).
 - **011 after 010**: both edit the typography layer in `assets/css/custom.css`; 011 reuses the corrected type foundation and must not race it.
 - **010, 012, and 013 are independent**: 010 owns typography CSS, 012 owns the mobile disclosure markup/styles, and 013 owns only renderer lifecycle code. Run at most two Codex jobs concurrently per the improve-codex contract.
@@ -113,8 +113,7 @@ items below.
 
 ## Key facts discovered during the audit (context for all executors)
 
-- **CORRECTION (2026-07-03, post-deploy)**: production is served by a **third, git-connected pipeline** — almost certainly a Cloudflare Pages project bound to this repo. Proof: minutes after pushing `2ea3775`, the live homepage served the new content but pretty-printed (no `--minify`) with `generator: Hugo 0.145.0`, while the GitHub Actions build provably used pinned 0.161.1 + `--minify`. So per push, THREE pipelines fire: the live Cloudflare build (plain `hugo`, Hugo 0.145.0, no htmltest gate), the GH Actions SFTP sync (destination host unknown — a mirror, not the origin), and possibly Netlify (dead?). Plan 002's "SFTP is production" conclusion and the docs/runbook statements based on it are superseded by this. Operator: check the Cloudflare dashboard → Pages; pin HUGO_VERSION=0.161.1 and set build command `hugo --gc --minify` there; then decide the fate of the SFTP workflow and Netlify.
-- (Superseded) The pre-deploy evidence — Cloudflare headers, no Netlify markers, green SFTP runs — correctly ruled out Netlify but could not distinguish "Cloudflare in front of the SFTP origin" from "Cloudflare Pages building the repo itself"; the post-deploy version/minify fingerprint settled it.
+- **OPERATOR CONFIRMATION (2026-08-30)**: production files live on Igor's own server and `.github/workflows/main.yml` updates that server over SFTP. Cloudflare proxies requests but does not host the site. The earlier Cloudflare Pages inference from generator drift was wrong and is superseded by this confirmation. `netlify.toml` remains legacy, and the SFTP workflow does not deploy `functions/`.
 - Local `public/` accumulates stale pages from old builds; always `rm -rf public && hugo --gc --minify` before verifying rendered output.
 - Two Hugo deprecation WARNs (`languageCode`, `.Site.Languages`) are expected on every build and are not errors.
 - `content/projects/sirv-studio.md` prose is **editorially locked** (claims were hand-verified); plans only touch its image/script markup.

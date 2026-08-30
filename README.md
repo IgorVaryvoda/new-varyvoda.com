@@ -63,9 +63,11 @@ The site overrides hugo-coder in `layouts/`.
 
 The interactive Herceg Novi atmosphere runs on the homepage and on project pages with `atmosphere: true`. Other pages keep the visual signature with a static scene instead of creating a WebGL context. Preserve Sirv URLs and native lazy loading when editing images.
 
+See [`design.md`](design.md) before changing the visual system.
+
 ## Machine-readable output
 
-Hugo emits HTML and Markdown for home, section, and page routes. `functions/_middleware.js` contains the edge content negotiation and read-only `/api` index; `static/openapi.json` documents it. The SFTP workflow does not deploy the edge function, so edge changes need their existing separate Cloudflare deployment path.
+Hugo emits HTML and Markdown for home, section, and page routes. `functions/_middleware.js` contains optional edge content negotiation and a read-only `/api` index; `static/openapi.json` documents it. The production SFTP workflow does not deploy `functions/`, so do not assume that middleware is live without a separate deployment check.
 
 Verify the generated surface with:
 
@@ -75,14 +77,14 @@ node scripts/test-agent-readiness.mjs
 
 ## Deployment
 
-Cloudflare Pages is production. Its GitHub integration builds `main` with Hugo `0.161.1+extended` and publishes `public/` plus the Pages Function.
+Production is hosted on Igor's own server. Cloudflare may proxy requests, but it does not host the site. `.github/workflows/main.yml` is the authoritative deployment path.
 
-Pushes to `main`, daily scheduled runs, and manual dispatches also run `.github/workflows/main.yml`:
+Pushes to `main`, daily scheduled runs, and manual dispatches run:
 
 1. Build with Hugo `0.161.1+extended`.
 2. Validate project records, generated HTML, links, and machine-readable output.
-3. Sync `public/` to the legacy SFTP mirror with rclone.
-4. Smoke-test the Cloudflare Pages site after its deployment settles.
+3. Sync `public/` to the production server over SFTP with rclone.
+4. Smoke-test `https://www.varyvoda.com` after the sync settles.
 5. Submit changed URLs to IndexNow on push events.
 
-`netlify.toml` is legacy. Header and cache policy lives at the edge; see `docs/edge-headers.md`. Run `bash scripts/check-headers.sh` for the strict policy audit or `STRICT_HEADERS=0 bash scripts/check-headers.sh` for the reachability/header smoke used after deployment.
+`netlify.toml` is legacy. Header and cache policy can live on the origin server or at the Cloudflare proxy; see `docs/edge-headers.md`. Run `bash scripts/check-headers.sh` for the strict policy audit or `STRICT_HEADERS=0 bash scripts/check-headers.sh` for the reachability/header smoke used after deployment.

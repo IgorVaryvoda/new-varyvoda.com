@@ -37,6 +37,8 @@
       var barSel = el.getAttribute("data-bar");
       var bar = barSel ? fig.querySelector(barSel) : el;
       el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", [el.getAttribute("data-tip-value"), el.getAttribute("data-tip-label"), el.getAttribute("data-tip-note")].filter(Boolean).join(". "));
       function show(ev) {
         fillTip(tip, el.getAttribute("data-tip-value"), el.getAttribute("data-tip-label"), el.getAttribute("data-tip-note"));
         tip.classList.add("is-on");

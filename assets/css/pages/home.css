@@ -54,6 +54,11 @@
   text-transform: uppercase;
 }
 
+:root:not([data-theme="dark"]) :where(.scene-intro, .scene-personality) {
+  color: rgba(243, 248, 252, 0.94);
+  text-shadow: 0 1px 1.2rem rgba(8, 28, 46, 0.55), 0 0 0.3rem rgba(8, 28, 46, 0.4);
+}
+
 .build-role {
   margin: 1.2rem 0 0;
   color: var(--harbor-muted);

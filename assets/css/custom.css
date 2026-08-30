@@ -112,6 +112,8 @@ body.builder-index {
 
 body.builder-index :where(h1, h2, h3, h4, h5, h6) { font-family: var(--display); }
 
+body.builder-index :where(h2, h3, h4)[id] { scroll-margin-top: 3rem; }
+
 .intro-copy h1,
 .current-build-header h2,
 .home-section-heading h2,
@@ -291,7 +293,8 @@ img { max-width: 100%; }
 
 .site-identity {
   display: inline-flex;
-  align-items: baseline;
+  min-height: 4.4rem;
+  align-items: center;
   width: fit-content;
   gap: 0.8rem;
   color: var(--ink);
@@ -341,6 +344,7 @@ img { max-width: 100%; }
 
 .theme-toggle {
   display: inline-flex;
+  min-height: 4.4rem;
   align-items: center;
   gap: 0.65rem;
   padding: 0;
@@ -1517,6 +1521,7 @@ a.scene-corner--latest:focus-visible {
 
 .prose > *:first-child { margin-top: 0; }
 .prose p { margin: 0 0 1.8em; }
+body.builder-index .prose :where(p, li) { hyphens: none; overflow-wrap: break-word; }
 .prose h2,
 .prose h3,
 .prose h4 { color: var(--ink); font-family: var(--display); font-weight: 500; letter-spacing: var(--tracking-display); }
@@ -2083,7 +2088,7 @@ a.scene-corner--latest:focus-visible {
 .footer-index { color: var(--accent); font-family: var(--mono); font-size: var(--type-compact-label); text-transform: uppercase; }
 .footer-note { color: var(--slate); font-family: var(--reading); font-size: 1.45rem; }
 .footer-links { display: flex; gap: 2.2rem; }
-.footer-links a { color: var(--slate); font-size: var(--type-compact-action); text-decoration: none; }
+.footer-links a { display: inline-flex; min-width: 4.4rem; min-height: 4.4rem; align-items: center; justify-content: center; color: var(--slate); font-size: var(--type-compact-action); text-decoration: none; }
 .footer-links a:hover { color: var(--accent); }
 .footer-tools { display: flex; flex-direction: column; align-items: flex-end; gap: 1.5rem; }
 

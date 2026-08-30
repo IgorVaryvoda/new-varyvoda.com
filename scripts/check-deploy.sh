@@ -27,7 +27,7 @@ check_page() {
 }
 
 check_page "/" "living portfolio of independent software."
-check_page "/projects/" "Living portfolio"
+check_page "/projects/" "Choose a product."
 check_page "/projects/first-internet-business/" "The first business"
 check_page "/projects/sirv-studio/" "Ownership"
 check_page "/posts/" "Start here"

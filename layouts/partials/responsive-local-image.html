@@ -22,6 +22,8 @@
     srcset="{{ delimit $srcset ", " }}"
     sizes="{{ .sizes }}"
     alt="{{ .alt }}"
+    width="{{ $asset.Width }}"
+    height="{{ $asset.Height }}"
     loading="{{ .loading | default "lazy" }}"
     {{- with .fetchpriority }} fetchpriority="{{ . }}"{{ end }}
     decoding="async">

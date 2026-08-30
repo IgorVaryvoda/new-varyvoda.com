@@ -39,7 +39,7 @@ hugo new projects/my-project.md  # Create new project
 ### Custom Templates
 Site uses hugo-coder theme but has custom template overrides in `/layouts/`:
 
-- `/layouts/_default/baseof.html` - Base template with SEO metadata, dark mode only, custom OG image
+- `/layouts/_default/baseof.html` - Base template with SEO metadata, dark-first theme handling, custom OG image
 - `/layouts/partials/home.html` - Custom homepage with current focus, career strip, living portfolio, care feed, and curated writing
 - `/layouts/posts/single.html` - Blog post template
 - `/layouts/projects/single.html` - Project detail page with breadcrumbs, tech stack badges, status indicators, and Sirv lazy loading
@@ -48,8 +48,9 @@ Site uses hugo-coder theme but has custom template overrides in `/layouts/`:
 ### Styling
 - Theme SCSS files are in `/themes/hugo-coder/assets/scss/`
 - Shared, route-family, component, and page-system styles live under `/assets/css/`
+- `design.md` defines the visual roles, page-family contracts, and responsive rules
 - Large case-study visuals live in `/layouts/shortcodes/`; page-specific assets load through `page_css` and `page_js`
-- Site uses dark mode only (`hidecolorschemetoggle = true` in config)
+- The custom theme starts dark and includes its own light-mode toggle. `hidecolorschemetoggle = true` only hides the inherited theme control.
 
 ### Project Metadata
 Public projects require `role`, `stewardship`, `last_tended`, `description`, `image_alt`, `feedback_url`, `proof`, and `imperfect`. Run `node scripts/validate-projects.mjs`; see `README.md` for the complete model.
@@ -72,13 +73,14 @@ Main config: `/config.toml`
 
 ## Deployment
 
-- Cloudflare Pages is production. Its GitHub integration builds `main` with `HUGO_VERSION=0.161.1` and publishes `public/` plus `functions/`.
-- GitHub Actions independently validates the same Hugo build, syncs a legacy SFTP mirror, checks production, and submits changed URLs to IndexNow.
+- Production is hosted on Igor's own server. GitHub Actions builds `main` with Hugo `0.161.1`, validates it, and syncs `public/` to that server over SFTP.
+- Cloudflare may proxy production traffic, but it is not the host and there is no Cloudflare Pages deployment.
+- The SFTP workflow checks production and submits changed URLs to IndexNow. It does not deploy `functions/`; verify that surface separately before describing it as live.
 - `netlify.toml` is legacy.
 
 ## Important Notes
 
-- Site is dark mode only (colorScheme = "dark", hidecolorschemetoggle = true)
+- Site defaults to dark; the custom footer control and homepage sun/moon interaction can switch to light
 - Custom OG image: `https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900`
 - Homepage prominence is explicit: one `hero` current focus and projects ordered by `homepage_weight`
 - All project pages include schema.org breadcrumbs for SEO

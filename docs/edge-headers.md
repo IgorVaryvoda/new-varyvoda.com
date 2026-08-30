@@ -1,7 +1,8 @@
 # Edge headers runbook
 
-Production is the GitHub Actions SFTP deploy behind Cloudflare. Do not add
-these headers to `netlify.toml`; that file is suspected-dead legacy config.
+Production is hosted on Igor's own server and updated by the GitHub Actions
+SFTP deploy. Cloudflare currently proxies the site, but it is not the host.
+Do not add these headers to `netlify.toml`; that file is legacy config.
 
 Evidence was generated from a clean local build on 2026-07-03:
 
@@ -118,8 +119,9 @@ Notes:
 
 ## Cache rules
 
-Create Cloudflare Cache Rules for static assets. HTML should stay as-is because
-new deploys should be visible without a long browser TTL.
+Set these cache rules on the origin server or at the Cloudflare proxy. HTML
+should stay as-is because new deploys should be visible without a long browser
+TTL.
 
 | Match | Browser cache TTL / header | Reason |
 |---|---|---|
@@ -128,24 +130,22 @@ new deploys should be visible without a long browser TTL.
 | Path starts with `/images/` | `Cache-Control: public, max-age=86400, must-revalidate` | Local image files are not consistently content-hashed. |
 | HTML and feeds | Leave current behavior | Avoid stale pages after SFTP deploys. |
 
-## Cloudflare setup
+## Origin or proxy setup
 
-1. Go to Cloudflare dashboard -> the `varyvoda.com` zone.
-2. Go to Rules -> Transform Rules -> Modify Response Header.
-3. Add a response header rule for all hostname requests under
+1. Choose one authoritative layer: the production web-server configuration,
+   or Cloudflare Transform and Cache Rules at the proxy.
+2. Add `Content-Security-Policy-Report-Only` with the value above for
    `www.varyvoda.com`.
-4. Set `Content-Security-Policy-Report-Only` to the value above.
-5. Go to Caching -> Cache Rules.
-6. Add the `/css/*`, `/js/*`, and `/images/*` cache rules from the table above.
-7. Run `bash scripts/check-headers.sh` for the strict policy audit.
-8. Leave CSP in report-only mode for at least 1 week and check the four key
+3. Add the `/css/*`, `/js/*`, and `/images/*` cache rules from the table above.
+4. Run `bash scripts/check-headers.sh` for the strict policy audit.
+5. Leave CSP in report-only mode for at least 1 week and check the four key
    pages listed above.
-9. If the reports are clean, rename
+6. If the reports are clean, rename
    `Content-Security-Policy-Report-Only` to `Content-Security-Policy` and run
    `bash scripts/check-headers.sh` again.
 
 The deployment smoke runs `STRICT_HEADERS=0 bash scripts/check-headers.sh`, so
 reachability, content type, baseline security headers, and CSS discovery still
 gate a deploy while missing CSP or immutable caching are reported as warnings.
-The strict command is expected to fail until the Cloudflare response-header
-and cache rules are applied.
+The strict command is expected to fail until the response-header and cache
+rules are applied at the origin or proxy.
