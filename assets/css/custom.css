@@ -551,9 +551,11 @@ img { max-width: 100%; }
 .scene-sentence a {
   padding-bottom: 0.26em;
   color: inherit;
-  text-decoration: underline;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 0.32em;
+  text-underline-offset: 0.13em;
   transition: color 200ms ease, text-shadow 200ms ease;
 }
 
