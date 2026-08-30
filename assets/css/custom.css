@@ -558,6 +558,7 @@ img { max-width: 100%; }
   white-space: nowrap;
   text-decoration-line: underline;
   text-decoration-style: dotted;
+  text-decoration-color: currentColor;
   text-decoration-thickness: 0.03em;
   text-underline-offset: 0.08em;
   transition: color 200ms ease, text-shadow 200ms ease;
