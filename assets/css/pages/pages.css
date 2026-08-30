@@ -69,32 +69,32 @@
 .contact-stage-inner {
   display: grid;
   min-height: calc(100svh - 8rem);
-  grid-template-columns: minmax(30rem, 0.78fr) minmax(50rem, 1.22fr);
+  grid-template-columns: minmax(28rem, 0.82fr) minmax(46rem, 1.18fr);
   align-items: center;
-  gap: clamp(5rem, 9vw, 12rem);
-  padding: clamp(6rem, 8vw, 10rem) 0;
+  gap: clamp(4rem, 6vw, 8rem);
+  padding: clamp(4rem, 5vw, 6rem) 0;
 }
 
 .contact-heading h1 {
-  max-width: 7ch;
-  margin: 1rem 0 3rem;
+  max-width: 10ch;
+  margin: 1rem 0 2.4rem;
   color: var(--harbor-ink);
-  font-size: clamp(7rem, 10vw, 12rem);
+  font-size: clamp(5.2rem, 7vw, 8.8rem);
   font-weight: 500;
-  line-height: 0.88;
+  line-height: 1;
   letter-spacing: var(--tracking-display-xl);
 }
 
 .contact-heading > p:not(.eyebrow) {
-  max-width: 48rem;
+  max-width: 42rem;
   margin: 0;
   color: var(--harbor-muted);
   font-family: var(--reading);
-  font-size: clamp(2rem, 2.5vw, 2.8rem);
-  line-height: 1.5;
+  font-size: clamp(1.7rem, 1.8vw, 2.1rem);
+  line-height: 1.55;
 }
 
-.contact-links { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 4rem; }
+.contact-links { display: flex; flex-wrap: wrap; gap: 1.2rem 2rem; margin-top: 2.8rem; }
 .contact-links a { color: var(--accent); font-family: var(--mono); font-size: var(--type-compact-action); letter-spacing: 0.055em; text-decoration: none; text-transform: uppercase; }
 .contact-links a:hover { color: var(--harbor-ink); }
 
@@ -109,7 +109,7 @@
 
 .contact-panel-header {
   display: flex;
-  min-height: 5rem;
+  min-height: 4.6rem;
   align-items: center;
   justify-content: space-between;
   padding: 0 1.8rem;
@@ -125,31 +125,24 @@
 .contact-panel-header a:hover { color: var(--ink); }
 .contact-brief {
   display: flex;
-  min-height: clamp(56rem, 68vh, 72rem);
   flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(3.2rem, 5vw, 6.4rem);
+  padding: clamp(2.8rem, 3.5vw, 4.2rem);
 }
 .contact-brief-lead {
-  max-width: 8ch;
+  max-width: none;
   margin: 0;
   color: var(--ink);
   font-family: var(--reading);
-  font-size: clamp(4.2rem, 5vw, 7.2rem);
-  line-height: 0.98;
+  font-size: clamp(3rem, 3.5vw, 4.6rem);
+  line-height: 1.05;
   letter-spacing: var(--tracking-reading-display);
 }
-.contact-brief ol { margin: 4rem 0; padding: 0; list-style: none; }
+.contact-brief ol { margin: 2.6rem 0; padding: 0; list-style: none; }
 .contact-brief li {
-  display: grid;
-  grid-template-columns: 4rem minmax(0, 1fr);
-  gap: 1.6rem;
-  align-items: baseline;
-  padding: 1.8rem 0;
+  padding: 1.25rem 0;
   border-top: 1px solid var(--rule);
 }
 .contact-brief li:last-child { border-bottom: 1px solid var(--rule); }
-.contact-brief li span,
 .contact-brief-action p {
   color: var(--muted);
   font-family: var(--mono);
@@ -157,16 +150,16 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.contact-brief li strong { color: var(--ink); font-size: 1.6rem; font-weight: 500; }
-.contact-brief-action { display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+.contact-brief li strong { color: var(--ink); font-size: 1.5rem; font-weight: 500; }
+.contact-brief-action { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
 .contact-brief-action p { max-width: 18rem; margin: 0; line-height: 1.5; text-align: right; }
 
 .contact-brief-action p a { color: var(--accent); text-transform: none; }
 .contact-brief-action p a:hover { color: var(--ink); }
 
 @media (max-width: 900px) {
-  .contact-stage-inner { grid-template-columns: 1fr; padding: 8rem 0; }
-  .contact-heading h1 { max-width: 10ch; }
+  .contact-stage-inner { grid-template-columns: 1fr; gap: 4rem; padding: 5rem 0; }
+  .contact-heading h1 { max-width: 12ch; }
 }
 
 @media (max-width: 680px) {
@@ -177,10 +170,11 @@
   .about-portrait-frame { width: 12rem; }
   .contact-stage,
   .contact-stage-inner { min-height: 0; }
-  .contact-stage-inner { grid-template-columns: 1fr; gap: 5rem; padding: 7rem 0; }
-  .contact-heading h1 { font-size: clamp(6rem, 19vw, 8rem); }
+  .contact-stage-inner { grid-template-columns: 1fr; gap: 3.5rem; padding: 4rem 0; }
+  .contact-heading h1 { font-size: clamp(4.4rem, 15vw, 6rem); }
   .contact-panel { margin: 0 calc(-1 * var(--gutter)); border-right: 0; border-left: 0; }
-  .contact-brief { min-height: 52rem; padding: 3rem var(--gutter); }
+  .contact-brief { padding: 2.4rem var(--gutter); }
+  .contact-brief-lead { font-size: 3.2rem; }
   .contact-brief-action { align-items: flex-start; flex-direction: column; }
   .contact-brief-action p { text-align: left; }
 }

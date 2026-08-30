@@ -1,8 +1,8 @@
 ---
 title: Projects
-description: "Some became businesses. Some stayed small and useful. Some mostly solve problems I personally wanted gone. They are not discarded experiments: I keep them running, respond when users find problems, and continue improving the ones that pull me back."
+description: "Some became businesses. Some stayed small. I still maintain them, fix what breaks, and improve the ones I keep using."
 draft: false
 outputs: ["HTML", "Markdown"]
 ---
 
-Some became businesses. Some stayed small and useful. Some mostly solve problems I personally wanted gone. They are not discarded experiments: I keep them running, respond when users find problems, and continue improving the ones that pull me back.
+Some became businesses. Some stayed small. I still maintain them, fix what breaks, and improve the ones I keep using.

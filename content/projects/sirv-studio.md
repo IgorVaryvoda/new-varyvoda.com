@@ -11,7 +11,7 @@ project_url: "https://www.sirv.studio"
 image: "/images/studio/studio-create-prompt.webp"
 image_alt: "Sirv Studio AI batch creation interface"
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
-description: "An AI product-content platform for e-commerce — I created it and built it end to end. Merchants scan their Shopify catalog, fix product content in AI batches, route supplier uploads through review, and publish safely with versioning and rollback."
+description: "I created and built Sirv Studio. It scans Shopify catalogs, runs AI work in batches, routes supplier uploads through review, and publishes with versioning and rollback."
 hero_note: "30+ AI tools, a workflow orchestrator, a production MCP server and API platform for AI agents, supplier portals, Stripe billing, and the reliability infrastructure underneath."
 hero_kicker: "Built end to end"
 hero_intro: "I built Sirv AI Studio from zero into the system Sirv uses to scan catalogs, run AI work in batches, review supplier uploads, and publish safely to Shopify."
@@ -44,7 +44,7 @@ tech_stack: ["React 19", "TanStack Start", "PostgreSQL", "Drizzle", "Inngest", "
 role: "Creator, product lead, architect and principal engineer"
 stewardship:
   state: "primary-focus"
-  note: "Receiving concentrated product, engineering, and commercial energy."
+  note: "My main product. I spend most of my product, engineering, and commercial time on it."
 last_tended: "2026-08-29"
 feedback_url: "/contact/?project=sirv-studio&type=bug"
 proof:
@@ -65,8 +65,8 @@ collaborators:
   - name: "Veniamin Krachun"
     url: "https://www.linkedin.com/in/veniamin-krachun/"
     contribution: "Owns QA, including the testing and verification infrastructure."
-users_changed: "The supplier portal became a governed intake and review system because a real enterprise workflow demanded more than a generic upload link."
-imperfect: "Construction has outrun proof. Activation, onboarding, rollback evidence, and the PIM's unfinished back half matter more now than adding another tool surface."
+users_changed: "A real supplier workflow turned the portal from a simple upload link into intake, review, and publishing."
+imperfect: "I have shipped more than I have proved. Activation, onboarding, rollback evidence, and the unfinished PIM work matter more now than another tool."
 highlights:
   - "Creator & architect, first commit to production"
   - "Supplier portal live with a real enterprise customer"
@@ -305,7 +305,7 @@ The evidence it's a system and not a slogan is in other people's curves. When Ve
 
 Every number on this page measures supply. Commits, step types, MCP tools, migrations, test files, problems solved — all of it counts what got built. The closest thing to a demand number anywhere here is one clause in the audit below: the supplier portal is live with a real enterprise customer. That is the entire demand side of a twelve-thousand-commit page, and you probably noticed before I said it.
 
-The repo's own July assessment puts it in four words: **construction has outrun proof**.
+The repo's own July assessment is blunt: **we have shipped more than we have proved**.
 
 The mechanism is worth writing down because it isn't really about me. When implementation gets cheap, the bottleneck moves — and it doesn't move somewhere convenient. Every surface here was nearly free to build and is permanently expensive to own: each one owes documentation, support answers, billing edges, browser proof, and a migration every time the schema shifts underneath it. That bill comes due in a currency the fleet doesn't print. Agents write code. They don't generate demand, and they will never tell you what to stop building.
 

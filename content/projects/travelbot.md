@@ -26,7 +26,7 @@ tech_stack: ["AI", "Chat", "Travel API", "PWA"]
 role: "Creator and sole builder"
 stewardship:
   state: "maintained"
-  note: "The apps, live data integrations, and itinerary flow remain supported."
+  note: "I maintain the apps, live data integrations, and itinerary flow."
 last_tended: "2026-05-10"
 feedback_url: "/contact/?project=travelbot&type=bug"
 proof:
@@ -34,7 +34,7 @@ proof:
     label: "Android downloads"
   - value: "5,000+"
     label: "Earth Roulette destinations underneath"
-imperfect: "Itineraries are strongest when the traveller gives useful constraints. A vague prompt can still produce a polished but generic plan, so refinement remains part of the product."
+imperfect: "Vague requests still produce generic itineraries. The bot works better when the traveller gives it real constraints."
 highlights:
   - "Day-by-day itineraries in under 30 seconds"
   - "Live weather, flight, and hotel context"
@@ -59,6 +59,6 @@ It also remembers the practical stuff you tell it—travel style, dietary needs,
 
 You can start anonymously without creating an account. The web app works on its own, and I shipped Travel Bot on both iOS and Android because trip planning mostly happens while somebody is holding a phone and sending ten contradictory ideas into a group chat.
 
-The Android app has crossed 1,000 downloads. Not a travel empire, but enough people have planned a trip with it to prove the idea is useful.
+The Android app has crossed 1,000 downloads. Enough people have planned a trip with it to show the idea works.
 
 [Plan a trip with Travel Bot](https://www.travelbot.me) · [Download on iOS](https://apps.apple.com/us/app/travel-bot-assistant/id6504498653) · [Download on Android](https://play.google.com/store/apps/details?id=me.travelbot.www)

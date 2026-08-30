@@ -23,7 +23,7 @@ github_url: "https://github.com/IgorVaryvoda/Help-Ukraine"
 role: "Creator and maintainer"
 stewardship:
   state: "long-running"
-  note: "The resource remains public and the listed routes are tended because the need has not ended."
+  note: "I keep the resource public and check the listed ways to help."
 last_tended: "2026-06-07"
 feedback_url: "https://github.com/IgorVaryvoda/Help-Ukraine/issues"
 proof:
@@ -31,7 +31,7 @@ proof:
     label: "Public resource"
   - value: "Open source"
     label: "Corrections and updates"
-imperfect: "A curated directory can become stale quietly. Every listed organization still needs periodic verification, and the site cannot replace due diligence for a specific donation."
+imperfect: "Links and organisations can go stale. The list needs regular checks and cannot replace your own checks before donating."
 highlights:
   - "Curated charity resources"
   - "Help Ukraine initiative"

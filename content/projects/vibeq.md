@@ -9,10 +9,10 @@ page_css: ["vibeq"]
 image: "/images/vibeq/vibeq-overview.webp"
 image_alt: "VibeQ overview showing active work, attention signals, and human-agent activity"
 ogImage: "https://www.varyvoda.com/images/vibeq/vibeq-today.jpg"
-description: "The control plane behind Sirv Studio: humans and agents work one queue, Slack is the cockpit and no run counts until the code is on the remote."
+description: "The control plane behind Sirv Studio. Humans and agents share one queue, Slack is the cockpit, and work is not done until the code reaches the remote."
 hero_title: "vibeq"
 hero_kicker: "Human and agent work"
-hero_intro: "I started VibeQ as a task board for Sirv Studio. It became the durable work system behind Sirvant, our Slack-facing partner for answering, investigating and shipping work."
+hero_intro: "VibeQ started as a task board for Sirv Studio. Now it runs the queue behind Sirvant, the Slack bot my team uses to investigate and ship work."
 hero_mark: "Work control plane"
 hero_scope: "Request to evidence"
 hero_frame_label: "Sirvant / control room"
@@ -49,7 +49,7 @@ tech_stack: ["React 19", "Cloudflare Workers", "D1", "R2", "Durable Objects", "H
 role: "Creator, product lead and principal builder"
 stewardship:
   state: "evolving"
-  note: "The control plane changes as real agent runs, Slack conversations, and incidents expose missing evidence or weak recovery."
+  note: "I change it when a real run, Slack thread, or incident exposes a gap."
 last_tended: "2026-08-28"
 feedback_url: "/contact/?project=vibeq&type=question"
 proof:
@@ -57,8 +57,8 @@ proof:
     label: "Human and agent work"
   - value: "5 ingress paths"
     label: "Slack, MCP, API, cron, GitHub"
-users_changed: "Veniamin's QA work and the team's Slack habits changed the board from a task list into a shared control plane with proof age, attention signals, and incident history."
-imperfect: "It is an internal operating system, not a polished public SaaS. The runtime is still consolidating around fewer execution profiles, clearer recovery, and cheaper disposable work cells."
+users_changed: "Veniamin's QA work and the team's Slack use added proof age, attention signals, and incident history."
+imperfect: "It is internal software. The runtime still has too many execution profiles and recovery paths, and disposable work cells cost too much."
 highlights:
   - "One queue for human and agent work"
   - "Slack, MCP, API, cron and GitHub ingress"

@@ -4,10 +4,10 @@ slug: "first-internet-business"
 period: "Early web career"
 draft: false
 homepage_weight: 1
-description: "A profitable e-book business, and what happened when Google Panda removed its distribution."
+description: "My first profitable website, and what happened when Google Panda took away most of its traffic."
 hero_title: "The first business"
 hero_kicker: "My first commercial website"
-hero_intro: "I learned development, distribution, monetization, and platform risk by building and losing a profitable internet business."
+hero_intro: "I learned development, distribution, monetisation, and platform risk by building and losing a profitable internet business."
 hero_mark: "Formative business"
 hero_scope: "Build to distribution"
 hero_frame_label: "First business / historical record"
@@ -22,7 +22,7 @@ hero_flow:
 role: "Creator and operator"
 stewardship:
   state: "formative"
-  note: "No longer operating; retained as the commercial and technical origin of the work that followed."
+  note: "No longer running. This is where I learned how internet businesses actually work."
 last_tended: "Historical record"
 image_alt: "Historical record of Igor Varyvoda's first commercial website"
 feedback_url: "/contact/?project=first-internet-business&type=story"
@@ -31,48 +31,48 @@ proof:
     label: "Commercial internet business"
   - value: "Google Panda"
     label: "Platform-risk lesson"
-imperfect: "The business depended too heavily on search distribution it did not own. When that distribution changed, there was no equally strong direct audience underneath it."
+imperfect: "The business depended too heavily on Google. When the traffic went, there was no strong direct audience underneath it."
 weight: 2
 ---
 
 ## Why I built it
 
-That website was my first commercial business and my first real education in how internet products work. I was not learning development in one room and marketing in another. I was building pages, finding an audience, watching what people searched for, fixing what failed, and working out how traffic could support a business at the same time.
+That website was my first business and how I learned the web. I wrote code, made pages, watched search traffic, fixed what broke, and worked out how to make money from it at the same time.
 
-It grew into a profitable e-book website. It was a real operating load: people arriving, searching, downloading, leaving, and coming back while the site had to stay useful and available.
+It became profitable. People arrived, searched, downloaded, left, and came back. The site had to keep working while they did.
 
 ## How it grew
 
-Search was the distribution engine. Useful pages matched real demand, good structure helped people and crawlers find them, and every improvement taught me something about development and SEO together. The feedback loop was brutally clear. Better pages brought more people. Broken pages lost them. Slow decisions showed up in the numbers.
+Search drove it. Better pages brought more people. Broken pages lost them. The numbers made every mistake obvious.
 
-The site made money by turning that sustained attention into a traffic-based business. It was not venture-backed and it did not need a grand category story. It earned more than it cost to run, and that made it real.
+The business earned more than it cost to run. No pitch deck, no grand category. It paid its way.
 
 ## What operating it taught me
 
-Once a website becomes a business, it stops being a personal coding exercise. Availability matters. Publishing systems matter. Search changes matter. Small technical mistakes become commercial mistakes.
+Once a website pays the bills, it stops being a coding exercise. Uptime matters. Publishing matters. Search changes matter. Small technical mistakes become commercial mistakes.
 
-It also taught me that development and distribution are not separate disciplines. A technically elegant product nobody can find is unfinished. A page that ranks but disappoints the visitor is living on borrowed time. Product, engineering, marketing, and operations were already one job; I just did not have that vocabulary yet.
+It also taught me that development and distribution belong together. A good product nobody can find is unfinished. A page that ranks but disappoints people will not rank forever.
 
 ## What Panda changed
 
 Then Google Panda gutted the traffic.
 
-I had treated search visibility as if it belonged to the business. It did not. Google had supplied the audience and could change the terms without asking. Once the traffic fell, the economics fell with it.
+I had treated search traffic as if it belonged to the business. It did not. Google supplied most of the audience and could change the terms without asking. When the traffic fell, the money followed.
 
-The lesson was not that SEO is bad. SEO built the business. The lesson was that rented distribution is not resilience. If one platform controls discovery, a profitable product can still contain a single point of failure large enough to erase it.
+SEO was not the mistake. SEO built the business. Depending on one company for most of the audience was the mistake.
 
 ## What I misunderstood
 
-I understood how to grow the thing in front of me. I did not understand how much of that growth belonged to somebody else's system.
+I knew how to grow what was in front of me. I did not understand how much of that growth belonged to somebody else's system.
 
-I should have thought harder about direct relationships, repeat use, multiple routes to the audience, and what remained valuable if rankings disappeared. I was measuring the strength of the traffic and mistaking it for the strength of the business.
+I should have built stronger direct relationships and more than one route to the audience. I was measuring the traffic and mistaking it for the strength of the business.
 
 ## What stayed
 
 The business did not survive. The operating instincts did.
 
-I still distrust any feature, channel, or platform that looks permanent only because it is currently generous. I still think distribution is part of the product. I still care whether software remains useful after the launch attention goes away. And I still prefer building something real enough that the market can teach me where my assumptions are wrong.
+I still distrust any platform that looks permanent only because it is generous today. I still treat distribution as part of the product. I still prefer building something real enough to prove me wrong.
 
-It was not an abandoned side project. It was the first business, the first scale, and the first expensive lesson.
+It was my first business and my first expensive lesson.
 
 [Read the full postmortem](/posts/google-killed-my-first-profitable-website/)

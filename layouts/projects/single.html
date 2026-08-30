@@ -148,10 +148,10 @@
 
       {{ with .Params.feedback_url }}
       <aside class="project-feedback">
-        <p class="eyebrow">Found something broken or have an idea?</p>
-        <h2>I still maintain this product.</h2>
-        <p>Send me the problem and I’ll look at it.</p>
-        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>Report a problem <span aria-hidden="true">→</span></a>
+        <p class="eyebrow">Bug or idea?</p>
+        <h2>Tell me.</h2>
+        <p>I still maintain this product and read every report.</p>
+        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>Send feedback <span aria-hidden="true">→</span></a>
       </aside>
       {{ end }}
 

@@ -2,10 +2,10 @@
   items:
     - title: "Google killed my first profitable website"
       url: "/posts/google-killed-my-first-profitable-website/"
-      description: "A profitable website and the platform lesson that survived it."
+      description: "The first business worked until Google changed the rules."
     - title: "Why I don't kill side projects"
       url: "/posts/why-i-dont-kill-side-projects/"
-      description: "Software stewardship without pretending every useful product must become a venture."
+      description: "Why I keep small software running even when it will never become a company."
 - group: "How I work now"
   items:
     - title: "What I actually do all day"

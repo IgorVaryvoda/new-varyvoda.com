@@ -25,7 +25,7 @@ tech_stack: ["Nuxt 4", "Vue 3", "Supabase", "Gemini"]
 role: "Creator and sole builder"
 stewardship:
   state: "evolving"
-  note: "Used daily; user-reported issues, integrations, and the receipt workflow continue to improve."
+  note: "I use it every day and fix reported bugs in imports, integrations, and receipt handling."
 last_tended: "2026-07-16"
 feedback_url: "/contact/?project=budjet&type=bug"
 proof:
@@ -33,8 +33,8 @@ proof:
     label: "Personal use"
   - value: "2025–present"
     label: "Continuously operated"
-users_changed: "User reports have exposed import and categorization edge cases that screenshots never would. The receipt flow gets better by fixing those specific failures."
-imperfect: "Receipt extraction still needs a human check when merchants print unusual layouts or ambiguous line items. The goal is fast correction, not pretending the model is infallible."
+users_changed: "Users found import and categorisation bugs I had not seen. Fixing those reports improved the receipt flow."
+imperfect: "Unusual receipt layouts and vague line items still need a human check. Corrections are quick, but they are still necessary."
 highlights:
   - "AI extraction and categorization down to receipt line items"
   - "Personal, household, and all-household views"
@@ -53,7 +53,7 @@ I built BudJet because I wanted a clear view of my money without turning expense
 
 Take a photo of a receipt and BudJet extracts the merchant, date, total, and individual items. AI suggests categories, you fix anything it got wrong, and the budget updates. The same flow works through the web app or Telegram bot, and existing data can come in through CSV instead of being typed again.
 
-Keeping the line items matters. It means a supermarket receipt is not just one mysterious €83 block called “Groceries.” BudJet can show what was actually bought, track price changes, and even look up nutrition data for food—because apparently I could not leave a receipt scanner alone.
+Keeping the line items matters. A supermarket receipt no longer becomes one mysterious €83 block called “Groceries.” BudJet can show what was bought, track price changes, and even look up nutrition data for food, because apparently I could not leave a receipt scanner alone.
 
 ## Money is rarely a one-person system
 

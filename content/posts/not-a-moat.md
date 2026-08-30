@@ -91,7 +91,7 @@ That last rule is the uncomfortable one, because a fleet makes shipping feel lik
 
 A defensibility claim you haven't red-teamed is a wish. So attack the right column too:
 
-Operational history gets attacked by import tools — "bring your Shopify history into CompetitorX." The defense is depth the platform API can't express: approvals, supplier provenance, AI derivation lineage. The history worth having must only be *recordable* inside your system. The product graph gets attacked by the platform itself exposing richer metadata; the defense is staying multi-source, covering what the platform can't see. The supplier network gets attacked by a supplier-first competitor inverting the model — the one attack genuinely worth watching for. Distribution gets attacked by algorithm changes and ad budgets; the defense is never letting one channel be load-bearing.
+Operational history gets attacked by import tools — "bring your Shopify history into CompetitorX." The defense is depth the platform API can't express: approvals, supplier provenance, AI derivation lineage. The history worth having must only be *recordable* inside your system. The product graph gets attacked by the platform itself exposing richer metadata; the defense is staying multi-source, covering what the platform can't see. The supplier network gets attacked by a supplier-first competitor inverting the model — the one attack genuinely worth watching for. Distribution gets attacked by algorithm changes and ad budgets; the defense is making sure one channel cannot sink the business.
 
 And the safety record gets attacked by exactly one adversary: **your own mistakes.** No competitor required.
 

@@ -113,7 +113,7 @@ If the 2019 article compressed to a checklist, here's its successor:
 
 | 2019 advice | 2026 verdict |
 |---|---|
-| Write good alt text | ✅ Aged into the single highest-leverage item |
+| Write good alt text | ✅ Aged into the single most useful item |
 | Structured data "is a must" | ✅ Understatement of the decade |
 | Use a CDN, own the domain | ✅ Unchanged |
 | Serve WebP with fallbacks | 🪦 Solved — AVIF-first now, zero thought required |

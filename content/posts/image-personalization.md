@@ -369,7 +369,7 @@ Nowadays, shoppers want not only products – they want better experiences. That
 
    <img class="Sirv" data-src="https://sirv.sirv.com/website/screenshots/screenshot-sirv-customizer.png?profile=screenshots-grey-border" alt="Sirv image customizer screenshot" width="750" height="410" />
 
-   <a target="_blank" href="https://my.sirv.com/signup/" rel="noopener noreferrer">Create your Sirv account</a> today and harness the true power of image personalization.
+   <a target="_blank" href="https://my.sirv.com/signup/" rel="noopener noreferrer">Create your Sirv account</a> to start personalizing images.
 
    Got any questions? Our <a target="_blank" href="https://sirv.com/contact/" rel="noopener noreferrer">expert support</a> team will happily provide any help you need.
    <script src="https://cdn.jsdelivr.net/vue/2.0.5/vue.min.js"></script>

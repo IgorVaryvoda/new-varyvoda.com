@@ -24,7 +24,7 @@ tech_stack: ["Agent Skills", "Codex CLI", "Shell", "Git Worktrees"]
 role: "Creator and maintainer"
 stewardship:
   state: "evolving"
-  note: "The workflow changes when real audits, reviewers, or worktree executions expose a weak guardrail."
+  note: "I change the workflow when a real audit, review, or worktree run exposes a weak guardrail."
 last_tended: "2026-08-16"
 feedback_url: "https://github.com/IgorVaryvoda/improve-codex/issues"
 proof:
@@ -32,8 +32,8 @@ proof:
     label: "Audit, plan, execute, review"
   - value: "Isolated"
     label: "One git worktree per plan"
-users_changed: "Reviewer feedback and failed execution paths tightened the workflow: reports became nonce-verified, partial orchestration contracts fail closed, and critics can check claims against live local services."
-imperfect: "It deliberately stops before merge and depends on strong repository-specific verification. That makes it slower than an autonomous code bot and much harder to let damage the main checkout."
+users_changed: "Failed runs and reviewer feedback led to nonce-verified reports, fail-closed orchestration, and checks against live local services."
+imperfect: "It stops before merge and depends on each repository having good checks. It is slower than an autonomous code bot and much less likely to wreck the main checkout."
 highlights:
   - "One isolated git worktree per plan"
   - "Sandboxed, browser-free, CPU-capped Codex executors"

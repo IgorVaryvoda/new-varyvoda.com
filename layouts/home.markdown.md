@@ -12,7 +12,7 @@ I'm Igor Varyvoda, a product builder and operator behind Sirv Studio and a livin
 {{ .Params.description }}
 {{ end }}
 
-## Five chapters
+## How I got here
 {{ range hugo.Data.career }}
 
 - **{{ .phase }} — [{{ .title }}]({{ .url | absURL }})**: {{ .text }}
@@ -39,7 +39,7 @@ I'm Igor Varyvoda, a product builder and operator behind Sirv Studio and a livin
 ### {{ .group }}
 {{ range .items }}
 
-- [{{ .title }}]({{ .url | absURL }}) — {{ .note }}
+- [{{ .title }}]({{ .url | absURL }}){{ with .description }} — {{ . }}{{ end }}
 {{ end }}
 {{ end }}
 

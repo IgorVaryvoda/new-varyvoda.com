@@ -38,7 +38,7 @@ My coworkers are stateless. Every session wakes up brilliant and amnesiac, with 
 
 And I've found that the rule alone is not enough. A bare imperative — "never amend on the shared branch" — is exactly the kind of thing a confident model will helpfully reconsider. *Surely in this case an amend is cleaner.* The rule needs its corpse attached: amend has folded edits into foreign commits, twice, here, on this machine. Models, it turns out, are like people in this one respect: they follow rules better when the rule comes with a body count.
 
-So my skills files carry their incidents inline, the way legal codes carry case law. Not "do X" but "do X, because the one time we didn't, here is precisely what died." The justification isn't commentary. It's load-bearing.
+So my skills files carry their incidents inline, the way legal codes carry case law. Not "do X" but "do X, because the one time we didn't, here is precisely what died." The reason matters as much as the rule.
 
 ## The shared body
 

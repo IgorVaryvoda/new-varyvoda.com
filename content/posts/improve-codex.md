@@ -77,7 +77,7 @@ The two-round REVISE cap deserves a note, because it encodes a lesson that took 
 Three honest limitations, all by design:
 
 - **No browser verification.** UI changes come back with their visual checks explicitly marked as skipped, and the review flags them for you. Headless executors verifying pixel output is how you end up with either lies or Chromium farms; I chose neither.
-- **No merging, ever.** Every approved plan is a branch in a worktree awaiting your decision. This is friction, and it's load-bearing friction — the entire trust model of the pipeline rests on the human owning the merge.
+- **No merging, ever.** Every approved plan is a branch in a worktree awaiting your decision. The friction is deliberate: the human owns the merge.
 - **Review is the bottleneck, on purpose.** Two concurrent codex processes — critics included — is not a technical limit; it's a statement about how fast one person can *actually* review with attention. A pipeline that produces diffs faster than you can honestly judge them isn't more productive. It's just faster entropy.
 
 That last point is the whole post in miniature. In the two-theories essay I wrote that when the marginal cost of producing code drops toward zero, everything scarce moves upstream — specification, verification, taste. improve-codex is what you get when you take that sentence seriously enough to encode it in shell scripts: the cheap thing runs sandboxed and niced at priority 10, and the scarce thing gets two gates — one on the plan before a keystroke is spent, one on the diff before the verdict — a verdict format, and the final word.

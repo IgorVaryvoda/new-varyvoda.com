@@ -25,7 +25,7 @@
         <header class="contact-heading">
           <p class="eyebrow">Contact</p>
           <h1>Tell me about it.</h1>
-          <p>Product work, difficult collaboration, a bug in something I maintain, or anything else worth a real conversation.</p>
+          <p>Ask about a product, report a bug, or send me something interesting.</p>
           <div class="contact-links">
             {{ range sort .Site.Params.social "weight" }}
               <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
@@ -35,20 +35,20 @@
         <div class="contact-panel">
           <div class="contact-panel-header">
             <span>Send me a message</span>
-            <a href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Open the contact form</a>
+            <a href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Open form</a>
           </div>
           <div class="contact-brief">
-            <p class="contact-brief-lead">Choose the useful route.</p>
+            <p class="contact-brief-lead">What’s this about?</p>
             <p data-contact-context hidden></p>
             <ol>
-              <li><span>01</span><strong>Discuss a product or leadership role</strong></li>
-              <li><span>02</span><strong>Collaborate on something difficult</strong></li>
-              <li><span>03</span><strong>Report a problem with one of my products</strong></li>
-              <li><span>04</span><strong>Ask or tell me something else</strong></li>
+              <li><strong>A product or role</strong></li>
+              <li><strong>Working together</strong></li>
+              <li><strong>A bug in one of my products</strong></li>
+              <li><strong>Something else</strong></li>
             </ol>
             <div class="contact-brief-action">
-              <a class="project-primary-action" href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Open the contact form</a>
-              <p>Or email <a href="mailto:{{ .Params.email }}" data-contact-email>{{ .Params.email }}</a>. I read both.</p>
+              <a class="project-primary-action" href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Send a message</a>
+              <p>Email works too: <a href="mailto:{{ .Params.email }}" data-contact-email>{{ .Params.email }}</a></p>
             </div>
           </div>
         </div>

@@ -23,7 +23,7 @@ tech_stack: ["Web App", "Video", "PWA"]
 role: "Creator and sole builder"
 stewardship:
   state: "long-running"
-  note: "Kept online and repaired when upstream services change; deliberately not expanded into a larger product."
+  note: "I keep it online and fix it when upstream sites change. I have no plans to make it a bigger product."
 last_tended: "2026-05-11"
 feedback_url: "/contact/?project=viddl&type=bug"
 proof:
@@ -31,8 +31,8 @@ proof:
     label: "Supported social platforms"
   - value: "2020–present"
     label: "Continuously operated"
-users_changed: "Compatibility failures are the roadmap. When somebody reports a link that stopped resolving, the useful work is restoring that path rather than adding another screen."
-imperfect: "Viddl depends on upstream sites that change without warning. A supported service can break until the resolver catches up; that dependency is inherent to the product."
+users_changed: "Broken links are the roadmap. When a supported site changes, I fix the resolver."
+imperfect: "Upstream sites change without warning, so a supported service can break until I catch up."
 highlights:
   - "YouTube, X, Instagram, Facebook, Reddit, and Threads"
   - "Free MP4 downloads without an account"

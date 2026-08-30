@@ -7,7 +7,7 @@ image: "https://cdn.earthroulette.com/varyvoda/slovocard.png"
 image_alt: "SlovoCard spaced-repetition review interface for Balkan-language vocabulary"
 description: "Learn and retain an 8,000-word Balkan-language deck through spaced repetition."
 hero_kicker: "Language tool"
-hero_intro: "I built a spaced-repetition system for learning the languages around me in the Balkans, with more than 8,000 words in the deck."
+hero_intro: "I wanted one large deck for the languages I hear in Montenegro, so I made it."
 hero_title_size: "compact"
 hero_mark: "Spaced repetition"
 hero_scope: "Study to recall"
@@ -23,7 +23,7 @@ tech_stack: ["Web", "SRS", "Language Learning"]
 role: "Creator and sole builder"
 stewardship:
   state: "maintained"
-  note: "Vocabulary corrections, deck quality, dependencies, and review behaviour remain actively supported."
+  note: "I fix vocabulary, review bugs, dependencies, and deck quality."
 last_tended: "2026-07-02"
 feedback_url: "/contact/?project=slovocard&type=correction"
 proof:
@@ -31,8 +31,8 @@ proof:
     label: "Words in the deck"
   - value: "4 variants"
     label: "Bosnian, Croatian, Serbian, Montenegrin"
-users_changed: "Learner reports have corrected vocabulary entries and exposed places where a regional variant or review prompt needed more context."
-imperfect: "The deck is deeper than the onboarding. New learners still need a clearer path into the language and a better explanation of how the regional variants relate."
+users_changed: "Learners have reported wrong entries, unclear prompts, and missing regional context. I fixed them."
+imperfect: "Onboarding is still thin. It needs to explain the four regional variants more clearly."
 highlights:
   - "Spaced Repetition"
   - "Balkan Languages"
@@ -42,28 +42,28 @@ weight: 6
 
 ## Why I wanted it
 
-Living in Montenegro made the usual beginner-language-app problem obvious. I did not need a deck optimized for one clean textbook standard. I needed the words people around me actually use, with enough context to understand where Bosnian, Croatian, Serbian, and Montenegrin overlap and where they do not.
+Living in Montenegro, I did not need one clean textbook standard. I needed the words people around me use, plus enough context to understand where Bosnian, Croatian, Serbian, and Montenegrin differ.
 
-So I built the vocabulary tool I wanted to study with: a large deck, a quiet review loop, and repetition scheduled around what I was actually forgetting.
+So I built the vocabulary tool I wanted: a large deck and a quiet review loop that brings back the words I forget.
 
 ## The 8,000-word deck
 
-SlovoCard contains more than 8,000 words. The starting corpus came from frequency-ranked vocabulary and imported phrase material, then moved into a curated Supabase dataset. Definitions and IPA are enriched from Wiktionary, images from Wikimedia Commons, and example sentences from Tatoeba, with the source attribution kept alongside the content.
+SlovoCard contains more than 8,000 words. I started with frequency-ranked vocabulary and phrase material, then moved it into a Supabase dataset. Definitions and IPA come from Wiktionary, images from Wikimedia Commons, and example sentences from Tatoeba. The source stays attached to each entry.
 
-The useful work is not the number by itself; it is keeping entries consistent, correcting bad translations, and making a card specific enough to teach the intended meaning rather than a vague dictionary cloud. Bosnian, Croatian, Serbian, and Montenegrin share one Serbo-Croatian core in the product, with language metadata and explicit phrase variants where a regional distinction matters.
+The number is easy to quote. The work is correcting bad translations and making each card teach one clear meaning. The four languages share one Serbo-Croatian core in SlovoCard, with metadata and phrase variants where the regional difference matters.
 
 ## How review works
 
-The scheduler is Anki-like and derived from SM-2. Cards move through new, learning, review, and relearning states; ratings alter the interval and ease factor, with deck settings for learning steps, graduation, easy bonuses, and maximum intervals. Words you recall cleanly wait longer before returning, while difficult or missed words come back sooner.
+The scheduler is Anki-like and based on SM-2. Cards move through new, learning, review, and relearning states. Your rating changes the interval and ease factor. Easy words wait longer; missed words return sooner.
 
-I use it myself, which makes the failure mode hard to ignore. A wrong entry becomes something I repeatedly teach myself incorrectly. An awkward prompt wastes time every time it returns. Personal use turns content maintenance into product maintenance.
+I use it myself. A wrong entry teaches me the wrong thing again and again. An awkward prompt wastes my time every time it returns. That makes both problems hard to ignore.
 
 ## Corrections are part of the product
 
-Learners can report vocabulary problems and regional mismatches. Those reports have corrected entries and improved review behaviour. A language deck is never finished merely because the import completed; it gets trustworthy through use, correction, and another review pass.
+Learners can report vocabulary problems and regional mismatches. Those reports have corrected entries and improved review behaviour. Importing a deck is the easy part. Keeping it accurate takes use and corrections.
 
 ## Where it is now
 
-The core deck and review loop are useful. The onboarding is thinner. SlovoCard explains less than it knows, especially for someone arriving without context about the four regional variants. That is the honest next product problem.
+The deck and review loop work. Onboarding does not explain the four regional variants well enough yet. That is the next thing to fix.
 
 [Learn Bosnian, Croatian, Serbian, and Montenegrin with SlovoCard](https://www.slovocard.com)

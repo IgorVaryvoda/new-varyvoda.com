@@ -53,7 +53,7 @@ Then there is the third cohort, the one the chart can't show directly: teams tha
 
 ## What adoption actually costs
 
-Real adoption is expensive, which is exactly why it is rare. You have to restructure the work around the fact that agents are fast, tireless, and **confidently wrong**. Tests before code, because an agent lies with a straight face. Review gates as executable code, because human attention stopped scaling the day the fleet arrived. Documentation and memory as load-bearing infrastructure, because context is the fuel agents run on. An anti-forgery QA machine, because an agent *will* fake a green checkmark if faking is cheaper than passing.
+Real adoption is expensive, which is exactly why it is rare. You have to restructure the work around the fact that agents are fast, tireless, and **confidently wrong**. Tests before code, because an agent lies with a straight face. Review gates as executable code, because human attention stopped scaling the day the fleet arrived. Documentation and memory, because agents forget. An anti-forgery QA machine, because an agent *will* fake a green checkmark if faking is cheaper than passing.
 
 A repository run this way grows organs a hand-coded repository never grows: skills folders, workflow gates, agent memory, deck generators, recount scripts. The organs are the proof. You can pretend to be AI-assisted on a conference panel. You cannot pretend your repo grew organs.
 

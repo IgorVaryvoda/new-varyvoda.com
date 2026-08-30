@@ -24,7 +24,7 @@ tech_stack: ["Agent Skills", "Web Performance", "Sirv", "Media APIs"]
 role: "Creator and maintainer"
 stewardship:
   state: "evolving"
-  note: "The skill pack changes as browser behaviour, media formats, Sirv APIs, and agent workflows change."
+  note: "I update it when browsers, media formats, Sirv APIs, or agent workflows change."
 last_tended: "2026-07-03"
 feedback_url: "https://github.com/IgorVaryvoda/image-optimization-skill/issues"
 proof:
@@ -32,7 +32,7 @@ proof:
     label: "Focused media skills"
   - value: "Open source"
     label: "Public installation and issue history"
-imperfect: "The pack covers the media problems I repeatedly encounter, not every CDN or framework. Broader adapters belong only when real use exposes a repeated gap."
+imperfect: "It covers the media problems I run into, not every CDN or framework. I add an adapter only after the same gap appears more than once."
 highlights:
   - "Eight focused image and media skills"
   - "Responsive images, formats, loading, and Core Web Vitals"

@@ -26,7 +26,7 @@ tech_stack: ["Vue", "Travel Data", "Search", "API"]
 role: "Creator and sole builder"
 stewardship:
   state: "long-running"
-  note: "Destination data, integrations, and mobile flows are kept healthy while the product continues to grow selectively."
+  note: "I keep the destination data, integrations, and mobile flows working, and add things when they are useful."
 last_tended: "2026-08-14"
 feedback_url: "/contact/?project=earth-roulette&type=bug"
 proof:
@@ -34,8 +34,8 @@ proof:
     label: "Destinations"
   - value: "2021–present"
     label: "Continuously operated"
-users_changed: "Real travel planning pushed the product beyond a novelty button: filters, saved places, practical destination context, and mobile access all came from what people needed after the spin."
-imperfect: "The destination depth has outgrown parts of the navigation. There is more useful material in the database than the current interface makes easy to discover."
+users_changed: "People wanted more after the random spin. That led to filters, saved places, practical destination information, and mobile apps."
+imperfect: "The database contains more useful material than the navigation exposes. Some of it is too hard to find."
 highlights:
   - "5,000 destinations across every continent"
   - "Filters for budget, country, continent, and activity"

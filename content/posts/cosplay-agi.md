@@ -3,12 +3,12 @@ title: "Cosplay AGI"
 date: 2026-08-20
 draft: false
 content_type: "Essay"
-description: "I have a skill whose literal trigger phrase is 'cosplay AGI.' The joke turned out to be load-bearing: everything I've built is a general intelligence made of prosthetics."
+description: "I have a skill whose literal trigger phrase is 'cosplay AGI.' The joke describes the whole system: capable models surrounded by prosthetics."
 ---
 
 There is a skill file on my machine whose literal trigger phrase is **"cosplay AGI."** I type those two words and my fleet snaps into its most rigorous mode: every claim verified at source, findings cited by file and line, zero hedging, scores pinned to a calibrated scale. The file even defines the term, deadpan: *maximum rigor, zero hedging, every claim verified at source, no mistakes. It does NOT mean grandiose prose.*
 
-It started as a joke command. It took me embarrassingly long to notice the joke was load-bearing — that "cosplay AGI" is not a funny name for what I built. It's an exact one.
+It started as a joke command. It took me embarrassingly long to notice that "cosplay AGI" is a precise name for what I built.
 
 ## The costume, itemized
 
@@ -30,7 +30,7 @@ Assemble it all and you get something that behaves — within my repos, on my pr
 
 Here's what makes this an observation worth writing down rather than a bit: **the cosplay is falsifiable, and I can watch it decay.**
 
-Every prosthetic in that list exists because a model, at some specific point in time, couldn't do the thing itself. Which means every prosthetic is a dated claim about model limitations — and model limitations keep expiring. Each generation, I get to delete rules. Instructions about output formatting that were load-bearing two years ago would be insulting today. Whole categories of "check the model didn't do X" review steps have quietly gone from *fires weekly* to *never fires* to *deleted*. The scaffolding I maintain today is noticeably lighter than a year ago, and a year ago it was lighter than the year before.
+Every prosthetic in that list exists because a model, at some specific point in time, couldn't do the thing itself. Each one is a dated claim about a model limitation, and those limitations keep expiring. Each generation, I get to delete rules. Output-format instructions that were necessary two years ago would be insulting today. Whole categories of "check the model didn't do X" review steps have quietly gone from *fires weekly* to *never fires* to *deleted*. The scaffolding I maintain today is noticeably lighter than a year ago, and a year ago it was lighter than the year before.
 
 This gives me something almost nobody in the AGI-timeline argument has: **a private, empirical obsolescence meter.** I don't need to argue about benchmarks. I can just count which of my prosthetics each new model generation lets me throw away. The costume-shedding rate is my personal AGI forecast, measured in deleted lines of skills files.
 

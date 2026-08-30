@@ -25,7 +25,7 @@ tech_stack: ["Nuxt", "Directory", "Search", "Maps"]
 role: "Creator and sole builder"
 stewardship:
   state: "maintained"
-  note: "Listings, search, dependencies, and the public apps remain supported without forcing the directory into a larger marketplace."
+  note: "I maintain the listings, search, dependencies, and public apps. It does not need to become a marketplace."
 last_tended: "2026-07-07"
 feedback_url: "/contact/?project=sirv-experts&type=bug"
 proof:
@@ -33,7 +33,7 @@ proof:
     label: "Specialist categories"
   - value: "Web + iOS"
     label: "Public product surfaces"
-imperfect: "A focused directory is only as useful as its current listings. Geographic coverage remains uneven, and the product does not pretend a sparse market is a complete one."
+imperfect: "Coverage is uneven. Some places have plenty of specialists; others have almost none."
 highlights:
   - "Nine specialist service categories"
   - "Local and worldwide expert search"
