@@ -550,6 +550,7 @@ img { max-width: 100%; }
 
 .scene-sentence a {
   color: inherit;
+  white-space: nowrap;
   text-decoration-line: underline;
   text-decoration-style: dotted;
   text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
@@ -1325,22 +1326,16 @@ a.scene-corner--latest:focus-visible {
 .work-atlas-intro {
   display: grid;
   min-height: calc(100svh - 8rem);
-  grid-template-rows: auto 1fr;
+  grid-template-rows: 1fr;
   padding: 3.2rem 0 clamp(5rem, 8vh, 8rem);
 }
 
-.work-atlas-topline,
 .work-atlas-thesis,
 .work-atlas-heading {
   display: flex;
   justify-content: space-between;
   gap: clamp(4rem, 8vw, 11rem);
 }
-
-.work-atlas-topline { align-items: flex-start; }
-.work-atlas-topline .project-masthead-meta,
-.work-atlas-topline .work-masthead-meta { margin: 0; }
-.work-atlas-topline .work-masthead-meta { justify-content: flex-end; color: var(--harbor-muted); }
 
 .work-atlas-thesis { align-items: end; align-self: end; }
 .work-masthead .eyebrow { color: var(--accent); }
@@ -1352,19 +1347,6 @@ a.scene-corner--latest:focus-visible {
   font-weight: 500;
   line-height: var(--leading-display-multiline);
   letter-spacing: var(--tracking-display-xl);
-}
-
-.work-atlas-intro-copy {
-  width: min(100%, 40rem);
-  padding-bottom: 1rem;
-}
-
-.work-atlas-intro-copy > p {
-  margin: 0 0 3rem;
-  color: var(--harbor-muted);
-  font-family: var(--reading);
-  font-size: clamp(2rem, 2.2vw, 2.65rem);
-  line-height: 1.5;
 }
 
 .work-atlas { padding: clamp(8rem, 11vw, 14rem) 0; background: var(--paper); }
@@ -2334,14 +2316,9 @@ a.scene-corner--latest:focus-visible {
   .archive-heading .quiet-meta { text-align: left; }
   .pagination { margin-left: 0; padding-left: 0; }
 
-  .work-atlas-intro { min-height: calc(100svh - 6.4rem); grid-template-rows: auto 1fr; padding: 2.4rem 0 5rem; }
-  .work-atlas-topline { align-items: flex-start; flex-direction: column; gap: 1.2rem; }
-  .work-atlas-topline .work-masthead-meta { justify-content: flex-start; }
-  .work-atlas-topline .work-masthead-meta span:last-child { display: none; }
+  .work-atlas-intro { min-height: calc(100svh - 6.4rem); grid-template-rows: 1fr; padding: 2.4rem 0 5rem; }
   .work-atlas-thesis { align-items: flex-start; align-self: end; flex-direction: column; gap: 4rem; }
   .work-atlas-thesis h1 { font-size: clamp(5.6rem, 18vw, 7.8rem); line-height: var(--leading-display-multiline); }
-  .work-atlas-intro-copy { width: 100%; padding-bottom: 0; }
-  .work-atlas-intro-copy > p { max-width: 30rem; font-size: 2rem; }
   .work-atlas { padding: 7rem 0; }
   .work-atlas-heading { align-items: flex-start; flex-direction: column; gap: 2rem; margin-bottom: 5rem; }
   .work-atlas-heading .quiet-meta { text-align: left; }
