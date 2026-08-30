@@ -52,7 +52,7 @@ Site uses hugo-coder theme but has custom template overrides in `/layouts/`:
 - Site uses dark mode only (`hidecolorschemetoggle = true` in config)
 
 ### Project Metadata
-Public projects require `role`, `stewardship`, `last_tended`, `description`, `image_alt`, `feedback_url`, and `proof`. Run `node scripts/validate-projects.mjs`; see `README.md` for the complete model.
+Public projects require `role`, `stewardship`, `last_tended`, `description`, `image_alt`, `feedback_url`, `proof`, and `imperfect`. Run `node scripts/validate-projects.mjs`; see `README.md` for the complete model.
 
 ### Image Handling
 - Sirv CDN is used for image optimization and lazy loading

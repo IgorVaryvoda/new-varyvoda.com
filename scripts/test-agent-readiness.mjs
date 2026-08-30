@@ -1,8 +1,11 @@
 import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
+const require = createRequire(import.meta.url);
+const { readContactContext, buildContactFormURL, buildContactEmailURL } = require("../assets/js/pages/contact.js");
 const middlewareSource = await readFile(new URL("../functions/_middleware.js", import.meta.url), "utf8");
 const middleware = await import(`data:text/javascript;base64,${Buffer.from(middlewareSource).toString("base64")}`);
 
@@ -77,6 +80,14 @@ assert.match(homeHtml, /\/js\/atmosphere(?:\.min)?\.[a-f0-9]+\.js/);
 const aboutHtml = await readFile(new URL("../public/about/index.html", import.meta.url), "utf8");
 assert.match(aboutHtml, /page-static-scene/);
 assert.doesNotMatch(aboutHtml, /\/js\/atmosphere/);
+
+const contactHtml = await readFile(new URL("../public/contact/index.html", import.meta.url), "utf8");
+assert.match(contactHtml, /\/js\/pages\/contact(?:\.min)?\.[a-f0-9]+\.js/);
+assert.match(contactHtml, /data-contact-context/);
+assert.equal(readContactContext("?project=slovocard&type=correction").project, "slovocard");
+assert.deepEqual(readContactContext("?project=%3Cscript%3E&type=bug"), { project: "", type: "bug" });
+assert.equal(buildContactFormURL("https://form.typeform.com/to/example", { project: "viddl", type: "bug" }), "https://form.typeform.com/to/example#project=viddl&type=bug");
+assert.match(buildContactEmailURL("mailto:igor@example.com", { project: "viddl", type: "bug" }), /^mailto:igor@example\.com\?subject=Bug\+report/);
 
 const studioHtml = await readFile(new URL("../public/projects/sirv-studio/index.html", import.meta.url), "utf8");
 assert.match(studioHtml, /\/css\/systems\/studio(?:\.min)?\.[a-f0-9]+\.css/);

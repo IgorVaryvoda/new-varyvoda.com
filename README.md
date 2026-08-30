@@ -41,6 +41,7 @@ feedback_url: "/contact/?project=example&type=bug"
 proof:
   - value: "1,000+"
     label: "Downloads"
+imperfect: "What remains honestly incomplete."
 ```
 
 Allowed stewardship states are `primary-focus`, `evolving`, `maintained`, `long-running`, and `formative`. `node scripts/validate-projects.mjs` enforces the schema and accepts a non-date `last_tended` only for formative records.

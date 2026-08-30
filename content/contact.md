@@ -7,4 +7,5 @@ slug: contact
 draft: false
 form_url: https://form.typeform.com/to/SMujkfNK
 email: igor@varyvoda.com
+page_js: ["contact"]
 ---

@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "node:path";
 
-const required = ["role", "stewardship", "last_tended", "description", "image_alt", "feedback_url", "proof"];
+const required = ["role", "stewardship", "last_tended", "description", "image_alt", "feedback_url", "proof", "imperfect"];
 const states = new Set(["primary-focus", "evolving", "maintained", "long-running", "formative"]);
 const directory = join(process.cwd(), "content", "projects");
 
