@@ -542,12 +542,14 @@ img { max-width: 100%; }
    at night, sunrise amber by day — and its underline becomes a small
    piece of the sea, drifting like the water below. */
 :root {
+  --link-wave-rest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23eec27f' stroke-opacity='.48' stroke-width='1'/%3E%3C/svg%3E");
   --link-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23eec27f' stroke-width='1.5'/%3E%3C/svg%3E");
   --link-hover-ink: #f0cd92;
   --link-hover-halo: rgba(238, 194, 127, 0.42);
 }
 
 :root:not([data-theme="dark"]) {
+  --link-wave-rest: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23a3581f' stroke-opacity='.46' stroke-width='1'/%3E%3C/svg%3E");
   --link-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4 Q6 1 12 4 T24 4' fill='none' stroke='%23a3581f' stroke-width='1.5'/%3E%3C/svg%3E");
   --link-hover-ink: #8d4a15;
   --link-hover-halo: rgba(214, 138, 58, 0.38);
@@ -556,12 +558,12 @@ img { max-width: 100%; }
 .scene-sentence a {
   color: inherit;
   white-space: nowrap;
-  text-decoration-line: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.13em;
-  transition: color 200ms ease, text-shadow 200ms ease;
+  background-image: var(--link-wave-rest);
+  background-position: 0 100%;
+  background-repeat: repeat-x;
+  background-size: 2.4rem 0.6rem;
+  text-decoration: none;
+  transition: color 200ms ease, text-shadow 200ms ease, background-size 200ms ease;
 }
 
 .scene-sentence a:hover,

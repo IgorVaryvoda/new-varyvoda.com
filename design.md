@@ -69,7 +69,7 @@ Keep the landscape visible. The closing question and action may use local contra
 
 - Reading-prose links keep a subtle underline at rest.
 - Navigation, cards, labels, and buttons do not inherit prose underlines.
-- Homepage hero phrases stay on one line. They use a subtle dotted underline at rest and the animated shoreline wave on hover or keyboard focus.
+- Homepage hero phrases stay on one line. They use a quiet static shoreline wave at rest; it brightens and drifts on hover or keyboard focus.
 - Keep that established wave for the hero and the small latest-post link; do not replace it with native wavy text decoration.
 - Keyboard focus is always visible. Do not remove an outline without a replacement.
 - Buttons and primary navigation controls need a touch target of about `44px`.
