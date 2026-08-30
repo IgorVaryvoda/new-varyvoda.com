@@ -106,8 +106,9 @@
 }
 
 @media (max-width: 680px) {
-  .scene-message { gap: 1.2rem; padding: 0 0.8rem; transform: translateY(-8vh); }
-  .scene-message .scene-sentence { font-size: clamp(3.5rem, 12vw, 5rem); }
+  .scene-message { min-width: 0; width: 100%; gap: 1.2rem; padding: 0 0.8rem; transform: translateY(-8vh); }
+  .scene-message::before { inset-inline: 0; }
+  .scene-message .scene-sentence { min-width: 0; width: 100%; max-width: none; font-size: clamp(3.2rem, 10.8vw, 5rem); }
   .scene-intro { max-width: 38rem; font-size: 1.35rem; line-height: 1.55; }
   .scene-personality { font-size: 0.95rem; }
   .scene-corner { font-size: 0.9rem; }

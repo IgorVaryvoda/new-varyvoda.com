@@ -92,6 +92,7 @@ html {
   background: var(--paper);
   color: var(--ink);
   font-size: 62.5%;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
