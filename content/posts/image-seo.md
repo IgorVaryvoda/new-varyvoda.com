@@ -10,7 +10,7 @@ sitemap:
   disable: true
 ---
 
-> **Update, July 2026:** I re-audited every piece of advice in this guide, seven years on — what survived, what died, and what changed. Read the follow-up: [Image SEO in 2026: Everything That Changed Since 2019](/posts/image-seo-2026/).
+> **Update, July 2026:** I checked this advice again seven years later. Read [Image SEO in 2026: what changed since 2019](/posts/image-seo-2026/) for the current version.
 
 <div class="full-image__container"><div class="full-image__content">
 <img src="https://sirv-cdn.sirv.com/blog/image%20seo/2456071.png" alt="Illustration for image seo for e-commerce article." />
@@ -22,14 +22,14 @@ sitemap:
 <ul>
 <li>What is image SEO?</li>
 <li>How can I rank product images in Google Image search?</li>
-<li>What is the most optimal image format for product photos?</li>
+<li>What is the best image format for product photos?</li>
 <li>What's the difference between <em>alt</em> and <em>title</em> (and are they really necessary)?</li>
 <li>How do you make images (and the entire website) load faster?</li>
 <li>How can I use structured data to gain more traffic?</li>
 <li>What effects will a CDN have on my image SEO?</li>
 </ul>
 
-<p>If so, you've come to the right place. Let's get started.</p>
+<p>This guide answers each question with examples from e-commerce sites.</p>
 
 <h2 id="what">What is image SEO?</h2>
 
@@ -44,18 +44,14 @@ sitemap:
         <p class="wp-caption-text"><a href="https://sirv-cdn.sirv.com/blog/image%20seo/jumpshot-search-over-time-large.gif?format=png" target="_blank" rel="noopener noreferrer">Click for a larger image</a>. Data from JumpShot.</p>
 </div>
 
-<p>Google Image Search is absolutely massive.</p>
+<p>In the 2019 data below, Google Images had substantial search volume.</p>
 
 <div class="protip">
 <p>Google Images holds <strong>second place</strong> in terms of search volume in the USA.</p>
 It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 times larger than Facebook.
 </div>
 
-<p>But why isn't image search talked about more often? There are a couple of reasons for this.</p>
-
-<p>Firstly, a lot of SEO experts dismissed Google Image Search as being too hard to get targeted traffic from.</p>
-
-<p>Let's see if that's still the case.</p>
+<p>It received less SEO attention because many people considered its traffic difficult to convert.</p>
 
 <p>This is what Google Image search result looks like on a laptop computer today:</p>
 
@@ -67,7 +63,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 </div>
 </div>
 
-<p>It's easier than ever to visit a website from Google Images. There's a dedicated button for doing so, or you can click the large image. Other buttons like 'share', 'add to bookmarks' and 'add to collection' are just the icing on the cake.</p>
+<p>The interface gives users a dedicated button to visit the website, as well as actions to share, bookmark, or collect an image.</p>
 <p><strong>Update 12.09.2019</strong> - All the rich meta data like reviews, product price, brand etc. is now clearly visible on desktop too (this wasn't the case back when I first wrote the article).
 </p>
 
@@ -78,20 +74,20 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 </div>
 <!-- <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Screen%20Shot%202019-05-17%20at%2014.01.22-iPad%20Air%202(1).png" alt="google images mobile search result page of an adidas shoe"> -->
 
-<p>As you can see, the mobile experience is tailored towards browsing through products. Google displays a large image and cleverly includes <a href="#structured-data">structured data markup</a> to show price, brand, stock status etc. This makes Google Images a compelling starting point for online shopping.</p>
+<p>The mobile interface is designed for browsing products. Google displays a large image and uses <a href="#structured-data">structured data markup</a> to show price, brand, stock status, and other product details.</p>
 
 <p>Another important difference between mobile and desktop image results is the "related images" on the mobile version. Even if your product images don't make it to the top of the image search result page, they can still be shown in the related block, driving more traffic to your website.</p>
 
-<p>It's clear that Google Image Search has huge value for e-commerce. And it's only going to get bigger with Visual Search:</p>
+<p>Google Image Search can send useful e-commerce traffic. Visual search adds another way for people to find products:</p>
 
 <div class="wp-caption aligncenter">
     <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Google-Lens.gif" alt="demonstration of Google Lens recognizing furniture" data-options="threshold:600"/>
         <p class="wp-caption-text">An example of visual search in Google Images. <a href="https://www.blog.google/products/search/learn-and-do-more-lens-google-images/">Image by Google</a>
 </div>
 
-<p><span style="text-decoration:underline dotted;" data-avia-tooltip="The ideal and only way of searching for something when we don’t know how to name it. (c) Purna Virji">Visual Search</span>, is <a href="https://medium.com/syncedreview/visual-search-is-revolutionizing-e-commerce-b27a37dbd296">expected</a> to become a huge sales driver in e-commerce. It already drives <a href="https://newsroom.pinterest.com/en/post/celebrating-one-year-of-pinterest-lens">hundreds of millions searches</a> on Pinterest and, after Google Lens is fully integrated into Google's Image Search, the numbers are going to be staggering.</p>
+<p><span style="text-decoration:underline dotted;" data-avia-tooltip="Searching with an image when words are difficult. (c) Purna Virji">Visual search</span> was already handling <a href="https://newsroom.pinterest.com/en/post/celebrating-one-year-of-pinterest-lens">hundreds of millions of searches</a> on Pinterest when this article was written. Google Lens brought the same interaction into Google Images.</p>
 
-<p>Visual search would not have been possible without machine learning and artificial intelligence. Let's explore how Google's technology works.</p>
+<p>Visual search uses machine learning to identify the image and combine it with information from the page.</p>
 
 <h3>How does Google Image Search work?</h3>
 
@@ -109,7 +105,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 
 <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/Cloud-Vision-Adidas-Shoe-HQ.png?profile=screenshots-grey-border" alt="Adidas shoe completely recognized by Cloud Vision AI">
 
-<p>It easily identified that the shoe is an Adidas Superstar sneaker for women. Quite impressive.</p>
+<p>It identified the shoe as an Adidas Superstar sneaker for women.</p>
 
 <p>Context is also a major ranking factor.</p>
 
@@ -118,11 +114,9 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 <p>Source -  <a href="https://www.blog.google/products/search/making-visual-content-more-useful-search/">Google blog</a></p>
 </blockquote>
 
-<p>With this information in mind, let's move on to the actionable part of this article.</p>
-
 <h3>How to check your Google Image traffic</h3>
 
-<p>To measure the success of your effort, you must have a baseline to compare it to. Here's how to check the traffic you're receiving from Google Image Search.</p>
+<p>Check current Google Image traffic before changing anything, so you have a baseline.</p>
 
 <p>Go to <a href="https://search.google.com/search-console/about" target="_blank" rel="noopener noreferrer">Google Search Console</a>, open the performance report and switch the "Search Type" from "Search" to "Image".</p>
 
@@ -132,9 +126,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 
 <h2 id="accessibility">Make sure your images are accessible to search engines</h2>
 
-<p>A crucial part of image SEO is making sure Google can easily crawl and index your images.</p>
-
-<p>All your efforts can go to waste if Google can't access your images for some reason. It's an obvious, but very important part of Image SEO. Here's how you can stay on the safe side of things.</p>
+<p>Google has to fetch an image before it can index it. Start by checking crawl access and broken URLs.</p>
 
 <h3>Check for broken image links and images blocked by robots.txt</h3>
 
@@ -208,11 +200,11 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
             <p class="wp-caption-text">The anatomy of a perfect e-commerce page by Bryan Dean.</p>
     </div>
 
-<p>On-page content, such as product description, is important for ranking your store in both regular and image <span style="text-decoration:underline dotted;" data-avia-tooltip="Search engine result pages">SERPS</span>. Bryan Dean has written a very <a href="https://backlinko.com/ecommerce-seo" target="_blank" rel="noopener noreferrer">comprehensive guide</a> on e-commerce SEO overall, which is highly recommended.</p>
+<p>On-page content, such as the product description, matters in both regular and image <span style="text-decoration:underline dotted;" data-avia-tooltip="Search engine result pages">search results</span>. Bryan Dean's <a href="https://backlinko.com/ecommerce-seo" target="_blank" rel="noopener noreferrer">e-commerce SEO guide</a> covers the wider page.</p>
 
 <h3>How to name images for better SEO</h3>
 
-<p>Using descriptive file names for your images is the oldest advice in the book. It has merit - the name <span class="gray-bg">adidas-superstar-white-shoe.jpg</span> is much better than <span class="gray-bg">DSC001.jpg</span>. It's important to note that, just as with URLs, use a hyphen for spaces, not underscores.</p>
+<p>Use descriptive file names. <span class="gray-bg">adidas-superstar-white-shoe.jpg</span> says more than <span class="gray-bg">DSC001.jpg</span>. Separate words with hyphens, not underscores.</p>
 
 <p>File name is a super minor ranking factor though, if you have thousands of images and don't have an easy way of renaming and referencing them - don't bother, it's not worth it.</p>
 
@@ -227,7 +219,7 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 <li>It's used by Google in a similar way to anchor text if you happen to use your image as a link.</li>
 </ol>
 
-<p>Writing good <i>alt</i> text is not rocket science by any means. There are, however, some important things to follow:</p>
+<p>Good <i>alt</i> text follows a few rules:</p>
 
 <ul>
 <li>Don't keyword stuff;</li>
@@ -300,7 +292,7 @@ Structured data is a special type of mark-up, which provides key information abo
 
 <p>It's highly likely that all e-commerce platforms will support structured product data either now or in the future. It'll boost your rankings today and it will generate even more traffic in the future.</p>
 
-<p>This concludes the SEO part of this guide, let's move on to some technical image optimization.</p>
+<p>The next section covers image delivery and performance.</p>
 
 <h2 id="optimize">Image Optimization</h2>
 <strong>Speed up your store (without sacrificing image quality)</strong>
@@ -433,11 +425,11 @@ src="elva-fairy-640w.jpg" alt="Elva dressed as a fairy"></pre>
 
 <p>I use markup like this for every image in this post.</p>
 
-<p>To make the magic happen, I've just added a little code snippet at the end of this post.</p>
+<p>Sirv.js handles the detection and transformation:</p>
 
 <pre class="prettyprint">&lt;script src="https://scripts.sirv.com/sirv.js"&gt;&lt;/script&gt;</pre>
 
-What it does is detect the browser and the viewport (the size of the browser window) and automatically resizes the image for a perfect fit. On-the-fly. As a side-effect (a quite pleasant one), it also converts the image to the most optimal image format and quality. Apart from that, it enables lazy loading. Which leads us to the next technique...
+The script detects the browser and viewport, resizes the image, chooses a suitable format and quality, and enables lazy loading.
 
 <h3>Lazy load images</h3>
 
@@ -454,7 +446,7 @@ What it does is detect the browser and the viewport (the size of the browser win
 
 <h4>How to lazy load images</h4>
 
-Lazy loading is on by default when you utilize Sirv's <a href="https://sirv.com/help/resources/responsive-imaging/#Lazy_loading">responsive imaging</a>. You can also configure the threshold (load images when they're 200 pixels below the viewport, for example).
+Lazy loading is on by default when you use Sirv's <a href="https://sirv.com/help/resources/responsive-imaging/#Lazy_loading">responsive imaging</a>. You can also configure the threshold (load images when they're 200 pixels below the viewport, for example).
 
 <h3>Use a Content Delivery Network (CDN)</h3>
 
@@ -468,7 +460,7 @@ Lazy loading is on by default when you utilize Sirv's <a href="https://sirv.com/
 
 <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/DoneJS-Animated-With-CDN.gif" alt="a gif showcasing files traveling with a CDN enabled" data-options="threshold:400"/>
 
-<p>Sirv is an image-focused CDN. It not only replicates and caches your images around the world, but it also does so much more:</p>
+<p>Sirv is an image-focused CDN. Besides replicating and caching images around the world, it provides:</p>
 
 <ul>
 <li>Automatic image optimization</li>
@@ -496,13 +488,13 @@ Lazy loading is on by default when you utilize Sirv's <a href="https://sirv.com/
 
 <h3>Automate image optimization with Sirv</h3>
 
-<p>Image optimization is hard work. That's not the case for Sirv users. Sirv automates all the mundane work of resizing, converting and optimizing product images and lets you focus on what's important - growing your store.</p>
+<p>Sirv automates resizing, format conversion, and compression for product images.</p>
 
-<p>But that's not all. Sirv allows you to showcase your products from every angle with gorgeous 360 spins and rich image zooms. Here's how it looks in action.</p>
+<p>Sirv also supports image zoom and 360-degree product views. Here is an example.</p>
 
 <div style="margin:0 auto;" class="Sirv" data-src="https://demo-cdn.sirv.com/spins/karlmartini/mizuno2/mizuno2.spin"></div>
 
-<p>You can <a href="https://my.sirv.com/#/signup">try it</a> today, for free. No sales calls and demos, just sign up, <a href="https://sirv.com/integration/">download</a> a module if you use Magento/WordPress/PrestaShop, then watch the magic happen.</p>
+<p>You can <a href="https://my.sirv.com/#/signup">try it</a> or use a supported <a href="https://sirv.com/integration/">platform integration</a> for Magento, WordPress, or PrestaShop.</p>
 
 <em>Credits:</em>
 <em>Header image <a rel="nofollow" href="http://www.freepik.com">designed by katemangostar / Freepik</a>.</em>

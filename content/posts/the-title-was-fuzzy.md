@@ -1,5 +1,5 @@
 ---
-title: "The title was fuzzy; the responsibility wasn't"
+title: "The title was fuzzy. The responsibility wasn't"
 date: 2026-08-28
 draft: false
 content_type: "Essay"

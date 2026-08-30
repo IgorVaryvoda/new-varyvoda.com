@@ -1,85 +1,70 @@
 ---
-title: "Claude Audits, Codex Types: Anatomy of a Fleet Skill"
+title: "How improve-codex works"
 date: 2026-07-06
 draft: false
 content_type: "Build record"
-description: "improve-codex is a small open-source skill that turns the 'editorial judgment over a fleet' theory into a working pipeline: an expensive model audits and reviews, cheap sandboxed executors type, and a second model family attacks every plan and every diff — nothing lands without a verdict."
+description: "A codebase audit becomes reviewed plans, isolated Codex worktrees, and implementation branches that still require a human merge decision."
 ---
 
-A few days ago I wrote about [two theories of a programmer](/posts/two-theories-of-a-programmer/): the old one, where a programmer types the code they thought of, and the new one, where a programmer exercises editorial judgment over a fleet that types. That post was deliberately about the *theory*. This one is about a concrete, open-source, 100%-shell-script piece of the practice.
-
-[improve-codex](https://github.com/IgorVaryvoda/improve-codex) is an agent skill I extracted from my daily workflow and published. It does one thing: it takes the audit-to-implementation pipeline I run on my own codebases and packages it so a single command executes the whole loop.
+[improve-codex](https://github.com/IgorVaryvoda/improve-codex) packages the audit and implementation loop I use on mature repositories.
 
 ```bash
 npx skills add igorvaryvoda/improve-codex
 /improve-codex
 ```
 
-That's the pitch. The interesting part is *why* it's shaped the way it's shaped.
+It audits a repository, writes implementation plans, reviews each plan, runs approved work in isolated git worktrees, and reviews the resulting diffs. It never merges the work.
 
-## The division of labor
+## The four stages
 
-The skill seats three models from two vendors, in deliberately unequal roles:
+1. **Audit.** Claude reads the repository and writes self-contained plans with file scope and done criteria.
+2. **Review the plans.** A read-only OpenAI critic checks each plan against the code. It looks for false assumptions, ambiguous instructions, missing failure paths, and weak done criteria.
+3. **Execute.** Each accepted plan gets a fresh git worktree and a sandboxed Codex process. Two Codex processes can run at once, with lower CPU priority and a hard timeout.
+4. **Review the diff.** Claude reruns the plan's checks, compares the changed files with the declared scope, reads the diff, and checks whether new tests exercise real behaviour. Claude and OpenAI critics then review the result independently.
 
-1. **Audit.** Claude — Fable specifically, Anthropic's top-end model — surveys the codebase and writes self-contained implementation plans: numbered files in `plans/`, each with scope, in-scope file lists, and done-criteria, plus an index ordered by dependency.
-2. **Scrutinize.** Before any plan reaches an executor, it gets a hostile read from `gpt-5.6-sol` at high reasoning effort, running read-only against the actual repository. The critic attacks the plan the way a skeptical staff engineer would: assumptions the code contradicts, ambiguity a literal-minded executor could implement two different ways, done criteria that can pass while the goal fails, missing failure paths. Claude arbitrates the findings and edits the plan — while a flaw still costs an edit, not a revision round.
-3. **Execute.** Each surviving plan gets a fresh git worktree and a sandboxed [Codex](https://github.com/openai/codex) executor running `gpt-5.6-terra` — OpenAI's CLI agent, cast as the typist. Two codex processes max (critics count against the cap too), niced down, hard one-hour timeout.
-4. **Review.** Claude comes back as tech lead: re-runs every done-criterion inside the worktree, checks `git diff --stat` against the plan's declared scope, reads the full diff, and audits new tests for real behavior instead of stubs. Then the diff takes two independent adversarial passes — one from Claude, one from sol — before the verdict: **APPROVE**, **REVISE** (with a written feedback file, maximum two rounds), or **BLOCK**.
-5. **You merge.** Or you don't. The skill's hard rule, straight from the README: *nothing lands on your branch without a review, and nothing gets merged at all.* Approved branches sit in their worktrees waiting for a human decision.
+The final verdict is **APPROVE**, **REVISE**, or **BLOCK**. An approved branch still waits for a human merge decision.
 
-If you read the two-theories post, you'll recognize the shape immediately. Specification and verification — the scarce, upstream work — go to the strongest model. Typing — the thing whose marginal cost collapsed — goes to an executor chosen for how faithfully it can follow a written plan. Every artifact gets attacked by a mind that didn't author it: the plans by sol, the diff by Claude and sol both. The review gate is executable, not aspirational. And the human is positioned exactly where the new theory says they belong: at the merge decision, holding editorial responsibility for what ships.
+## Why use two model families
 
-## Why two vendors?
+The split is practical. Claude handles repository-wide audit and review. Codex is good at following a detailed implementation plan and producing a focused diff.
 
-The question I get most often. Wouldn't Claude-orchestrating-Claude be simpler?
+The cross-model review matters too. A model family can share the author's blind spots and find its own output reasonable. In this workflow, OpenAI reviews Claude's plans and Claude reviews Codex's implementation. Neither critic can edit the work it is judging.
 
-Simpler, yes. But every seat was cast on merit. Fable gets the orchestrator chair because audit and review are pure judgment work — reading a whole codebase, deciding what's worth fixing, and catching a plausible-but-wrong diff are exactly what you pay for the strongest model to do. And Codex gets the executor chair not as a budget pick but because it's genuinely excellent at the two things that role demands: **following a written brief to the letter, and writing code.** An executor doesn't need taste or initiative — the plan already contains the taste. It needs discipline and clean diffs, and Codex delivers both.
+This does not make the review independent in a scientific sense. It gives the same artifact two different failure profiles.
 
-There's also a structural benefit to the cross-vendor split, and the current version of the skill leans into it hard: **nobody's homework goes unopposed.** An agent reviewing work produced by its own model family shares blind spots with the author — the same training, the same stylistic instincts, the same failure modes, and (the dangerous part) a subtle bias toward finding its own output reasonable. So the pipeline crosses the streams in both directions. Codex's diff is attacked by Claude, which has no authorship stake in it. And Claude's plans — the one artifact the orchestrator does author — are attacked by sol before dispatch. The skill states the design plainly: the plan is authored and judged by one mind, but attacked twice by a different model family — once before execution while fixing it is cheap, once after against the real diff.
+## The limits
 
-Even the OpenAI side is cast unevenly. The critic seat runs sol at high reasoning effort; the executor seat runs terra at medium — and downgrading the executor for cheap mechanical work deliberately does not downgrade the critics. The script comments explain both defaults in one breath: critique is where the second model earns its keep, and plans are fully specified, so execution rarely needs more. You pay for thinking exactly where thinking is the job.
+Most of the repository is there to limit what an executor can do.
 
-And the third reason is the honest one: an agent that reviews must not implement, or the roles collapse. The skill enforces this as a hard rule — the orchestrator *never edits source code itself* and *never commits, merges, or pushes to your branch*. The moment your reviewer starts "just fixing" things in the diff it's reviewing, you've lost the separation that made the review trustworthy.
+- MCP servers, plugins, and browser tools are removed from executor sessions.
+- Writes are confined to the plan's git worktree.
+- Critics run read-only.
+- Dev servers, watch mode, broad E2E suites, and other long-running processes are forbidden unless the plan explicitly needs them.
+- Every Codex process runs with a timeout and lower CPU priority.
+- A missing or malformed completion report fails the run.
 
-## The guardrails are the product
+These rules came from real failures. Parallel browser sessions exhausted machines. Unbounded processes outlived their workers. Completion reports claimed tests had passed without running them.
 
-Most of the repository is not orchestration logic. It's guardrails — four layers of them, and every layer exists because its absence burned me on a real machine:
-
-- **Config layer.** The executor launches with `mcp_servers={}` and `plugins={}` — every MCP server and plugin stripped via command-line override. An executor with browser automation available *will* eventually decide the best way to verify a CSS change is to spawn headless Chromium. This rule isn't theoretical: a couple of agents running headless browsers in parallel can take a machine down completely — every core pinned, memory gone, orphaned browser processes outliving the agents that spawned them, the works. Once was enough.
-- **Sandbox layer.** `codex exec -s workspace-write -C <worktree>` — file writes are confined to the isolated worktree. The executor physically cannot touch your checkout, your other worktrees, or your home directory. The critics get even less: `-s read-only`. A critic inspects; it cannot modify the tree it's judging.
-- **Prompt layer.** The brief embeds explicit prohibitions: no dev servers, no watch mode, no E2E suites, no long-running processes. Run only the commands the plan specifies; if a verification can't be done under these constraints, *record that it was skipped* rather than improvising around it.
-- **Scheduling layer.** `nice -n 10`, a hard cap of two concurrent codex processes — executors and critics both count — and `timeout -k 30` on everything: an hour of wall-clock for an executor, thirty minutes for a critic, and then the process is killed, grace period and all.
-
-There's a theme here that generalizes well beyond this skill: agents are fast, tireless, and confidently wrong, and the wrongness includes *resource judgment*, not just code. A human engineer intuitively knows not to spin up three dev servers on a shared box. An agent knows no such thing unless the harness makes it physically impossible. You don't prompt your way to good citizenship; you configure it, sandbox it, nice it, and put a timeout on it.
-
-My favorite small rule in the whole repo is in the review phase: **a claim in the executor's report requires command evidence from the session.** "All tests pass" with no test invocation in the transcript is treated as what it is — a confabulation. In the two-theories post I wrote that an agent will fake a green checkmark if faking is cheaper than passing. This is what the countermeasure looks like when you write it down as code instead of as a complaint.
-
-The rule points both ways now. The critics operate under the same discipline: report only what you can point to concrete evidence for — a file, a line, a command output from the session — with no style nitpicks and no speculative "consider..." items. An adversarial reviewer that's allowed to speculate will bury you in plausible-sounding concerns, which burns review attention just as surely as a confabulated green checkmark does. The evidence bar is what keeps the attack honest.
+One rule now covers every review report: **a claim needs evidence from the session**. "All tests pass" is not accepted without the test command and its result. Critics must cite a file, line, or command output. Speculative suggestions and style complaints do not block a run.
 
 ## What a run looks like
 
 ```bash
-/improve-codex                    # full cycle: audit → plans → scrutiny → execute → review
-/improve-codex deep security      # focus the audit (args pass through to improve)
-/improve-codex execute            # skip the audit, run existing TODO plans
-/improve-codex execute 012 014    # cherry-pick specific plans
-/improve-codex execute low effort # cheaper executor settings for mechanical work
+/improve-codex                    # audit, plan, execute, review
+/improve-codex deep security      # focus the audit
+/improve-codex execute            # run existing TODO plans
+/improve-codex execute 012 014    # run selected plans
+/improve-codex execute low effort # use cheaper executor settings
 ```
 
-The pipeline announces its scope before executing — how many plans, what order, what concurrency — and waits for you to trim the list. Then it grinds: sol scrutiny per plan, worktree per plan, dependencies hardlinked from the main tree where possible, plan marked IN PROGRESS in the index, executor dispatched with the plan inlined into the brief, double adversarial review on completion, index updated to DONE or BLOCKED. Plans that depend on other plans wait for their prerequisites.
+Before execution, the skill prints the plan count, order, and concurrency. Each plan is reviewed, assigned a worktree, executed, and checked. Dependent plans wait for their prerequisites.
 
-The two review passes are arbitrated, not summed. A finding confirmed by either pass — verified by Claude against the actual diff — becomes REVISE feedback verbatim, weighted like a failed done criterion. A finding both passes raise independently is near-certainly real. And nothing gets discarded silently: a dismissed finding costs the reviewer a written line of reasoning in the summary.
+A revision gets at most two implementation rounds. If the same major problem survives, the plan is blocked and needs to be rewritten. More feedback cannot repair an ambiguous plan.
 
-The two-round REVISE cap deserves a note, because it encodes a lesson that took me a while to learn: **if an executor hasn't converged after two rounds of written feedback, the plan is the problem.** More feedback rounds don't fix a spec that was ambiguous at birth. BLOCK it, rewrite the plan, redispatch. Iterating endlessly on a doomed attempt is the fleet-era version of the sunk-cost fallacy, and it burns exactly the resource the whole pipeline exists to conserve — your review attention. The same logic now runs pre-dispatch too: two NEEDS REVISION verdicts from the plan critic and the findings go to the human, not into a third loop.
+## Limits
 
-## What it deliberately doesn't do
+- **No browser verification.** UI work returns with visual checks marked as skipped. A human or separate browser lane must do them.
+- **No automatic merge.** Approved branches remain in their worktrees.
+- **Limited concurrency.** The workflow should not produce diffs faster than one person can review properly.
 
-Three honest limitations, all by design:
-
-- **No browser verification.** UI changes come back with their visual checks explicitly marked as skipped, and the review flags them for you. Headless executors verifying pixel output is how you end up with either lies or Chromium farms; I chose neither.
-- **No merging, ever.** Every approved plan is a branch in a worktree awaiting your decision. The friction is deliberate: the human owns the merge.
-- **Review is the bottleneck, on purpose.** Two concurrent codex processes — critics included — is not a technical limit; it's a statement about how fast one person can *actually* review with attention. A pipeline that produces diffs faster than you can honestly judge them isn't more productive. It's just faster entropy.
-
-That last point is the whole post in miniature. In the two-theories essay I wrote that when the marginal cost of producing code drops toward zero, everything scarce moves upstream — specification, verification, taste. improve-codex is what you get when you take that sentence seriously enough to encode it in shell scripts: the cheap thing runs sandboxed and niced at priority 10, and the scarce thing gets two gates — one on the plan before a keystroke is spent, one on the diff before the verdict — a verdict format, and the final word.
-
-The repo is [MIT-licensed and on GitHub](https://github.com/IgorVaryvoda/improve-codex). You'll need the improve skill and an authenticated Codex CLI; everything else is one `npx skills add` away. If your charts haven't bent yet, this is one reasonably safe way to start bending them.
+The repository is [MIT-licensed and available on GitHub](https://github.com/IgorVaryvoda/improve-codex).

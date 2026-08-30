@@ -12,13 +12,13 @@ ogImage: "https://www.varyvoda.com/images/posts/the-bay-is-a-shader-now-og.jpg"
 
 A few days ago I opened [earendil.com](https://earendil.com/) and forgot why I came. Behind the landing page there's a live fragment shader: a raymarched ocean rolling under a night sky, stars, waves, the whole thing computed per pixel while you read.
 
-I watched it longer than I'll admit, closed the tab, and did the only reasonable thing. Two days later my homepage had a shader of its own.
+I watched it for a while, closed the tab, and decided to build one for my homepage.
 
 Then Lighthouse gave my static Hugo site a performance score of **25** and measured two and a half minutes of blocked main thread. The scene ran smoothly on every device I had tested. In the lab, it moved at a geological frame rate.
 
-The scene wasn't slow. It was running on the wrong kind of silicon. But that comes later. First, the bay.
+The scene ran well on my devices. The slow audit was using software rendering. First, the bay.
 
-But not their scene. If my homepage renders a body of water, it should render the one outside my window. I live in Herceg Novi, at the mouth of the Bay of Kotor. Green Luštica headlands on the right, the rocky Orjen massif behind, town lights strung along both shores at night. That view is one of the reasons I'm here. It deserved the pixels.
+I did not want to copy their scene. If my homepage rendered water, it should show the bay outside my window in Herceg Novi. Luštica sits on the right, the Orjen massif behind it, and town lights follow both shores at night.
 
 ## Paint the bay, not a demo
 
@@ -60,11 +60,11 @@ The mountain textures are crops of my own Nikon photos of those exact slopes, ba
 
 There are two scenes, really. The default is night: a deep indigo duotone with a gibbous moon and warm golden light necklaces along both shores, because the real town at night is sodium lamps, not gray noir. Day is that backlit sunrise.
 
-Full disclosure: day mode is the weaker of the two right now. The night scene is where the love went, and I know it. The sunrise gets its pass later.
+Day mode is still weaker than night mode. I plan to work on the sunrise again.
 
 ## My contribution was reference photos and rejection
 
-I should be honest about the process, because it's the same one I keep [writing about](/posts/two-theories-of-a-programmer/): I didn't type the GLSL. Codex built the first version, and Claude did the long art-direction grind that followed. The file is about 1,900 lines. My contribution was reference photos and rejection. A lot of rejection.
+I did not type the GLSL. Codex built the first version and Claude handled many later edits. The file is about 1,900 lines. I supplied the reference photos, described what was wrong, and rejected iterations until the scene matched the place.
 
 That sounds like the easy part until the output is technically correct and visually wrong. The models could make a moon, a sun and a string of lights. They could not decide whether any of them belonged over this bay.
 
@@ -98,19 +98,19 @@ One pale halo along the far crest survived five fixes because three causes were 
 
 The sun and the moon are the theme toggle. Click the moon and morning comes. Click the sun and night falls again. A small hit test in JavaScript mirrors the shader's own coordinates, so the clickable spot is exactly where the disc is drawn.
 
-It worked perfectly in every local test and was dead in production for a day. The click handler had shipped; the second file it depended on sat uncommitted on my disk, and a defensive `if` made the failure silent. A feature spans files, and it isn't done until every one of them is committed. Check `git status` against the feature, not against your memory.
+It worked in local tests and failed in production for a day. The click handler had shipped. A second required file was still uncommitted, and a defensive `if` hid the failure. Check `git status` against the complete feature, not against your memory.
 
 ## The benchmark was the user I forgot
 
 The Lighthouse Total Blocking Time metric reported **152,350 ms**. The Chrome trace around the same audit showed 174 seconds of main-thread activity. Different measurements, same catastrophe: a static page had become unusable for minutes.
 
-In this audit, Chrome reported its renderer as SwiftShader. WebGL had not failed; it had quietly fallen back to a software rasterizer and started running the fragment shader on the CPU. The mobile audit then throttled that CPU four times. Frames that took milliseconds on my tested devices took seconds in the lab.
+Chrome reported SwiftShader as the renderer. WebGL had fallen back to software rasterisation and was running the fragment shader on the CPU. The mobile audit then throttled that CPU four times. Frames that took milliseconds on my devices took seconds in the lab.
 
 My first reaction was to blame the lab. Real visitors have GPUs. The scene even watches its own frame times on real hardware and drops render resolution when things get slow. I briefly considered sniffing the Lighthouse user agent and handing the bot a quiet page.
 
 Then I started listing who else browses without a GPU. Virtual machines. Remote desktop sessions. Corporate laptops with acceleration disabled by policy or by a broken driver. For all of them, WebGL "works" exactly the way it works for Lighthouse: silently, on the CPU, at a geological frame rate.
 
-Lighthouse wasn't lying about my site. It was impersonating my worst-case visitor with perfect accuracy.
+The audit represented a real class of visitor I had missed.
 
 That changed the fix. Don't detect the auditor. Ask WebGL what it is actually rendering on, and believe the answer:
 
@@ -161,10 +161,10 @@ The shader bailout did not take the score from 25 to 91 by itself. The rest was 
 
 - **Three render-blocking requests disappeared.** I self-hosted normalize.css and both font families, then concatenated the CSS into one fingerprinted, same-origin file.
 - **A 133 KB screenshot became 47 KB.** Hugo now generates the right `srcset` size for its 600-pixel slot. I run image optimization tooling for a living, so getting this wrong on my own homepage was a useful genre of embarrassment.
-- **The home link became speakable.** It displayed “IV Varyvoda” while its accessible name said “Varyvoda home.” Voice-control users say what they see; now the two match.
+- **The home link became speakable.** It displayed “IV Varyvoda” while its accessible name said “Varyvoda home.” Voice-control users say what they see. The two now match.
 
 ## What the score was saying
 
-The lesson is not "Lighthouse is unfair to WebGL," and it's definitely not "chase 100 at any cost." The 25 was a proxy for a hardware class I'd forgotten existed, reported by the one visitor honest enough to sit through all 174 seconds and write it down. The right response was to detect the capability, not the auditor, and serve each class of hardware a page it can actually run.
+The score exposed a hardware class I had forgotten. The right fix was to detect software rendering and return the existing static fallback, not to detect Lighthouse.
 
 Go [click the moon](/). The sun climbs off the ridge, the headlands turn green under the haze, and Lighthouse never sees any of it. Both of those are correct.

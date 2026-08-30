@@ -5,7 +5,7 @@ draft: false
 project_url: "https://www.uahelp.me"
 image: "https://cdn.earthroulette.com/varyvoda/uahelp.png"
 image_alt: "UaHelp directory of verified ways to support Ukraine"
-description: "A curated list of resources to help Ukraine. After 3 years of war it is still desperately needed."
+description: "A curated list of reliable ways to help Ukraine. It is still desperately needed."
 hero_kicker: "Built to help"
 hero_intro: "A curated list of reliable ways to help Ukraine. It is still desperately needed."
 hero_mark: "Public resource"
@@ -45,7 +45,7 @@ I built UaHelp after Russia's full-scale invasion of Ukraine to make one questio
 
 ## What it does
 
-The site organizes routes for military support, humanitarian help, medical aid, refugees, media, and other practical needs. It is deliberately a directory, not a campaign trying to put itself between people and the organizations doing the work.
+The site organizes routes for military support, humanitarian help, medical aid, refugees, media, and other practical needs. It is a directory, not a campaign trying to put itself between people and the organizations doing the work.
 
 ## Why it is still here
 

@@ -6,58 +6,38 @@ content_type: "Postmortem"
 description: "My first commercial website became profitable. Then Google Panda took away most of its traffic."
 ---
 
-Before Sirv, before Studio, before I had a useful title for what I do, I built my first commercial website.
+My first commercial website made money. I built it, published the content, got it into Google, sold advertising, watched the numbers, and fixed whatever broke.
 
-It became a profitable business. Then Google changed its algorithm and most of the traffic disappeared.
+Then Google Panda arrived. Most of the traffic went away. Revenue followed. The website still loaded, but the business no longer worked.
 
-That was my first hard lesson in how internet businesses work.
+## One person, all the jobs
 
-## I learned development and distribution at the same time
+There was nobody to hand work to, so development, SEO, publishing, and monetisation became one job. A slow page hurt search. A bad navigation change hurt both users and revenue. An advertising decision created technical work.
 
-I built it because I saw demand and wanted to see whether I could turn a website into a business.
+This was how I learned the web. Not from a course and not one discipline at a time. I had a live business and could see the cost of each mistake.
 
-I wrote code, structured content, watched search behaviour, fixed pages, improved navigation, and worked out monetisation. It was all one job. A development decision changed traffic. A marketing decision created technical work. An operational mistake hit revenue.
+Once it paid the bills, uptime and publishing stopped being hobby concerns. The site had to stay available, Google had to understand it, and visitors had to find what they came for.
 
-That is still how I think about products. Engineering, distribution, and the business model affect each other, regardless of how a company draws its org chart.
+## Google Panda
 
-## Scale changes the job
+I knew Google sent most of the traffic. I had not planned seriously for what would happen if it stopped.
 
-At small scale, a broken page is annoying. Once the site pays the bills, it is an incident.
+The pages ranked for years, so the arrangement began to feel stable. It was not. Google owned the search results and could change them without asking me.
 
-The site had to stay available. People had to find what they came for. Search engines had to understand the structure. The publishing flow had to keep moving. Traffic had to pay for the operation rather than merely decorate an analytics chart.
+Panda did exactly that. There was no strong direct audience, no second large traffic source, and no code change that could restore the old rankings. I had built a profitable site with one very large dependency.
 
-The site became profitable through a traffic-based model. It paid its way. After it worked for long enough, I started to assume it would keep working.
+## What I should have built
 
-## The audience was real. My ownership of it wasn't
+I should have given returning visitors more reasons and more ways to come back directly. I should have developed other traffic sources before I needed them. I should have measured how much of the business still worked without Google.
 
-Search brought the visitors. I knew that, obviously. What I did not understand deeply enough was the difference between earning distribution and owning it.
+SEO was not the mistake. SEO built the business. Depending on it almost completely was the mistake.
 
-The pages ranked because the site was useful, established, and matched what people searched for. That looked durable. It was not. Google still controlled the route between the business and most of its audience.
+## Why I still think about it
 
-Then Panda changed that route.
+I still build on other companies' platforms. Shopify, GitHub, Cloudflare, search engines, app stores, and model providers are useful. Pretending that I control their rules would be stupid.
 
-Traffic fell hard. The money followed. There was no strong direct audience, no second source of traffic, and no technical fix that could restore the old terms.
+The same question now applies to product features. If another team can reproduce them quickly, what remains? Customer relationships, useful data, operational knowledge, direct distribution, and a record of running the product correctly are harder to copy.
 
-Google did not literally press a button labelled "kill Igor's website." It changed the system it owned. The result from my side was the same.
-
-## What I got wrong
-
-I optimized the machine that was working and underinvested in the one I would need if it stopped.
-
-I should have built stronger direct relationships with returning users. I should have treated search as one channel rather than the foundation. I should have asked what part of the business remained defensible if rankings disappeared.
-
-Most importantly, I confused a good run with a permanent advantage.
-
-The same mistake shows up everywhere now. App stores, social networks, marketplaces, model providers, cloud platforms, and search engines all offer reach on somebody else's terms. Use it. Just do not pretend the terms are yours.
-
-## The lesson survived the website
-
-That experience is why I care about direct distribution and why I treat resilience as a business concern. It is also why "features are not a moat" does not feel like a new AI-era revelation to me.
-
-AI has made software much cheaper to build. If somebody can reproduce your features quickly, the value has to live somewhere else: relationships, trust, data, operating knowledge, distribution, and the ability to keep serving people after the novelty wears off.
-
-The website disappeared, but I carried the development, SEO, monetisation, operations, and platform scepticism into the businesses and products that came next.
-
-I would rather the business had kept growing. It did not. What stayed was a useful suspicion of any business that depends on rules written by somebody else.
+It was my first profitable business. It also failed. Both facts matter.
 
 [Read the project record](/projects/first-internet-business/)

@@ -11,7 +11,7 @@ image_alt: "Travel Bot chat interface generating a day-by-day itinerary"
 description: "An AI travel planner I built on top of Earth Roulette's destination data. Describe the trip you want and it turns the conversation into a day-by-day itinerary with weather, flight, hotel, and local context."
 hero_title: "Travel Bot"
 hero_kicker: "AI travel assistant"
-hero_intro: "Tell it the kind of trip you want. It turns a vague idea into a day-by-day plan using live travel data and 5,000+ Earth Roulette destinations."
+hero_intro: "Describe the trip you want. Travel Bot builds each day using live travel data and 5,000+ Earth Roulette destinations."
 hero_mark: "Travel assistant"
 hero_scope: "Question to itinerary"
 hero_primary_label: "Open Travel Bot"
@@ -53,12 +53,12 @@ It turns that into a day-by-day itinerary, then lets you keep talking until the 
 
 The bot is connected to the destination data I built for [Earth Roulette](/projects/earth-roulette/): more than 5,000 places with local context, backed by current weather, flight, and accommodation information. That gives it something more useful to work with than whatever a language model vaguely remembers about Barcelona.
 
-It also remembers the practical stuff you tell it—travel style, dietary needs, budget, preferences—so the next answer does not start from zero again.
+It also remembers the practical details you give it, including travel style, dietary needs, budget, and preferences, so the next answer does not start from zero.
 
 ## Built to be tried
 
 You can start anonymously without creating an account. The web app works on its own, and I shipped Travel Bot on both iOS and Android because trip planning mostly happens while somebody is holding a phone and sending ten contradictory ideas into a group chat.
 
-The Android app has crossed 1,000 downloads. Enough people have planned a trip with it to show the idea works.
+The Android app has crossed 1,000 downloads.
 
 [Plan a trip with Travel Bot](https://www.travelbot.me) · [Download on iOS](https://apps.apple.com/us/app/travel-bot-assistant/id6504498653) · [Download on Android](https://play.google.com/store/apps/details?id=me.travelbot.www)

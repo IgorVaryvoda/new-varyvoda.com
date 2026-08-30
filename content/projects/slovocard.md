@@ -54,7 +54,7 @@ The number is easy to quote. The work is correcting bad translations and making 
 
 ## How review works
 
-The scheduler is Anki-like and based on SM-2. Cards move through new, learning, review, and relearning states. Your rating changes the interval and ease factor. Easy words wait longer; missed words return sooner.
+The scheduler is Anki-like and based on SM-2. Cards move through new, learning, review, and relearning states. Your rating changes the interval and ease factor. Easy words wait longer. Missed words return sooner.
 
 I use it myself. A wrong entry teaches me the wrong thing again and again. An awkward prompt wastes my time every time it returns. That makes both problems hard to ignore.
 

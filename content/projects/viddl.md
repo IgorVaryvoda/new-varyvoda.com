@@ -37,7 +37,7 @@ highlights:
   - "YouTube, X, Instagram, Facebook, Reddit, and Threads"
   - "Free MP4 downloads without an account"
   - "No fake buttons or ad maze"
-  - "Still online, deliberately low-maintenance"
+  - "Still online and low-maintenance"
 weight: 12
 ---
 
@@ -49,12 +49,12 @@ I wanted the opposite. Paste a link, get the MP4, leave. No account. No ceremony
 
 ## What it handles
 
-Viddl accepts links from YouTube, Twitter/X, Instagram, Facebook, Reddit, and Threads. It resolves the media and gives you a normal video file in the best quality it can get. That is the whole product, which is exactly as much product as this problem needs.
+Viddl accepts links from YouTube, Twitter/X, Instagram, Facebook, Reddit, and Threads. It resolves the media and returns a normal video file in the best quality it can get. Nothing else is required.
 
 ## The annoying part
 
 Social platforms constantly change their pages, signatures, endpoints, and rules. Keeping a downloader working becomes an arms race against several companies with more engineers than sense of humour.
 
-Viddl is still online, but it is deliberately low-maintenance. It may occasionally break when a platform changes something, because I have resisted turning “download this video” into my full-time war with YouTube. That is the honest deal.
+Viddl is still online, but it is low-maintenance. It may occasionally break when a platform changes something, because I have resisted turning “download this video” into my full-time war with YouTube. That is the deal.
 
 [Download a video with Viddl](https://viddl.me)

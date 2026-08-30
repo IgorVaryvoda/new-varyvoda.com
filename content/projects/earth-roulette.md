@@ -9,9 +9,9 @@ app_store_url: "https://apps.apple.com/us/app/earth-roulette-trip-explorer/id644
 play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casznm"
 image: "https://iantiark.sirv.com/varyvoda/er.png"
 image_alt: "Earth Roulette destination discovery interface with travel filters and a random destination"
-description: "A random destination generator I built for the moment when you want to travel but have no idea where. Spin through 5,000 places, narrow the chaos with useful filters, then turn the surprise into a trip."
+description: "A random destination generator with 5,000 places, filters, practical travel data, saved trips, and mobile apps."
 hero_kicker: "Built from scratch"
-hero_intro: "I built a button that sends you somewhere unexpected, then added enough real travel data to make the result useful rather than merely random."
+hero_intro: "Press the button and Earth Roulette picks a destination. Filters and travel data help decide whether you should actually go."
 hero_mark: "Travel discovery"
 hero_scope: "Spin to itinerary"
 hero_primary_label: "Explore Earth Roulette"
@@ -44,13 +44,13 @@ highlights:
 weight: 4
 ---
 
-## The problem is too much choice
+## Why it exists
 
 Travel sites are very good at selling you a hotel after you already know where you are going. They are less useful when the entire problem is: where the hell should I go?
 
-Earth Roulette starts there. Push the button and it gives you a place you might never have searched for yourself. The randomness is not a gimmick bolted onto a booking engine. It is the point.
+Earth Roulette starts there. Push the button and it gives you a place you might never have searched for yourself. The random result is why the product exists.
 
-## Chaos, with boundaries
+## Filters and travel data
 
 Pure randomness can send a broke beach person to an expensive ski resort, which is funny once. So I added filters for continents, countries, budgets, and activities. You can ask for somewhere warm, cheap, good for hiking, kid-friendly, romantic, accessible, or just far away from whatever weather you are currently complaining about.
 
@@ -58,10 +58,10 @@ There are more than 5,000 destinations in the database. Each one has enough cont
 
 Save the good results to a bucket list, share them with somebody who needs convincing, check flights, or hand the destination to [Travel Bot](/projects/travelbot/) and turn it into a day-by-day itinerary.
 
-## The small idea that kept growing
+## What it became
 
 It began as one random button because I thought choosing a destination should be more fun. Then came the filters, destination database, travel guides, flight search, accounts, saved places, multiple languages, and mobile apps.
 
-I built the whole thing from scratch and still enjoy the basic interaction more than I probably should. Spin, land somewhere unfamiliar, and spend the next ten minutes seriously considering a trip that did not exist in your head a moment ago.
+I built the whole thing from scratch and still use the basic interaction. Spin, land somewhere unfamiliar, and see whether the idea survives ten minutes of research.
 
 [Spin Earth Roulette](https://earthroulette.com) · [Download on iOS](https://apps.apple.com/us/app/earth-roulette-trip-explorer/id6449232498) · [Download on Android](https://play.google.com/store/apps/details?id=xyz.appmaker.casznm)

@@ -19,7 +19,7 @@ I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to
 ![QR codes to help Ukraine!](https://cdn.earthroulette.com/help-ukraine/QR.png)
 
 ## Help the Ukrainian army
-Helping the armed forces of Ukraine is one of the most meaningful ways of contributing to Ukrainian victory. The sooner the Ukrainians crush Russians  the sooner the suffering ends.
+Helping the armed forces of Ukraine is one of the most meaningful ways to contribute to Ukrainian victory. The sooner Ukraine defeats the invasion, the sooner the suffering ends.
 
 Without additional weaponry, Russo-Ukrainian war will become an endless bloodbath, spreading misery, suffering, and destruction. Please pressure your politicians into providing aid to Ukraine. [Here's the list of what Ukraine Needs](https://saveualist.com/).
 
@@ -27,7 +27,7 @@ And here are some hand-picked resources to help:
 - [Come back alive fund](https://savelife.in.ua/en/donate/). The most trusted NGO for helping the Ukrainian army
 - [Donate to the Organization for Development, Security and Sustainment](https://odss.ee/blog/help-ukraine)
 - [AeroRozvidka](https://aerorozvidka.xyz/). Specialist drone unit that fight like geniuses, but are forced to [crowdfund supplies](https://www.theguardian.com/world/2022/mar/28/the-drone-operators-who-halted-the-russian-armoured-vehicles-heading-for-kyiv)
-- [Kolo](https://koloua.com/en/). Kolo quickly supplies the essential equipment to ukrainian soldiers in hot spots
+- [Kolo](https://koloua.com/en/). Kolo quickly supplies essential equipment to Ukrainian soldiers in hot spots
 - [Leleka](https://leleka.care/). First aid kits
 - [Full list of resources](https://www.uahelp.me/help/#help-the-ukrainian-army)
 
@@ -36,7 +36,7 @@ And here are some hand-picked resources to help:
 ## Help refugees
 Millions of Ukrainians got displaced, some have escaped the war zone with absolutely nothing. Ways to help:
 - [Help.gov.ua](https://help.gov.ua/en). Official Ukrainian website for humanitarian aid
-- [📄A comprehensive list of resources](https://docs.google.com/document/d/e/2PACX-1vTjRW9pjBPA9lBjZDm6FOH1EXrxRMrnHkYnkjdZ15DjEUamyOd3nNVW47jyBHo5rKHcvF73xbmURthV/pub) for refugees and people who want to help - groups and communities all over the web with information for refugees and people who want to help them
+- [📄A detailed list of resources](https://docs.google.com/document/d/e/2PACX-1vTjRW9pjBPA9lBjZDm6FOH1EXrxRMrnHkYnkjdZ15DjEUamyOd3nNVW47jyBHo5rKHcvF73xbmURthV/pub) for refugees and people who want to help
 - [🗺️Mapa Help](https://mapahelp.me/). A map where you can offer help with transport, food, places to stay for Ukrainian refugees
 - [Ukraine Take Shelter](https://www.ukrainetakeshelter.com/). An independent platform connecting Ukrainian refugees with potential hosts and housing
 - [Shelter4Ukraine](https://sites.google.com/view/shelterforukraine/home). Provide shelter for Ukrainian refugees
@@ -63,7 +63,7 @@ Vile Russian lies poison the mind, help fight them
 - [Read the guide](https://www.uahelp.me/help/#help-fight-propaganda)
 
 ## Don't fund war
-Boycott brands still doign business with Russia, funding their atrocities.
+Boycott brands still doing business with Russia and funding its war.
 - [Don't fund war](https://www.uahelp.me/help/#don-t-fund-war)
 
 ## Protest, sign petitions

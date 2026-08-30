@@ -5,7 +5,7 @@ draft: false
 project_url: "https://github.com/IgorVaryvoda/improve-codex"
 image: "https://opengraph.githubassets.com/varyvoda-projects/IgorVaryvoda/improve-codex"
 image_alt: "improve-codex open-source repository overview"
-description: "An agent skill that audits a codebase, turns the findings into executable plans, and sends each plan to a sandboxed Codex worker in its own git worktree. The main agent reviews everything; nothing lands automatically."
+description: "An agent skill that audits a codebase, turns findings into executable plans, and sends each plan to a sandboxed Codex worker in its own git worktree. The main agent reviews everything. Nothing lands automatically."
 hero_title: "improve-codex"
 hero_title_size: "compact"
 hero_kicker: "Agent workflow"
@@ -24,7 +24,7 @@ tech_stack: ["Agent Skills", "Codex CLI", "Shell", "Git Worktrees"]
 role: "Creator and maintainer"
 stewardship:
   state: "evolving"
-  note: "I change the workflow when a real audit, review, or worktree run exposes a weak guardrail."
+  note: "I change the workflow when a real audit, review, or worktree run exposes a weak check."
 last_tended: "2026-08-16"
 feedback_url: "https://github.com/IgorVaryvoda/improve-codex/issues"
 proof:
@@ -32,7 +32,7 @@ proof:
     label: "Audit, plan, execute, review"
   - value: "Isolated"
     label: "One git worktree per plan"
-users_changed: "Failed runs and reviewer feedback led to nonce-verified reports, fail-closed orchestration, and checks against live local services."
+users_changed: "Failed runs and reviewer feedback led to nonce-verified reports, checks for incomplete runs, and checks against live local services."
 imperfect: "It stops before merge and depends on each repository having good checks. It is slower than an autonomous code bot and much less likely to wreck the main checkout."
 highlights:
   - "One isolated git worktree per plan"
@@ -42,15 +42,15 @@ highlights:
 weight: 11
 ---
 
-## The failure mode
+## One agent should not grade its own work
 
 One agent can audit a codebase, propose a fix, implement it, and declare itself correct. That is convenient. It also lets one set of blind spots survive every stage of the work.
 
-I wanted the useful parts separated properly. The orchestrating agent should understand the repository and decide what is worth changing. A bounded executor should implement one explicit plan. Independent critics should try to break both the plan and the resulting diff. The human should still own the decision to merge.
+I split those jobs. One agent audits and plans. A bounded executor implements one plan. Other agents review the plan and the diff. A human decides whether to merge.
 
-## The plan is the product
+## The plan comes first
 
-The expensive reasoning happens before implementation. `improve-codex` begins with a read-only audit, turns each finding into a self-contained plan, then subjects that plan to hostile scrutiny before an executor receives it.
+The expensive reasoning happens before implementation. `improve-codex` begins with a read-only audit, turns each finding into a self-contained plan, then reviews that plan before an executor receives it.
 
 That order matters. A cheap executor with a precise plan can do good work. A powerful executor with a vague plan can produce a large, polished mistake. Spending intelligence on scope, done criteria, and repository-specific verification is usually the better trade.
 
@@ -60,16 +60,16 @@ Every portable execution runs in its own git worktree. Browser tools, MCP server
 
 Isolation is not theatre here. It keeps one plan from contaminating another, protects the main checkout, and leaves a branch that can be inspected or thrown away without archaeological work.
 
-## Review has to fail closed
+## Incomplete review fails the run
 
-The workflow requires both an advisor review and an adversarial diff review. Reports cannot silently overwrite an earlier round, critic verdicts are tied to the run that produced them, and partial orchestration contracts are rejected instead of guessed around.
+The workflow reviews both the plan and the diff. Reports cannot silently overwrite an earlier round, critic verdicts are tied to the run that produced them, and incomplete completion reports are rejected instead of guessed around.
 
 Review is capped at two rounds. If a major finding survives the second, the plan is too broad or the approach is wrong. It gets split or retired rather than pushed through a third ceremonial pass.
 
 Those rules came from real failure paths: vacuous assertions, incomplete reports, stale local facts, and reviewers unable to verify a claim against a live local service. Each one made the system stricter in the place where the previous version had been too trusting.
 
-## The last move stays human
+## It stops before merge
 
-The skill can return **approve**, **revise**, or **block**. It never merges or pushes an implementation branch. That is deliberately less autonomous than the usual agent demo and much closer to how I want serious repository work handled.
+The skill can return **approve**, **revise**, or **block**. It never merges or pushes an implementation branch. It is less autonomous than the usual agent demo because I want to inspect serious repository work before it lands.
 
 [Install improve-codex](https://github.com/IgorVaryvoda/improve-codex#install)

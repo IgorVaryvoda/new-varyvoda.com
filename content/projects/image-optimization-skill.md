@@ -41,41 +41,41 @@ highlights:
 weight: 10
 ---
 
-## The repetition was the problem
+## I kept repeating the same advice
 
 Image work gets messy fast. A request to “optimize this page” can mean choosing formats, correcting `srcset`, protecting the LCP image, reserving layout space, moving delivery to a CDN, or discovering that the thing called an image is actually a video, a 360 spin, or a product gallery.
 
-I kept explaining the same decisions to coding agents. The answers lived across product documentation, browser guidance, API references, and the scar tissue of fixing pages that looked fast but were not. Repeating that context in every session was both slow and unreliable.
+I kept explaining the same decisions to coding agents. The answers lived across product documentation, browser guidance, API references, and records of pages that looked fast but were not. Repeating that context in every session was both slow and unreliable.
 
-## Why documentation was not enough
+## Docs list options. The skill chooses.
 
 Reference documentation tells an agent which options exist. It rarely tells the agent which option fits the page in front of it, what should be measured first, or how to prove that the change helped.
 
-The useful unit was a workflow: inspect the actual media, identify the delivery constraint, make the smallest correct change, and verify the rendered result. That is what I packaged.
+I packaged a workflow: inspect the media, identify the delivery constraint, make the smallest correct change, and verify the rendered result.
 
 ## Eight narrower skills
 
 The repository now contains eight focused skills rather than one enormous media manual:
 
-- image optimization and Core Web Vitals;
-- Sirv file and metadata operations;
-- Sirv Studio workflows;
-- Media Viewer implementation;
-- Dynamic Imaging URLs;
-- video delivery and encoding;
-- 360-spin creation and embedding;
+- image optimization and Core Web Vitals
+- Sirv file and metadata operations
+- Sirv Studio workflows
+- Media Viewer implementation
+- Dynamic Imaging URLs
+- video delivery and encoding
+- 360-spin creation and embedding
 - e-commerce media workflows.
 
 Each skill carries its own activation metadata, instructions, and supporting references. Core workflows also include evaluation prompts, so changes can be checked against the behaviours the skill is supposed to teach.
 
-## The difficult part is drift
+## Keeping it current
 
 Browsers change, product APIs grow, model behaviour moves, and yesterday's safe recommendation becomes today's stale default. The pack therefore treats maintenance as part of the product. Claims are checked against source documentation, the repository validates its structure in CI, and a new adapter only belongs when real work exposes the same missing step more than once.
 
-That restraint matters. A skill that tries to cover every CDN and framework becomes another pile of documentation an agent skims badly. These eight cover the media systems I repeatedly use and can stand behind.
+A skill that tries to cover every CDN and framework becomes another manual an agent skims badly. These eight cover the media systems I use repeatedly.
 
-## Where it is now
+## What it covers now
 
-The pack began with image optimization. Work on video, spins, product viewers, Studio, and commerce forced the boundary wider, but the operating idea stayed small: give an agent enough domain judgment to finish the job and enough verification discipline to know whether it did.
+The pack began with image optimization. Video, spins, product viewers, Studio, and commerce widened it. Each skill still has one job and a way to check the result.
 
 [Install the Image & Media Skills](https://github.com/IgorVaryvoda/image-optimization-skill#install)

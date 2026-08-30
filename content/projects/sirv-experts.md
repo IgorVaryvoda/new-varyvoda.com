@@ -33,7 +33,7 @@ proof:
     label: "Specialist categories"
   - value: "Web + iOS"
     label: "Public product surfaces"
-imperfect: "Coverage is uneven. Some places have plenty of specialists; others have almost none."
+imperfect: "Coverage is uneven. Some places have plenty of specialists. Others have almost none."
 highlights:
   - "Nine specialist service categories"
   - "Local and worldwide expert search"
@@ -54,8 +54,8 @@ Sirv Experts narrows the search to people who already understand this work. Choo
 
 Experts can create their own listing and show what they do. Customers can search across product photography, 360 photography, car photography, video, 3D modelling, retouching, graphic design, web development, and studio equipment.
 
-## More useful than another directory
+## Why it stays small
 
-The point was never to build the largest marketplace. It was to make a small, specific one where the context is already understood. If you need someone who can shoot the product and deliver media that works properly with Sirv, this is where you look.
+I did not want to build the largest marketplace. I wanted a small directory where every listing is relevant to product media and Sirv. It is for finding somebody who can shoot the product and deliver files that work properly with Sirv.
 
 [Browse Sirv Experts](https://experts.sirv.com) · [Download on iOS](https://apps.apple.com/us/app/sirv-experts/id6451147499)

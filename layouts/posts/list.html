@@ -10,12 +10,10 @@
   <header class="writing-masthead">
     <div class="writing-masthead-inner">
       <div class="writing-masthead-top">
-        <div class="writing-lead-copy">
+        <div>
           <p class="eyebrow">Essays, records, guides</p>
           <h1>Writing</h1>
-          {{ with .Content }}<div class="page-dek">{{ . }}</div>{{ else }}<p class="page-dek">The ideas behind the products, the systems that keep them running, and the lessons that survived the work.</p>{{ end }}
         </div>
-        <p class="writing-lead-meta"><span>{{ len $posts }} pieces</span><span>Curated before chronological</span></p>
       </div>
       {{ partial "start-here.html" (dict "site" .Site "class" "writing-start") }}
     </div>

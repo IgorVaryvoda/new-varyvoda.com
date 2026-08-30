@@ -1,5 +1,5 @@
 ---
-title: "Image Personalization. Why it's Great and how to use it."
+title: "Image personalisation: examples and implementation"
 date: 2018-08-03T22:52:03+01:00
 draft: false
 content_type: "Guide"
@@ -28,13 +28,9 @@ alt="Image personalization header illustration">
 ### The original article was posted on [Sirv's blog](https://sirv.com/blog/image-personalization-examples/)
 
 
-Personalization has become one of the hottest marketing trends.
+Personalisation usually means changing copy or offers for a particular customer. Images can be personalised too.<!--more-->
 
-Nowadays, shoppers want not only products – they want better experiences. That’s what makes them come back for more.<!--more-->
-
-   But there's one thing that hasn't had enough attention in this wild personalization ride:  <strong>Images!</strong>
-
- Chat with our little friend below to learn how image personalization can help your business.
+The examples below show how that works in email, landing pages, and banners. The interactive bot demonstrates it with your name.
 
 
 
@@ -46,11 +42,9 @@ Nowadays, shoppers want not only products – they want better experiences. That
      <bot-ui></bot-ui>
    </div>
    <h3 id="why" class="hiddenh">Why personalize?</h3>
-   <h2 id="why" class="js-toc-ignore" data-toc-title="Why personalize?">Personalization has a positive effect on customer relationships, engagement and conversion rate</h2>
+   <h2 id="why" class="js-toc-ignore" data-toc-title="Why personalize?">What marketers reported</h2>
 
-   Marketers who use personalization in their marketing strategy almost unanimously agree that it has a positive effect on advancing customer relationships.
-
-   In fact, according to an <a target="_blank" href="https://www.evergage.com/resources/ebooks/trends-in-personalization-survey-report/" rel="noopener noreferrer">Evergage survey</a>, 74% believe personalization has a strong or extreme impact.
+   In an <a target="_blank" href="https://www.evergage.com/resources/ebooks/trends-in-personalization-survey-report/" rel="noopener noreferrer">Evergage survey</a>, 74% of marketers said personalisation had a strong or extreme effect on customer relationships.
 
    Here's a detailed breakdown:
     <h4>What is the impact, if any, of personalization on advancing customer relationships?</h4>
@@ -60,23 +54,21 @@ Nowadays, shoppers want not only products – they want better experiences. That
 
 
 
-   The benefits are evident.
+   The same survey asked which benefits marketers reported.
           <h4>What are the main benefits you see from personalization for your organization?</h4>
    <div style="max-width:800px!important;">
    <img src="https://sirv-cdn.sirv.com/blog/Personalization/stats/PersonalizationResults.svg" alt="image personalization benefits">
    </div>
 
 
-   And the results speak for themselves.
+   It also asked what lift they measured.
 
    <h4>What percentage improvement or “lift” are you generally seeing from personalization efforts?</h4>
    <div style="max-width:800px!important;">
           <img src="https://sirv.sirv.com/blog/Personalization/stats/QuantifiableResults.svg" alt="image personalization results">
    </div>
 
-   It's clear that personalization is effective.
-
-   Let's move on to the important part: how to use personalized images.
+   The rest of the article focuses on practical image examples and implementation.
 
    <h2 style="text-align:center" id="email" data-toc-title="Personalization in email">Image personalization in email</h2>
    <div class="full-image__container marginize">
@@ -86,34 +78,34 @@ Nowadays, shoppers want not only products – they want better experiences. That
       </div>
    Email is the most widely used channel for personalized content. Let's be honest, practically everybody uses some sort of merge tags in their email campaigns, so text personalization lost its WOW effect long ago.
 
-   With email open and click rates dropping dramatically in the last couple of years, image personalization has become a powerful tool for keeping email campaigns effective.
+   A personalised image gives an email another way to use the data already present in its merge fields.
 
-   Here's a couple of examples that've mastered it.
+   Here are a few examples.
 
    <h3 id="dicount"style="text-align:center;">Discount email</h3>
    <div class="wp-caption aligncenter">
      <img alt="Thorntons image personalization email example" class="Sirv" data-src="https://sirv.sirv.com/blog/Personalization/examples/Santa_Good_Boy.png?text.0.text=Tom&text.0.position.x=41%&text.0.position.y=64%&text.0.position.gravity=northwest&text.0.color=c51717&text.0.font.family=Marck%20Script&&text.0.font.size=30px">
      <p class="wp-caption-text">An example campaign from Thorntons</p>
    </div>
-   Santa's nice list sounds like a pretty good place to be. It takes a little bit of image personalization to go from a dull discount email to something more meaningful and fun.
+   The recipient's name appears inside the artwork instead of only in the subject line or body copy.
 
    <h3 id="promo" style="text-align:center;">Promotional email</h3>
    <div class="wp-caption aligncenter">
    <img alt="Starbucks image personalization email example" class="Sirv" data-src="https://sirv.sirv.com/blog/Personalization/examples/Starbucks%202.jpg?text.0.text=Tom&text.0.position=center&text.0.size=25&text.0.color=060606&text.0.font.family=Caveat">
    <p class="wp-caption-text">Yes, it's a name on a Starbucks coffee. If you've talked to our bot - it's your name on a Starbucks coffee, hehe.</p>
    </div>
-   This one kind of takes you back to your favorite Starbucks with that fresh cup of coffee with your name on it. Mmmm.
+   The name-on-a-cup image uses a familiar Starbucks detail instead of adding another line of personalised copy.
 
    <h3 id="cart-abandonment" style="text-align:center;">Cart abandonment</h3>
 
-   <a target="_blank" href="https://baymard.com/lists/cart-abandonment-rate" rel="noopener noreferrer">Stats don't lie</a>, almost 70% of all carts are abandoned. Sprinkle just a little bit of personalization into your abandoned cart emails and see what happens (hint: it'll be great).
+   Baymard's <a target="_blank" href="https://baymard.com/lists/cart-abandonment-rate" rel="noopener noreferrer">cart abandonment data</a> puts the average near 70%. A personalised product image is one thing worth testing in the recovery email.
 
    <div class="wp-caption aligncenter">
    <img alt="Chubbies shorts image personalization email example" class="Sirv" data-src="https://sirv.sirv.com/blog/Personalization/examples/chubbies_d37b2775-b52f-48e1-9b56-5eff5ed2bbf8.png?text.0.text=Tom, click to teleport&text.0.position.x=22%25&text.0.position.y=65%25&text.0.position.gravity=northwest&text.0.size=60&text.0.color=fafafa&text.0.font.weight=700&text.0.outline.width=3&text.0.outline.color=ffffff&text.0.background.color=black&text.0.background.opacity=50" />
    <p class="wp-caption-text">A cart abandonment campaign from <a target="_blank" href="https://www.chubbiesshorts.com/" rel="noopener noreferrer">Chubbies Shorts</a>. We added image personalization ourselves though.</p>
    </div>
 
-   Great copy + a crisp personalized image = a perfect combination to recover an abandoned cart.
+   The image repeats the abandoned product and puts the recipient's name into the call to action.
 
    <h3 id="cold-as-ice" style="text-align:center;">Cold email</h3>
    Image personalization isn't limited to a name.
@@ -133,11 +125,11 @@ Nowadays, shoppers want not only products – they want better experiences. That
    <img alt="Really Good Emails Newsletter image personalization email example" class="Sirv" data-src="https://sirv.sirv.com/blog/Personalization/examples/RGE.png?text.0.text=Tom&text.0.position.x=59%25&text.0.position.y=46.9%25&text.0.position.gravity=northwest&text.0.font.size=13px&text.0.color=eb4d52&text.0.font.weight=700"/>
    <p class="wp-caption-text">Really Good Emails newsletter</p>
    </div>
-   Those guys know what they're doing. We highly recommend subscribing to <a target="_blank" href="https://reallygoodemails.com/" rel="noopener noreferrer">Really Good Emails newsletter</a> for great email marketing insights. They've been using image personalization for a long time, and it looks amazing.
+   <a target="_blank" href="https://reallygoodemails.com/" rel="noopener noreferrer">Really Good Emails</a> has many more examples.
 
 
    <h3 id="event" style="text-align:center;">Event email</h3>
-   Not only does <a target="_blank" href="https://www.movember.com/" rel="noopener noreferrer">Movember</a> have a very noble cause, they're taking it to another level with great copy and a snappy personalized image.
+   <a target="_blank" href="https://www.movember.com/" rel="noopener noreferrer">Movember</a> combines direct copy with a personalised image.
    <div class="wp-caption aligncenter">
    <img alt="Movember image personalization email example" src="https://sirv.sirv.com/blog/Personalization/examples/movember_edited.jpg?text.0.text=Tom&text.0.position.x=40%&text.0.position.y=133px&text.0.position.gravity=northwest&text.0.color=white&text.0.font.weight=700&text.0.outline.color=f3ecb2&text.0.outline.width=1&&text.0.font.family=Kalam"/>
    <p class="wp-caption-text">With a rebel yell she cried mo, mo, mo!</p>
@@ -167,9 +159,9 @@ Nowadays, shoppers want not only products – they want better experiences. That
 
    If you’ve played with our bot, you can see that all images on this page are personalized with your name.
 
-   Here's how it works. Sirv generates images on-the-fly, based on the parameters you pass to the URL. It might sound complicated, but it's not. Here's an example, hover over the bold elements for explanation.
+   Sirv generates images from parameters in the URL. Hover over the bold parts of this example for an explanation.
    <code><span class="highlighter" data-avia-tooltip="This is the path to our image in Sirv.">https://sirv.sirv.com/blog/Personalization/examples/Starbucks%202.jpg</span>?<span class="highlighter" data-avia-tooltip="This parameter adds text to the image. Use your *name* variable here. E.g. in Campaign Monitor it'll look like this: text.0.text=[name, fallback=Tom] instead of Tom">text.0.text=<strong>[name, fallback=Tom]</strong></span>&<span class="highlighter" data-avia-tooltip="This defines our text position, in this case it's centered. You have full control over the position.">text.0.position=<strong>center</strong></span>&<span class="highlighter" data-avia-tooltip="Our text size.">text.0.size=<strong>30</strong></span>&<span class="highlighter" data-avia-tooltip="Text color in hex.">text.0.color=<strong>060606</strong></span>&<span class="highlighter" data-avia-tooltip="Font family. All Google fonts are available.">text.0.font.family=<strong>Caveat</strong></span></code>
-   Let's break it down:
+   The URL has these parts:
    <ul>
      <li><strong>https://sirv.sirv.com/blog/Personalization/examples/Starbucks%202.jpg</strong> - this is the image URL. Nothing special here.</li>
      <li><strong>text.0.text</strong> - this parameter is responsible for the actual text. In our case, it's [name, fallback=Tom]. You can have 4 separate text overlays active at a time.</li>
@@ -178,7 +170,7 @@ Nowadays, shoppers want not only products – they want better experiences. That
      <li><strong>text.0.color</strong> - sets the color of our text.</li>
      <li><strong>text.0.font.family</strong> - used to set our font-family. It's Caveat in this case. You can use Google fonts here. </li>
    </ul>
-   The best part is that you don't need to input these parameters into the URL by hand - Sirv has a powerful <a target="_blank" href="https://sirv.com/blog/image-customizer/" rel="noopener noreferrer">Image Customizer</a>, where you can style your overlay text and other elements in a visual manner.
+   You do not need to write the parameters by hand. Sirv's <a target="_blank" href="https://sirv.com/blog/image-customizer/" rel="noopener noreferrer">Image Customizer</a> provides a visual editor for text and image overlays.
 
    You're not limited to text overlays, you can <a target="_blank" href="https://sirv.com/help/resources/dynamic-imaging/#Watermark_overlays" rel="noopener noreferrer">add image overlays</a> and  <a target="_blank" href="https://sirv.com/help/resources/image-metadata/" rel="noopener noreferrer">use your image metadata</a>.
    <h3>What data to use in personalization</h3>
@@ -233,10 +225,10 @@ Nowadays, shoppers want not only products – they want better experiences. That
    <p class="wp-caption-text">
    <a target="_blank" href="https://reallygoodemails.com/wp-content/uploads/coastal-bike-rides-now-on-airbnb.html" rel="noopener noreferrer">Full email here</a></p>
    </div>
-   Crisp imagery, great typography and genuinely interesting content. In my eyes, this is a significant upgrade compared to Booking.com's email.
+   The imagery, typography, and editorial content are stronger than Booking.com's email.
 
 
-   Let's move on to our second use-case - landing pages.
+   The same approach also works on landing pages.
 
    <h2 id="landing">Personalized images on landing pages</h2>
    <div class="full-image__container marginize">
@@ -244,7 +236,7 @@ Nowadays, shoppers want not only products – they want better experiences. That
    <img alt="Personalized Images on landing pages" class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/Personalization/Landing_page_section2x.png?w=1600">
     </div>
     </div>
-   Landing page personalization is one of my favorite techniques ever. Personalized landing pages improve conversions, which means more leads and more bang for the buck on your ad spend.
+   Landing-page personalisation can match the page to the campaign, search term, location, or known customer data.
    <blockquote>
    “On your first-ever visit to the site, we could show you something that would resonate with you. That was the holy grail and it actually worked. This is a huge competitive advantage for us.”
     - John Ewing, BMI Research
@@ -280,7 +272,7 @@ Nowadays, shoppers want not only products – they want better experiences. That
 
    They grab the "company" parameter's value and insert it into the page dynamically. They also show a stylish illustration and selected product features based on their second URL parameter - "solution".
 
-   This tactic can be used for literally anything you can pass in the URL.
+   The same pattern can use any controlled value passed in the URL.
 
    However, make sure you have full control over how your URLs are generated, to avoid unwanted results like this:
    <div class="wp-caption aligncenter">
@@ -290,14 +282,14 @@ Nowadays, shoppers want not only products – they want better experiences. That
    <h3 id="dki">Dynamic keyword insertion</h3>
    Provided out-of-the box in <s>AdWords</s> Google and Bing ads, dynamic keyword insertion has proven itself to boost conversion rates and landing page quality scores. You're basically dynamically changing your landing page elements based on search keywords.
 
-   Look how <a target="_blank" href="https://www.intercom.com/blog/convert-your-ad-traffic-with-personalized-landing-pages/" rel="noopener noreferrer">Intercom personalizes</a> its landing pages based on ad content. A whopping <strong>300% conversion rate increase</strong> was surely worth the work they put into this.
+   <a target="_blank" href="https://www.intercom.com/blog/convert-your-ad-traffic-with-personalized-landing-pages/" rel="noopener noreferrer">Intercom reported</a> a <strong>300% conversion-rate increase</strong> after matching landing pages to ad content.
    <div class="marginize" style="max-width: 800px;">
    <img alt="DKI INtercom landing page examples"class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/Personalization/examples/Intercom.png">
    </div>
-   Be careful not to use Dynamic Keyword Insertion for broad match keywords, you may end up looking silly and ultimately hurting your conversion rate.  It's a safe bet to customize your landing pages based on Campaign and ad group.
+   Broad-match keyword insertion can produce nonsense. Campaign and ad-group data are safer inputs for landing-page changes.
 
    <h3 id="location-personalization">Personalization by location</h3>
-   Customer's location can be crucial for some businesses. It makes sense that people in Chile and in British Columbia are different.
+   Location can change which image makes sense. People in Chile and British Columbia do not need the same weather message.
 
    Nationwide Insurance experimented with their landing page, serving a different version for people from cold regions.
    <div class="wp-caption aligncenter">
@@ -362,10 +354,10 @@ Nowadays, shoppers want not only products – they want better experiences. That
    <img class="Sirv" alt="personalized product - black cushion" data-src="https://sirv.sirv.com/blog/Personalization/sales/cushion-black.jpg?h=350&text=Tom&text.position.gravity=center&text.position.x=0&text.position.y=32&text.font.size=25px&text.color=white&text.font.family=Cinzel" alt="Personalized cushion in black" height="350" width="350" /></div>
    </section>
    </div>
-   <h3 class="js-toc-ignore">Start personalizing your images</h3>
+   <h3 class="js-toc-ignore">Create a personalised image</h3>
   How do you create personalized images with Sirv?
 
-   Use your merge tags or custom fields in our <a target="_blank" href="https://sirv.com/help/resources/dynamic-imaging/#Table_of_options" rel="noopener noreferrer">80+ dynamic imaging options</a> at the end of your image URL, or use our new image customizer - no need to add options by hand. Click any image in <a target="_blank" href="https://my.sirv.com/" rel="noopener noreferrer">your account</a>, then adjust the options on the right:
+   Use merge tags or custom fields with Sirv's <a target="_blank" href="https://sirv.com/help/resources/dynamic-imaging/#Table_of_options" rel="noopener noreferrer">Dynamic Imaging options</a>, or use the image customiser. Click an image in <a target="_blank" href="https://my.sirv.com/" rel="noopener noreferrer">your account</a> and adjust the options on the right:
 
    <img class="Sirv" data-src="https://sirv.sirv.com/website/screenshots/screenshot-sirv-customizer.png?profile=screenshots-grey-border" alt="Sirv image customizer screenshot" width="750" height="410" />
 

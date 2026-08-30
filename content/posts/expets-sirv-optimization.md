@@ -1,6 +1,6 @@
 ---
-title: "Maximizing Performance in a Vue/Nuxt Project with Sirv"
-description: "How I pushed a Vue/Nuxt site to top performance with Sirv: on-the-fly image optimization, lazy loading, CDN delivery, and a faster contentful paint."
+title: "Optimising a Vue/Nuxt site with Sirv"
+description: "How I handled responsive images, lazy loading, CDN delivery, placeholders, and media galleries on Sirv Experts."
 date: 2023-09-30
 url: /experts-nuxt-Sirv/
 draft: false
@@ -14,7 +14,7 @@ My latest project is [Sirv Experts](https://experts.sirv.com), a directory of pr
 
 The project is powered by Nuxt and has some tricky parts about it, like an [interactive map of experts closest to you](https://experts.sirv.com/360-product-photography/near-me), a portfolio showcase of each expert, and lots of images all over the website.
 
-It's a perfect project to test Sirv's performance and see how it can be optimized to the max.
+That made it a useful test for Sirv's image delivery and media viewer.
 
 ## The problem
 We've compiled a list of things that we need to optimize for the project, and it's quite a list:
@@ -35,9 +35,9 @@ GTmetrix score of 100%, and a 0.5s largest contentful paint.
 And a 99% score on LightHouse. Yeah, we're working on accessibility right now, I know it's important. 😀
 
 ## Image optimization and lazy loading
-The first two problems might look pretty time-consuming, but Sirv has a solution for them out of the box. [Automatic responsive images](https://sirv.com/help/articles/responsive-images-smv/) basically covers all that we needed. The images are lazy loaded, served in the optimal format and size, on-the-fly. 
+Sirv's [automatic responsive images](https://sirv.com/help/articles/responsive-images-smv/) covered the first two items. Images are lazy-loaded and served in a suitable format and size.
 
-Sirv achieves this by grabbing the master image and converting + resizing it based on the users' device, which requires the Sirv.js script. We've tried to just load it in the head section of nuxt.config.js, but later figured out it's more efficient to load it only on pages that need it by using a simple method call in the mounted hook.
+Sirv.js requests a transformed version of the master image for the current device. We first loaded the script in `nuxt.config.js`, then moved it to the pages that actually needed it.
 ```js
 //components/footer.vue
 getSirv()
@@ -58,14 +58,10 @@ getSirv()
 ```
 Alternatively, just use the [npm module](https://www.npmjs.com/package/sirv-media-viewer-script). 
 
-Since our backend already had all images hosted at Sirv
-(there's an [integration](https://sirv.com/integration/) for most platforms),
-it just worked 😀.
-Yet one more issue remained — while the images are being fetched, we need some sort of placeholder.
-Which leads us to the next problem to solve.
+Our backend already stored its images on Sirv, so no migration was needed. The remaining issue was the placeholder shown while an image loaded.
 ## Improving first contentful paint & reducing layout shift
 
-This is where Sirv's Dynamic Imaging features came in handy, by simply adding a parameter to the image URL, we can get a placeholder image of any size, format, and color. So we dropped the quality to 10% for the placeholder image, which worked perfectly for small images on the [map page](https://experts.sirv.com/360-product-photography/anywhere)
+Sirv's Dynamic Imaging parameters can return a placeholder at the required size, format, and colour. We used 10% quality for the small images on the [map page](https://experts.sirv.com/360-product-photography/anywhere).
 ```html
 <img
   class="Sirv"
@@ -76,8 +72,7 @@ This is where Sirv's Dynamic Imaging features came in handy, by simply adding a 
 ```
 Adding [blur](https://sirv.com/help/articles/dynamic-imaging/stylize/blur/) works pretty nice for bigger images, but we didn't really have any use-case for this.
 
-We've also utilized preload for critical (above the fold) images and prefetched the Sirv CDN and Google Fonts domains.
-Quite easily done via nuxt.config.js:
+We also preloaded critical images and prefetched the Sirv CDN and Google Fonts domains in `nuxt.config.js`:
 ```js
 //nuxt.config.js -
 head: {
@@ -108,9 +103,9 @@ which can be done via a [github action](https://github.com/marketplace/actions/s
 So now we have all of our images optimized, lazy-loaded, and hosted on the CDN, but we still have to deal with the experts' portfolios.
 
 ## Showcasing experts' portfolios
-Easy-peasy-lemon-squeezy, we just need to use Sirv's [Media Viewer](https://sirv.com/help/articles/media-viewer/) to create a custom gallery for each expert. All achieved via a simple custom component that grabs experts' portfolio items and builds the SMV gallery based on the data. 
+Sirv's [Media Viewer](https://sirv.com/help/articles/media-viewer/) handles each expert's mixed-media gallery. A custom component reads the portfolio data and builds the viewer.
 
-The results are pretty cool, check it out [here](https://experts.sirv.com/revo-photo-revo-north-america). Or here's a random nintendo switch gallery if you're lazy: 
+See the result [here](https://experts.sirv.com/revo-photo-revo-north-america). Or use this Nintendo Switch gallery:
 <div class="Sirv">
  <div data-src="https://demo.sirv.com/demo/Switch/switch-front.jpg" data-type="zoom"></div>
  <div data-src="https://demo.sirv.com/demo/Switch/switch-separate.png" data-type="zoom"></div>
@@ -134,7 +129,6 @@ The code for this gallery is simple and self-explanatory:
 </div>
 ```
 Clean and simple.
-We have a really nice [lib for Vue3](https://github.com/Mefistosss/vue-js-sirv-viewer)
-to make working with SMV a breeze.
+There is also a [Vue 3 library](https://github.com/Mefistosss/vue-js-sirv-viewer) for working with the viewer.
 
 UPD: I've recently written an [integration with Nuxt Image](https://image.nuxt.com/providers/sirv), which makes working with Sirv images in Nuxt freaking amazing.

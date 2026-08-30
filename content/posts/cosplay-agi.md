@@ -3,43 +3,43 @@ title: "Cosplay AGI"
 date: 2026-08-20
 draft: false
 content_type: "Essay"
-description: "I have a skill whose literal trigger phrase is 'cosplay AGI.' The joke describes the whole system: capable models surrounded by prosthetics."
+description: "One of my agent skills is triggered by 'cosplay AGI'. The joke is useful because the model alone is never the whole system."
 ---
 
-There is a skill file on my machine whose literal trigger phrase is **"cosplay AGI."** I type those two words and my fleet snaps into its most rigorous mode: every claim verified at source, findings cited by file and line, zero hedging, scores pinned to a calibrated scale. The file even defines the term, deadpan: *maximum rigor, zero hedging, every claim verified at source, no mistakes. It does NOT mean grandiose prose.*
+One of my agent skills is triggered by **"cosplay AGI"**. It tells the agents to verify every claim at source, cite files and lines, and use a fixed scoring scale.
 
-It started as a joke command. It took me embarrassingly long to notice that "cosplay AGI" is a precise name for what I built.
+It started as a joke. The name stuck because the model alone is never the whole system.
 
-## The costume, itemized
+## What the system adds
 
-Nobody handed me a general intelligence. What I have is very capable models with specific, stubborn gaps — and around those gaps I've built prosthetics, one incident at a time. Lay the whole apparatus out and it maps onto a mind with unsettling precision:
+The models are capable, but each session starts with limited context and no memory of the last incident. The surrounding files and checks make them useful for sustained work.
 
-**Skills files are procedural memory.** A model wakes up brilliant and amnesiac every session, so how-we-do-things-here lives in files it reads on the way in — my commit rituals, my review loops, my bug-triage liturgy. [Every one of them scar tissue](/posts/scar-tissue-as-documentation/) from a real incident, because that's how procedural memory forms in biological systems too.
+**Skills files hold working rules.** They describe how to commit on a shared branch, run a review, or close a bug. Most rules exist because the system previously got something wrong.
 
-**Memory files are episodic memory.** Who I am, what I corrected last month, which framing of my own biography I've explicitly rejected. Written down because otherwise the fleet re-learns me from scratch daily, and gets me wrong in the same ways daily.
+**Memory files hold decisions and corrections.** Without them, the same preference or mistake has to be explained in every session.
 
-**Plans are working memory.** A model can't hold a campaign in its head across sessions, so intent lives in numbered plan files — currently over nine hundred in one repo — each written for an executor with zero context, because zero context is the honest assumption.
+**Plans carry intent between sessions.** Each plan has enough context for an executor that has never seen the task before.
 
-**Adversarial review is self-doubt.** Left alone, a model believes its own work with the serene confidence of a golden retriever. So I bolt doubt on from outside: [a second model family attacks every plan and every diff](/posts/improve-codex/), reviewers are prompted to refute rather than assess, and nothing lands without surviving an attempt to kill it. The doubt isn't in the intelligence. It's in the plumbing.
+**Independent review checks the author.** A second model family reviews plans and diffs, and the reviewer has to point to evidence rather than give a vague approval.
 
-**Orchestration is executive function.** Claude Fable audits, plans, and reviews; Codex executes — chosen for the lane not because it's cheap but because it follows instructions with monastic literalism. Deciding what runs where, what's foreground, what waits on quota: that's a prefrontal cortex, and currently the prefrontal cortex is me.
+**Orchestration routes the work.** Different models audit, plan, implement, and review. I choose what runs, what waits, and what is worth doing.
 
-Assemble it all and you get something that behaves — within my repos, on my problems — remarkably like a single, careful, tireless general intelligence. From the outside: AGI. From the inside: a costume with a person holding it upright.
+Inside a repository, that combination can look much more capable than a model used on its own. It is still a collection of explicit parts, with a person directing them.
 
-## The costume is getting thinner
+## Models keep removing rules
 
-Here's what makes this an observation worth writing down rather than a bit: **the cosplay is falsifiable, and I can watch it decay.**
+Every instruction records a limitation. Newer models make some of those instructions unnecessary.
 
-Every prosthetic in that list exists because a model, at some specific point in time, couldn't do the thing itself. Each one is a dated claim about a model limitation, and those limitations keep expiring. Each generation, I get to delete rules. Output-format instructions that were necessary two years ago would be insulting today. Whole categories of "check the model didn't do X" review steps have quietly gone from *fires weekly* to *never fires* to *deleted*. The scaffolding I maintain today is noticeably lighter than a year ago, and a year ago it was lighter than the year before.
+Output formatting that needed pages of instruction two years ago now works by default. Some review checks used to catch failures every week, then stopped firing, then were deleted. I can measure progress by the rules I no longer need.
 
-This gives me something almost nobody in the AGI-timeline argument has: **a private, empirical obsolescence meter.** I don't need to argue about benchmarks. I can just count which of my prosthetics each new model generation lets me throw away. The costume-shedding rate is my personal AGI forecast, measured in deleted lines of skills files.
+That is more useful to me than a benchmark argument. I care about which parts of the real workflow became simpler.
 
-## What refuses to shed
+## What still stays human
 
-And that same meter shows something else, which is the actual point of this post.
+Better models have reduced capability gaps. They have not decided what deserves to exist.
 
-The prosthetics that expire are all of one kind: compensations for *capability* gaps — memory, care, rigor, literalism. The ones that show no sign of expiring are of a different kind entirely. Nothing in any model generation so far has touched the layer where someone decides **what is worth building, what good looks like before it exists, and who stands behind the result when it ships.** My audit skill can verify every claim at source; it cannot originate the desire to have the codebase be good, or choose which product deserves to exist this quarter. Every commit the fleet makes is signed with my name, and no amount of capability makes that signature transferable — responsibility isn't a skill gap, so there's no prosthetic for it and nothing to expire.
+An audit can find defects. It cannot choose which product deserves the next month of work. An executor can produce a clean diff. It cannot decide whether the result is good for the people using it. Every fleet commit is signed with my name because I am still responsible for what ships.
 
-A costume worn long enough just becomes clothes. I genuinely don't know if that's where this ends — whether one day the executive function and the wanting migrate into the fleet too, and the cosplay completes itself. What I know is what the meter says today: the rigor was always rentable. The amnesia is curable. The doubt can be installed.
+I do not know how long that remains true. I only know how the current system works.
 
-The wanting, so far, still has to be brought from home.
+The models do much more of the work than they did a year ago. I still decide why the work exists and take responsibility for the result.

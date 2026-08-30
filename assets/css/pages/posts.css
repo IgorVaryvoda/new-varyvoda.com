@@ -181,16 +181,11 @@
 }
 
 .writing-masthead-inner { padding-bottom: clamp(7rem, 9vw, 11rem); }
-.writing-masthead .page-dek { max-width: 70rem; color: var(--harbor-muted); font-family: var(--reading); font-size: clamp(1.8rem, 2.2vw, 2.4rem); line-height: 1.6; }
 .writing-groups { display: grid; gap: clamp(8rem, 12vw, 15rem); }
 .writing-group { min-width: 0; }
 .writing-group .writing-archive-heading { margin-bottom: 3rem; }
 .writing-index-full .writing-title-group h3 { margin: 0; font-family: var(--reading); font-size: clamp(2.7rem, 4vw, 5rem); font-weight: 500; line-height: 1.16; }
 .writing-index-full .writing-meta { min-width: 13rem; }
-
-@media (max-width: 680px) {
-  .writing-masthead .page-dek { font-size: 1.7rem; }
-}
 
 @media (max-width: 900px) {
   .article-hero-bottom { grid-template-columns: minmax(0, 1fr) auto; }

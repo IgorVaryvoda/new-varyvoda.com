@@ -1,5 +1,5 @@
 ---
-title: "9 Actionable tips to increase Shopify sales"
+title: "9 practical ways to increase Shopify sales"
 date: 2020-11-24T22:52:03+01:00
 draft: false
 content_type: "Guide"
@@ -13,13 +13,13 @@ sitemap:
 
 ### The original article was posted on [Sirv's blog](https://sirv.com/blog/increase-shopify-sales/)
 
-<p>In 2020, e‐commerce has become more important than ever; thousands of businesses had to transition to selling online simply to survive. The platform that embraced most of them was Shopify.</p>
+<p>In 2020, thousands of businesses moved online quickly. Many of them chose Shopify.</p>
 
-<p>Shopify’s popularity is no surprise. Building your own, scalable, online store with hundreds of built-in features is a breeze with Shopify. The only thing that Shopify isn't good at is making your products sell themselves. The competition is more fierce than ever, that's why it's important to know which tactics for increasing your Shopify sales are worth your time.</p>
+<p>Shopify makes it relatively easy to build an online store. It does not decide which changes will help that store sell more. This guide covers nine changes worth testing.</p>
 
-<p>In this blog post, Sirv and Snap36 - leaders in <a href="https://sirv.com">image hosting</a> and <a target="_blank" rel="noopener noreferrer" href="https://snap36.com">product photography</a> respectively - have teamed up to provide you with the best tips and tricks for raising your online sales using Shopify.</p>
+<p>Sirv and Snap36 wrote this guide from their work in <a href="https://sirv.com">image hosting</a> and <a target="_blank" rel="noopener noreferrer" href="https://snap36.com">product photography</a>.</p>
 <div class="blog-toc">
-    <h4>9 Proven Ways to Increase Your Shopify Sales</h4>
+    <h4>9 Ways to Increase Your Shopify Sales</h4>
     <ol class="serieslist-ul">
     <li><a href="#ab">Always be A/B testing</a></li>
     <li><a href="#cta">Have a clear call-to-action</a></li>
@@ -28,12 +28,12 @@ sitemap:
     <li><a href="#personalize">Increase average order value: upsells and cross-sells</a></li>
     <li><a href="#seo">Do SEO (search engine optimization)</a></li>
     <li><a href="#email-marketing">Focus on email marketing</a></li>
-    <li><a href="#social-proof">Utilize social proof</a></li>
+    <li><a href="#social-proof">Use social proof</a></li>
     <li><a href="#checkout">Reduce friction at checkout</a></li>
     </ol>
 </div>
-<h3>Start with Measurable Goals</h3>
-Before we get started, it’s important to have a plan in place to determine what your goals are. You can’t manage what you can’t measure, and your goals should be actionable and measurable.
+<h3>Start with a measurable goal</h3>
+Choose the number you want to change before changing the store. Conversion rate, average order value, profit, returns, and repeat purchases answer different questions.
 
 Shopify Analytics is fine for tracking sales and inventory, but attribution is its <a target="_blank" rel="noopener noreferrer" href="https://blog.littledata.io/2019/11/05/shopify-analytics-vs-google-analytics-which-offers-better-ecommerce-data/">weak point</a>. This might not seem like a big deal at first, but when you start running marketing campaigns, you really need to get your attribution right, or else you'll waste your ad budget... We recommend using an external analytics service, like Google Analytics.
 
@@ -48,11 +48,11 @@ Use this <a target="_blank" rel="noopener noreferrer" href="https://acquireconve
 </div>
 <p>After you have your analytics sorted out, you can track what’s working to increase your Shopify sales.</p>
 
-But here's the catch: it's not as easy as it may seem to track the impact of changes made to your Shopify store on your sales numbers.
+It is difficult to isolate the effect of one store change from traffic, campaigns, seasonality, and outside events.
 
 Some time frames can be busier than others - a change you've made could coincide with a new marketing campaign, bringing in some quality high converting traffic, or on the contrary, one of your products could hit the front page of Reddit and lead thousands of visitors which aren't really interested in buying to your store.
 
-In all of these cases, it's scientifically impossible to determine what caused an increase or decrease in conversions. That's when A/B testing comes in - it's a scientifically correct way to test the impact of your changes on your conversion rate.
+In all of these cases, the before-and-after numbers are easy to misread. An A/B test isolates one change by showing both versions during the same period.
 
 <h4>How does A/B testing Work?</h4>
 A/B testing is an experiment where two variations of your page(s) are shown to users at random, then the best performing page version is chosen based on your goal conversion rate and statistical significance.
@@ -70,9 +70,9 @@ If you're looking for A/B testing ideas, Sumo have compiled a nice <a target="_b
 
 <h3 id="cta">Tip 2: Have a Clear Call to Action</h3>
 <h4>What is a call to action?</h4>
-A call to action (CTA) is a link or a button that signals the most-desired action to your site visitors. This action will vary from page to page, and different CTAs will serve different functions throughout the customer journey:
+A call to action (CTA) is a link or button that signals the main action on a page. Different pages need different CTAs:
 
-Let’s take a look at a typical buyers journey on <a target="_blank" rel="noopener noreferrer" href="https://bremont.com">Bremont's Shopify store</a>:
+Here is the buying path through <a target="_blank" rel="noopener noreferrer" href="https://bremont.com">Bremont's Shopify store</a>:
 <div class="imgwide">
     <div class="full-image__content">
     <div class="Sirv" data-options="zoom.mode:deep;zoom.wheel:false;thumbnails.type:bullets;fullscreen.thumbnails.type:bullets;">
@@ -87,7 +87,7 @@ Let’s take a look at a typical buyers journey on <a target="_blank" rel="noope
 </div>
 Bremont's CTAs are clear and straightforward.
 
-Here are some tips for creating CTAs you can’t help but click:
+Start with these rules:
 <h4>Place your main CTA above the fold</h4>
 ‘Above the fold’ is the part of the page that is immediately visible to your users. Here’s a typical fold:
 <div class="imgwide">
@@ -96,7 +96,7 @@ Here are some tips for creating CTAs you can’t help but click:
 </div>
 <p class="wp-caption-text">A typical fold on a Full HD screen</p>
 </div>
-<a target="_blank" rel="noopener noreferrer" href="https://www.nngroup.com/articles/scrolling-and-attention/">Recent studies</a> show that users spend 57% of their time viewing content above the fold. Naturally, to ensure your main CTA gets noticed, put it above the fold. Don't forget to test on mobile devices.
+<a target="_blank" rel="noopener noreferrer" href="https://www.nngroup.com/articles/scrolling-and-attention/">Research from Nielsen Norman Group</a> found that users spent 57% of their viewing time above the fold. Put the main CTA there and test it on mobile too.
 
 <h4>Create urgency</h4>
 Experiment with your call to actions by supplementing them with items that add urgency, like:
@@ -114,7 +114,7 @@ Experiment with your call to actions by supplementing them with items that add u
 Use an app like <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/product-countdown-timer-1">Urgency Bear</a> to achieve a similar effect.
 
 <h4>Use simple and proven phrases</h4>
-Try to stick to battle-tested and familiar phrases.
+Use familiar phrases.
 
 Some of the most common e-commerce CTAs include this copy:
 <ul>
@@ -166,16 +166,16 @@ https://thegood.com/insights/call-to-action-tactics/ -->
 
 
 <h3 id="pdp">Tip 3: Provide Great Product Detail Page UX</h3>
-Shopify has very well optimized cart and checkout pages. There’s a lot more freedom in customizing the product detail page (PDP) design. A high converting product detail page design is critical for a successful Shopify store. PDPs can make or break a sale.
+Shopify handles much of the cart and checkout. The product page gives you more room to help or confuse the buyer.
 
-Here are some crucial elements you need on a product detail page:
+A product page needs:
 
 <ul>
 <li><strong>Use Recognizable image(s)</strong>. Images are the focal point of all product detail pages. Make sure to include high resolution, zoomable product photos. Having at least one in-scale image can be important for some products.</li>
 <li><strong>Add Image Zoom</strong>. After the global e-commerce shift to mobile, product images have to be zoomable. Here's one of the <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/magic-zoom-plus">top-rated Shopify image zoom apps</a>.</li>
 <li><strong>Implement 360-degree spins</strong>. This technique has been found very effective for increasing conversion rates and decreasing returns. This is even more important in COVID-19 times. Here's how to add <a href="https://sirv.com/help/articles/add-360-spins-shopify/">add a 360-degree product view to Shopify</a>.</li>
 <li><strong>Write concise product descriptions</strong> to communicate information that can’t be answered by product images or 360-degree spins. Get straight to the point.</li>
-<li><strong>Price</strong>. Be honest and transparent. Surprise fees in the later stages of the customer journey can result in lost sales.</li>
+<li><strong>Price</strong>. Be clear about the full price. Surprise fees near checkout can lose a sale.</li>
 <li><strong>Product availability</strong>. Users can get frustrated if you don't communicate clearly the stock status of your products. Out of stock? Allow users to add the item to cart, but clearly communicate that shipping will be delayed. Alternatively, set up <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/back-in-stock">restock notifications</a>.
 </li>
 </ul>
@@ -205,7 +205,7 @@ Here are some crucial elements you need on a product detail page:
 </div></div>
 <ul>
 <li><strong>Shipping policy.</strong> Lack of this information on the product page could be enough for some users to turn to your competitors. Be sure to list your shipping conditions on the product page. If your shipping is complex, consider adding a link to a shipping calculator. </li>
-<li>Add a <strong>Wishlist</strong>. Wishlists help increase engagement and retention, it's important to capture customer's info to help close the sale by asking them to sign up. Adidas' wishlist is very well executed: unobtrusive design, actionable copy and a discount offer </li>
+<li>Add a <strong>Wishlist</strong>. A wishlist saves products for later and gives the customer a reason to create an account. Adidas combines a quiet design, clear copy, and a discount offer.</li>
 <div style="margin:20px auto;display:grid;">
 <img style="margin:20px auto;display:grid;" data-src="https://sirv.sirv.com/blog/Shopify%20Sales/Adidas-device.png?h=800" class="Sirv" alt="adidas wishlist"/>
 </div>
@@ -283,7 +283,7 @@ You can easily add videos to your Shopify store with the <a target="_blank" rel=
 </h3>
 Upselling and cross-selling is both the art and science of introducing customers to better or complementary products based on what they are currently interested in.
 
-Well-executed upselling and cross-selling can boost revenue by increasing average order value. Additionally, your customer benefits by making sure they are choosing the right product for them and that they have everything they need to use that product. This is where personalization is important. You want to make sure your upsells and cross-sells are customized and relevant to that shopper. Always consider the experience from a customer’s perspective.
+Upselling and cross-selling can increase average order value. They can also help a customer choose the right product or remember something required to use it. Keep each recommendation relevant to the shopper and the product already under consideration.
 
 For example, you can engage customers by showing a message which indicates "people who bought this, also bought this". You can play around with wording to match your store, here’s how <a target="_blank" rel="noopener noreferrer" href="https://www.vicicollection.com/">Vici Collection</a> handles this:
 <div class="imgwide">
@@ -327,12 +327,12 @@ To learn more about the intricacies of e-Commerce SEO, Bryan Dean has written a 
 
 
 <h4>Optimize images for search</h4>
-By properly optimizing Shopify images for SEO, you can get lots of quality traffic from Google Image Search. The team at Sirv has written a comprehensive <a target="_blank" rel="noopener noreferrer" href="https://sirv.com/blog/image-seo-for-ecommerce/">guide on image optimization</a>, check it out for a more in-depth list of techniques you can use.
+Well-optimised product images can bring traffic from Google Images. Sirv has a detailed <a target="_blank" rel="noopener noreferrer" href="https://sirv.com/blog/image-seo-for-ecommerce/">guide to image SEO</a> with the implementation details.
 
 <h4>Add structured data</h4>
 Structured data is a special type of mark-up, which provides key information about your product.
 
-Google and other search engines integrate structured data into their search results. It’s a crucial technique that can help you stand out from the competitors.
+Google and other search engines use structured data in richer search results.
 Consider adding these types of structured data to your Shopify store:
 <ul>
 <li><a target="_blank" rel="noopener noreferrer" href="https://schema.org/Product">Product</a></li>
@@ -421,7 +421,7 @@ Make this email fun and shareable.
 </div>
 If you're looking for inspiration, check out <a target="_blank" rel="noopener noreferrer" href="https://reallygoodemails.com/">really good emails</a>.
 
-<h3 id="social-proof">Tip 8: Utilize Social Proof</h3>
+<h3 id="social-proof">Tip 8: Use Social Proof</h3>
 Social proof is a psychological phenomenon where people assume the actions of others in an attempt to reflect correct behavior for a given situation. Humans view behavior as “more correct” if they see others doing it, too.
 
 Here are a few ways you can use social proof to improve trust and authenticity in your products:
@@ -460,7 +460,7 @@ Shopify allows you to configure some checkout fields:
 <h4>Change checkout copy to avoid common conversion pitfalls</h4>
 Shopify has pretty well-optimized default values most of the time. Editing the text on your store’s checkout page can be something that really has a high impact on your conversion rate.
 
-For example, the default express checkout text can make the process confusing for your customers, it’s not visible enough to indicate that people have more options (and not only the express ones). Shopify addresses this issue by adding a very small and barely noticeable 'Or' below the express checkout options:
+For example, the default express checkout text can make customers think they must use one of the express options. Shopify adds a small 'Or' below them, but it is easy to miss:
 <div class="imgwide">
     <div class="full-image__content">
 <img class="Sirv" data-src="https://sirv.sirv.com/blog/Shopify%20Sales/gymshark%20express%20checkout.png" alt="Gymshark modified checkout copy" />
@@ -473,7 +473,7 @@ By editing your checkout page copy, you can address this and many other issues.
 Out of the sandbox have written a <a target="_blank" rel="noopener noreferrer" href="https://outofthesandbox.com/blogs/shopify-theme-blog/customize-shopify-checkout-pages">great guide</a> on changing your checkout page copy.
 
 <h4>Express checkout</h4>
-Allowing your users to quickly purchase your products without having to go through the hassle of filling out forms and/or creating accounts can have a profoundly positive effect on your conversion rate. Shopify has numerous express checkout options available.
+Express checkout removes forms and account creation from the buying path. Shopify supports several express checkout options.
 <div class="imgwide">
     <div class="full-image__content">
 <img class="Sirv" data-src="https://sirv.sirv.com/blog/Shopify%20Sales/Cart%20checkout.png" alt="Express checkout in the cart" /></div>
@@ -481,7 +481,7 @@ Allowing your users to quickly purchase your products without having to go throu
     Express checkout in action.
 </p>
 </div>
-While express checkout has clear benefits, the downsides are nothing to be scoffed at. You can’t upsell and it can be difficult for users to buy more than one product at a time. Keep this in mind and pay close attention to the average order value if you decide to test this feature. It’s not all about the conversion rate, you must look at the bigger picture.
+Express checkout can make upsells and multi-item purchases harder. Watch average order value as well as conversion rate when you test it.
 
 <h4>Buy now, pay later services</h4>
 Services like Klarna and Afterpay have become incredibly popular in the last couple of years. For example, Klarna handles a million transactions for 200,000 merchants daily [<a target="_blank" rel="noopener noreferrer" href="https://www.klarna.com/us/about-us/">source</a>].
@@ -490,6 +490,6 @@ Services like Klarna and Afterpay have become incredibly popular in the last cou
 
 James Parsons from Content Powered has an <a target="_blank" rel="noopener noreferrer" href="https://www.contentpowered.com/blog/afterpay-increase-shopify-sales/">interesting take</a> on whether these services will improve your bottom line in the long run.
 <h3>Keep Your Customers Happy</h3>
-It's important to make a long-term investment in your customers. Keeping them happy is the ultimate goal, and that can be done by a) having a product that wows them, and b) providing a pleasant and seamless shopping experience. All of the tips above are provided to help you over-deliver on the customer experience, and, in turn, improve your e-commerce sales.
+The nine ideas above are starting points. Measure the current problem, change one important thing, and compare the result. A higher conversion rate is useful only if the change also protects profit, order value, returns, and the customer's experience.
 
-Snap36 and Sirv are here to help you along the way. Get in touch with us to learn how to get your product imagery online quickly and enable your website to showcase high-resolution, high-caliber, and interactive spinning imagery.
+Snap36 and Sirv can help with product photography, high-resolution image delivery, zoom, and 360-degree product views.

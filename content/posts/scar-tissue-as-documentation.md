@@ -1,51 +1,49 @@
 ---
-title: "Scar tissue as documentation"
+title: "Why every agent rule has an incident"
 date: 2026-08-16
 draft: false
 content_type: "Essay"
-description: "My agent skills folder looks like documentation. It's actually a burn ward — every rule in it is a funeral for a specific incident that destroyed real work."
+description: "Most rules in my agent skills folder exist because ignoring them already damaged real work."
 ---
 
-There's a folder on my machine called `skills`. If you opened it cold you'd think it was documentation: how to commit on a shared branch, how to run a bug-fix loop, how to audit a codebase. Neatly structured, imperative voice, the works.
+There is a folder on my machine called `skills`. It explains how agents should commit on a shared branch, run a bug-fix loop, and audit a codebase.
 
-It is not documentation. It is a burn ward. Every rule in that folder is a funeral for a specific incident, and I can name the deceased.
+Most of it is an incident log written as instructions.
 
-One of the files says it outright, in a sentence I now consider the most honest line in my entire toolchain: **"Every rule below exists because its violation destroyed real work."**
+One file says it directly: **"Every rule below exists because its violation destroyed real work."**
 
 ## The incident log, read from the rules
 
-You can reconstruct my worst months from the rules alone, the way a paleontologist reads a famine from tree rings. Let me save you the excavation.
+The rules are specific because the failures were specific.
 
-**"Full output, never `| head -N`."** An agent once truncated `git status` to keep its context tidy, missed two files below the fold, and committed the tests for a fix while orphaning the fix itself. The tests passed on its machine, in the worktree where the source still existed. On the shared branch: a P1, filed against code that had never arrived.
+**"Full output, never `| head -N`."** An agent truncated `git status`, missed two files, and committed the tests without the fix. The tests passed in its worktree because the source changes were still present there. The shared branch received only the tests.
 
-**"Never `git commit --amend` on the shared branch."** My fleet runs concurrent Claude and Codex sessions that all commit as the same git user, on the same checkout, and HEAD moves between one tool call and the next. Amend targets whatever HEAD is *now*. Twice — twice — an agent has amended its edits into a completely unrelated commit some other session had just landed. There is no partial version of this mistake. Your work and a stranger's work are now legally married, and the annulment procedure is its own section of the file, starting with "make a backup branch first."
+**"Never `git commit --amend` on the shared branch."** Concurrent Claude and Codex sessions use the same checkout. `HEAD` can move between two tool calls, so amend can target another session's commit. That happened twice. The recovery procedure now starts by creating a backup branch.
 
-**"Commit with explicit pathspecs whenever any foreign staged entry exists."** The index is shared too. A plain `git commit` once landed another session's half-staged rename of forty plan files inside a one-line demo fix. The commit message said `fix demo`. The diffstat said career change.
+**"Commit with explicit pathspecs whenever any foreign staged entry exists."** The index is shared too. A plain `git commit` once included another session's half-staged rename of forty plan files inside a one-line demo fix.
 
-**"Never bare `git stash pop`."** After git politely reports "No local changes to save," a bare pop doesn't pop nothing — it pops someone *else's* stash, from some other session, from some other week, with conflicts. This one reads like a horror trope because it is one: the call is coming from inside the checkout.
+**"Never bare `git stash pop`."** If `git stash` saved nothing, a later bare pop can apply an older stash from another session. That happened with conflicts.
 
-**"No browsers for executors."** This isn't in a git file; it's a standing constitutional article of the whole fleet. A couple of Codex executors running headless browsers in parallel don't make your laptop warm — they wreck the machine. Cores pinned, memory exhausted, orphaned browser processes accumulating like barnacles until nothing works, including the terminal you'd use to fix it. Browsers were stripped from the execution layer, permanently. The auditor gets eyes; the typists work blind.
+**"No browsers for executors."** Several parallel headless browsers pinned the CPU, exhausted memory, and left orphaned processes behind. Executors no longer receive browser tools. Visual checks happen in a separate review lane.
 
-**"Verify at source first — many are already fixed."** From the bug-loop file. Roughly forty percent of the QA-filed tasks on my board are not open work: some other agent already fixed them in passing, days ago, while doing something else. The rule exists because I watched agents dutifully re-fix fixed bugs, adding tests to code that had moved on, like a ghost repainting a house that was sold years back.
+**"Verify at source first. Many are already fixed."** Roughly forty percent of the QA tasks I checked were already resolved by other work. Without this rule, agents attempted a second fix against code that had already moved on.
 
 ## Why the incidents live inside the rules
 
-Here's the part that took me longer to understand than any individual disaster.
+Human teams carry much of their incident history in people. Someone remembers why a command is unsafe and warns the next person.
 
-Human teams carry their incident history in people. Someone in the room flinches when you type `--amend`, and the flinch is the documentation. The story gets retold at onboarding, distorted but directionally right, and the institution remembers even when no document does.
+Agent sessions do not remember the previous incident. The reason has to live in a file.
 
-My coworkers are stateless. Every session wakes up brilliant and amnesiac, with no flinch, no war stories, no scar tissue of its own. Whatever the institution remembers, it remembers **in files, or not at all**.
+A bare rule is also easy for a model to reconsider. "Never amend" looks negotiable until the file explains that amend already folded changes into unrelated commits twice on this machine. The reason makes the boundary harder to dismiss.
 
-And I've found that the rule alone is not enough. A bare imperative — "never amend on the shared branch" — is exactly the kind of thing a confident model will helpfully reconsider. *Surely in this case an amend is cleaner.* The rule needs its corpse attached: amend has folded edits into foreign commits, twice, here, on this machine. Models, it turns out, are like people in this one respect: they follow rules better when the rule comes with a body count.
+My skill files therefore keep the failure next to the rule. The instruction says what to do, and the incident says why.
 
-So my skills files carry their incidents inline, the way legal codes carry case law. Not "do X" but "do X, because the one time we didn't, here is precisely what died." The reason matters as much as the rule.
+## The shared checkout
 
-## The shared body
+Most git incidents share one cause: several sessions use one checkout, index, stash, and commit identity. The operating rules have to account for that shared state.
 
-Step back far enough and all the git incidents are one incident. A fleet that commits as one user, on one checkout, with one index and one stash, isn't a team sharing a repository — it's several minds operating **one body**. Of course the left hand amends the right hand's commit. Of course a stash pop retrieves someone else's pocket contents. Every one of those rules is proprioception, learned the way bodies learn: by injury.
+The files are long because the system has been used heavily for months. I still delete rules that no longer apply, but brevity is not useful if it removes the reason behind a safety rule.
 
-The counterintuitive consequence is that I've stopped being embarrassed by the length of these files. A short rules file means one of two things: either the process is genuinely simple, or nobody has been running it hard enough to find out where it breaks. Mine are long because the fleet ships all day, every day, and has been for months. Scar tissue only forms where there's been load.
+An audit finds what is wrong now. These files record what has already gone wrong and is likely to happen again.
 
-I sometimes point the fleet at its own code and make it prove the codebase is bad. This folder is the older, humbler sibling of that idea: the fleet's rules pointed at the fleet's history. An audit tells you what's wrong now. The scar file tells you what will go wrong again the moment you delete a line from it.
-
-Documentation describes the system you meant to build. Scar tissue describes the one you have.
+That is why I treat incident history as part of the instructions, not as a separate archive nobody reads.

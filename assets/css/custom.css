@@ -1137,7 +1137,7 @@ a.scene-corner--latest:focus-visible {
 
 .writing-index a {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 19rem;
+  grid-template-columns: minmax(0, 1fr) max-content;
   gap: clamp(3rem, 6vw, 8rem);
   align-items: start;
   padding: 3rem 0;
@@ -1173,6 +1173,7 @@ a.scene-corner--latest:focus-visible {
   font-family: var(--mono);
   font-size: var(--type-compact-label);
   line-height: 1.5;
+  white-space: nowrap;
   text-transform: uppercase;
 }
 
@@ -1272,15 +1273,6 @@ a.scene-corner--latest:focus-visible {
 .page-lead h1 { margin: 1rem 0 0; font-size: clamp(6rem, 10vw, 12rem); line-height: 0.9; }
 .page-dek { max-width: 70rem; margin-top: 2.4rem; color: var(--slate); font-family: var(--reading); font-size: clamp(1.8rem, 2.2vw, 2.4rem); line-height: 1.55; }
 
-.writing-lead {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 5rem;
-  border-bottom: 1px solid var(--rule-dark);
-}
-
-.writing-lead-meta,
 .work-masthead-meta,
 .project-masthead-meta,
 .article-header-meta {
@@ -1294,7 +1286,6 @@ a.scene-corner--latest:focus-visible {
   text-transform: uppercase;
 }
 
-.writing-lead-meta { color: var(--slate); }
 .writing-archive { padding: clamp(7rem, 10vw, 13rem) 0; }
 .writing-archive-heading { margin-bottom: 4rem; }
 .writing-archive-heading h2 { font-size: clamp(3.6rem, 5vw, 6.4rem); }
@@ -2309,7 +2300,6 @@ a.scene-corner--latest:focus-visible {
   .selected-project-flow li:nth-child(4) { border-top: 1px solid var(--harbor-rule); }
   .page-lead { padding: 7rem 0 5rem; }
   .page-lead h1 { font-size: 6rem; }
-  .writing-lead,
   .work-masthead-inner { grid-template-columns: 1fr; align-items: start; gap: 3rem; }
   .work-masthead-inner { padding: 8rem 0 7rem; }
   .work-masthead h1 { font-size: 8rem; }
@@ -2463,8 +2453,7 @@ a.scene-corner--latest:focus-visible {
   letter-spacing: var(--tracking-display-xl);
 }
 
-.work-masthead-meta,
-.writing-lead-meta { color: var(--harbor-muted); }
+.work-masthead-meta { color: var(--harbor-muted); }
 
 .work-feature-hero {
   grid-template-columns: minmax(0, 1.5fr) minmax(30rem, 0.5fr);

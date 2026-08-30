@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light only">
 <title>The build record of Sirv AI Studio — Igor Varyvoda</title>
-<meta name="description" content="From an empty repo at 06:35 to a production e-commerce platform: 235 days of commits, milestones, architecture, tests, migrations, and the operating system behind Sirv AI Studio.">
+<meta name="description" content="From an empty repo at 06:35 to a production e-commerce platform: 235 days of commits, milestones, architecture, tests, migrations, and development work behind Sirv AI Studio.">
 <link rel="canonical" href="https://www.varyvoda.com/projects/sirv-studio/build-record/">
 <meta property="og:title" content="At 06:35 there was an empty repo. By lunch there was a product.">
-<meta property="og:description" content="The forensic build record of Sirv AI Studio, based on the current dev branch and checked-in architecture.">
+<meta property="og:description" content="A dated build record of Sirv AI Studio, based on the current dev branch and checked-in architecture.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.varyvoda.com/projects/sirv-studio/build-record/">
 <meta property="og:image" content="https://www.varyvoda.com/images/studio/sirv-studio-og.png">
@@ -331,8 +331,8 @@
         <div class="section-mark"><b>01</b><span>2 December 2025 → 24 July 2026</span></div>
         <h2>The launch spike never ended.</h2>
         <div class="prose">
-          <p class="lede">There were five blank days in the first 235. February was the quiet month. It still carried 316 of my commits, mostly billing, entitlements, and the plumbing that turns a demo into a business.</p>
-          <p>The shape changes in March when other engineers enter the history. April contains the live framework migration. June and July show the QA and agent machinery at full speed. July is still partial below, cut off at the 24th, and it is already the largest month of the entire project.</p>
+          <p class="lede">There were five blank days in the first 235. February was the quiet month. It still carried 316 of my commits, mostly billing, entitlements, and other work needed to charge real customers.</p>
+          <p>The shape changes in March when other engineers enter the history. April contains the live framework migration. June and July show the QA and agent workflow at full speed. July is still partial below, cut off at the 24th, and it is already the largest month of the entire project.</p>
         </div>
 
         <div class="heat-panel">
@@ -359,7 +359,7 @@
       <section id="milestones">
         <div class="section-mark"><b>02</b><span>The full build chronology</span></div>
         <h2>This is what 235 days bought.</h2>
-        <p class="lede">The old page reduced the whole run to seven numbers. That missed the story. Below is the actual sequence: tools become workflows, workflows become a DAM and PIM, supplier intake becomes governed publishing, and the repo develops its own production line.</p>
+        <p class="lede">The old page reduced the whole run to seven numbers. The sequence matters: tools become workflows, workflows become a DAM and PIM, supplier intake gains review and publishing, and the repository gets repeatable checks.</p>
 
         <div class="milestones">
           <div class="month-chapter">
@@ -377,7 +377,7 @@
             <div class="milestone"><time>04–08 Jan</time><div><h3>One model registry and a smarter graph</h3><p>Model configuration is centralised across image, video, 3D, caption, and try-on tools. The orchestrator gains typed ports, multiple sources, Magic Fix, branching outputs, and connection validation.</p></div><code>059080c<br>9d3e4a6</code></div>
             <div class="milestone"><time>11–16 Jan</time><div><h3>Context-aware prompts, WordPress, Sentry, GLB</h3><p>Prompt expansion can inspect the source image. A WordPress plugin gets OAuth. GLB optimisation moves server-side with batch jobs. Sentry lands, then a programmatic SEO system capable of generating a very large route set.</p></div><code>d7d59a5<br>1ca234e<br>79a8053</code></div>
             <div class="milestone"><time>20 Jan</time><div><h3>The DAM starts in one concentrated day</h3><p>Assets, tags, favourites, filters, R2 storage, product columns, operation history, save-to-library, and product review establish the asset system under the AI tools.</p></div><code>5394a3a<br>d4051af<br>cb7b92f</code></div>
-            <div class="milestone"><time>21–23 Jan</time><div><h3>Products and activity enter the same workspace</h3><p>The dashboard absorbs assets, products, workflows, and activity. Bulk product assignment and context menus arrive. Usage analytics becomes a first-class workspace section.</p></div><code>125d23d<br>b703357</code></div>
+            <div class="milestone"><time>21–23 Jan</time><div><h3>Products and activity enter the same workspace</h3><p>The dashboard absorbs assets, products, workflows, and activity. Bulk product assignment and context menus arrive. Usage analytics gets its own workspace section.</p></div><code>125d23d<br>b703357</code></div>
             <div class="milestone"><time>26–27 Jan</time><div><h3>Multi-organisation DAM</h3><p>Role-based access, multiple organisations, nested collections, bulk download, share links with subfolder navigation, and a full-width workflow studio turn the library into a team product.</p></div><code>e215943<br>6c82a9d<br>cca1c01</code></div>
             <div class="milestone"><time>31 Jan</time><div><h3>Shopify metadata and a cleaner data layer</h3><p>Shopify metafields and metadata templates arrive while the data layer finishes its snake_case to camelCase Drizzle migration.</p></div><code>3758e6c<br>a53dac6</code></div>
           </div>
@@ -398,14 +398,14 @@
             <div class="milestone"><time>07–12 Mar</time><div><h3>The Alkosto pipeline proves supplier operations</h3><p>A demanding real supplier specification drives reusable validation, product assignment, image specs, autofix, review, and delivery. The setup wizard and information architecture are redesigned around the workflow.</p></div><code>1b46de7</code></div>
             <div class="milestone"><time>18–19 Mar</time><div><h3>Imports and side effects become durable</h3><p>Product imports fan out as cancellable background jobs. Supplier SFTP gets stronger auth and cleanup. Batch and tool handoff moves through an event outbox so a retry does not casually duplicate work.</p></div><code>cc82f6a</code></div>
             <div class="milestone"><time>20–22 Mar</time><div><h3>Autofix becomes a review system</h3><p>Single and bulk repair share a review-session controller. Geometry fixes collapse into one smart-crop pass, buffers are reused, and supplier results remain manual where confidence is not enough.</p></div><code>ede85b0<br>ae2fac3</code></div>
-            <div class="milestone"><time>24–26 Mar</time><div><h3>The data grid gets extracted and profiled</h3><p>Column resize, reorder, selection, keyboard navigation, and state ownership move into shared seams. Accessibility and render performance improve without losing the dense operator UI.</p></div><code>7bc6817<br>4b5577b</code></div>
+            <div class="milestone"><time>24–26 Mar</time><div><h3>The data grid gets extracted and profiled</h3><p>Column resize, reorder, selection, keyboard navigation, and state ownership move into shared components. Accessibility and render performance improve without losing the dense operator UI.</p></div><code>7bc6817<br>4b5577b</code></div>
             <div class="milestone"><time>31 Mar</time><div><h3>Supplier delivery learns to roll back</h3><p>Approved supplier assets can follow configurable Sirv delivery roots with a delivery audit and cleanup path instead of becoming irreversible file copies.</p></div><code>810b4e0</code></div>
           </div>
 
           <div class="month-chapter">
             <div class="month-head"><span class="index">04</span><div><h3>April 2026</h3><p>A live framework migration, followed by a data-model expansion.</p></div><span class="count">1,592 repo commits<br>1,337 mine</span></div>
             <div class="milestone"><time>08–10 Apr</time><div><h3>Next.js is replaced in 72 hours</h3><p>TanStack Start boots on the 8th. Public pages, auth, products, assets, suppliers, settings, webhooks, MCP, Shopify, and uploads move route by route. The final Next runtime dependency is removed on the 10th.</p></div><code>2b77aee<br>1b3e106</code></div>
-            <div class="milestone"><time>10–13 Apr</time><div><h3>The QA fleet gets roles and campaigns</h3><p>A lead, runner, and explorer become a three-agent QA framework. Axe-based accessibility scans, bug-hunt campaigns, dedicated role users, pooled execution, web-vitals capture, and worker heartbeats turn testing into an operated system.</p></div><code>550fd25<br>2a48b59</code></div>
+            <div class="milestone"><time>10–13 Apr</time><div><h3>QA work gets roles and campaigns</h3><p>A lead, runner, and explorer form a three-agent QA setup. It runs Axe accessibility scans, bug hunts, dedicated role users, web-vitals capture, and worker heartbeats.</p></div><code>550fd25<br>2a48b59</code></div>
             <div class="milestone"><time>18–21 Apr</time><div><h3>Autofix becomes an agentic planner</h3><p>Mask-aware margin repair, sellable-unit safety, atomic approvals, private agent state, diagnostics, and retry-aware planning let the system propose repairs without granting it unsafe freedom.</p></div><code>4e65c4e<br>74aa157</code></div>
             <div class="milestone"><time>27–28 Apr</time><div><h3>The product-content graph takes shape</h3><p>Typed attributes, variant identity, revision history, product search documents, publish projections, drift checks, proposal review, and backup verification give product content explicit owners.</p></div><code>af5afa8<br>cc60142</code></div>
             <div class="milestone"><time>28–29 Apr</time><div><h3>Workflows gain real triggers</h3><p>Uploads, schedules, product changes, and authenticated webhooks can start workflows. Dry runs, test events, attempt history, enable checks, filters, duplicate actions, and provenance make triggers operable.</p></div><code>93f91ab<br>4588de6</code></div>
@@ -413,34 +413,34 @@
           </div>
 
           <div class="month-chapter">
-            <div class="month-head"><span class="index">05</span><div><h3>May 2026</h3><p>Governance, channels, repairability, and release trust.</p></div><span class="count">1,415 repo commits<br>979 mine</span></div>
-            <div class="milestone"><time>15–16 May</time><div><h3>The product graph gets a written constitution</h3><p>The repo defines one canonical path from organisation to source, product, variant, assignment, asset, attribute, publish projection, and readiness. A product readiness command centre follows.</p></div><code>4922c34<br>76e0197</code></div>
+            <div class="month-head"><span class="index">05</span><div><h3>May 2026</h3><p>Channels, repairs, and release checks.</p></div><span class="count">1,415 repo commits<br>979 mine</span></div>
+            <div class="milestone"><time>15–16 May</time><div><h3>One product-content data path</h3><p>The repo documents one path from organisation to source, product, variant, assignment, asset, attribute, publish projection, and readiness. A product-readiness dashboard follows.</p></div><code>4922c34<br>76e0197</code></div>
             <div class="milestone"><time>18–21 May</time><div><h3>Readiness becomes channel-aware</h3><p>Shopify, SAP, and other destinations get distinct requirements. Logical filter groups, saved views, CSV export, channel targeting rules, PIM workspace updates, and Sid Kit primitives make those rules usable.</p></div><code>8661f62<br>bfbb992</code></div>
             <div class="milestone"><time>22 May</time><div><h3>Workflows learn DAM and PIM operations</h3><p>The orchestrator can source from products and assets, write into the content system, and run through a typed Effect-based operation kernel with explicit credit, persistence, and finalisation boundaries.</p></div><code>17ccb65<br>0a4d83b</code></div>
-            <div class="milestone"><time>24–25 May</time><div><h3>Recovery paths stop being an afterthought</h3><p>Invariant safety rails, projection repair, idempotent credits, queue health, dry-run reconciliation, HLS inspection, video remux, and filmstrip extraction close failure modes that only appear under real load.</p></div><code>f81e52e<br>1cffb47</code></div>
-            <div class="milestone"><time>26–27 May</time><div><h3>A real QA database and operator monitoring</h3><p>Tests get an isolated PostgreSQL database. Inngest realtime subscriptions harden. Signup onboarding arrives, and Grafana becomes a menu-bar signal instead of a dashboard someone forgets to open.</p></div><code>8ab1f65<br>c3ab638</code></div>
-            <div class="milestone"><time>29–31 May</time><div><h3>Releases and email decisions become auditable</h3><p>Release attestation binds proof to the exact pushed commit. The E2E coverage control plane gains evidence artifacts. Managed email gets versioned templates, policy decisions, test sends, audit history, and rollback.</p></div><code>d5d2237<br>3e438e5</code></div>
+            <div class="milestone"><time>24–25 May</time><div><h3>Recovery paths stop being an afterthought</h3><p>Projection repair, idempotent credits, queue health, dry-run reconciliation, HLS inspection, video remux, and filmstrip extraction cover failures that appear under real load.</p></div><code>f81e52e<br>1cffb47</code></div>
+            <div class="milestone"><time>26–27 May</time><div><h3>A real QA database and operator monitoring</h3><p>Tests get an isolated PostgreSQL database. Inngest realtime subscriptions get retry and reconnect fixes. Signup onboarding arrives, and Grafana becomes a menu-bar signal instead of a dashboard someone forgets to open.</p></div><code>8ab1f65<br>c3ab638</code></div>
+            <div class="milestone"><time>29–31 May</time><div><h3>Releases and email decisions become auditable</h3><p>Release records point to the exact pushed commit. The E2E coverage dashboard stores run results. Managed email gets versioned templates, policy decisions, test sends, audit history, and rollback.</p></div><code>d5d2237<br>3e438e5</code></div>
           </div>
 
           <div class="month-chapter">
-            <div class="month-head"><span class="index">06</span><div><h3>June 2026</h3><p>The construction machine turns into a proof machine.</p></div><span class="count">2,278 repo commits<br>1,180 mine</span></div>
-            <div class="milestone"><time>03–10 Jun</time><div><h3>QA campaigns become evidence-bearing work</h3><p>Agent loops get workflow packets, result bundles, defect backfeed, coverage claims, mutation sentinels, evidence freshness, risk budgets, and an operator ledger instead of merely reporting “tests passed”.</p></div><code>d0ef47e<br>55e2e58</code></div>
-            <div class="milestone"><time>11–14 Jun</time><div><h3>Quality gates split by risk</h3><p>Tiered edit, session, and ship gates keep feedback fast. An analytics command centre ships. The coverage matrix becomes tool-owned, Storybook gets a taxonomy, and supplier MCP tools expose SFTP, review requirements, and autofix safely.</p></div><code>f2a04c3<br>29a22f8</code></div>
+            <div class="month-head"><span class="index">06</span><div><h3>June 2026</h3><p>Testing, coverage, and release evidence expand.</p></div><span class="count">2,278 repo commits<br>1,180 mine</span></div>
+            <div class="milestone"><time>03–10 Jun</time><div><h3>QA campaigns record their results</h3><p>Agent jobs store results, create defects, track how old each check is, and run mutation tests. A passing claim has to include the command and result.</p></div><code>d0ef47e<br>55e2e58</code></div>
+            <div class="milestone"><time>11–14 Jun</time><div><h3>Quality gates split by risk</h3><p>Edit, session, and release gates keep feedback fast. An analytics dashboard ships. Tooling checks the coverage matrix, Storybook gets a taxonomy, and supplier MCP tools expose SFTP, review requirements, and autofix.</p></div><code>f2a04c3<br>29a22f8</code></div>
             <div class="milestone"><time>12–15 Jun</time><div><h3>Entitlements become source-aware</h3><p>Plan access moves from scattered tier checks to named source grants, capability guards, admin ceilings, Shopify billing reconciliation, guarded backfills, and a cutover report.</p></div><code>25184b7<br>fca2a4c</code></div>
-            <div class="milestone"><time>15–22 Jun</time><div><h3>Readiness and public proof broaden</h3><p>Product readiness previews, public page smokes, API auth-boundary contracts, area-aware coverage, and large proof waves shift attention from code presence to working user paths.</p></div><code>2297a6b<br>d54ae6b</code></div>
-            <div class="milestone"><time>26–28 Jun</time><div><h3>The catalog-health loop becomes executable</h3><p>Quota and readiness observers, asset linking, AI-fix workflows, supplier requests, Shopify sync, channel export, and browser proofs connect a detected product gap to a controlled action.</p></div><code>5bbe169<br>7e11baa</code></div>
+            <div class="milestone"><time>15–22 Jun</time><div><h3>More checks run against public pages</h3><p>Product-readiness previews, public-page smoke tests, API authentication contracts, and area-based coverage move attention from code presence to working user paths.</p></div><code>2297a6b<br>d54ae6b</code></div>
+            <div class="milestone"><time>26–28 Jun</time><div><h3>Catalog health can start a fix</h3><p>Quota and readiness checks, asset linking, AI fixes, supplier requests, Shopify sync, channel export, and browser tests connect a detected product gap to an action.</p></div><code>5bbe169<br>7e11baa</code></div>
             <div class="milestone"><time>30 Jun</time><div><h3>The old tool pages begin converging</h3><p>The unified Create workspace migration starts pulling separate AI tool routes into one operation dock, stage, result inspector, attach flow, and shared job model.</p></div><code>a22f3ee<br>c60134f</code></div>
           </div>
 
           <div class="month-chapter">
-            <div class="month-head"><span class="index">07</span><div><h3>July 2026</h3><p>The largest wave of the whole project, then a deliberate surface freeze.</p></div><span class="count">4,519 repo commits<br>2,868 mine<br>snapshot 24 Jul</span></div>
+            <div class="month-head"><span class="index">07</span><div><h3>July 2026</h3><p>The largest month, followed by a freeze on new features.</p></div><span class="count">4,519 repo commits<br>2,868 mine<br>snapshot 24 Jul</span></div>
             <div class="milestone"><time>01–02 Jul</time><div><h3>Every major AI tool moves into one studio</h3><p>Background removal, upscale, generation, translation, product copy, video, fashion, and depth tools share one workspace with library search, attach targets, chaining, model-aware progress, and reduced-motion processing scenes.</p></div><code>6500481<br>ac3d1cd</code></div>
             <div class="milestone"><time>02 Jul</time><div><h3>New tools and a supplier expansion wave</h3><p>Image expand, relight, video upscale, generative fill, Fashn try-on, Kling, Seedance, and SVG vectorise arrive. Supplier search, live status, custom rejection reasons, quotas, onboarding email, and locked-plan states land beside them.</p></div><code>4057353<br>8873cd0</code></div>
             <div class="milestone"><time>02–03 Jul</time><div><h3>The QA Manager and transaction guard</h3><p>A supervised QA manager gets pause, snooze, breaker, cost, and heartbeat controls. A runtime guard now fails immediately if code tries to use the global database pool from inside a transaction, replacing two-minute deadlocks with a useful error.</p></div><code>4fbf953<br>af60353</code></div>
             <div class="milestone"><time>04 Jul</time><div><h3>The product points at activation</h3><p>Catalog health leads the dashboard. Named workflow recipes run on product selections. Drift-aware publish confirmation shows per-product results. The entire save, attach, approve, and publish loop gets analytics and consent-aware measurement.</p></div><code>a8cd589<br>9ab22a8</code></div>
-            <div class="milestone"><time>05–06 Jul</time><div><h3>First-run experience replaces empty machinery</h3><p>Sample assets, an activation checklist, honest channel states, capability-led admin, privacy controls, quota email, and a catalog-health homepage give a new user a path instead of a wall of features.</p></div><code>01bd13a<br>0cb349d</code></div>
-            <div class="milestone"><time>07–09 Jul</time><div><h3>Proof, rollback, and scope control</h3><p>Readiness gets a mobile first-run experience. Shopify rollback receives a full design spike. Retention jobs handle high-volume tables. The homepage tightens to the product wedge, and clanker convergence now quarantines workers that exceed their assigned scope.</p></div><code>9638f45<br>5ef05cd<br>e1d4d80</code></div>
-            <div class="milestone"><time>10–24 Jul</time><div><h3>The freeze turns to proof and activation</h3><p>No new tools. The fleet points at a coverage-expansion ledger with per-domain rollups, an activation-first overview with catalog health, recommended workflows and gap-cohort deep links, a Shopify-first homepage, and Sirv media embeds — evidence and onboarding instead of more surface.</p></div><code>afd5b02<br>bd1624e</code></div>
+            <div class="milestone"><time>05–06 Jul</time><div><h3>First-run experience replaces the empty product</h3><p>Sample assets, an activation checklist, honest channel states, simpler admin, privacy controls, quota email, and a catalog-health homepage give a new user somewhere to start.</p></div><code>01bd13a<br>0cb349d</code></div>
+            <div class="milestone"><time>07–09 Jul</time><div><h3>Rollback and scope control</h3><p>Readiness gets a mobile first-run experience. Shopify rollback receives a full design spike. Retention jobs handle high-volume tables. Workers that exceed their assigned scope are quarantined.</p></div><code>9638f45<br>5ef05cd<br>e1d4d80</code></div>
+            <div class="milestone"><time>10–24 Jul</time><div><h3>The freeze shifts work to activation</h3><p>No new tools. Work moves to coverage by product area, catalog health, recommended workflows, a Shopify-first homepage, Sirv media embeds, and getting merchants through onboarding.</p></div><code>afd5b02<br>bd1624e</code></div>
           </div>
         </div>
       </section>
@@ -457,7 +457,7 @@
         <div class="systems">
           <div class="system"><span class="big">40</span><h3>workflow step types</h3><p>Image work, product operations, branching, human review, storage, and Shopify delivery in a typed graph.</p><span class="source">source: STEP_REGISTRY</span></div>
           <div class="system"><span class="big">47</span><h3>MCP tools</h3><p>AI agents can search assets, manage products, run workflows, sync Shopify, and use supplier operations without bypassing entitlements.</p><span class="source">source: mcp-server/README.md + registrations</span></div>
-          <div class="system"><span class="big">64</span><h3>OpenAPI operations</h3><p>A published, ratcheted API surface. Every route is either documented or deliberately excluded with an owner and a reason.</p><span class="source">source: public/openapi.json operationId count</span></div>
+          <div class="system"><span class="big">64</span><h3>OpenAPI operations</h3><p>Every public API route is documented. Excluded routes have an owner and a written reason.</p><span class="source">source: public/openapi.json operationId count</span></div>
           <div class="system"><span class="big">286</span><h3>database migrations</h3><p>Products, variants, product-asset links, approvals, event intent, billing, jobs, integrations, and the history needed to recover from mistakes.</p><span class="source">source: drizzle/**/migration.sql</span></div>
           <div class="system"><span class="big">5,244</span><h3>test and spec files</h3><p>Unit, integration, contract, edge-case, Storybook, and browser coverage. The number is large because the operating method depends on cheap regression detection.</p><span class="source">source: tracked *.test.* + *.spec.* files</span></div>
           <div class="system"><span class="big">$70</span><h3>approximate monthly infrastructure</h3><p>Vercel, a self-hosted Inngest stack, PostgreSQL HA, Redis, and observability at the current capacity. Model usage is separate.</p><span class="source">source: current project operating estimate</span></div>
@@ -465,24 +465,24 @@
       </section>
 
       <section id="method">
-        <div class="section-mark"><b>04</b><span>The production system behind the production system</span></div>
-        <h2>I built a machine that builds.</h2>
+        <div class="section-mark"><b>04</b><span>How the code gets written and checked</span></div>
+        <h2>The agent workflow.</h2>
         <div class="prose">
-          <p class="lede">AI agents type the code. The useful part is giving them bounded work, isolated branches, tests, adversarial reviewers, and a path to finish without turning the repo into soup.</p>
-          <p>VibeQueue holds the work. The clanker army turns reviewed plans into worker batches. Each batch runs in its own worktree, passes focused tests and quality gates, then gets reviewed by specialist agents before convergence. My job is architecture, specification, judgment, and deciding what deserves to exist.</p>
+          <p class="lede">Agents write much of the code. I give them scoped work in isolated branches, require tests, and send the diffs to separate reviewers.</p>
+          <p>VibeQ holds the work. The clanker army turns reviewed plans into batches. Each batch runs in its own worktree, passes focused tests and quality gates, then gets reviewed again. My job is architecture, specification, judgement, and deciding what deserves to exist.</p>
         </div>
 
-        <div class="method" aria-label="Agent fleet delivery method">
+        <div class="method" aria-label="Agent delivery method">
           <div><b>01</b><span>Write the spec and observable outcome</span></div>
           <div><b>02</b><span>Split it into isolated worker batches</span></div>
           <div><b>03</b><span>Make tests and gates blocking</span></div>
-          <div><b>04</b><span>Send the diff to adversarial reviewers</span></div>
-          <div><b>05</b><span>Converge, verify, and ship</span></div>
+          <div><b>04</b><span>Send the diff to independent reviewers</span></div>
+          <div><b>05</b><span>Fix findings, verify, and ship</span></div>
         </div>
 
         <div class="credit-grid" aria-label="Primary repository authors">
-          <div class="credit"><strong>8,317</strong><b>Igor Varyvoda</b><span>architecture, product, agent fleet</span></div>
-          <div class="credit"><strong>2,748</strong><b>Veniamin Krachun</b><span>QA harness and proof machine</span></div>
+          <div class="credit"><strong>8,317</strong><b>Igor Varyvoda</b><span>architecture, product, agent workflow</span></div>
+          <div class="credit"><strong>2,748</strong><b>Veniamin Krachun</b><span>QA and verification systems</span></div>
           <div class="credit"><strong>727</strong><b>Max Wish</b><span>design system and data grid</span></div>
         </div>
         <p class="mono" style="margin:12px 0 0;font-size:9.5px;color:var(--ink-2)">Primary identities from git shortlog. Another 158 commits belong to additional contributors, bots, and alternate identities.</p>
@@ -494,7 +494,7 @@
         <div class="truth">
           <blockquote>“Construction has <em>outrun proof.</em>”</blockquote>
           <p>That line is from the repo’s own July situation assessment. The end-to-end loop exists, but too much of the platform is rollout-gated and too little is backed by named merchants using it every week. The commit graph is evidence of an unusual production system. It is not evidence of product-market fit.</p>
-          <p>So Q3 has a surface freeze. No new tools, channels, or workflow step types without an explicit decision. The same fleet is moving onto activation, billing boundaries, browser proof, onboarding, App Store quality, and getting ten merchants through the full loop. A build record is stronger when it records the course correction too.</p>
+          <p>So Q3 has a feature freeze. No new tools, channels, or workflow step types without an explicit decision. Work moves to activation, billing limits, browser checks, onboarding, App Store quality, and getting ten merchants through the full loop. The record includes that correction too.</p>
         </div>
       </section>
 

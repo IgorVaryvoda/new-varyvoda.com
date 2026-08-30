@@ -10,7 +10,7 @@ image_alt: "BudJet personal finance overview with transactions, budgets, and rec
 description: "A personal finance tracker I built because I wanted one I would actually use. Scan a receipt, let AI extract and categorize the line items, then see where the money went without turning bookkeeping into a second job."
 hero_title: "BudJet"
 hero_kicker: "Built for daily use"
-hero_intro: "I built the finance tracker I kept wishing existed: fast enough for daily use, detailed enough to be useful, and smart enough to spare me most of the typing."
+hero_intro: "I use BudJet every day. It scans receipts, keeps the line items, and shows where the money went without making me type every purchase."
 hero_mark: "Personal finance"
 hero_scope: "Receipt to decision"
 hero_primary_label: "Open BudJet"
@@ -49,24 +49,24 @@ Most finance trackers work perfectly if you enjoy entering every purchase by han
 
 I built BudJet because I wanted a clear view of my money without turning expense tracking into a second job. The basic rule is simple: capture spending from the evidence that already exists, then make the useful part automatic.
 
-## From receipt to useful data
+## It keeps the line items
 
 Take a photo of a receipt and BudJet extracts the merchant, date, total, and individual items. AI suggests categories, you fix anything it got wrong, and the budget updates. The same flow works through the web app or Telegram bot, and existing data can come in through CSV instead of being typed again.
 
 Keeping the line items matters. A supermarket receipt no longer becomes one mysterious €83 block called “Groceries.” BudJet can show what was bought, track price changes, and even look up nutrition data for food, because apparently I could not leave a receipt scanner alone.
 
-## Money is rarely a one-person system
+## Households
 
 BudJet supports personal finances and shared households without mixing them into one unusable pile. Invite people, give the household its own budget and currency, then switch between your spending, one household, or everything together.
 
-Recurring expenses and subscriptions stop quiet monthly leaks from disappearing into the timeline. Savings goals make future purchases visible. Reports show trends and category breakdowns, while recommendations point out patterns worth paying attention to.
+Recurring expenses and subscriptions stay visible in the timeline. Savings goals keep future purchases separate. Reports show trends and category breakdowns.
 
-It also works across multiple currencies and seven languages, which is useful when your life does not fit neatly inside one country or one bank account.
+It also works across multiple currencies and seven languages. I live outside my home country and need both.
 
-## Built for daily use
+## I use it every day
 
 BudJet is not a finance dashboard I built for screenshots and forgot. I use it every day. That has forced me to care about the boring parts: fast entry, editable AI results, custom categories, household permissions, encrypted financial data, recurring transactions, and reports that answer a question without making me become an accountant first.
 
-There are more features than I originally planned, naturally. But the test has stayed the same: does this make keeping track of money less annoying? If not, it does not belong.
+There are more features than I first planned. The question is still whether they make tracking money less annoying. If they do not, they do not belong.
 
 [Track your money with BudJet](https://www.budjet.app)
