@@ -1,8 +1,5 @@
 - group: "Origin"
   items:
-    - title: "Google killed my first profitable website"
-      url: "/posts/google-killed-my-first-profitable-website/"
-      description: "The first business worked until Google changed the rules."
     - title: "Why I don't kill side projects"
       url: "/posts/why-i-dont-kill-side-projects/"
       description: "Why I keep small software running even when it will never become a company."

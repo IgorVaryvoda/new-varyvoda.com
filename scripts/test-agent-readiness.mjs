@@ -104,7 +104,7 @@ for (const heading of ["Start here.", "Essays", "Build records", "Technical guid
   assert.match(writingHtml, new RegExp(`>${heading}<`));
 }
 
-for (const path of ["index.md", "about/index.md", "posts/index.md", "projects/index.md", "projects/first-internet-business/index.md", "projects/sirv-studio/index.md"]) {
+for (const path of ["index.md", "about/index.md", "posts/index.md", "projects/index.md", "projects/sirv-studio/index.md"]) {
   await access(new URL(`../public/${path}`, import.meta.url));
 }
 
