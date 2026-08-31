@@ -36,7 +36,7 @@
 .scene-message .scene-sentence::before { content: none; }
 
 .scene-intro {
-  max-width: 74rem;
+  max-width: var(--measure-reading);
   margin: 0;
   color: var(--ink);
   font-family: var(--reading);
@@ -69,7 +69,7 @@
 }
 
 .career-band {
-  padding: clamp(8rem, 10vw, 13rem) 0;
+  padding: var(--section-space) 0;
   color: var(--ink);
   background: var(--paper);
 }

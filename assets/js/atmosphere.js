@@ -2316,7 +2316,7 @@
     return reducedMotion ? 3 : currentSceneTime(performance.now());
   }
 
-  var sceneSelector = ".site-header, .scene-hero, .home-intro, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
+  var sceneSelector = ".site-header, .scene-hero, .tide-gate, .project-masthead--system, .work-masthead, .writing-masthead, .about-stage, .contact-stage, .article-hero, .site-footer";
 
   function isSceneSurfaceTarget(target) {
     return Boolean(target.closest(sceneSelector));

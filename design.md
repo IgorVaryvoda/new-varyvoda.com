@@ -38,7 +38,9 @@ Body copy uses a narrow measure, generous leading, and no automatic hyphenation.
 - Main canvas: `--canvas: 120rem`.
 - Responsive edge: `--gutter`.
 - Metadata rail: `--rail`.
-- Reading measure: about `74rem`; wider project prose may reach `86rem`.
+- Reading measure: `--measure-reading` (`74rem`); wider project prose may reach `86rem`.
+- Section rhythm: `--section-space`.
+- Minimum control target: `--control-min` (`44px`).
 - Borders and spacing create hierarchy. Cards are used only when the content is genuinely a separate object.
 
 Keep grid and flex children at `min-width: 0`. Full-bleed bands may escape the canvas, but their content returns to the shared gutter.
@@ -65,14 +67,29 @@ These use the static scene. About is a portrait and one reading panel. Contact i
 
 Keep the landscape visible. The closing question and action may use local contrast, but never a viewport-wide opaque veil.
 
+## Component map
+
+This is a reuse map, not a separate component library. Check it before adding another partial or stylesheet.
+
+| Pattern | Template | Styles |
+| --- | --- | --- |
+| Site shell, navigation, footer | `layouts/partials/header.html`, `layouts/partials/footer.html` | `assets/css/custom.css` |
+| Homepage scene and bands | `layouts/partials/home.html` | `assets/css/pages/home.css` |
+| Portfolio cards and care feed | `layouts/partials/recent-care.html` | `assets/css/components/portfolio.css` |
+| Start-here groups | `layouts/partials/start-here.html` | `assets/css/components/start-here.css` |
+| Writing list and article | `layouts/partials/writing-item.html`, `layouts/posts/*.html` | `assets/css/pages/posts.css` |
+| Work index and project story | `layouts/projects/*.html` | `assets/css/pages/projects.css` |
+| About and contact | `layouts/_default/single.html` | `assets/css/pages/pages.css` |
+| Project-specific technical visuals | `layouts/shortcodes/*.html` | `assets/css/systems/*.css` |
+
 ## Links and controls
 
 - Reading-prose links keep a subtle underline at rest.
 - Navigation, cards, labels, and buttons do not inherit prose underlines.
 - Homepage hero phrases stay on one line. At rest they use a crisp, full-color dotted underline with proportional weight and offset; on hover or keyboard focus it becomes the animated shoreline wave.
 - Keep that established wave for the hero and the small latest-post link; do not replace it with native wavy text decoration.
-- Keyboard focus is always visible. Do not remove an outline without a replacement.
-- Buttons and primary navigation controls need a touch target of about `44px`.
+- Keyboard focus uses `--focus-ring` and `--focus-ring-offset`. Do not remove an outline without a replacement.
+- Buttons and primary navigation controls use at least `--control-min`.
 - Motion may clarify state; it must not move surrounding content. Respect reduced-motion preferences.
 
 ## Responsive rules

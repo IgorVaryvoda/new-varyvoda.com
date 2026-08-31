@@ -1,7 +1,7 @@
 .recent-care {
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  padding: clamp(8rem, 10vw, 13rem) 0;
+  padding: var(--section-space) 0;
   color: var(--ink);
   background: var(--paper);
 }
