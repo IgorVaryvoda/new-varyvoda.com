@@ -7,18 +7,20 @@
 }
 
 .recent-care.harbor-band { color: var(--harbor-ink); background: linear-gradient(180deg, var(--harbor), var(--harbor-deep)); }
-.recent-care.harbor-band .care-feed li { border-color: var(--harbor-rule); }
-.recent-care.harbor-band .care-feed p,
-.recent-care.harbor-band .care-feed time { color: var(--harbor-muted); }
+.harbor-band .care-feed,
+.harbor-band .care-feed li { border-color: var(--harbor-rule); }
+.harbor-band .care-feed p,
+.harbor-band .care-feed time,
+.harbor-band .care-feed .care-key { color: var(--harbor-muted); }
 
 .care-feed { margin: 0; padding: 0; border-top: 1px solid var(--rule-dark); list-style: none; }
 .care-feed li { display: grid; grid-template-columns: 13rem minmax(14rem, 0.35fr) minmax(0, 1fr); gap: 2rem; align-items: baseline; padding: 2.2rem 0; border-bottom: 1px solid var(--rule); }
-.care-feed time { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.05em; text-transform: uppercase; }
+.care-feed time,
+.care-feed .care-key { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.05em; text-transform: uppercase; }
 .care-feed strong { color: var(--ink); font-size: 1.6rem; }
 .harbor-band .care-feed strong { color: var(--harbor-ink); }
 .care-feed p { margin: 0; color: var(--slate); font-family: var(--reading); line-height: 1.65; }
 
-.selected-project-proof,
 .work-atlas-proof {
   display: grid;
   min-height: 34rem;
@@ -30,14 +32,11 @@
     var(--stage);
 }
 
-.selected-project-proof > strong,
 .work-atlas-proof > strong { color: #edf2f0; font-size: clamp(5rem, 9vw, 11rem); font-weight: 500; letter-spacing: -0.06em; }
-.selected-project-proof > span:not(.work-atlas-visual-action),
 .work-atlas-proof > span:not(.work-atlas-visual-action) { color: #a7b3b7; font-family: var(--mono); font-size: 1.2rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
 @media (max-width: 680px) {
   .care-feed li { grid-template-columns: 1fr; gap: 0.6rem; }
-  .selected-project-proof,
   .work-atlas-proof { min-height: 25rem; }
   .work-atlas-proof { aspect-ratio: auto; }
 }

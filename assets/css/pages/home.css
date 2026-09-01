@@ -2,7 +2,7 @@
   position: relative;
   isolation: isolate;
   display: grid;
-  width: min(100%, 82rem);
+  width: min(100%, 92rem);
   justify-items: center;
   gap: 1.6rem;
   padding: 0 2rem;
@@ -22,7 +22,7 @@
 }
 
 .scene-message .scene-sentence {
-  max-width: 14ch;
+  max-width: none;
   padding: 0;
   font-family: var(--display);
   font-size: clamp(4rem, 6.4vw, 8rem);

@@ -22,7 +22,7 @@
 <div class="builder-home">
   <section class="scene-hero" aria-labelledby="home-title">
     <div class="scene-message">
-      <h1 class="scene-sentence" id="home-title">I build <a href="/projects/">products</a>—and I <a href="#recent-care-title">keep them alive</a>.</h1>
+      <h1 class="scene-sentence" id="home-title">I build <a href="/projects/">products</a><br>and I <a href="#recent-care-title">keep them alive</a>.</h1>
       <p class="scene-intro">I’m Igor Varyvoda, a product builder and operator behind Sirv Studio and a living portfolio of independent software.</p>
       <p class="scene-personality">Some for work, some because I can’t help myself.</p>
     </div>
@@ -102,39 +102,15 @@
         <a class="text-link" href="/projects/">Full index</a>
       </header>
       <p class="portfolio-thesis">Some became businesses. Some stayed small and useful. I still look after them.</p>
-      <div class="selected-work-list">
-        {{ range $index, $project := first 4 $homeProjects }}
-        <a class="selected-project" href="{{ .RelPermalink }}">
-          {{ with .Params.image }}
-          <figure class="selected-project-visual">
-            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
-            {{ if hasPrefix . "/" }}
-              {{ partial "responsive-local-image.html" (dict "src" . "alt" $project.Params.image_alt "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 50vw" "fallbackWidth" 800) }}
-            {{ else }}
-              <img src="{{ . }}?w=800" srcset="{{ . }}?w=480 480w, {{ . }}?w=800 800w, {{ . }}?w=1100 1100w, {{ . }}?w=1400 1400w" sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw" alt="{{ $project.Params.image_alt }}" loading="lazy" decoding="async">
-            {{ end }}
-          </figure>
-          {{ else }}
-          <figure class="selected-project-visual selected-project-proof" aria-label="{{ $project.Params.image_alt }}">
-            <figcaption><span>{{ $project.Params.hero_frame_label | default $project.Title }}</span><span>{{ $project.Params.stewardship.state | humanize }}</span></figcaption>
-            {{ range first 1 $project.Params.proof }}<strong>{{ .value }}</strong><span>{{ .label }}</span>{{ end }}
-          </figure>
-          {{ end }}
-          <div class="selected-project-copy">
-            <p class="selected-project-meta"><span>{{ printf "%02d" (add $index 1) }}</span><span>{{ $project.Params.period | default ($project.Date.Format "2006") }}</span><span class="stewardship-state">● {{ $project.Params.stewardship.state | humanize }}</span></p>
-            <h3>{{ .Params.hero_title | default .Title }}</h3>
-            <p>{{ .Params.hero_intro | default .Params.description }}</p>
-            <span class="quiet-meta">{{ .Params.role }}</span>
-            <span class="selected-project-action">Open project <b aria-hidden="true">→</b></span>
-          </div>
-          {{ with .Params.hero_flow }}
-          <ol class="selected-project-flow" aria-label="{{ $project.Title }} workflow">
-            {{ range $stepIndex, $step := . }}<li><span>{{ printf "%02d" (add $stepIndex 1) }}</span><strong>{{ $step }}</strong></li>{{ end }}
-          </ol>
-          {{ end }}
-        </a>
+      <ol class="care-feed">
+        {{ range $homeProjects }}
+        <li>
+          <span class="care-key">{{ .Params.period | default (.Date.Format "2006") }} · {{ .Params.stewardship.state | humanize }}</span>
+          <a href="{{ .RelPermalink }}"><strong>{{ .Params.hero_title | default .Title }}</strong></a>
+          <p>{{ .Params.hero_intro | default .Params.description }}</p>
+        </li>
         {{ end }}
-      </div>
+      </ol>
     </div>
   </section>
 
