@@ -4,52 +4,31 @@ date: 2026-08-28
 draft: false
 content_type: "Essay"
 description: "I spent years coordinating developers, marketers, priorities, and execution across internet businesses without a title that explained the job."
+lastmod: 2026-09-04
 ---
 
-For a few years, I had no useful answer to “what do you do?”
+For a few years, I had no useful answer to "what do you do?"
 
-I ran work across several internet businesses. Developers were building, marketers were finding demand, products needed decisions, and priorities kept colliding. Somebody had to decide what happened next.
-
-That somebody was often me.
+I ran work across several internet businesses. Developers were building, marketers were finding demand, products needed decisions and priorities kept colliding. I coordinated the people and decided what happened next.
 
 ## The work did not fit one department
 
-Small internet businesses do not arrive neatly split into product, engineering, growth, and operations. A traffic problem becomes a product problem. A product promise creates development work. A technical constraint changes the marketing plan. One unanswered question can block all of it.
+I had started by building my first commercial website, where development and distribution were already one job. Working across several businesses made the dependencies harder to ignore. A product promise created development work. A technical constraint changed the marketing plan.
 
-I coordinated developers and marketers, chose what deserved attention, translated between people with different definitions of done, and kept the work tied to the reason we were doing it. The title changed. The job was simple to describe: make the businesses work.
+I spent less time writing code and more time deciding what should be built, by whom and why. Earth Roulette later pulled me back into hands-on engineering. Magic Toolbox and Sirv widened the job again: I joined as a marketer, then took on growth, product and operations.
 
-## I spent less time writing code
+## A recent example is easier to show
 
-I had started by building my first commercial website, where development and distribution were already one job. The portfolio was the same problem at a larger scale. More people wrote the code. Marketing had more channels. The consequences crossed several businesses. The question stayed the same: what has to happen next?
+In August 2026, the user-analytics page in [Sirv Marketing Machine](/projects/sirv-marketing-machine/) had a number labelled Average MRR. It divided cash collected by the length of the period. A yearly payment could therefore look like a much larger recurring month.
 
-I spent less time writing code and more time deciding what should be built, by whom, and why. Work usually stalled because the intent was unclear, ownership was missing, or nobody wanted to make the trade-off.
+That was simultaneously a reporting problem, a product problem and a code problem. Making the chart prettier would have left the wrong number underneath it.
 
-## Earth Roulette pulled me back into the code
+The repair separated cash collected from recurring revenue. Average MRR now samples recurring revenue at month ends and the end of the selected period. A test uses a $1,200 annual payment and expects $100 of monthly recurring revenue. Those are test values, not Sirv revenue figures.
 
-[Earth Roulette](/projects/earth-roulette/) began with a small personal annoyance: wanting to travel and having no idea where to go.
+The same change made the plan breakdown a ranked bar chart and fixed calendar-period requests that missed the warmed cache. It took six files across the calculation, API, tests and interface. One dashboard question crossed all of them.
 
-Building it pulled me back into hands-on engineering. The random button became filters, destination data, travel guides, saved places, mobile apps, and eventually the data underneath [Travel Bot](/projects/travelbot/).
+## Building and operating
 
-I came back with years of marketing, team coordination, commercial work, and bad decisions I did not need to repeat.
+As coding models improved, I could build more of my own ideas directly. I used that approach to build [Sirv Studio](/projects/sirv-studio/). The work still includes checking whether a number means what its label says, whether a promise matches the product and whether a change reached the people using it.
 
-## Magic Toolbox and Sirv made the job wider again
-
-I later joined Magic Toolbox as a marketer and moved to Sirv. Over time I took on growth, product, systems, content, and operations.
-
-That can look unfocused on a CV. In practice, it means taking responsibility for the whole product and working on whatever is blocking it.
-
-Sometimes that is copy. Sometimes it is architecture. Sometimes it is a process nobody has named. Sometimes it is telling people to stop building and prove the existing thing works.
-
-## AI removed the execution bottleneck
-
-As coding models improved, I could build more of my own ideas directly. They did not turn a marketer into a developer. They made a developer, marketer, manager, and operator much faster.
-
-When the models became reliable enough for production work, I used them to build [Sirv Studio](/projects/sirv-studio/).
-
-## Responsibility is the durable title
-
-I now use "product builder and operator" because it is the shortest answer that is mostly true.
-
-I build the thing, then I keep it working. Distribution, people, incidents, users, money, and maintenance are still part of the job after launch.
-
-The title can stay fuzzy. The job is still to find what is stuck and fix it.
+I now use "product builder and operator" because it is the shortest answer that is mostly true. The analytics fix is a better explanation than another list of job titles.

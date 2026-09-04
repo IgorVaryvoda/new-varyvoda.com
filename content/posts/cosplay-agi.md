@@ -4,42 +4,33 @@ date: 2026-08-20
 draft: false
 content_type: "Essay"
 description: "One of my agent skills is triggered by 'cosplay AGI'. The joke is useful because the model alone is never the whole system."
+lastmod: 2026-09-04
 ---
 
-One of my agent skills is triggered by **"cosplay AGI"**. It tells the agents to verify every claim at source, cite files and lines, and use a fixed scoring scale.
+One of my agent skills is triggered by **"cosplay AGI"**. It asks for a source-checked audit with file references and a fixed scoring scale.
 
-It started as a joke. The name stuck because the model alone is never the whole system.
+The name is a joke. The score is where I have to be careful.
 
-## What the system adds
+## A convincing report can still be wrong
 
-The models are capable, but each session starts with limited context and no memory of the last incident. The surrounding files and checks make them useful for sustained work.
+An agent can produce a verdict, cite a file and finish without checking the behaviour that matters. A process exiting successfully tells me that the process ended. It does not tell me that the work passed review.
 
-**Skills files hold working rules.** They describe how to commit on a shared branch, run a review, or close a bug. Most rules exist because the system previously got something wrong.
+[improve-codex](/projects/improve-codex/) checks for a usable completion report and a critic verdict tied to that run. Missing evidence fails the run even when the process exits zero. Each review round gets a separate report, so a later verdict cannot silently overwrite the earlier objection.
 
-**Memory files hold decisions and corrections.** Without them, the same preference or mistake has to be explained in every session.
+That is a useful distinction when the output looks finished. The workflow has to inspect the evidence behind it.
 
-**Plans carry intent between sessions.** Each plan has enough context for an executor that has never seen the task before.
+## The score has limits
 
-**Independent review checks the author.** A second model family reviews plans and diffs, and the reviewer has to point to evidence rather than give a vague approval.
+I used a multi-agent self-audit on [Sirv Studio](/projects/sirv-studio/). It helped turn suspected defects into things I could check and fix. It did not provide an independent product rating, and counting reviewers did not make it one.
 
-**Orchestration routes the work.** Different models audit, plan, implement, and review. I choose what runs, what waits, and what is worth doing.
+The useful questions were narrower. Does this billing path have production callers? Does the test fail when the behaviour breaks? Did the reviewer inspect the current file?
 
-Inside a repository, that combination can look much more capable than a model used on its own. It is still a collection of explicit parts, with a person directing them.
+A numerical verdict makes those questions easy to lose. I have removed the self-rating from the main case study. The failures and the resulting changes are more useful to a reader.
 
-## Models keep removing rules
+## Keep the incident, question the rule
 
-Every instruction records a limitation. Newer models make some of those instructions unnecessary.
+My [skills folder records incidents](/posts/scar-tissue-as-documentation/). That history earns a rule its place. It should also make the rule possible to retire: identify the failure it prevents, check whether the failure is still possible and remove the instruction when the system makes it unnecessary.
 
-Output formatting that needed pages of instruction two years ago now works by default. Some review checks used to catch failures every week, then stopped firing, then were deleted. I can measure progress by the rules I no longer need.
+I cannot infer that from a newer model name. If I claim a rule is obsolete, I need the old failure and a check that now handles it.
 
-That is more useful to me than a benchmark argument. I care about which parts of the real workflow became simpler.
-
-## What still stays human
-
-Better models have reduced capability gaps. They have not decided what deserves to exist.
-
-An audit can find defects. It cannot choose which product deserves the next month of work. An executor can produce a clean diff. It cannot decide whether the result is good for the people using it. Every fleet commit is signed with my name because I am still responsible for what ships.
-
-I do not know how long that remains true. I only know how the current system works.
-
-The models do much more of the work than they did a year ago. I still decide why the work exists and take responsibility for the result.
+"Cosplay AGI" can stay as a shortcut. It cannot be the evidence.

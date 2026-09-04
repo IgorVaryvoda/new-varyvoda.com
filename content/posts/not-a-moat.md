@@ -1,6 +1,7 @@
 ---
 title: "Anything an agent fleet can rebuild in a quarter is not a moat"
 date: 2026-08-01
+lastmod: 2026-09-04
 draft: false
 content_type: "Essay"
 page_css: ["moat"]
@@ -22,7 +23,7 @@ That led to one rule in Studio's strategy notes:
 
 The rule does not mean features are unimportant. Customers still need the product to work well. It means a feature list does not protect the business for long.
 
-Some things still take calendar time or participation from other people. Those are harder to copy.
+Some things still take calendar time or participation from other people. Those are candidates for a lasting advantage. The list below describes what Studio could accumulate, not advantages already demonstrated by adoption.
 
 ## Apply the rule to Studio
 
@@ -44,7 +45,7 @@ Some things still take calendar time or participation from other people. Those a
         <li><strong>Operational history</strong> Approvals, publishes, rollbacks, and supplier submissions.</li>
         <li><strong>Product relationships</strong> Assets, variants, channels, and their current state.</li>
         <li><strong>Supplier participation</strong> People who already know and use the workflow.</li>
-        <li><strong>Safety record</strong> Years of correct changes to live stores.</li>
+        <li><strong>Safety record</strong> A history of correct changes to live stores, still to be earned.</li>
         <li><strong>Direct distribution</strong> Customer relationships and channels the business controls.</li>
       </ul>
     </div>
@@ -64,9 +65,15 @@ Some things still take calendar time or participation from other people. Those a
 
 **Direct distribution** gives the team time to keep building. Search rankings, store listings, customer relationships, and referrals take longer to earn than a feature takes to copy.
 
-## Rules for product work
+## The decision it changed
 
-The quarterly rule changes a few decisions inside Studio.
+The July action plan put a freeze on new tools, channels and workflow step types unless an exception was explicitly approved. It gave priority to getting ten merchants through a complete loop: connect a catalogue, run a fix, review the result and publish.
+
+Ten merchants was the target, not a result I had already achieved. The same plan called for measuring time to first approved publish and operator hours per merchant. Those numbers could tell us whether the product was useful without using code volume as a substitute.
+
+The cost of that decision was leaving possible features on the list while completing less visible work: limits, onboarding and verification. A written freeze also needs enforcement. It is not evidence that every later change followed it.
+
+## Rules for product work
 
 **Record history when the event happens.** Approval, lineage, supplier provenance, and publish state belong in the data model. Missing history cannot be reconstructed later.
 
@@ -74,11 +81,17 @@ The quarterly rule changes a few decisions inside Studio.
 
 **Prefer repeated use over another feature.** Ten merchants running the complete workflow every week creates more useful evidence than ten new tools nobody uses.
 
-**Measure what is accumulating.** The dashboard asks whether usage, history, supplier participation, safety, and direct distribution improved during the quarter.
+**Measure what is accumulating.** The proposed measures ask whether usage, history, supplier participation, safety and direct distribution improved during the quarter. They describe what to track, not measured results on this page.
 
-{{< moat-dashboard >}}
+| What to track | What it would test |
+|---|---|
+| Workspaces with 90-day history | Whether useful records accumulate through repeat use |
+| Products under management | Whether product relationships remain useful at scale |
+| Suppliers working across workspaces | Whether participation extends beyond one customer |
+| Incident-free publish runs | Whether the safety claim survives repeated operation |
+| Organic funnel entries | Whether distribution brings relevant users |
 
-Shipping can feel like progress even when it creates no durable advantage. The dashboard is there to separate output from adoption.
+This dashboard illustrates the measurement plan. It is not a live report of customer adoption.
 
 ## Challenge each claim
 
@@ -92,6 +105,6 @@ These advantages are not permanent.
 
 The response is not to call everything a moat. It is to keep asking what would make a customer stay after a competitor matches the feature list.
 
-For Studio, the answer is increasingly clear: useful history, accurate product state, safe operation, supplier habits, and direct customer relationships. All of them require more than another month of agent output.
+The enterprise supplier workflow is evidence of use. A supplier network effect, durable retention and an established safety record need more evidence than that. Those remain things to prove.
 
 _Related: [Two theories of a programmer](/posts/two-theories-of-a-programmer/) and the [Sirv Studio case study](/projects/sirv-studio/)._

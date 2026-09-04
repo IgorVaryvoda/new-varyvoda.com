@@ -1,7 +1,7 @@
 ---
 title: "VibeQ"
 date: 2026-03-05
-lastmod: 2026-08-18
+lastmod: 2026-09-04
 draft: false
 homepage_weight: 2
 atmosphere: true
@@ -50,7 +50,7 @@ role: "Creator, product lead and principal builder"
 stewardship:
   state: "evolving"
   note: "I change it when a real run, Slack thread, or incident exposes a gap."
-last_tended: "2026-08-28"
+last_tended: "2026-09-03"
 feedback_url: "/contact/?project=vibeq&type=question"
 proof:
   - value: "One queue"
@@ -177,6 +177,14 @@ These incidents changed the design:
 - **A migration declined in writing.** When "shouldn't this be Cloudflare Workflows?" came up, the answer became a decision record instead of a refactor: Workflows is built on Durable Objects, three of the four objects here are the canonical use of the primitive, and migrating the fourth would create the second lifecycle implementation another plan exists to forbid. The record exists so the question stops being re-asked every few months.
 
 These are the checks I need before letting the runtime touch production repositories.
+
+## Checking the reported commit
+
+September work connects a completion report to the actual PR head. VibeQ reads the head commit and its check runs, then records whether the reported commit matches. A mismatched commit or failed checks overrides a positive evidence claim. If GitHub cannot be checked, the report says unverified. The closeout can still finish, so unverified must not be read as passed.
+
+Related changes check whether a human has taken over a branch before dispatch and verify a PR merge before closing its task. These are repository changes, not a claim that every deployment has enabled every path.
+
+[The tests passed. On which commit?](/posts/the-tests-passed-on-which-commit/) follows the closeout change and the reviewer correction it needed.
 
 ## What exists now
 

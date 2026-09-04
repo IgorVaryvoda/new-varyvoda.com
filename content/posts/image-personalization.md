@@ -1,6 +1,7 @@
 ---
 title: "Image personalisation: examples and implementation"
 date: 2018-08-03T22:52:03+01:00
+lastmod: 2026-09-04
 draft: false
 content_type: "Guide"
 older_archive: true
@@ -26,6 +27,8 @@ alt="Image personalization header illustration">
    <link href="https://sirv.com/wp-content/themes/sirv/css/personalization.css" rel=stylesheet>
 
 ### The original article was posted on [Sirv's blog](https://sirv.com/blog/image-personalization-examples/)
+
+> Archived Sirv article from 2018. I wrote this in Sirv's voice, so "we" and "our" refer to Sirv. Examples, surveys and product interfaces describe that period. The original calls to action remain part of the article, not current recommendations.
 
 
 Personalisation usually means changing copy or offers for a particular customer. Images can be personalised too.<!--more-->

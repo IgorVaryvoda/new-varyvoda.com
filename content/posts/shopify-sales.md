@@ -1,6 +1,7 @@
 ---
 title: "9 practical ways to increase Shopify sales"
 date: 2020-11-24T22:52:03+01:00
+lastmod: 2026-09-04
 draft: false
 content_type: "Guide"
 older_archive: true
@@ -12,6 +13,8 @@ sitemap:
 <img src="https://sirv.sirv.com/blog/Shopify%20Sales/online_shopping.svg" alt="Increase Shopify sales - graphic">
 
 ### The original article was posted on [Sirv's blog](https://sirv.com/blog/increase-shopify-sales/)
+
+> Archived Sirv article from 2020. Product screenshots, app recommendations, prices and statistics describe that period. Google Optimize closed on 30 September 2023 and is no longer an option. [Google's closure notice](https://support.google.com/analytics/answer/12979939?hl=en). For current image guidance, read [Image SEO in 2026](/posts/image-seo-2026/).
 
 <p>In 2020, thousands of businesses moved online quickly. Many of them chose Shopify.</p>
 

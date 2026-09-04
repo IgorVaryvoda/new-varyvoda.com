@@ -1,7 +1,7 @@
 ---
 title: "BudJet - Personal Finance Tracker"
 date: 2025-04-01
-lastmod: 2026-07-18
+lastmod: 2026-09-04
 draft: false
 homepage_weight: 4
 project_url: "https://www.budjet.app"
@@ -64,6 +64,8 @@ Recurring expenses and subscriptions stay visible in the timeline. Savings goals
 It also works across multiple currencies and seven languages. I live outside my home country and need both.
 
 ## I use it every day
+
+On 16 July 2026, I replaced a removed model in the Telegram receipt handler. A receipt photo still needed to become editable line items after the provider changed its catalogue. I then aligned the web and Telegram paths on the same model and checked structured receipt output through both providers. That is maintenance a launch screenshot cannot show.
 
 BudJet is not a finance dashboard I built for screenshots and forgot. I use it every day. That has forced me to care about the boring parts: fast entry, editable AI results, custom categories, household permissions, encrypted financial data, recurring transactions, and reports that answer a question without making me become an accountant first.
 

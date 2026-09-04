@@ -1,6 +1,7 @@
 ---
 title: "SlovoCard"
 date: 2025-12-14
+lastmod: 2026-09-04
 draft: false
 project_url: "https://www.slovocard.com"
 image: "https://cdn.earthroulette.com/varyvoda/slovocard.png"
@@ -59,6 +60,8 @@ The scheduler is Anki-like and based on SM-2. Cards move through new, learning, 
 I use it myself. A wrong entry teaches me the wrong thing again and again. An awkward prompt wastes my time every time it returns. That makes both problems hard to ignore.
 
 ## Corrections are part of the product
+
+One July fix was two seconds long. Typed cards advanced as soon as an answer was submitted, leaving too little time to read the correction. I added a two-second reveal to the cloze and listening cards. The regression test submits `bubreg`, checks that the correction stays visible and only then allows the next card. The scheduler had accepted the answer. The learner still needed to see it.
 
 Learners can report vocabulary problems and regional mismatches. Those reports have corrected entries and improved review behaviour. Importing a deck is the easy part. Keeping it accurate takes use and corrections.
 

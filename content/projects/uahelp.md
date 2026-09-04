@@ -1,6 +1,7 @@
 ---
 title: "UaHelp"
 date: 2022-03-01
+lastmod: 2026-09-04
 draft: false
 project_url: "https://www.uahelp.me"
 image: "https://cdn.earthroulette.com/varyvoda/uahelp.png"
@@ -50,5 +51,7 @@ The site organizes routes for military support, humanitarian help, medical aid, 
 ## Why it is still here
 
 The war did not end when the first wave of international attention moved on. The resource remains public because the need remains real. Keeping it useful means correcting links, removing weak routes, and resisting the temptation to treat an urgent project as a finished launch.
+
+The companion [ways to help Ukraine](/posts/help-ukraine/) article now links directly to a smaller set of organisation pages checked in September 2026. That check covers the article's links, not every entry in the wider directory.
 
 [Find a concrete way to help Ukraine](https://www.uahelp.me)

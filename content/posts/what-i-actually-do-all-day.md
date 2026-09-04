@@ -1,12 +1,13 @@
 ---
 title: "What I actually do all day"
 date: 2026-08-18
+lastmod: 2026-09-04
 draft: false
 content_type: "Essay"
 description: "One Saturday produced 31 pushes across three repositories. This is what I was doing while agents wrote the code."
 ---
 
-Last Saturday, my GitHub log shows thirty-one pushes across three repositories, and two brand-new repositories created eight seconds apart at 20:04. First push at 06:41, last at 22:04.
+On Saturday 15 August 2026, my GitHub log showed thirty-one pushes across three repositories, and two brand-new repositories created eight seconds apart at 20:04. First push at 06:41, last at 22:04.
 
 I did not type the code. So what was I doing all day?
 
@@ -24,7 +25,11 @@ The fleet works from written plans. At each gate I either approve the next step 
 
 The log also shows how the day changed.
 
-The morning burst, ten pushes between 06:41 and 10:01, was infrastructure work: fleet cost tracking, a CI fix, and a deploy fix that stopped frontend changes from restarting a container fleet. That needed my full attention.
+The morning burst contained ten pushes between 06:41 and 10:01. Infrastructure work that day included fleet cost tracking and deployment changes.
+
+The deployment change is the useful example. VibeQ served its frontend assets from the same Cloudflare Worker that owned the agent work cells. A CSS change could therefore replace the Worker and disrupt running jobs. I separated frontend deployment from the execution runtime. The check had to cover ordinary pages, authenticated API routes and the service worker, because moving the assets could fix one problem and break another.
+
+That decision added a deployment boundary to maintain. It also removed a reason for design work to interrupt a long agent run.
 
 Then the log went quiet. Long jobs kept running while I was away from the computer. I checked progress from my phone and approved the next steps when needed.
 
@@ -42,6 +47,4 @@ The log misses three important parts of the work.
 
 ## What the day contained
 
-That Saturday I read roughly forty plans, diffs, verdicts, and completion reports. I made dozens of small decisions and a few important ones. I typed no code and still take responsibility for every line that shipped.
-
-The job is no longer mainly typing. It is deciding what should happen, checking that it did, and owning the result.
+That Saturday I read roughly forty plans, diffs, verdicts and completion reports. The activity count tells you the day was busy. The deployment decision tells you what some of that attention was for.

@@ -1,10 +1,11 @@
 ---
 title: "Actionable ways to help Ukraine"
-description: "Actionable ways to help Ukraine: verified donation routes, army support funds, and humanitarian resources, curated at UAHelp.me."
+description: "Ways to support Ukraine, with direct links to military, medical, humanitarian and animal-welfare organisations."
 date: 2022-04-09T00:52:03+01:00
 draft: false
 content_type: "Field note"
 older_archive: true
+lastmod: 2026-09-04
 ---
 
 Russia is waging an unprovoked and vicious war against Ukraine. Millions of people got displaced, tens of thousands of people lost their loved ones and once beautiful Ukrainian cities are getting razed to the ground.
@@ -15,69 +16,41 @@ I, like millions of other Ukrainians, cannot stay idle in this situation.
 
 I've created [UAHelp.me](https://www.uahelp.me) - a curated list of resources to help Ukraine and its people. Here's how you can help Ukraine:
 
-## QR codes for quick donation
-![QR codes to help Ukraine!](https://cdn.earthroulette.com/help-ukraine/QR.png)
+*Links below checked against the organisations' own pages on 4 September 2026. This is a link and purpose check, not an audit of their finances. Use their sites for current payment details rather than an old QR image.*
 
 ## Help the Ukrainian army
+
 Helping the armed forces of Ukraine is one of the most meaningful ways to contribute to Ukrainian victory. The sooner Ukraine defeats the invasion, the sooner the suffering ends.
 
-Without additional weaponry, Russo-Ukrainian war will become an endless bloodbath, spreading misery, suffering, and destruction. Please pressure your politicians into providing aid to Ukraine. [Here's the list of what Ukraine Needs](https://saveualist.com/).
+- [Come Back Alive](https://savelife.in.ua/en/donate-en/) supports Ukraine's defence forces. Its donation page separates army assistance from support for the foundation's operations.
+- [KOLO](https://koloua.com/en/) is a Ukrainian tech-community fund supporting the defence effort. Its own site carries its current projects and donation routes.
 
-And here are some hand-picked resources to help:
-- [Come back alive fund](https://savelife.in.ua/en/donate/). The most trusted NGO for helping the Ukrainian army
-- [Donate to the Organization for Development, Security and Sustainment](https://odss.ee/blog/help-ukraine)
-- [AeroRozvidka](https://aerorozvidka.xyz/). Specialist drone unit that fight like geniuses, but are forced to [crowdfund supplies](https://www.theguardian.com/world/2022/mar/28/the-drone-operators-who-halted-the-russian-armoured-vehicles-heading-for-kyiv)
-- [Kolo](https://koloua.com/en/). Kolo quickly supplies essential equipment to Ukrainian soldiers in hot spots
-- [Leleka](https://leleka.care/). First aid kits
-- [Full list of resources](https://www.uahelp.me/help/#help-the-ukrainian-army)
+## Medical and humanitarian help
 
-
+- [Leleka Foundation](https://leleka.care/en) supplies medical aid, including supplies for first responders and hospitals.
+- [UNITED24](https://u24.gov.ua/) is Ukraine's official fundraising platform. Choose the purpose of your donation on its current site.
 
 ## Help refugees
-Millions of Ukrainians got displaced, some have escaped the war zone with absolutely nothing. Ways to help:
-- [Help.gov.ua](https://help.gov.ua/en). Official Ukrainian website for humanitarian aid
-- [📄A detailed list of resources](https://docs.google.com/document/d/e/2PACX-1vTjRW9pjBPA9lBjZDm6FOH1EXrxRMrnHkYnkjdZ15DjEUamyOd3nNVW47jyBHo5rKHcvF73xbmURthV/pub) for refugees and people who want to help
-- [🗺️Mapa Help](https://mapahelp.me/). A map where you can offer help with transport, food, places to stay for Ukrainian refugees
-- [Ukraine Take Shelter](https://www.ukrainetakeshelter.com/). An independent platform connecting Ukrainian refugees with potential hosts and housing
-- [Shelter4Ukraine](https://sites.google.com/view/shelterforukraine/home). Provide shelter for Ukrainian refugees
-- [Full list](https://www.uahelp.me/help/#help-ukrainian-refugees)
+
+[UNHCR's Ukraine help pages](https://help.unhcr.org/ukraine/) explain assistance for war-affected and displaced people inside Ukraine and link to information for people leaving the country. Share the relevant official page with someone seeking support.
 
 ## Hire Ukrainians
-Ukrainians are well educated and hard working.
-- [Hire for Ukraine](https://hireforukraine.org/). Portfolios of Ukrainians available for hire
-- [UaTalents](https://www.uatalents.com/). Post a job offer for Ukrainians
-- [Full list](https://www.uahelp.me/help/#hire-ukrainians)
 
-
+If you can offer paid work, make the role, location restrictions and terms clear. A real job or paid contract is more useful than asking people displaced by war to provide unpaid work in exchange for exposure.
 
 ## Help animals
-Zoos and homeless/abandoned animals suffer greatly. It can be helped though:
-- [UAnimals](https://linktr.ee/uanimals) help animal shelters financially, provide them with food and try to evacuate animals to other countries
-- [Happy Paw Shelter](https://happypaw.ua/en/contribution) help homeless cats and dogs
-- [Sirius Shelter](https://linktr.ee/sirius.shelter). Biggest homeless animal shelter in Ukraine
-- [Ugolyok Shelter](https://patreon.com/ShelterUgolyok). A non-profit shelter for all animals across the country of Ukraine that are in need of rescue and protection
-- [Full list](https://www.uahelp.me/help/#help-animals-in-ukraine)
+
+- [UAnimals](https://uanimals.org/en/) works on animal rescue and welfare in Ukraine.
+- [Happy Paw](https://happypaw.ua/en/contribution) provides direct ways to support its work with homeless animals and shelters.
 
 ## Help fight propaganda
-Vile Russian lies poison the mind, help fight them
-- [Read the guide](https://www.uahelp.me/help/#help-fight-propaganda)
 
-## Don't fund war
-Boycott brands still doing business with Russia and funding its war.
-- [Don't fund war](https://www.uahelp.me/help/#don-t-fund-war)
+Check the original source before sharing a claim, image or fundraising appeal. Keep reporting on Ukraine visible after it leaves the front page.
 
 ## Protest, sign petitions
-- [Protest](https://www.uahelp.me/help/#protest)
-- [Sign a petition](https://www.uahelp.me/help/#petitions)
 
+Ask your elected representatives to sustain support for Ukraine. Join local events and campaigns whose organisers and purpose you can identify.
 
-## For developers
-You can make a difference. Check out these cool tools that you can use on your websites, github repos etc. to show your support for Ukraine:
-- [Resources for developers](https://www.uahelp.me/help/#for-developers)
+## Keep the resources useful
 
-## Other great 'mega lists'
-There are several other curated lists that are nicely done, please check them out too:
-- [Support Ukraine Now](https://supportukrainenow.org/)
-- [Help Ukraine Now](https://www.helpuanow.org/)
-- [Another Help Ukraine Now :)](https://helpukrainenow.info/)
-- [Stand for Ukraine](https://standforukraine.com/)
+[UAHelp.me](https://www.uahelp.me/) contains the wider directory. Each linked organisation remains responsible for its current appeals and payment details. If a link here stops reaching the organisation named, [tell me](/contact/).

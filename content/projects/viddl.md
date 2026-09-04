@@ -1,7 +1,7 @@
 ---
 title: "Viddl"
 date: 2020-05-01
-lastmod: 2026-07-18
+lastmod: 2026-09-04
 draft: false
 project_url: "https://viddl.me"
 image: "https://cdn.earthroulette.com/varyvoda/viddl.png"
@@ -52,6 +52,8 @@ I wanted the opposite. Paste a link, get the MP4, leave. No account. No ceremony
 Viddl accepts links from YouTube, Twitter/X, Instagram, Facebook, Reddit, and Threads. It resolves the media and returns a normal video file in the best quality it can get. Nothing else is required.
 
 ## The annoying part
+
+In May 2026, a configured cookie file could break downloads if it was missing or unusable. The fix was to omit the cookie option in that case, allowing the downloader to try without it. I also wrote down the recovery procedure. Cookies can help with an upstream challenge, but they are not a promise that YouTube will accept the next request.
 
 Social platforms constantly change their pages, signatures, endpoints, and rules. Keeping a downloader working becomes an arms race against several companies with more engineers than sense of humour.
 

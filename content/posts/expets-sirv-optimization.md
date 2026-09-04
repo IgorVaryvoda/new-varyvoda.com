@@ -2,12 +2,15 @@
 title: "Optimising a Vue/Nuxt site with Sirv"
 description: "How I handled responsive images, lazy loading, CDN delivery, placeholders, and media galleries on Sirv Experts."
 date: 2023-09-30
+lastmod: 2026-09-04
 url: /experts-nuxt-Sirv/
 draft: false
 content_type: "Guide"
 older_archive: true
 ogImage: "https://cdn.earthroulette.com/varyvoda/blog-images/boast2.png"
 ---
+> Historical guide from 2023. The examples describe that version of Sirv Experts and its Nuxt configuration. The script-loading error handler was corrected in September 2026. For current delivery advice, read [Image SEO in 2026](/posts/image-seo-2026/).
+
 My latest project is [Sirv Experts](https://experts.sirv.com), a directory of professionals proficient with Sirv that we can vouch for.
 <img class="Sirv" src="https://cdn.earthroulette.com/varyvoda/experts.png?q=10&blur=10" data-src="https://cdn.earthroulette.com/varyvoda/experts.png" alt="Sirv Experts">
 
@@ -42,7 +45,7 @@ Sirv.js requests a transformed version of the master image for the current devic
 //components/footer.vue
 getSirv()
     {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         const script = document.createElement('script')
         script.src = 'https://scripts.sirv.com/sirvjs/v3/sirv.js'
         script.type = 'text/javascript'

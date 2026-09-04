@@ -1,7 +1,7 @@
 ---
 title: "Earth Roulette"
 date: 2021-06-15
-lastmod: 2026-07-18
+lastmod: 2026-09-04
 draft: false
 homepage_weight: 3
 project_url: "https://earthroulette.com"
@@ -9,9 +9,9 @@ app_store_url: "https://apps.apple.com/us/app/earth-roulette-trip-explorer/id644
 play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casznm"
 image: "https://iantiark.sirv.com/varyvoda/er.png"
 image_alt: "Earth Roulette destination discovery interface with travel filters and a random destination"
-description: "A random destination generator with 5,000 places, filters, practical travel data, saved trips, and mobile apps."
+description: "Random destination discovery with 5,000 places, filters and travel guides, now joined by Wanderer airport-based trip ideas."
 hero_kicker: "Built from scratch"
-hero_intro: "Press the button and Earth Roulette picks a destination. Filters and travel data help decide whether you should actually go."
+hero_intro: "Press the button for somewhere unexpected, or give Wanderer an airport, budget and travel window to narrow the trip ideas."
 hero_mark: "Travel discovery"
 hero_scope: "Spin to itinerary"
 hero_primary_label: "Explore Earth Roulette"
@@ -22,12 +22,12 @@ hero_flow:
   - "Spin the globe"
   - "Inspect the surprise"
   - "Plan the trip"
-tech_stack: ["Vue", "Travel Data", "Search", "API"]
+tech_stack: ["Nuxt", "Vue", "Supabase", "Cloudflare Workers"]
 role: "Creator and sole builder"
 stewardship:
   state: "long-running"
   note: "I keep the destination data, integrations, and mobile flows working, and add things when they are useful."
-last_tended: "2026-08-14"
+last_tended: "2026-09-02"
 feedback_url: "/contact/?project=earth-roulette&type=bug"
 proof:
   - value: "5,000+"
@@ -56,7 +56,17 @@ Pure randomness can send a broke beach person to an expensive ski resort, which 
 
 There are more than 5,000 destinations in the database. Each one has enough context to decide whether the surprise is actually interesting: sights, food, weather, history, practical travel information, and the best time to go.
 
-Save the good results to a bucket list, share them with somebody who needs convincing, check flights, or hand the destination to [Travel Bot](/projects/travelbot/) and turn it into a day-by-day itinerary.
+Save the good results to a bucket list, share them with somebody who needs convincing or check what travelling there would involve. The same destination data also underlies [Travel Bot](/projects/travelbot/).
+
+## Wanderer adds the constraints
+
+In August 2026 I added a more directed path beside the spin: enter a departure airport, budget, travel window and trip length. Wanderer returns a short set of round-trip ideas with outbound and return dates.
+
+The fare data comes from cached provider observations. It is not live inventory, and the page says to recheck the price before booking. The implementation checks usable return dates, trip length and every calendar month covered by the requested window.
+
+The membership work includes checkout, activation, stored preferences and digest delivery. Those are implementation facts. This page does not claim a subscriber count, retention result or proven demand for the paid offer.
+
+One homepage revision made Wanderer too dominant. I restored the original random heading, Spin button and Filters beside the trip form. [The build story](/posts/adding-paid-without-losing-random/) explains that choice.
 
 ## What it became
 
