@@ -1,0 +1,32 @@
+name: Atmosphere workbench (temporary, no deploy)
+
+on:
+  push:
+    branches: [codex/homepage-daylight]
+    paths:
+      - .github/workflows/atmosphere-workbench.yml
+      - scripts/.atmosphere-workbench.patch
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare offline source and pinned build tools
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/atmosphere-workbench/bin
+          git archive --format=tar HEAD > /tmp/atmosphere-workbench/source.tar
+          curl -fsSL https://github.com/gohugoio/hugo/releases/download/v0.161.1/hugo_extended_0.161.1_linux-amd64.tar.gz | tar -xz -C /tmp/atmosphere-workbench/bin hugo
+          curl -fsSL https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz | tar -xz -C /tmp/atmosphere-workbench/bin htmltest
+          /tmp/atmosphere-workbench/bin/hugo version
+          git rev-parse HEAD > /tmp/atmosphere-workbench/source-commit.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: atmosphere-workbench
+          path: /tmp/atmosphere-workbench/
+          retention-days: 1
