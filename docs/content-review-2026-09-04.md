@@ -32,3 +32,11 @@ Project screenshots are unedited repository assets. Press captures are dated Aug
 - Local browser review covered desktop and mobile layouts, including the new project hero with an image, the internal project without an image, and article tables. Preview screenshots were saved outside the repository.
 
 At the end of this review, the changes were local. Publication is a separate step authorised by the subsequent landing request; the Git history and deployment workflow record that result.
+
+## Studio attribution correction after rollback
+
+The broad Studio article rewrite was rolled back in `c4456c7`. A separate attribution correction checks GitHub's `sirv/sirv-studio` history at `dev` SHA `dd44db929ca8b1be0bef83f079f64c7dc63c829d`.
+
+- GitHub's paginated commits endpoint attributes 727 commits to `skipstery`, dated 18 March through 18 June 2026. Examples: reusable grid packaging (`64867e3c3118e813060e23f3b86c2f1678f32afd`), column auto-fit sizing (`83e8bda7c5ae47bfc2598770c9b2a9ade753ab1b`) and Sid-Kit ButtonGroup fixes (`ceeee13c39ea71a5c918142662399864ca63c8e3`). This establishes substantial historical contribution, not current ownership or exclusive authorship.
+- September path history for `packages/data-grid` and `packages/sid-kit` includes Igor's scroll-performance and dependency work and Alex's accessibility and test-path fixes. It does not establish a formal ownership assignment.
+- Igor explicitly confirmed that Max is not a current owner. Copy now credits his contributions in the past tense, and the collaborator section uses contribution labels rather than ownership labels. The dated build record retains his historical credit.

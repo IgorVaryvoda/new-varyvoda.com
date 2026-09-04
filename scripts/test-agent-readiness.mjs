@@ -92,7 +92,7 @@ assert.match(buildContactEmailURL("mailto:igor@example.com", { project: "viddl",
 const studioHtml = await readFile(new URL("../public/projects/sirv-studio/index.html", import.meta.url), "utf8");
 assert.match(studioHtml, /\/css\/systems\/studio(?:\.min)?\.[a-f0-9]+\.css/);
 assert.match(studioHtml, /\/js\/pages\/studio(?:\.min)?\.[a-f0-9]+\.js/);
-assert.match(studioHtml, />Ownership</);
+assert.match(studioHtml, />Contributions</);
 assert.doesNotMatch(studioHtml, /\{\{</);
 
 const budjetHtml = await readFile(new URL("../public/projects/budjet/index.html", import.meta.url), "utf8");

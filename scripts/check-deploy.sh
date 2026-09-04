@@ -29,7 +29,7 @@ check_page() {
 check_page "/" "living portfolio of independent software."
 check_page "/projects/" "Choose a product."
 check_page "/about/" "I started by building and operating a profitable content website."
-check_page "/projects/sirv-studio/" "Ownership"
+check_page "/projects/sirv-studio/" "Contributions"
 check_page "/posts/" "Start here"
 
 STRICT_HEADERS=0 SITE="$SITE" bash scripts/check-headers.sh

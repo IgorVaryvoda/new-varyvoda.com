@@ -1,7 +1,7 @@
 ---
 title: "Sirv AI Studio"
 date: 2026-07-02
-lastmod: 2026-07-24
+lastmod: 2026-09-04
 draft: false
 hero: true
 atmosphere: true
@@ -56,15 +56,15 @@ summary:
   problem: "Keep AI-assisted product content correct from intake through publication"
   shipped: "Catalog scanning, AI batches, supplier portals, review, Shopify publishing, rollback, API and MCP"
   real_use: "Enterprise supplier workflow in production"
-  team: "Igor, Max, Veniamin"
+  team: "Igor, Veniamin and other contributors. Max Wish contributed substantially from March to June 2026."
   current_state: "Primary focus, actively evolving"
 collaborators:
   - name: "Max Wish"
     url: "https://www.linkedin.com/in/max-wish/"
-    contribution: "Major contributor across the internal design system and virtualized data grid, working alongside Igor across those systems."
+    contribution: "Made substantial contributions to the design system, virtualized data grid and asset interface from March to June 2026, including reusable grid packaging, column sizing and Sid-Kit components."
   - name: "Veniamin Krachun"
     url: "https://www.linkedin.com/in/veniamin-krachun/"
-    contribution: "Owns QA, including the testing and verification infrastructure."
+    contribution: "QA, including the testing and verification infrastructure."
 users_changed: "A real supplier workflow turned the portal from a simple upload link into intake, review, and publishing."
 imperfect: "I have shipped more than I have proved. Activation, onboarding, rollback evidence, and the unfinished PIM work matter more now than another tool."
 highlights:
@@ -100,7 +100,7 @@ The next morning I started at six. `Initial commit from Create Next App` landed 
 
 Six days later, the workflow canvas existed. Durable Inngest jobs followed after twelve days, an MCP server after eighteen, and the embedded Shopify app after twenty-five. December closed at 602 commits. The main product areas were already visible.
 
-I took Studio from that first commit to the production platform described here. [Max Wish](https://www.linkedin.com/in/max-wish/) owns major work across the design system and virtualized data grid. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) owns QA and its verification infrastructure. The separate [build record](/projects/sirv-studio/build-record/) has 48 dated milestones and the commands behind its repository counts.
+I took Studio from that first commit to the production platform described here. [Max Wish](https://www.linkedin.com/in/max-wish/) made major contributions to the design system, virtualized data grid and asset interface from March to June 2026. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built QA and verification infrastructure. The separate [build record](/projects/sirv-studio/build-record/) has 48 dated milestones and the commands behind its repository counts.
 
 <figure class="studio-visual studio-timeline" aria-labelledby="studio-timeline-title">
   <div class="studio-visual-head">
@@ -165,7 +165,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
       <span>search by image</span><span>semantic search</span><span>find similar</span><span>duplicate detection</span><span>auto-tagging</span><span>smart collections</span><span>saved views</span><span>license tracking · publish gates</span><span>license alerts</span><span>watermark templates</span><span>asset &amp; search analytics</span>
     </div>
   </div>
-  <figcaption>Every chip is a shipped route or workflow capability. Models are routed through fal.ai, OpenAI, and OpenRouter. The interface uses the design system and virtualized data grid built by <a href="https://www.linkedin.com/in/max-wish/">Max Wish</a>.</figcaption>
+  <figcaption>Every chip is a shipped route or workflow capability. Models are routed through fal.ai, OpenAI, and OpenRouter. <a href="https://www.linkedin.com/in/max-wish/">Max Wish</a> made substantial contributions to the design system and virtualized data grid used by the interface.</figcaption>
 </figure>
 
 <img src="/images/studio/studio-products.webp" alt="Sirv AI Studio products view with per-product readiness scores" width="1345" height="1343" loading="lazy" decoding="async"/>
@@ -178,11 +178,11 @@ The app is a TanStack Start + React 19 application (migrated off Next.js, runnin
 
 {{< studio-architecture >}}
 
-[Max Wish](https://www.linkedin.com/in/max-wish/) built the internal design system and custom virtualized data grid behind the asset and product tables. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built the E2E and QA systems used to verify releases.
+[Max Wish](https://www.linkedin.com/in/max-wish/) helped build the internal design system and custom virtualized data grid behind the asset and product tables. His commits include extracting a reusable grid package, fixing column auto-fit sizing and refining Sid-Kit components. Development continued after his June contributions: September commits from me and other contributors cover scroll performance, accessibility and dependency updates. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built the E2E and QA systems used to verify releases.
 
 <img src="/images/studio/studio-assets-grid.webp" alt="Sirv AI Studio asset grid rendering hundreds of assets in a virtualized table" width="1350" height="1338" loading="lazy" decoding="async"/>
 
-*The assets table uses [Max Wish's](https://www.linkedin.com/in/max-wish/) virtualized data grid for live thumbnails, sortable metadata, and large result sets.*
+*The assets table uses the shared virtualized data grid for live thumbnails, sortable metadata, and large result sets. [Max Wish](https://www.linkedin.com/in/max-wish/) made substantial contributions to its development.*
 
 Three problems were harder than the rest.
 

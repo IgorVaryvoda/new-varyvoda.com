@@ -118,8 +118,8 @@
 
       {{ with .Params.collaborators }}
       <section class="project-ownership" aria-labelledby="project-ownership-title">
-        <p class="eyebrow">Ownership</p>
-        <h2 id="project-ownership-title">Who owns what</h2>
+        <p class="eyebrow">Contributions</p>
+        <h2 id="project-ownership-title">Who built what</h2>
         <div class="ownership-list">
           <div><h3>Igor Varyvoda</h3><p>{{ $.Params.role }}. Conceived Studio and built and shipped the product end to end.</p></div>
           {{ range . }}<div><h3>{{ with .url }}<a href="{{ . }}">{{ end }}{{ .name }}{{ with .url }}</a>{{ end }}</h3><p>{{ .contribution }}</p></div>{{ end }}
