@@ -1,6 +1,6 @@
 // Raw WebGL ocean based on afl_ext's MIT-licensed "ocean weaves" shader.
-// The daylight landscape and mountain ridge are extracted from Igor's
-// Herceg Novi photograph. Night mode keeps the procedural treatment.
+// The sky and ridge come from Igor's Herceg Novi photograph. Day terrain
+// uses a repaired photo-derived atlas; night keeps the procedural treatment.
 (function () {
   var canvas = document.querySelector("[data-atmosphere]");
   if (!canvas) return;
@@ -159,34 +159,8 @@
       // and this halo use height-normalized coordinates on every aspect.
       vec2 delta = sunDelta(screenUv) * vec2(1.6, 1.0);
       delta.y *= 1.25;
-      float radius = mix(0.050, 0.034, sunProgress());
+      float radius = mix(0.070, 0.045, sunProgress());
       return exp(-dot(delta, delta) / (radius * radius));
-    }
-
-    vec3 daylightSun(vec3 color, vec2 screenUv) {
-      // One source for the photographed sky, texture-free fallback and
-      // reflected sky. Reserve white for a small core instead of clipping
-      // the whole corner. Contrast, not more light, makes the core read:
-      // additive gold on the pale horizon sky tonemaps to neutral white, so
-      // a saturated amber field REPLACES the sky tone around the source
-      // (darker than the core) and only the core itself clips.
-      vec2 delta = sunDelta(screenUv) * vec2(1.6, 1.0);
-      float distanceSquared = dot(delta, delta);
-      float core = exp(-distanceSquared / (0.026 * 0.026));
-      float bloom = exp(-distanceSquared / (0.06 * 0.06));
-      float goldField = exp(-distanceSquared / (0.24 * 0.24));
-      vec3 warmth = mix(vec3(1.0, 0.71, 0.36), vec3(1.0, 0.87, 0.65), sunProgress());
-      vec3 amber = vec3(1.02, 0.66, 0.28) * mix(0.62, 0.95, goldField);
-      color = mix(color, amber, goldField * 0.70);
-      // Crepuscular rays comb up from the burst through the cirrus. They
-      // are additive gold and only read because they land on the amber
-      // field; on the pale sky alone they tonemapped to nothing.
-      float rayAngle = atan(delta.y, delta.x);
-      float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
-      float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
-      float rayReach = exp(-sqrt(distanceSquared) * 3.4);
-      color += warmth * rays * rayReach * 0.55;
-      return color + vec3(8.0, 7.2, 5.8) * core + warmth * bloom * 0.55;
     }
 
     vec3 sunDirection3D() {
@@ -256,13 +230,16 @@
       return pow(max(color, vec3(0.0)), vec3(2.2));
     }
 
+    vec2 dayPhotoUv(vec2 screenUv) {
+      float skyHeight = clamp((screenUv.y - 0.395) / 0.605, 0.0, 1.0);
+      return vec2(clamp(sceneX(screenUv.x) + iTime * 0.00004, 0.003, 0.997),
+        mix(0.535, 0.995, pow(skyHeight, 0.94)));
+    }
+
     vec3 photoSkyColor(vec2 screenUv, float detail) {
       float horizon = 0.395;
       float skyHeight = clamp((screenUv.y - horizon) / (1.0 - horizon), 0.0, 1.0);
-      float sourceY = mix(0.535, 0.995, pow(skyHeight, 0.94));
-      float drift = iTime * 0.00004;
-      vec2 photoUv = vec2(clamp(sceneX(screenUv.x) + drift, 0.003, 0.997), sourceY);
-      vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb) * 1.42;
+      vec3 photo = srgbToLinear(texture2D(u_day_photo, dayPhotoUv(screenUv)).rgb) * 1.42;
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
       photo = mix(vec3(luminance), photo, 1.10);
       photo *= mix(1.04, 0.72, skyHeight);
@@ -285,200 +262,85 @@
         + horizonBand * 0.08 * mix(1.0, 0.55, sunProgress()), 0.0, 0.18);
       sky = mix(sky, vec3(1.10, 0.94, 0.72), veil);
       sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.07;
-      // Angular noise/ray fans are deliberately absent: they created broad
-      // spokes in both the sky and the water and cost an fbm per sample.
       return sky;
     }
 
-    vec3 photoMountainColor(vec2 screenUv, float ridge, float flankSlope, float depth) {
-      float horizon = 0.395;
-      float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
+    vec3 daylightSun(vec3 color, vec2 screenUv, float detail) {
+      vec2 sunUv = vec2(SUN_SCREEN_X, sunScreenY());
+      vec2 delta = sunDelta(screenUv) * vec2(1.6, 1.0);
+      float radiusSquared = dot(delta, delta);
+      float radius = sqrt(radiusSquared);
+      float dawn = mix(1.0, 0.35, sunProgress());
+      vec3 sunlight = mix(vec3(1.0, 0.73, 0.42), vec3(1.0, 0.91, 0.76), sunProgress());
+
+      // Nested soft lobes merge the source into the atmosphere. A hard disc
+      // with a separate faint halo read as a white sticker over the sky.
+      float core = exp(-radiusSquared / (0.025 * 0.025));
+      float bloom = exp(-radiusSquared / (0.072 * 0.072));
+      float aureole = exp(-radius * 11.0);
+      float warmField = exp(-radius * 3.0) * dawn;
+      float luminance = dot(color, vec3(0.2126, 0.7152, 0.0722));
+      vec3 dawnCloud = vec3(luminance) * vec3(1.65, 0.90, 0.42);
+      color = mix(color, dawnCloud, warmField * 0.85);
+
+      // A short radial integration through the photographed cloud mask,
+      // following the screen-space scattering approach in GPU Gems 3 ch.13:
+      // https://developer.nvidia.com/gpugems/gpugems3/part-ii-light-and-shadows/chapter-13-volumetric-light-scattering-post-process
+      // Blue sky transmits; pale cirrus attenuates. The same UVs and wind as
+      // the visible sky make broad, irregular shafts instead of fixed spokes.
+      // Reflections retain the diffuse glow and skip this extra sky detail.
+      if (detail > 0.5 && u_day_photo_ready > 0.5 && radius < 0.85 && delta.y > 0.0) {
+        float transmission = 1.0;
+        float scatter = 0.0;
+        for (int sampleIndex = 0; sampleIndex < 6; sampleIndex++) {
+          float t = (float(sampleIndex) + 0.5) / 6.0;
+          vec2 probe = mix(sunUv, screenUv, 0.12 + t * 0.88);
+          vec3 cloud = texture2D(u_day_photo, dayPhotoUv(probe)).rgb;
+          float clearSky = smoothstep(0.035, 0.18, cloud.b - cloud.r);
+          transmission *= mix(0.68, 0.97, clearSky);
+          scatter += transmission * clearSky;
+        }
+        float reach = smoothstep(0.030, 0.13, radius) * exp(-radius * 3.5);
+        reach *= 1.0 - smoothstep(0.60, 0.85, radius);
+        reach *= smoothstep(0.0, 0.08, delta.y);
+        color += sunlight * (scatter / 6.0) * reach * dawn * 0.38;
+      }
+      return color + sunlight * (core * 8.0 + bloom * 1.25 + aureole * 0.50);
+    }
+
+    vec3 coastalAir(vec2 screenUv) {
+      // Shared airlight for land, ship and distant water. Warm scattering
+      // stays near the sun; the rest of the bay receives cool sky fill.
+      float sunward = exp(-length(sunDelta(screenUv) * vec2(1.6, 1.0)) * 7.0);
+      return mix(vec3(0.26, 0.35, 0.43), vec3(0.58, 0.48, 0.34), sunward * 0.45);
+    }
+
+    vec3 photoMountainColor(vec2 screenUv, float depth) {
+      float altitude = max(screenUv.y - 0.395, 0.0);
       float x = sceneX(screenUv.x);
-
-      // A dedicated 2048px terrain atlas comes from clean, full-resolution
-      // patches of Igor's photograph. The top half is the near headland and
-      // the bottom half is the distant range; neither contains the tower,
-      // foreground foliage, or liner.
-      float farX = clamp(x * 1.12 + 0.08, 0.015, 0.985);
-      float nearX = clamp(x * 0.86 + 0.07, 0.015, 0.985);
-      float sampleX = mix(farX, nearX, depth);
-      // The far band's top rows are pale summit limestone. Only columns
-      // where the ridge is genuinely tall should reach them — on low tails
-      // those rows compress into a blown pale lip along the silhouette, so
-      // short columns stop at mid-slope forest instead.
-      float farBandTop = mix(0.30, 0.48, smoothstep(0.012, 0.10, ridge - 0.395));
-      float farY = mix(0.02, farBandTop, pow(height, 0.92));
-      // Same summit-row gate as the far band: low columns must not drag
-      // crest material down their compressed flanks.
-      float nearBandTop = mix(0.76, 0.98, smoothstep(0.012, 0.10, ridge - 0.395));
-      float nearY = mix(0.52, nearBandTop, pow(height, 0.92));
-      // Almost no warp on the near layer: fbm displacement snakes straight
-      // through the photographed villages. It only ever existed to hide
-      // stretch banding, which the zoned single-orientation atlas no longer
-      // has. The featureless far haze keeps a whisper for variety.
-      float terrainWarp = (fbm(vec2(x * 4.8 + depth * 7.3, height * 5.2 + depth * 2.1)) - 0.5) * mix(0.004, 0.006, depth);
-      terrainWarp += sin(height * 8.0 + x * 4.5 + depth * 2.4) * 0.003;
-      float slopeProjection = (height - 0.5) * mix(0.02, 0.03, depth);
-      // Warp peaks mid-slope and calms at both the waterline and the crest,
-      // so the silhouette edge stays steady.
-      float warpEnvelope = 0.42 + (height - height * height) * 1.2;
-      sampleX = clamp(sampleX + slopeProjection + terrainWarp * warpEnvelope, 0.015, 0.985);
-      vec2 atlasUv = vec2(sampleX, mix(farY, nearY, depth));
-      // The ridge band minifies the atlas ~3:1 vertically; anisotropic
-      // filtering (enabled on the texture from JS) keeps the horizontal
-      // detail sharp through that minification. A shader LOD bias is the
-      // wrong tool here — it aliases the vertical axis into streaks.
-      vec3 photoRaw = texture2D(u_mountain_photo, atlasUv).rgb;
-      vec3 photo = srgbToLinear(photoRaw);
-      float rawLuminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      // Demosaic fringes around blown village texels carry extreme chroma
-      // (magenta specks on screen). Soft-limit chroma outliers only; forest
-      // texels sit far below the threshold and pass through untouched.
-      vec3 chromaOffset = photo - vec3(rawLuminance);
-      photo = vec3(rawLuminance) + chromaOffset / (1.0 + 3.0 * max(0.0, length(chromaOffset) - 0.15));
-      // Bright texels are already blown in the source: amplifying them with
-      // relief or grain turns settlements into torn white paper.
-      float highlightGuard = 1.0 - smoothstep(0.40, 0.78, rawLuminance);
-      vec2 atlasStep = vec2(0.0024, 0.0032);
-      // The neighbor taps feed only relative detail (average, relief,
-      // gradient normals) — gamma-2 space costs one multiply per texel
-      // where the exact 2.2 conversion costs three pow calls. The squared
-      // center tap keeps every delta in the same space.
-      vec3 photoCenter2 = photoRaw * photoRaw;
-      vec3 photoRight = texture2D(u_mountain_photo, atlasUv + vec2(atlasStep.x, 0.0)).rgb;
-      photoRight *= photoRight;
-      vec3 photoLeft = texture2D(u_mountain_photo, atlasUv - vec2(atlasStep.x, 0.0)).rgb;
-      photoLeft *= photoLeft;
-      vec3 photoUp = texture2D(u_mountain_photo, atlasUv + vec2(0.0, atlasStep.y)).rgb;
-      photoUp *= photoUp;
-      vec3 photoDown = texture2D(u_mountain_photo, atlasUv - vec2(0.0, atlasStep.y)).rgb;
-      photoDown *= photoDown;
-      vec3 localAverage = (photoRight + photoLeft + photoUp + photoDown) * 0.25;
-      // The far band is interpolation mush at this stretch — amplifying its
-      // "relief" just renders oily marks. Only the near layer has real
-      // detail worth lifting.
-      // The far band carries transplanted canopy grain now — real material,
-      // worth amplifying (the old 0.2 floor guarded interpolation mush).
-      float terrainRelief = clamp(dot(photoCenter2 - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
-      photo *= 1.0 + terrainRelief * mix(0.70, 1.0, depth) * highlightGuard;
-
-      // The atlas is cut from the sunlit originals now — only a light
-      // blue-cut remains so the forest does not go cold under the grade.
-      // The references show the range across the bay staying green through
-      // the haze, so the far layer gets a gentler cut of the same move.
-      photo *= mix(vec3(1.0, 1.015, 0.95), vec3(1.0, 1.03, 0.90), depth);
-
-      // A whisper of procedural variation on top of the real texture —
-      // slightly stronger than a whisper, so it survives half-resolution
-      // rendering on hi-DPI displays.
-      float surfaceDetail = terrainDetail(screenUv, mix(2.7, 7.1, depth), mix(0.72, 1.0, depth));
-      photo *= 0.86 + 0.28 * surfaceDetail;
-
-      // Render-resolution canopy grain: the photo patch tops out at ~1.6x
-      // magnification, so the finest detail must come from a procedural
-      // octave evaluated per screen pixel, like a game-engine detail map.
-      float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
-      float canopyFine = fbm(vec2(sceneX(screenUv.x) * 96.0, screenUv.y * 150.0) + vec2(depth * 5.0, 3.0));
-      // The near band carries real canopy grain now; the procedural octave
-      // on top of it read as uniform speckle noise once minified on screen.
-      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.14, 0.10, depth)
-        + (canopyFine - 0.5) * mix(0.11, 0.05, depth)) * highlightGuard;
-
-      // Derive the light-facing normal from the photographed material. Using
-      // the 2D skyline derivative here turns every ridge sample into a vertical
-      // band; atlas gradients let sunlight follow actual gullies and folds.
-      float gradientX = dot(photoRight - photoLeft, vec3(0.2126, 0.7152, 0.0722));
-      float gradientY = dot(photoUp - photoDown, vec3(0.2126, 0.7152, 0.0722));
-      vec3 terrainNormal = normalize(vec3(-gradientX * 6.0, -gradientY * 4.0, 1.0));
-      // The sunrise is left of the frame but still on the camera-facing side
-      // of the bay. Give left-facing slopes a low, frontal dawn light and let
-      // the terrain turn away into shadow toward the right.
-      vec3 sunriseDirection = normalize(vec3(-0.72, 0.34, 0.90));
-      float diffuse = clamp(dot(terrainNormal, sunriseDirection), 0.0, 1.0);
-
+      // Project the photo at a fixed scale, then cut it with the ridge mask.
+      // Dividing UV height by each column's ridge height squeezed trees and
+      // buildings into ribbons on low slopes and bent the rock strata.
+      // The repaired 2048x1024 atlas has forest in its top half and limestone
+      // below. Sample inside each band so mipmaps cannot bleed across them.
+      vec2 farUv = vec2(0.035 + x * 0.93, clamp(0.12 + altitude * 1.60, 0.12, 0.46));
+      vec2 nearUv = vec2(0.035 + x * 0.93, clamp(0.60 + altitude * 1.60, 0.60, 0.96));
+      vec3 photo = srgbToLinear(texture2D(u_mountain_photo, mix(farUv, nearUv, depth)).rgb);
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      vec3 chroma = mix(vec3(luminance), photo, mix(0.84, 0.96, depth));
-      // Bay haze leans blue-green in the references, not steel blue — the
-      // far layer takes 38% of this tone and was reading slate because of it.
-      vec3 coastalHaze = vec3(0.15, 0.255, 0.30);
-      // The sunrise references show backlit slopes: mostly dark silhouette
-      // material with texture, not sunlit green faces. Keep the exposure low
-      // and let the warm rim light below carry the sunrise.
-      // The references show the massif as PALE limestone, lighter than the
-      // forested near slopes, so the far layer takes more exposure.
-      vec3 graded = chroma * mix(1.52, 1.40, depth);
-      // The far band is real crag material now (DSC_4377) — retain more of
-      // its structure through the haze or it flattens back into vinyl.
-      // The far massif is limestone crag: haze, shadow fill and desaturation
-      // together halved its photographed contrast and it read as a smooth
-      // teal dome. Keep the rock legible through a thinner haze.
-      graded = mix(coastalHaze, graded, mix(0.88, 0.90, depth));
-
-      // Preserve the cool photographic material, but model the sunrise as
-      // side/front light rather than a backlight. The broad diffuse term keeps
-      // the actual terrain legible while the x-facing normal decides where
-      // shadows fall.
-      // As the sun climbs, its light reaches further across the bay.
-      float sunriseReach = exp(-screenUv.x * mix(1.62, 1.0, sunProgress()));
-      vec3 shadowBase = mix(vec3(0.09, 0.155, 0.19), vec3(0.05, 0.085, 0.07), depth);
-      graded = mix(shadowBase, graded, mix(0.90, 0.88, depth));
-      // The photograph already carries its own baked lighting. Re-lighting
-      // it from atlas-gradient normals paints organic pale wisps over the
-      // hazed far range — keep the synthetic relight mostly for the near
-      // layer, where the atlas is sharp enough to support it.
-      float diffuseShading = mix(0.62, diffuse, mix(0.30, 1.0, depth));
-      graded *= mix(0.66, 0.62, depth) + diffuseShading * mix(0.56, 0.46, depth);
-      float slopeLight = smoothstep(0.28, 0.84, diffuseShading) * sunriseReach;
-
-      // The sun rises at the far left, so light must follow geometry: each
-      // ridge's west flank (rising toward its peak) catches the sunrise
-      // while the east flank falls into shade. flankSlope is the ridge
-      // profile's derivative — positive where the crest climbs rightward.
-      float sunReach = 0.22 + 0.78 * exp(-screenUv.x * mix(1.35, 0.85, sunProgress()));
-      float flankLit = smoothstep(0.05, 0.8, flankSlope);
-      float flankShade = smoothstep(0.05, 0.9, -flankSlope);
-      graded *= 1.0 + flankLit * mix(0.26, 0.42, depth) * sunReach;
-      graded *= 1.0 - flankShade * mix(0.24, 0.42, depth);
-      // Warmth REPLACES tone instead of adding light: additive warm over the
-      // desaturated slate painted a flat airbrushed beige smear with no
-      // texture inside it. Warm-grading the photo itself keeps the canopy
-      // legible inside the light, and surfaceDetail lets it breathe — but
-      // only gently: a strong fbm gate stamps pale wisps onto lit flanks
-      // that read as scars floating over the terrain, and the hazed far
-      // range must catch far less flank warmth than the near headland.
-      float warmAmount = slopeLight * (0.30 + height * 0.30) * mix(0.55, 0.72, depth)
-        + flankLit * (0.16 + height * 0.28) * sunReach * mix(0.6, 1.0, depth);
-      // A dissolving tail is distant haze — it must not catch warm flank
-      // light or rim burn, and its tone must stay BELOW the sky's: warm +
-      // morning lift on a pale haze target read as blowout.
-      // Near tails stay crisp almost to the tip: the wider fade painted a
-      // gray smear along the headland's last stretch of crest.
-      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.014, depth), ridge - 0.395);
-      warmAmount *= (0.75 + 0.40 * surfaceDetail) * (1.0 - lowProfile);
-      // Low sun paints deep amber; risen sun bleaches toward gold-white.
-      vec3 warmTone = mix(vec3(2.0, 1.42, 0.70), vec3(1.55, 1.32, 1.02), sunProgress());
-      graded = mix(graded, graded * warmTone, clamp(warmAmount, 0.0, 0.6));
-
-      // The backlit signature of the sunrise references: a warm rim burns
-      // along crest segments that FACE the sun and dies on flat or shaded
-      // stretches — an even crest glow just reads as ambient light.
-      // The rim burn belongs to the backlit minutes; once the sun clears
-      // the ridge the crest is lit like everything else and the rim fades.
-      float crestRim = smoothstep(0.78, 0.985, height) * mix(1.0, 0.35, sunProgress()) * (1.0 - lowProfile);
-      graded += vec3(1.15, 0.74, 0.38) * crestRim * sunReach * mix(0.15, 0.40, depth) * (0.10 + 0.90 * flankLit);
-
-      // Where the ridge tapers, the land dissolves into sea haze — a broad,
-      // squared falloff so it reads as atmospheric depth. The old narrow
-      // hard fade left the saddle a pale vertical seam and the headland's
-      // long tail a flat dark wedge stretching to the frame edge.
-      // Sea haze belongs to DISTANT land. The far layer dissolves broadly;
-      // the near layer only in its last stretch — and scaled by how far
-      // away that stretch actually is: the left ridge's tail at the saddle
-      // is the closest thing in the scene and must stay dark forest, while
-      // the right headland genuinely recedes toward the open sea.
-      float hazeStrength = mix(0.55, mix(0.20, 0.30, smoothstep(0.35, 0.90, screenUv.x)), depth);
-      graded = mix(graded, vec3(0.37, 0.45, 0.52), lowProfile * lowProfile * hazeStrength);
-      return graded;
+      // Retain the photograph's real folds and canopy. Bright village pixels
+      // are albedo, not a height map: differentiating them for normals made
+      // every house and rock glow with a false embossed edge.
+      photo = mix(vec3(luminance), photo, mix(0.88, 0.96, depth));
+      photo *= mix(1.36, 1.22, depth);
+      // The visible sun is behind the range. Its camera-facing slopes keep
+      // their baked shadow detail, with a restrained warm exposure change
+      // as the sun climbs, rather than a frontal spotlight or a crest stripe.
+      vec3 illumination = mix(vec3(1.02, 1.015, 0.98), vec3(1.10, 1.045, 0.96), sunProgress());
+      photo *= illumination;
+      float opticalDepth = mix(0.24, 0.085, depth);
+      opticalDepth += exp(-altitude * 38.0) * mix(0.10, 0.045, depth);
+      float transmission = exp(-opticalDepth);
+      return photo * transmission + coastalAir(screenUv) * (1.0 - transmission);
     }
 
     float terrainDetail(vec2 screenUv, float seed, float depthScale) {
@@ -501,6 +363,9 @@
     }
 
     vec3 farMountainColor(vec2 screenUv) {
+      if (u_night <= 0.001 && u_mountain_photo_ready > 0.999) {
+        return photoMountainColor(screenUv, 0.0);
+      }
       float horizon = 0.395;
       float ridge = farRidgeAt(screenUv.x);
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
@@ -512,12 +377,10 @@
       vec3 day = mix(vec3(0.05, 0.105, 0.125), vec3(0.19, 0.295, 0.33), haze * 0.66 + detail * 0.14);
       day += vec3(0.012, 0.025, 0.032) * (1.0 - height) * (0.35 + detail * 0.65);
       day *= 0.90 + detail * 0.18;
-      // The atlas far band now carries real transplanted canopy grain, so
-      // the photo layer earns more weight than the old interpolation mush.
-      // Skip the whole photo pipeline at full night — it mixes to nothing.
+      // Skip the photo pipeline at full night — it mixes to nothing.
       float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
       if (u_night < 0.999) {
-        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.90);
+        day = mix(day, photoMountainColor(screenUv, 0.0), u_mountain_photo_ready);
       }
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       night += vec3(0.008, 0.010, 0.014) * moonlitFlank(flankSlope, height, detail);
@@ -525,6 +388,9 @@
     }
 
     vec3 nearMountainColor(vec2 screenUv) {
+      if (u_night <= 0.001 && u_mountain_photo_ready > 0.999) {
+        return photoMountainColor(screenUv, 1.0);
+      }
       float horizon = 0.395;
       float ridge = nearRidgeAt(screenUv.x);
       float height = clamp((screenUv.y - horizon) / max(ridge - horizon, 0.01), 0.0, 1.0);
@@ -535,7 +401,7 @@
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
       float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
       if (u_night < 0.999) {
-        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 1.0), u_mountain_photo_ready * 0.96);
+        day = mix(day, photoMountainColor(screenUv, 1.0), u_mountain_photo_ready);
       }
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
       night += vec3(0.012, 0.015, 0.021) * moonlitFlank(flankSlope, height, detail);
@@ -679,9 +545,7 @@
       float farWeightMask = farMountainMask(screenUv);
       float nearWeight = nearMountainMask(screenUv);
       float farWeight = farWeightMask * (1.0 - nearWeight);
-      // Each layer's full photo pipeline (9 texture taps + several fbm
-      // octaves) runs only where its own mask contributes; interior pixels
-      // of one layer skip the other's entirely.
+      // Sample only layers whose masks contribute to this pixel.
       vec3 color = vec3(0.0);
       if (farWeight > 0.001) color += farMountainColor(screenUv) * farWeight;
       if (nearWeight > 0.001) color += nearMountainColor(screenUv) * nearWeight;
@@ -722,6 +586,11 @@
     }
 
     vec3 mountainSurfaceColorFast(vec2 screenUv) {
+      // Day terrain now costs one photo tap per visible layer, so reflections
+      // can use its actual material and airlight instead of unrelated tones.
+      if (u_night <= 0.001 && u_mountain_photo_ready > 0.999) {
+        return mountainSurfaceColor(screenUv);
+      }
       // Procedural-only tones for wave-distorted reflections, where the
       // full photographic pipeline would be invisible anyway.
       float farM = farMountainMask(screenUv);
@@ -762,38 +631,15 @@
         return vec4(0.0);
       }
       vec2 shipUv = vec2(point.x * 0.5 + 0.5, point.y);
-      // The mip chain (plus anisotropic filtering) already integrates the
-      // minified footprint; keep the manual taps tight or they double-blur
-      // the hull into mush.
-      vec2 shipTexel = vec2(1.2 / 512.0, 1.2 / 256.0);
-      vec4 shipCenter = texture2D(u_ship, shipUv);
-      vec4 shipLeft = texture2D(u_ship, shipUv - vec2(shipTexel.x, 0.0));
-      vec4 shipRight = texture2D(u_ship, shipUv + vec2(shipTexel.x, 0.0));
-      vec4 shipUp = texture2D(u_ship, shipUv + vec2(0.0, shipTexel.y));
-      vec4 shipDown = texture2D(u_ship, shipUv - vec2(0.0, shipTexel.y));
-      float alphaSum = shipCenter.a * 2.0 + shipLeft.a + shipRight.a + shipUp.a + shipDown.a;
-      // The sprite is uploaded premultiplied, so mip and linear filtering do
-      // not mix transparent black into its edge colors. Reconstruct straight
-      // color only after the filtered samples have been accumulated.
-      vec3 premultiplied = shipCenter.rgb * 2.0
-        + shipLeft.rgb
-        + shipRight.rgb
-        + shipUp.rgb
-        + shipDown.rgb;
-      vec3 shipColor = premultiplied / max(alphaSum, 0.001);
-      float alphaMaximum = max(shipCenter.a, max(max(shipLeft.a, shipRight.a), max(shipUp.a, shipDown.a)));
-      vec2 edgeProbe = vec2(7.0 / 512.0, 7.0 / 256.0);
-      float edgeAlphaMinimum = min(
-        min(texture2D(u_ship, shipUv - vec2(edgeProbe.x, 0.0)).a, texture2D(u_ship, shipUv + vec2(edgeProbe.x, 0.0)).a),
-        min(texture2D(u_ship, shipUv - vec2(0.0, edgeProbe.y)).a, texture2D(u_ship, shipUv + vec2(0.0, edgeProbe.y)).a)
-      );
-      float boundary = smoothstep(0.08, 0.82, alphaMaximum - edgeAlphaMinimum);
-      // No color lift here: brightening edge pixels toward gray painted a
-      // white outline around the hull. Premultiplied filtering already keeps
-      // edge colors clean; a soft alpha feather is all the edge needs.
-      float shipAlpha = smoothstep(0.10, 0.90, alphaSum / 6.0);
-      shipAlpha *= mix(1.0, 0.60, boundary);
-      return vec4(srgbToLinear(shipColor) * 1.48, shipAlpha * passageAlpha);
+      // Premultiplied mipmaps already filter the silhouette correctly.
+      // Extra blur taps and alpha erosion erased railings and translucently
+      // pasted the hills through the ship's upper decks.
+      vec4 ship = texture2D(u_ship, shipUv);
+      vec3 material = srgbToLinear(ship.rgb / max(ship.a, 0.001));
+      vec3 light = mix(vec3(1.04, 1.01, 0.93), vec3(1.12, 1.07, 0.98), sunProgress());
+      vec3 color = material * light;
+      color = mix(color, coastalAir(screenUv), 0.085);
+      return vec4(color, ship.a * passageAlpha);
     }
 
     float cruiseShipSmoke(vec2 screenUv) {
@@ -826,7 +672,7 @@
         float life = smoothstep(0.0, 0.075, age) * (1.0 - smoothstep(0.58, 1.0, age));
         smoke += shape * breakup * life;
       }
-      return clamp(smoke * 0.38 * passageAlpha, 0.0, 0.55);
+      return clamp(smoke * 0.12 * passageAlpha, 0.0, 0.18);
     }
 
     vec4 cruiseShipNightLights(vec2 screenUv, float pointWeight) {
@@ -912,6 +758,27 @@
       if (screenUv.y < shipWaterline - reflectionDepth || screenUv.y > shipWaterline + shipHeight * 2.2) {
         return background;
       }
+      if (visibility > 0.001) {
+        float passage = fract((iTime + 149.0) / 320.0);
+        float shipX = mix(0.43, 1.08, passage);
+        float astern = shipX + 0.035 - sceneX(screenUv.x);
+        float waterY = screenUv.y - (shipWaterline + shipHeight * 0.055);
+        // A narrow bow wave opens into a fading wake behind the moving
+        // hull. Projected into the distant water plane, it is only a few
+        // pixels deep and never climbs onto the shore.
+        if (astern > 0.0 && astern < 0.18 && abs(waterY) < 0.014 && screenUv.y < 0.394) {
+          float aa = 0.65 / iResolution.y;
+          float width = 0.00045 + astern * 0.015;
+          float arm = abs(waterY + astern * 0.018) - astern * 0.042;
+          float bowWave = 1.0 - smoothstep(width, width + aa, abs(arm));
+          float trail = exp(-abs(waterY + 0.001) / (0.001 + astern * 0.025));
+          float breakup = 0.55 + 0.45 * noise21(vec2(astern * 650.0 - iTime * 0.65, waterY * 1300.0));
+          float fade = (1.0 - smoothstep(0.015, 0.18, astern))
+            * smoothstep(0.0, 0.08, passage) * (1.0 - smoothstep(0.92, 1.0, passage));
+          float wake = (bowWave * 0.16 + trail * 0.045) * breakup * fade * visibility;
+          background = mix(background, coastalAir(screenUv) + vec3(0.22), wake);
+        }
+      }
       if (screenUv.y >= shipWaterline - 0.0005) {
         if (visibility > 0.001) {
           float smoke = cruiseShipSmoke(screenUv) * visibility;
@@ -924,10 +791,6 @@
             smoothstep(0.30, 0.75, backgroundLuminance));
           background = mix(background, smokeTone, smoke);
           vec4 ship = cruiseShipSample(screenUv);
-          // Aerial perspective: at this distance across the bay the liner sits
-          // behind a veil of morning haze; without it the photo-exposed sprite
-          // reads as pasted onto the scene.
-          ship.rgb = mix(ship.rgb, vec3(0.50, 0.62, 0.78), 0.12);
           ship.a *= visibility;
           background = mix(background, ship.rgb, ship.a);
         }
@@ -951,7 +814,7 @@
         vec4 shipReflection = cruiseShipSample(mirrorUv);
         float reflectionFade = (1.0 - below) * (1.0 - below);
         shipReflection.a *= visibility * reflectionFade * 0.30 * ripple;
-        vec3 reflectionColor = mix(shipReflection.rgb * 0.55, vec3(0.30, 0.40, 0.52), 0.35);
+        vec3 reflectionColor = mix(shipReflection.rgb * 0.65, coastalAir(screenUv), 0.20);
         background = mix(background, reflectionColor, shipReflection.a);
       }
       if (u_night > 0.001) {
@@ -1114,23 +977,6 @@
       if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.395 && screenUv.y <= 1.0) {
         color = mix(color, photoSkyColor(screenUv, detail), u_day_photo_ready * 0.96);
 
-        // Wind-combed cirrus complement the photographed clouds rather
-        // than painting over them. Keep the compact sun unobscured and
-        // skip this detail in wave-broken reflections.
-        if (detail > 0.5) {
-        float sceneUvX = sceneX(screenUv.x);
-        vec2 flowUv = vec2(sceneUvX * 2.4 + iTime * 0.0016, screenUv.y * 6.5);
-        float comb = fbm(flowUv * vec2(1.0, 2.6) + vec2(fbm(flowUv * vec2(2.3, 1.2)) * 0.9, 0.0));
-        float strand = fbm(vec2(sceneUvX * 5.2 + iTime * 0.0011, screenUv.y * 18.0));
-        float cirrus = smoothstep(0.50, 0.78, comb * 0.66 + strand * 0.34);
-        cirrus *= smoothstep(0.47, 0.58, screenUv.y) * (1.0 - smoothstep(0.90, 1.0, screenUv.y));
-        vec2 cirrusSunDelta = sunDelta(screenUv) * vec2(1.6, 1.0);
-        float sunProximity = exp(-length(cirrusSunDelta) * 5.0);
-        float coreProximity = exp(-dot(cirrusSunDelta, cirrusSunDelta) / (0.045 * 0.045));
-        vec3 litCloud = mix(vec3(0.90, 0.98, 1.08), vec3(1.22, 1.08, 0.83), sunProximity);
-        float cloudStrength = cirrus * (0.18 + sunProximity * 0.16) * (1.0 - coreProximity);
-        color = mix(color, litCloud, clamp(cloudStrength, 0.0, 0.34) * (0.4 + 0.6 * u_day_photo_ready));
-        }
       }
 
       if (detail > 0.5 && u_day_photo_ready < 0.5 && screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.42 && screenUv.y <= 1.0) {
@@ -1147,7 +993,7 @@
       }
 
       // Apply the same source once, after either sky and its clouds.
-      color = daylightSun(color, screenUv);
+      color = daylightSun(color, screenUv, detail);
       return color;
     }
 
@@ -1289,14 +1135,9 @@
           vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay, 1.0));
           mountainComposite = mix(edgeSky, landscape, mountains);
         }
-        // Local bloom softens only the ridge immediately next to the sun;
-        // the photographed slope remains legible outside that small halo.
-        float glare = sunGlare(screenUv) * (1.0 - u_night) * u_day_photo_ready;
-        // Keep the terrain breathing inside the dissolve: a flat amber
-        // replacement painted the ridge as a featureless khaki wedge.
-        float compositeLuma = dot(mountainComposite, vec3(0.2126, 0.7152, 0.0722));
-        vec3 glareTone = vec3(1.35, 1.04, 0.62) * (0.70 + 0.55 * min(compositeLuma, 0.8));
-        mountainComposite = mix(mountainComposite, glareTone, glare * 0.50);
+        // Lens scatter is local to the source and preserves slope detail.
+        float glare = sunGlare(screenUv) * (1.0 - u_night);
+        mountainComposite += vec3(0.52, 0.36, 0.19) * glare * 0.30;
         float mountainLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
         fragmentColor = vec4(acesTonemap(mountainComposite * 1.25 * mountainLift), 1.0);
         return;
@@ -1318,7 +1159,7 @@
       float wavePhaseShift = wavePhaseAt(highPosition.xz, iTime);
       // The bay lies calmer after dark: half the swell height, so the night
       // water reads as a dark mirror instead of rolling gray lumps.
-      float waveDepth = WATER_DEPTH * mix(1.0, 0.5, u_night);
+      float waveDepth = WATER_DEPTH * mix(0.65, 0.5, u_night);
       float distanceToWater = raymarchWater(origin, highPosition, lowPosition, waveDepth, wavePhaseShift);
       vec3 waterPosition = origin + ray * distanceToWater;
 
@@ -1338,6 +1179,7 @@
       // handles the far field (M3fGDl port, 2026-07-22).
       float daylightCalm = (1.0 - u_night) * 0.08;
       normal = mix(normal, vec3(0.0, 1.0, 0.0), clamp(distanceFlatten + daylightCalm, 0.0, 0.95));
+      normal = mix(normalize(normal), normal, u_night);
 
       // Micro facets live on a SEPARATE normal used only by the sun terms:
       // folding them into the base normal raised fresnel everywhere and
@@ -1370,9 +1212,8 @@
       reflection = skyColor(reflectionDirection, 0.0);
       vec2 reflectionScreen = dirToScreenUV(reflectionDirection);
       if (reflectionScreen.x >= 0.0 && reflectionScreen.x <= 1.0 && reflectionScreen.y >= 0.0 && reflectionScreen.y <= 1.0) {
-        // Daylight water catches far more sky than mountain. A full-strength
-        // terrain reflection reads as a cast shadow and wrongly implies that
-        // the sun is behind the ridge; keep that stronger mirror only at night.
+        // Small unresolved waves soften the land reflection in daylight;
+        // the calmer night surface retains a stronger mirror.
         float mountainReflection = mountainMask(reflectionScreen);
         float reflectionWeight = mountainReflection * mix(0.38, 0.92, u_night);
         reflection = mix(reflection, mountainSurfaceColorFast(reflectionScreen), reflectionWeight);
@@ -1470,33 +1311,21 @@
         glintReflection.y = abs(glintReflection.y);
         float glintDot = max(0.0, dot(glintReflection, sunDir));
         float glintFresnel = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-glintNormal, ray)), 5.0);
-        // Keep the warm train narrow enough to read as reflected sunlight,
-        // not a copper-colored repaint of the bay. Fresnel retains the dark
-        // troughs between facets; only the small sparkle cores reach white.
-        float trainField = pow(glintDot, 36.0);
-        float dayBlend = 1.0 - u_night;
-        vec3 trainTint = mix(vec3(1.0, 0.72, 0.38), vec3(1.0, 0.86, 0.63), sunProgress());
-        vec3 warmReflection = trainTint * (0.28 + glintFresnel * 0.85);
-        color = mix(color, warmReflection, trainField * 0.58 * dayBlend);
-        color += lowSun * pow(glintDot, 480.0) * 12.0 * glintFresnel;
+        // The facet reflection supplies the sun path. A broad color-replace
+        // lobe on top of it turned the water metallic and detached the light
+        // from wave orientation. Keep one softer lobe and small HDR glints.
+        color += lowSun * (pow(glintDot, 110.0) * 0.10
+          + pow(glintDot, 720.0) * 3.5) * glintFresnel;
 
         vec3 refracted = normalize(refract(ray, glintNormal, 0.66));
         float crestGlow = pow(max(0.0, dot(refracted, sunDir)), 16.0);
         float elevationGate = 1.0 - 1.0 / (1.0 + 5.0 * max(0.0, sunDir.y));
-        color += vec3(0.5, 0.9, 0.8) * crestGlow * lowSun * 30.0 * elevationGate;
+        color += vec3(0.5, 0.9, 0.8) * crestGlow * lowSun * 2.4 * elevationGate;
         float relativeHeight = (waterPosition.y + WATER_DEPTH) / WATER_DEPTH;
-        color += vec3(0.01, 0.33, 0.55) * 0.34 * lowSun * (0.3 + relativeHeight) * 0.3 * max(0.0, sunDir.y);
+        color += vec3(0.01, 0.22, 0.26) * 0.18 * lowSun * (0.3 + relativeHeight) * 0.3 * max(0.0, sunDir.y);
       }
-      // Day fog is pale haze, not deep blue: the old vec3(0.075, 0.245, 0.46)
-      // made the FAR water the darkest, most saturated blue in the scene —
-      // atmospheric perspective inverted, and a hard graphic band under the
-      // shore. Distance should wash toward the sky's horizon haze.
-      vec3 fogColor = mix(vec3(0.145, 0.215, 0.30), vec3(0.016, 0.019, 0.030), u_night);
-      // Sunrise haze: distance fog on the sun's side of the bay carries the
-      // burst's warmth, so the far water pools gold under the sun instead of
-      // cutting to neutral blue-gray at the fog line.
-      float fogWarmth = exp(-pow((screenUv.x - SUN_SCREEN_X) / 0.15, 2.0)) * (1.0 - u_night);
-      fogColor = mix(fogColor, vec3(0.66, 0.57, 0.43), fogWarmth * 0.34);
+      vec3 fogColor = mix(coastalAir(vec2(screenUv.x, 0.395)) * 0.72,
+        vec3(0.016, 0.019, 0.030), u_night);
       color = mix(color, fogColor, fogAmount);
       color += moonGlitter * (1.0 - fogAmount * 0.55);
 
@@ -1521,16 +1350,12 @@
         color = mix(color, shoreTone, shoreBand * shoreBand * shoreMask * 0.65 * (1.0 - u_night));
       }
 
-      // The low sun needs a corresponding path across the water. Keep it
-      // broad and woven into the ocean bands, with a clock slow enough to read
-      // as distant light rather than flickering particles.
+      // A faint broad moon glade supplements the night facet glitter.
+      // Daylight uses the reflected sun above and skips this painted field.
+      if (u_night > 0.001) {
       float waterProgress = clamp((0.395 - screenUv.y) / 0.395, 0.0, 1.0);
       float pathDrift = (fbm(vec2(screenUv.y * 15.0, iTime * 0.002)) - 0.5) * mix(0.010, 0.055, waterProgress);
       float pathWidth = mix(0.028, 0.17, waterProgress);
-      float pathCenter = SUN_SCREEN_X + waterProgress * 0.075 + pathDrift;
-      // Narrow only the solar path; the moon reuses pathWidth below.
-      float pathDistance = (screenUv.x - pathCenter) / (pathWidth * 0.68);
-      float solarPath = exp(-pathDistance * pathDistance * 1.12);
       vec2 glintUv = vec2(
         screenUv.x * 18.0 + waterProgress * 2.6 - iTime * 0.004,
         screenUv.y * 42.0 + iTime * 0.002
@@ -1539,23 +1364,13 @@
       float fineGlints = fbm(glintUv * vec2(2.15, 1.65) + vec2(-iTime * 0.006, iTime * 0.003));
       float brokenPath = mix(0.48, 1.0, smoothstep(0.30, 0.74, broadGlints * 0.68 + fineGlints * 0.32));
       float pathFade = smoothstep(0.01, 0.09, waterProgress) * (1.0 - smoothstep(0.82, 1.0, waterProgress));
-      vec3 pathColor = mix(vec3(0.94, 0.76, 0.48), vec3(0.64, 0.67, 0.66), waterProgress);
-      // The path strengthens as the sun climbs and pours more light onto
-      // the water.
-      // Physical glints own the near and mid train now; the painted path
-      // only carries the far pool where fog has flattened the geometry.
-      float pathZone = mix(0.35, 1.0, smoothstep(0.12, 0.55, fogAmount));
-      color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night)
-        * mix(0.20, 0.30, sunProgress()) * pathZone;
-
-      // The moon gets the same treatment on the opposite side of the bay:
-      // a narrower silver glade woven through the same broken glint field.
       float gladeCenter = MOON_SCREEN_X - waterProgress * 0.045 + pathDrift * 0.6;
       float gladeDistance = (screenUv.x - gladeCenter) / (pathWidth * 0.78);
       float moonGlade = exp(-gladeDistance * gladeDistance * 1.35);
       // Only a faint painted glade remains under the facet glitter above; the
       // old 0.17 airbrushed a milky cone over the whole right bay.
       color += vec3(0.68, 0.72, 0.80) * moonGlade * brokenPath * pathFade * u_night * 0.05;
+      }
 
       color = compositeCruiseShip(screenUv, color);
       float waterLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
@@ -2320,7 +2135,7 @@
   mountainPhotoImage.onerror = function () {
     console.error("atmosphere: mountain atlas failed to load: " + mountainPhotoImage.src);
   };
-  mountainPhotoImage.src = canvas.dataset.mountainScene || "/images/herceg-novi-mountains.webp";
+  mountainPhotoImage.src = canvas.dataset.mountainScene || "/images/herceg-novi-mountains-day-v2.webp";
 
   var shipReady = 0;
   var shipTexture = gl.createTexture();
