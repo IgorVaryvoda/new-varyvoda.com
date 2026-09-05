@@ -444,7 +444,9 @@
       // A dissolving tail is distant haze — it must not catch warm flank
       // light or rim burn, and its tone must stay BELOW the sky's: warm +
       // morning lift on a pale haze target read as blowout.
-      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.022, depth), ridge - 0.395);
+      // Near tails stay crisp almost to the tip: the wider fade painted a
+      // gray smear along the headland's last stretch of crest.
+      float lowProfile = 1.0 - smoothstep(0.003, mix(0.045, 0.014, depth), ridge - 0.395);
       warmAmount *= (0.75 + 0.40 * surfaceDetail) * (1.0 - lowProfile);
       // Low sun paints deep amber; risen sun bleaches toward gold-white.
       vec3 warmTone = mix(vec3(2.0, 1.42, 0.70), vec3(1.55, 1.32, 1.02), sunProgress());
@@ -467,7 +469,7 @@
       // away that stretch actually is: the left ridge's tail at the saddle
       // is the closest thing in the scene and must stay dark forest, while
       // the right headland genuinely recedes toward the open sea.
-      float hazeStrength = mix(0.55, mix(0.20, 0.50, smoothstep(0.35, 0.90, screenUv.x)), depth);
+      float hazeStrength = mix(0.55, mix(0.20, 0.30, smoothstep(0.35, 0.90, screenUv.x)), depth);
       graded = mix(graded, vec3(0.37, 0.45, 0.52), lowProfile * lowProfile * hazeStrength);
       return graded;
     }
