@@ -360,7 +360,7 @@
       // The far band carries transplanted canopy grain now — real material,
       // worth amplifying (the old 0.2 floor guarded interpolation mush).
       float terrainRelief = clamp(dot(photoCenter2 - localAverage, vec3(0.2126, 0.7152, 0.0722)) * 6.5, -0.22, 0.22);
-      photo *= 1.0 + terrainRelief * mix(0.45, 1.0, depth) * highlightGuard;
+      photo *= 1.0 + terrainRelief * mix(0.70, 1.0, depth) * highlightGuard;
 
       // The atlas is cut from the sunlit originals now — only a light
       // blue-cut remains so the forest does not go cold under the grade.
@@ -379,8 +379,10 @@
       // octave evaluated per screen pixel, like a game-engine detail map.
       float canopyGrain = fbm(vec2(sceneX(screenUv.x) * 38.0, screenUv.y * 64.0) + vec2(depth * 11.0, 0.0));
       float canopyFine = fbm(vec2(sceneX(screenUv.x) * 96.0, screenUv.y * 150.0) + vec2(depth * 5.0, 3.0));
-      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.14, 0.22, depth)
-        + (canopyFine - 0.5) * mix(0.11, 0.18, depth)) * highlightGuard;
+      // The near band carries real canopy grain now; the procedural octave
+      // on top of it read as uniform speckle noise once minified on screen.
+      photo *= 1.0 + ((canopyGrain - 0.5) * mix(0.14, 0.10, depth)
+        + (canopyFine - 0.5) * mix(0.11, 0.05, depth)) * highlightGuard;
 
       // Derive the light-facing normal from the photographed material. Using
       // the 2D skyline derivative here turns every ridge sample into a vertical
@@ -395,17 +397,22 @@
       float diffuse = clamp(dot(terrainNormal, sunriseDirection), 0.0, 1.0);
 
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      vec3 chroma = mix(vec3(luminance), photo, mix(0.76, 0.96, depth));
+      vec3 chroma = mix(vec3(luminance), photo, mix(0.84, 0.96, depth));
       // Bay haze leans blue-green in the references, not steel blue — the
       // far layer takes 38% of this tone and was reading slate because of it.
       vec3 coastalHaze = vec3(0.15, 0.255, 0.30);
       // The sunrise references show backlit slopes: mostly dark silhouette
       // material with texture, not sunlit green faces. Keep the exposure low
       // and let the warm rim light below carry the sunrise.
-      vec3 graded = chroma * mix(1.30, 1.40, depth);
+      // The references show the massif as PALE limestone, lighter than the
+      // forested near slopes, so the far layer takes more exposure.
+      vec3 graded = chroma * mix(1.52, 1.40, depth);
       // The far band is real crag material now (DSC_4377) — retain more of
       // its structure through the haze or it flattens back into vinyl.
-      graded = mix(coastalHaze, graded, mix(0.74, 0.90, depth));
+      // The far massif is limestone crag: haze, shadow fill and desaturation
+      // together halved its photographed contrast and it read as a smooth
+      // teal dome. Keep the rock legible through a thinner haze.
+      graded = mix(coastalHaze, graded, mix(0.88, 0.90, depth));
 
       // Preserve the cool photographic material, but model the sunrise as
       // side/front light rather than a backlight. The broad diffuse term keeps
@@ -414,7 +421,7 @@
       // As the sun climbs, its light reaches further across the bay.
       float sunriseReach = exp(-screenUv.x * mix(1.62, 1.0, sunProgress()));
       vec3 shadowBase = mix(vec3(0.09, 0.155, 0.19), vec3(0.05, 0.085, 0.07), depth);
-      graded = mix(shadowBase, graded, mix(0.80, 0.88, depth));
+      graded = mix(shadowBase, graded, mix(0.90, 0.88, depth));
       // The photograph already carries its own baked lighting. Re-lighting
       // it from atlas-gradient normals paints organic pale wisps over the
       // hazed far range — keep the synthetic relight mostly for the near
@@ -510,7 +517,7 @@
       // Skip the whole photo pipeline at full night — it mixes to nothing.
       float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
       if (u_night < 0.999) {
-        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.78);
+        day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.90);
       }
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
       night += vec3(0.008, 0.010, 0.014) * moonlitFlank(flankSlope, height, detail);
