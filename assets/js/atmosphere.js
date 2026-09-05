@@ -155,17 +155,38 @@
     }
 
     float sunGlare(vec2 screenUv) {
-      // Glare bleed around the sun position, shared by the sky and the
-      // mountain branch: the ridge silhouette must dissolve into the burst
-      // where they meet, as in the sunrise reference.
-      // The glare tightens as the sun detaches from the ridge — a risen
-      // sun no longer swallows the silhouette below it. Vertically it is
-      // COMPRESSED, not stretched: the old burst-shaped ellipse reached
-      // from the sun all the way down the flank to the waterline and
-      // painted the whole slope as a pale wash.
-      vec2 delta = sunDelta(screenUv);
+      // Keep ridge bloom local to the light source. The sun's compact core
+      // and this halo use height-normalized coordinates on every aspect.
+      vec2 delta = sunDelta(screenUv) * vec2(1.6, 1.0);
       delta.y *= 1.25;
-      return exp(-pow(length(delta) / mix(0.075, 0.05, sunProgress()), 2.0));
+      float radius = mix(0.050, 0.034, sunProgress());
+      return exp(-dot(delta, delta) / (radius * radius));
+    }
+
+    vec3 daylightSun(vec3 color, vec2 screenUv) {
+      // One source for the photographed sky, texture-free fallback and
+      // reflected sky. Reserve white for a small core instead of clipping
+      // the whole corner. Contrast, not more light, makes the core read:
+      // additive gold on the pale horizon sky tonemaps to neutral white, so
+      // a saturated amber field REPLACES the sky tone around the source
+      // (darker than the core) and only the core itself clips.
+      vec2 delta = sunDelta(screenUv) * vec2(1.6, 1.0);
+      float distanceSquared = dot(delta, delta);
+      float core = exp(-distanceSquared / (0.026 * 0.026));
+      float bloom = exp(-distanceSquared / (0.06 * 0.06));
+      float goldField = exp(-distanceSquared / (0.24 * 0.24));
+      vec3 warmth = mix(vec3(1.0, 0.71, 0.36), vec3(1.0, 0.87, 0.65), sunProgress());
+      vec3 amber = vec3(1.02, 0.66, 0.28) * mix(0.62, 0.95, goldField);
+      color = mix(color, amber, goldField * 0.70);
+      // Crepuscular rays comb up from the burst through the cirrus. They
+      // are additive gold and only read because they land on the amber
+      // field; on the pale sky alone they tonemapped to nothing.
+      float rayAngle = atan(delta.y, delta.x);
+      float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
+      float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
+      float rayReach = exp(-sqrt(distanceSquared) * 3.4);
+      color += warmth * rays * rayReach * 0.55;
+      return color + vec3(8.0, 7.2, 5.8) * core + warmth * bloom * 0.55;
     }
 
     vec3 sunDirection3D() {
@@ -243,56 +264,29 @@
       vec2 photoUv = vec2(clamp(sceneX(screenUv.x) + drift, 0.003, 0.997), sourceY);
       vec3 photo = srgbToLinear(texture2D(u_day_photo, photoUv).rgb) * 1.42;
       float luminance = dot(photo, vec3(0.2126, 0.7152, 0.0722));
-      photo = mix(vec3(luminance), photo, 1.18);
+      photo = mix(vec3(luminance), photo, 1.10);
       photo *= mix(1.04, 0.72, skyHeight);
       float viewX = screenUv.x;
       float leftField = exp(-pow((viewX + 0.035) / 0.48, 2.0));
       float lowerSky = 1.0 - smoothstep(0.24, 0.78, skyHeight);
-      vec3 horizonHaze = mix(vec3(0.40, 0.55, 0.68), vec3(0.92, 0.72, 0.49), leftField * lowerSky * 0.76);
+      vec3 horizonHaze = mix(vec3(0.40, 0.55, 0.68), vec3(0.92, 0.72, 0.49), leftField * lowerSky * 0.52);
       vec3 sky = mix(horizonHaze, photo, smoothstep(0.0, 0.20, skyHeight));
       float rightBlue = smoothstep(0.18, 0.96, viewX) * smoothstep(0.08, 0.72, skyHeight);
       sky = mix(sky, sky * vec3(0.78, 0.94, 1.16), rightBlue * 0.34);
 
-      // Sunrise in this view is strongly backlit: the source is just outside
-      // the far-left edge, its core is nearly white, and the warmth falls away
-      // quickly into a cool blue sky. Keep the photographed cloud structure,
-      // but veil it in the broad overexposure around the horizon.
-      vec2 haloDelta = sunDelta(vec2(viewX, screenUv.y)) / vec2(0.46, 0.235);
-      float halo = exp(-dot(haloDelta, haloDelta) * 0.92);
+      // A restrained, local veil lets the photographed clouds survive.
+      // All scales here use the existing halo coordinate system; only the
+      // compact source below uses circular, height-normalized coordinates.
+      vec2 haloDelta = sunDelta(screenUv) / vec2(0.30, 0.18);
+      float halo = exp(-dot(haloDelta, haloDelta));
       float horizonBand = exp(-skyHeight * 5.4) * leftField;
       float cloudLight = smoothstep(0.18, 0.66, luminance) * halo;
-      vec3 paleGold = vec3(1.58, 1.32, 0.98);
-      // The veil must stay clearly below white: when the whole corner
-      // saturates through the tonemapper, the sun has nothing brighter left
-      // to be and disappears into its own halo. Measured at the old 0.46
-      // cap the entire corner sat on the ACES shoulder and the amber field
-      // below could not read at all.
-      float overexposure = clamp(halo * lowerSky * 0.22
-        + horizonBand * 0.16 * mix(1.0, 0.55, sunProgress()), 0.0, 0.32);
-      sky = mix(sky, paleGold * 0.86, overexposure);
-      sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.12;
-
-      // The reference sunrise is not a disc: it is a blown white burst
-      // cresting the ridge, with faint crepuscular rays combing up through
-      // the cirrus. The core gaussian clips to white over a broad soft
-      // region by design; the ridge glare is added in the mountain branch.
-      float sunDistance = length(sunDelta(vec2(viewX, screenUv.y)) / vec2(1.0, 1.55));
-      // The ray fan stays for reflection rays too: its reflected streaks
-      // visibly enrich the sun's pool on the water.
-      float rayAngle = atan(screenUv.y - sunScreenY(), viewX - SUN_SCREEN_X);
-      float rayNoise = fbm(vec2(rayAngle * 2.6, 3.1));
-      float rays = pow(0.5 + 0.5 * sin(rayAngle * 9.0 + rayNoise * 5.5), 3.0);
-      float rayReach = exp(-sunDistance * 4.6);
-      // Contrast, not more light, is what makes the core sear: a saturated
-      // amber mid-field REPLACES the sky tone around the burst (darker than
-      // the core), and only the core itself clips to white. The amber must
-      // sit well below the ACES shoulder or its chroma compresses to gray —
-      // the old vec3(1.30, 0.98, 0.55) field measured R-B <= 8/255 on screen.
-      float goldField = exp(-pow(sunDistance / 0.20, 2.0));
-      sky = mix(sky, vec3(1.02, 0.66, 0.28) * mix(0.72, 1.0, goldField), goldField * 0.70);
-      sky += vec3(2.2, 1.6, 0.85) * exp(-pow(sunDistance / 0.055, 2.0)) * 0.50;
-      sky += vec3(7.5, 6.6, 5.2) * exp(-pow(sunDistance / 0.040, 2.0)) * 1.9;
-      sky += vec3(1.55, 1.30, 0.95) * rays * rayReach * 0.55;
+      float veil = clamp(halo * lowerSky * 0.12
+        + horizonBand * 0.08 * mix(1.0, 0.55, sunProgress()), 0.0, 0.18);
+      sky = mix(sky, vec3(1.10, 0.94, 0.72), veil);
+      sky += vec3(1.05, 0.78, 0.48) * cloudLight * 0.07;
+      // Angular noise/ray fans are deliberately absent: they created broad
+      // spokes in both the sky and the water and cost an fbm per sample.
       return sky;
     }
 
@@ -826,9 +820,78 @@
       return clamp(smoke * 0.38 * passageAlpha, 0.0, 0.55);
     }
 
+    vec4 cruiseShipNightLights(vec2 screenUv, float pointWeight) {
+      // rgb: the lit liner. a: hull coverage, so the composite can occlude
+      // the shore lights behind the ship instead of adding on top of them.
+      // pointWeight 0 drops the window points and deck rows: the water
+      // mirror wants only the smooth spill, or it paints a barcode.
+      // After dark the liner is its lights: rows of cabin windows across
+      // the hull silhouette (the sprite's alpha), mostly sodium-warm with a
+      // few cool deck lamps, over a faint glow the windows throw on the hull.
+      float passage = fract((iTime + 149.0) / 320.0);
+      float shipX = mix(0.43, 1.08, passage);
+      float passageAlpha = smoothstep(0.0, 0.08, passage)
+        * (1.0 - smoothstep(0.92, 1.0, passage));
+      float aspect = iResolution.x / iResolution.y;
+      float coverage = aspect >= 1.5 ? 1.0 : max(aspect / 1.5, 0.48);
+      float shipHeight = (0.080 / coverage) * aspect / 2.0;
+      float shipWaterline = 0.390 - 4.0 / iResolution.y;
+      vec2 point = vec2(
+        (sceneX(screenUv.x) - shipX) / 0.040,
+        (screenUv.y - shipWaterline) / shipHeight
+      );
+      // A margin past the hull for the bloom the lit decks throw into the haze.
+      if (abs(point.x) > 1.4 || point.y < 0.0 || point.y > 1.35) return vec4(0.0);
+      vec2 shipUv = vec2(point.x * 0.5 + 0.5, point.y);
+      vec4 shipTexel = texture2D(u_ship, clamp(shipUv, 0.0, 1.0));
+      float hull = shipTexel.a * step(abs(point.x), 1.0) * step(point.y, 1.0);
+      // Per Igor's dusk reference: the liner reads as one bright cream-white
+      // mass. Its own lights flood the white superstructure while the dark
+      // hull paint stays dark, so light the sprite's actual paint instead of
+      // drawing lights over a black silhouette. The warm ratio has to be
+      // strong enough to pass the night duotone's warm gate, or the ship
+      // comes out cool gray.
+      // The windows are the light sources. Flooding the sprite's daytime
+      // paint lit the ship from above — its baked daylight shading showed
+      // through. Here the paint only supplies material: a flattened
+      // luminance that says where white superstructure is and where the
+      // dark hull is, so window glow spills onto the one and not the other.
+      vec3 paint = srgbToLinear(shipTexel.rgb / max(shipTexel.a, 0.001));
+      float material = pow(dot(paint, vec3(0.2126, 0.7152, 0.0722)), 0.6);
+      // Simulated through ACES + the duotone: mild warm tones come out
+      // neutral gray, this sodium ratio comes out cream at the cores.
+      vec3 warm = vec3(1.0, 0.48, 0.18);
+      // The band starts above the dark waterline strip and runs to the top
+      // decks: in the reference the whole superstructure glows cream, and
+      // only the lowest hull band stays dark.
+      float deck = smoothstep(0.16, 0.34, shipUv.y) * (1.0 - smoothstep(0.84, 1.04, shipUv.y));
+      float rows = 0.55 + 0.45 * sin(shipUv.y * 25.0 + 1.2);
+      float runs = 0.40 + 0.60 * noise21(vec2(shipUv.x * 90.0 + 13.0, shipUv.y * 12.0 + 7.0));
+      // Dense window rows along the decks: small hot points, close enough
+      // that at this distance they merge into lit bands with visible grain.
+      vec2 grid = vec2(48.0, 7.0);
+      vec2 cell = floor(shipUv * grid);
+      vec2 local = fract(shipUv * grid) - 0.5;
+      vec2 cellPx = vec2(0.080 * iResolution.x / coverage / grid.x, shipHeight * iResolution.y / grid.y);
+      float pxScale = iResolution.y / 900.0;
+      float window = 1.0 - smoothstep(0.30 * pxScale, 1.0 * pxScale, length(local * cellPx));
+      float keep = step(0.28, hash21(cell + vec2(3.1, 7.7)));
+      float cool = step(0.82, hash21(cell + vec2(9.7, 2.3)));
+      vec3 lights = mix(warm, vec3(0.75, 0.85, 1.0), cool) * window * keep * hull * deck * (0.6 + 0.4 * runs) * 4.5 * pointWeight;
+      // Spill: the windows light the white superstructure around them in
+      // soft deck bands; the dark hull reflects almost none of it.
+      lights += warm * material * hull * deck * mix(1.0, 0.7 + 0.3 * rows, pointWeight) * (0.6 + 0.4 * runs) * 3.4;
+      // Bloom: the lit superstructure glows into the marine haze, which is
+      // what makes it read as one bright object across the bay.
+      vec2 bloomDelta = vec2(point.x * 1.1, (shipUv.y - 0.55) / 0.55);
+      float bloom = exp(-dot(bloomDelta, bloomDelta) * 2.0);
+      lights += vec3(0.30, 0.21, 0.13) * bloom * 0.40;
+      return vec4(lights, hull) * passageAlpha;
+    }
+
     vec3 compositeCruiseShip(vec2 screenUv, vec3 background) {
-      float visibility = u_ship_ready * (1.0 - u_night);
-      if (visibility <= 0.001) return background;
+      if (u_ship_ready <= 0.001) return background;
+      float visibility = 1.0 - u_night;
       // The ship and its smoke live in a narrow band above the waterline,
       // its reflection in a band just below. Skipping everything else avoids
       // evaluating six fbm smoke puffs for every sky and water pixel.
@@ -841,35 +904,79 @@
         return background;
       }
       if (screenUv.y >= shipWaterline - 0.0005) {
-        float smoke = cruiseShipSmoke(screenUv) * visibility;
-        // Light warm-gray steam against the dark slope — but a fixed gray is
-        // darker than the sky, so where the plume climbs past the crest it
-        // read as a floating soot blot. Against bright backdrops the tint
-        // becomes a whisper-darker shade of whatever is behind it instead.
-        float backgroundLuminance = dot(background, vec3(0.2126, 0.7152, 0.0722));
-        vec3 smokeTone = mix(vec3(0.34, 0.37, 0.39), background * 0.90 + vec3(0.02),
-          smoothstep(0.30, 0.75, backgroundLuminance));
-        background = mix(background, smokeTone, smoke);
-        vec4 ship = cruiseShipSample(screenUv);
-        // Aerial perspective: at this distance across the bay the liner sits
-        // behind a veil of morning haze; without it the photo-exposed sprite
-        // reads as pasted onto the scene.
-        ship.rgb = mix(ship.rgb, vec3(0.50, 0.62, 0.78), 0.12);
-        ship.a *= visibility;
-        return mix(background, ship.rgb, ship.a);
+        if (visibility > 0.001) {
+          float smoke = cruiseShipSmoke(screenUv) * visibility;
+          // Light warm-gray steam against the dark slope — but a fixed gray is
+          // darker than the sky, so where the plume climbs past the crest it
+          // read as a floating soot blot. Against bright backdrops the tint
+          // becomes a whisper-darker shade of whatever is behind it instead.
+          float backgroundLuminance = dot(background, vec3(0.2126, 0.7152, 0.0722));
+          vec3 smokeTone = mix(vec3(0.34, 0.37, 0.39), background * 0.90 + vec3(0.02),
+            smoothstep(0.30, 0.75, backgroundLuminance));
+          background = mix(background, smokeTone, smoke);
+          vec4 ship = cruiseShipSample(screenUv);
+          // Aerial perspective: at this distance across the bay the liner sits
+          // behind a veil of morning haze; without it the photo-exposed sprite
+          // reads as pasted onto the scene.
+          ship.rgb = mix(ship.rgb, vec3(0.50, 0.62, 0.78), 0.12);
+          ship.a *= visibility;
+          background = mix(background, ship.rgb, ship.a);
+        }
+        if (u_night > 0.001) {
+          vec4 liner = cruiseShipNightLights(screenUv, 1.0);
+          // The hull is opaque: the shore lights behind it must not shine
+          // through. Cover them with the dark hull first, then add the glow.
+          background = mix(background, vec3(0.006, 0.007, 0.010), liner.a * u_night);
+          background += liner.rgb * u_night;
+        }
+        return background;
       }
       // A broken, wave-wobbled reflection seats the hull in the water.
       float below = (shipWaterline - screenUv.y) / reflectionDepth;
-      vec2 mirrorUv = vec2(
-        screenUv.x + sin(screenUv.y * 240.0 + iTime * 1.3) * 0.0016,
-        2.0 * shipWaterline - screenUv.y
-      );
-      vec4 shipReflection = cruiseShipSample(mirrorUv);
-      float reflectionFade = (1.0 - below) * (1.0 - below);
       float ripple = 0.75 + 0.25 * sin(screenUv.y * 620.0 + screenUv.x * 40.0 + iTime * 2.2);
-      shipReflection.a *= visibility * reflectionFade * 0.30 * ripple;
-      vec3 reflectionColor = mix(shipReflection.rgb * 0.55, vec3(0.30, 0.40, 0.52), 0.35);
-      return mix(background, reflectionColor, shipReflection.a);
+      if (visibility > 0.001) {
+        vec2 mirrorUv = vec2(
+          screenUv.x + sin(screenUv.y * 240.0 + iTime * 1.3) * 0.0016,
+          2.0 * shipWaterline - screenUv.y
+        );
+        vec4 shipReflection = cruiseShipSample(mirrorUv);
+        float reflectionFade = (1.0 - below) * (1.0 - below);
+        shipReflection.a *= visibility * reflectionFade * 0.30 * ripple;
+        vec3 reflectionColor = mix(shipReflection.rgb * 0.55, vec3(0.30, 0.40, 0.52), 0.35);
+        background = mix(background, reflectionColor, shipReflection.a);
+      }
+      if (u_night > 0.001) {
+        // The reference reflection is a smooth warm column nearly as bright
+        // as the ship: the flood-lit body mirrored, stretched down the
+        // reflection depth, blurred sideways and wobbled so it stays a
+        // column rather than a second ship.
+        vec2 mirrorUv = vec2(
+          screenUv.x + sin(screenUv.y * 260.0 + iTime * 1.5) * 0.0022,
+          shipWaterline + (shipWaterline - screenUv.y) * 0.7
+        );
+        vec2 blur = vec2(5.0 / iResolution.x, 0.0);
+        vec2 smear = vec2(0.0, 3.0 / iResolution.y);
+        vec3 column = cruiseShipNightLights(mirrorUv, 0.0).rgb * 0.30
+          + cruiseShipNightLights(mirrorUv - blur, 0.0).rgb * 0.20
+          + cruiseShipNightLights(mirrorUv + blur, 0.0).rgb * 0.20
+          + cruiseShipNightLights(mirrorUv - smear, 0.0).rgb * 0.15
+          + cruiseShipNightLights(mirrorUv + smear, 0.0).rgb * 0.15;
+        // Under the mirrored texture, a smooth hull-wide glow: in the
+        // reference the column is a continuous warm sheet, not a row of
+        // mirrored points.
+        float passage = fract((iTime + 149.0) / 320.0);
+        float shipX = mix(0.43, 1.08, passage);
+        float passageAlpha = smoothstep(0.0, 0.08, passage) * (1.0 - smoothstep(0.92, 1.0, passage));
+        float acrossHull = (sceneX(screenUv.x) - shipX) / 0.040 + sin(screenUv.y * 260.0 + iTime * 1.5) * 0.06;
+        float across = 1.0 - smoothstep(0.55, 1.1, abs(acrossHull));
+        float streaks = smoothstep(0.25, 0.8, fbm(vec2(screenUv.x * 420.0, screenUv.y * 110.0 + iTime * 0.3)));
+        column += vec3(1.0, 0.50, 0.20) * across * (0.45 + 0.55 * streaks) * 0.55 * passageAlpha;
+        // The reference column is about one ship height deep; the faster
+        // falloff keeps it from flaring into a flame shape.
+        float columnFade = pow(1.0 - below, 2.2) * (0.78 + 0.22 * ripple);
+        background += column * columnFade * 0.55 * u_night;
+      }
+      return background;
     }
 
     vec2 wavedx(vec2 position, vec2 direction, float frequency, float timeshift) {
@@ -989,26 +1096,18 @@
     }
 
     vec3 daySky(vec3 direction, float detail) {
-      vec3 sunDirection = normalize(vec3(-0.62, 0.10, 0.78));
       float altitude = clamp(direction.y * 1.65, 0.0, 1.0);
       vec3 horizon = vec3(0.48, 0.48, 0.62);
       vec3 zenith = vec3(0.045, 0.24, 0.58);
       vec3 color = mix(horizon, zenith, pow(altitude, 0.72));
 
-      float sunAmount = max(dot(direction, sunDirection), 0.0);
-      float sunGlow = pow(sunAmount, 9.0);
-      float sunCore = pow(sunAmount, 180.0);
-      color += vec3(1.0, 0.72, 0.42) * sunGlow * 0.05;
-      color += vec3(1.0, 0.94, 0.79) * sunCore * 0.34;
-
       vec2 screenUv = dirToScreenUV(direction);
       if (screenUv.x >= 0.0 && screenUv.x <= 1.0 && screenUv.y >= 0.395 && screenUv.y <= 1.0) {
         color = mix(color, photoSkyColor(screenUv, detail), u_day_photo_ready * 0.96);
 
-        // Wind-combed sunrise cirrus over the photo sky: long streaks that
-        // ignite gold around the burst and cool to pale blue further out.
-        // The burst core keeps burning through them. Skipped for reflection
-        // rays — wave distortion erases them anyway.
+        // Wind-combed cirrus complement the photographed clouds rather
+        // than painting over them. Keep the compact sun unobscured and
+        // skip this detail in wave-broken reflections.
         if (detail > 0.5) {
         float sceneUvX = sceneX(screenUv.x);
         vec2 flowUv = vec2(sceneUvX * 2.4 + iTime * 0.0016, screenUv.y * 6.5);
@@ -1016,12 +1115,12 @@
         float strand = fbm(vec2(sceneUvX * 5.2 + iTime * 0.0011, screenUv.y * 18.0));
         float cirrus = smoothstep(0.50, 0.78, comb * 0.66 + strand * 0.34);
         cirrus *= smoothstep(0.47, 0.58, screenUv.y) * (1.0 - smoothstep(0.90, 1.0, screenUv.y));
-        vec2 cirrusSunDelta = sunDelta(screenUv) / vec2(1.0, 1.55);
-        float sunProximity = exp(-length(cirrusSunDelta) * 3.2);
-        float coreProximity = exp(-pow(length(cirrusSunDelta) / 0.085, 2.0));
-        vec3 litCloud = mix(vec3(0.98, 1.02, 1.10), vec3(1.55, 1.18, 0.72), sunProximity);
-        float cloudStrength = cirrus * (0.30 + sunProximity * 0.35) * (1.0 - coreProximity * 0.6);
-        color = mix(color, litCloud, clamp(cloudStrength, 0.0, 0.62) * (0.4 + 0.6 * u_day_photo_ready));
+        vec2 cirrusSunDelta = sunDelta(screenUv) * vec2(1.6, 1.0);
+        float sunProximity = exp(-length(cirrusSunDelta) * 5.0);
+        float coreProximity = exp(-dot(cirrusSunDelta, cirrusSunDelta) / (0.045 * 0.045));
+        vec3 litCloud = mix(vec3(0.90, 0.98, 1.08), vec3(1.22, 1.08, 0.83), sunProximity);
+        float cloudStrength = cirrus * (0.18 + sunProximity * 0.16) * (1.0 - coreProximity);
+        color = mix(color, litCloud, clamp(cloudStrength, 0.0, 0.34) * (0.4 + 0.6 * u_day_photo_ready));
         }
       }
 
@@ -1038,6 +1137,8 @@
         color = mix(color, vec3(0.86, 0.93, 0.97), clouds * 0.26);
       }
 
+      // Apply the same source once, after either sky and its clouds.
+      color = daylightSun(color, screenUv);
       return color;
     }
 
@@ -1055,6 +1156,15 @@
         float coastalHaze = (1.0 - smoothstep(0.38, 0.70, screenUv.y));
         coastalHaze *= 0.72 + noise21(vec2(sceneX(screenUv.x) * 2.2, screenUv.y * 7.0)) * 0.28;
         color += vec3(0.012, 0.010, 0.009) * coastalHaze;
+        // Light domes: the towns throw a faint warm glow up into the haze
+        // above their ridges, strongest over Herceg Novi on the left and a
+        // smaller one over the headland-base town on the right. Without it
+        // the sky is one flat gradient from ridge to zenith.
+        float sceneUvX = sceneX(screenUv.x);
+        float domeRise = exp(-max(screenUv.y - 0.40, 0.0) * 7.5);
+        float domes = exp(-pow((sceneUvX - 0.20) / 0.20, 2.0))
+          + exp(-pow((sceneUvX - 0.53) / 0.10, 2.0)) * 0.45;
+        color += vec3(0.020, 0.015, 0.010) * domes * domeRise;
         // A gibbous moon opposite the day scene's sunrise. It hangs high on
         // the right so its glade lands on open water instead of the ridge.
         vec2 moonDelta = (screenUv - vec2(MOON_SCREEN_X, MOON_SCREEN_Y))
@@ -1170,15 +1280,14 @@
           vec3 edgeSky = compositeCruiseShip(screenUv, skyColor(edgeRay, 1.0));
           mountainComposite = mix(edgeSky, landscape, mountains);
         }
-        // Sunrise glare engulfs the ridge where it crosses the sun. The
-        // dissolve tone tracks the amber mid-field, not white, so the ridge
-        // melts into the burst's ring instead of punching a pale hole in it.
+        // Local bloom softens only the ridge immediately next to the sun;
+        // the photographed slope remains legible outside that small halo.
         float glare = sunGlare(screenUv) * (1.0 - u_night) * u_day_photo_ready;
         // Keep the terrain breathing inside the dissolve: a flat amber
         // replacement painted the ridge as a featureless khaki wedge.
         float compositeLuma = dot(mountainComposite, vec3(0.2126, 0.7152, 0.0722));
         vec3 glareTone = vec3(1.35, 1.04, 0.62) * (0.70 + 0.55 * min(compositeLuma, 0.8));
-        mountainComposite = mix(mountainComposite, glareTone, glare * 0.85);
+        mountainComposite = mix(mountainComposite, glareTone, glare * 0.50);
         float mountainLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
         fragmentColor = vec4(acesTonemap(mountainComposite * 1.25 * mountainLift), 1.0);
         return;
@@ -1198,7 +1307,10 @@
       vec3 highPosition = origin + ray * highHit;
       vec3 lowPosition = origin + ray * lowHit;
       float wavePhaseShift = wavePhaseAt(highPosition.xz, iTime);
-      float distanceToWater = raymarchWater(origin, highPosition, lowPosition, WATER_DEPTH, wavePhaseShift);
+      // The bay lies calmer after dark: half the swell height, so the night
+      // water reads as a dark mirror instead of rolling gray lumps.
+      float waveDepth = WATER_DEPTH * mix(1.0, 0.5, u_night);
+      float distanceToWater = raymarchWater(origin, highPosition, lowPosition, waveDepth, wavePhaseShift);
       vec3 waterPosition = origin + ray * distanceToWater;
 
       // At grazing rows near the waterline the raymarch distance flickers
@@ -1208,7 +1320,7 @@
       float stableDistance = mix(distanceToWater, highHit, horizonProximity);
 
       float epsilon = max(0.008, distanceToWater * 0.0028);
-      vec3 normal = normalAt(waterPosition.xz, epsilon, WATER_DEPTH, wavePhaseShift);
+      vec3 normal = normalAt(waterPosition.xz, epsilon, waveDepth, wavePhaseShift);
       float distanceFlatten = 0.8 * min(1.0, sqrt(distanceToWater * 0.01) * 1.1);
       distanceFlatten = max(distanceFlatten, horizonProximity * 0.95);
       // Daylight used to flatten normals 58% toward up for a calm-bay look —
@@ -1264,7 +1376,7 @@
       if (u_night > 0.001) {
         vec2 lightWavePosition = waterPosition.xz - vec2(iTime * 0.2, 0.0);
         float lightEpsilon = max(0.035, distanceToWater * 0.009);
-        vec3 lightNormal = slowLightNormalAt(lightWavePosition, lightEpsilon, WATER_DEPTH, iTime * 0.14);
+        vec3 lightNormal = slowLightNormalAt(lightWavePosition, lightEpsilon, waveDepth, iTime * 0.14);
         lightNormal = normalize(mix(lightNormal, vec3(0.0, 1.0, 0.0), 0.91));
         vec3 lightReflectionDirection = normalize(reflect(ray, lightNormal));
         lightReflectionDirection.y = abs(lightReflectionDirection.y);
@@ -1275,6 +1387,24 @@
           reflectedLights += mountainLightColor(lightScreen - blurStep) * 0.25;
           reflectedLights += mountainLightColor(lightScreen + blurStep) * 0.25;
           reflection += reflectedLights * 1.2;
+
+          // Long streaked columns under the towns, as in the reference night
+          // photo. The mirror above only reaches a few rows below the shore
+          // because the lights sit a few rows above it; here the reflected
+          // point is pulled back toward the horizon so each light smears
+          // down into the bay, wobbling and breaking with the surface.
+          float below = 0.395 - screenUv.y;
+          if (below < 0.11) {
+            float columnWobble = sin(screenUv.y * 240.0 + iTime * 0.9) * 0.0018
+              + (fbm(vec2(screenUv.x * 60.0, screenUv.y * 25.0 - iTime * 0.12)) - 0.5) * 0.004;
+            vec2 columnScreen = vec2(
+              lightScreen.x + columnWobble,
+              0.3955 + max(lightScreen.y - 0.395, 0.0) * 0.16
+            );
+            float columnBreak = 0.45 + 0.55 * fbm(vec2(screenUv.x * 120.0, screenUv.y * 45.0 + iTime * 0.25));
+            float columnFade = exp(-below * 26.0) * columnBreak;
+            reflection += mountainLightColor(columnScreen) * columnFade * 0.42;
+          }
         }
       }
 
@@ -1289,7 +1419,7 @@
       // every swell showed as a gray lump. Only what the surface mirrors
       // (sky, moon, town lights) should carry light after dark.
       vec3 scatteringBase = mix(vec3(0.0025, 0.022, 0.05), vec3(0.006, 0.007, 0.012), u_night);
-      vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
+      vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + waveDepth) / waveDepth);
       vec3 color = fresnel * reflection + scattering;
       vec3 waterBody = mix(vec3(0.003, 0.03, 0.075), vec3(0.004, 0.005, 0.010), u_night);
       color += waterBody * (1.0 - fresnel) * 0.72;
@@ -1313,7 +1443,7 @@
         // and the near field thins out: real glitter is densest toward the
         // horizon and sparse at the viewer's feet.
         float bead = smoothstep(0.40, 0.70, fbm(waterPosition.xz * 16.0 + vec2(iTime * 0.6, -iTime * 0.4)));
-        float nearGate = mix(0.4, 1.0, smoothstep(2.0, 18.0, distanceToWater));
+        float nearGate = mix(0.22, 1.0, smoothstep(2.0, 18.0, distanceToWater));
         moonGlitter = moonSilver * (pow(moonDot, 90.0) * 0.05 + pow(moonDot, 600.0) * 3.0 * bead) * moonFresnel * nearGate * u_night;
       }
 
@@ -1331,21 +1461,15 @@
         glintReflection.y = abs(glintReflection.y);
         float glintDot = max(0.0, dot(glintReflection, sunDir));
         float glintFresnel = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-glintNormal, ray)), 5.0);
-        // Same ACES lesson as the sun burst: additive gold on pale blue
-        // clips to white and reads as nothing. The train is a saturated
-        // amber tone REPLACEMENT in a wide lobe around the sun's mirror
-        // direction, and only the sparkle cores on top clip to white.
-        float trainField = pow(glintDot, 18.0);
-        // Both the darkening and the amber replacement must ride the
-        // day/night blend: gated only by the 0.999 cutoff they held full
-        // strength through the whole fade and the glow outlived the day.
+        // Keep the warm train narrow enough to read as reflected sunlight,
+        // not a copper-colored repaint of the bay. Fresnel retains the dark
+        // troughs between facets; only the small sparkle cores reach white.
+        float trainField = pow(glintDot, 36.0);
         float dayBlend = 1.0 - u_night;
-        // Darken the pale sky mirror under the train first — replacement
-        // over a bright base only ever reaches khaki.
-        color *= 1.0 - trainField * 0.38 * dayBlend;
-        vec3 amber = vec3(1.02, 0.66, 0.28) * (0.40 + 0.85 * glintFresnel + 0.9 * trainField);
-        color = mix(color, amber, clamp(trainField * 1.5, 0.0, 0.92) * 0.85 * dayBlend);
-        color += lowSun * pow(glintDot, 300.0) * 16.0 * glintFresnel;
+        vec3 trainTint = mix(vec3(1.0, 0.72, 0.38), vec3(1.0, 0.86, 0.63), sunProgress());
+        vec3 warmReflection = trainTint * (0.28 + glintFresnel * 0.85);
+        color = mix(color, warmReflection, trainField * 0.58 * dayBlend);
+        color += lowSun * pow(glintDot, 480.0) * 12.0 * glintFresnel;
 
         vec3 refracted = normalize(refract(ray, glintNormal, 0.66));
         float crestGlow = pow(max(0.0, dot(refracted, sunDir)), 16.0);
@@ -1362,10 +1486,19 @@
       // Sunrise haze: distance fog on the sun's side of the bay carries the
       // burst's warmth, so the far water pools gold under the sun instead of
       // cutting to neutral blue-gray at the fog line.
-      float fogWarmth = exp(-pow((screenUv.x - SUN_SCREEN_X) / 0.20, 2.0)) * (1.0 - u_night);
-      fogColor = mix(fogColor, vec3(0.86, 0.62, 0.38), fogWarmth * 0.58);
+      float fogWarmth = exp(-pow((screenUv.x - SUN_SCREEN_X) / 0.15, 2.0)) * (1.0 - u_night);
+      fogColor = mix(fogColor, vec3(0.66, 0.57, 0.43), fogWarmth * 0.34);
       color = mix(color, fogColor, fogAmount);
       color += moonGlitter * (1.0 - fogAmount * 0.55);
+
+      // Open-sea horizon after dark: grazing water mirrors the sky, so the
+      // last rows blend up to the sky's own horizon tone instead of meeting
+      // it along a razor line. Only where sky, not land, stands above.
+      if (u_night > 0.001 && horizonProximity > 0.001) {
+        float skyAbove = 1.0 - mountainMask(vec2(screenUv.x, 0.79 - screenUv.y));
+        color = mix(color, vec3(0.040, 0.046, 0.063),
+          horizonProximity * horizonProximity * skyAbove * 0.85 * u_night);
+      }
 
       // Fog at full strength erased every trace of the shore in the water,
       // leaving a razor-straight cut along the entire waterline. A hazed
@@ -1386,7 +1519,8 @@
       float pathDrift = (fbm(vec2(screenUv.y * 15.0, iTime * 0.002)) - 0.5) * mix(0.010, 0.055, waterProgress);
       float pathWidth = mix(0.028, 0.17, waterProgress);
       float pathCenter = SUN_SCREEN_X + waterProgress * 0.075 + pathDrift;
-      float pathDistance = (screenUv.x - pathCenter) / pathWidth;
+      // Narrow only the solar path; the moon reuses pathWidth below.
+      float pathDistance = (screenUv.x - pathCenter) / (pathWidth * 0.68);
       float solarPath = exp(-pathDistance * pathDistance * 1.12);
       vec2 glintUv = vec2(
         screenUv.x * 18.0 + waterProgress * 2.6 - iTime * 0.004,
@@ -1396,14 +1530,14 @@
       float fineGlints = fbm(glintUv * vec2(2.15, 1.65) + vec2(-iTime * 0.006, iTime * 0.003));
       float brokenPath = mix(0.48, 1.0, smoothstep(0.30, 0.74, broadGlints * 0.68 + fineGlints * 0.32));
       float pathFade = smoothstep(0.01, 0.09, waterProgress) * (1.0 - smoothstep(0.82, 1.0, waterProgress));
-      vec3 pathColor = mix(vec3(1.02, 0.70, 0.37), vec3(0.70, 0.68, 0.59), waterProgress);
+      vec3 pathColor = mix(vec3(0.94, 0.76, 0.48), vec3(0.64, 0.67, 0.66), waterProgress);
       // The path strengthens as the sun climbs and pours more light onto
       // the water.
       // Physical glints own the near and mid train now; the painted path
       // only carries the far pool where fog has flattened the geometry.
       float pathZone = mix(0.35, 1.0, smoothstep(0.12, 0.55, fogAmount));
       color += pathColor * solarPath * brokenPath * pathFade * (1.0 - u_night)
-        * mix(0.30, 0.42, sunProgress()) * pathZone;
+        * mix(0.20, 0.30, sunProgress()) * pathZone;
 
       // The moon gets the same treatment on the opposite side of the bay:
       // a narrower silver glade woven through the same broken glint field.
@@ -1429,13 +1563,13 @@
       float seed = dot(uv, vec2(12.9898, 78.233));
       float noiseSample = fract(sin(seed) * 43758.5453 + iTime * 1.5);
 
-      vec3 dayColor = mix(vec3(sourceGray), source, 1.10);
-      dayColor = (dayColor - 0.5) * 1.055 + 0.5;
-      dayColor += (noiseSample - 0.5) * 0.018 * (0.55 + sourceGray * 0.45);
+      vec3 dayColor = mix(vec3(sourceGray), source, 1.06);
+      dayColor = (dayColor - 0.5) * 1.035 + 0.5;
+      dayColor += (noiseSample - 0.5) * 0.006 * (0.55 + sourceGray * 0.45);
       dayColor = clamp(dayColor, 0.0, 1.0);
 
       float nightNoise = gaussian(noiseSample, 0.0, 0.36);
-      float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.055, 0.0, 1.0);
+      float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.030, 0.0, 1.0);
       // Deeper indigo duotone: measured R-B was only 12/255 across sky, ridge
       // and water, which reads as gray dusk rather than a moonlit night.
       vec3 monochrome = mix(vec3(0.010, 0.016, 0.052), vec3(0.80, 0.86, 1.0), nightGray);
