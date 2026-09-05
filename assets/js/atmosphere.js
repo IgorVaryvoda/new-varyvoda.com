@@ -488,6 +488,15 @@
       return clamp(broad * 0.62 + ridges * 0.38, 0.0, 1.0);
     }
 
+    float moonlitFlank(float flankSlope, float height, float detail) {
+      // The moon hangs high on the right, so flanks that fall away to the
+      // right face it and take a faint silver wash; the rest stays a
+      // silhouette. Kept subtle: the reference night photo shows dark
+      // masses with tonal separation, not lit hills.
+      float facing = smoothstep(0.05, 0.9, -flankSlope);
+      return facing * (0.35 + 0.65 * height) * (0.6 + 0.4 * detail);
+    }
+
     vec3 farMountainColor(vec2 screenUv) {
       float horizon = 0.395;
       float ridge = farRidgeAt(screenUv.x);
@@ -503,11 +512,12 @@
       // The atlas far band now carries real transplanted canopy grain, so
       // the photo layer earns more weight than the old interpolation mush.
       // Skip the whole photo pipeline at full night — it mixes to nothing.
+      float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
       if (u_night < 0.999) {
-        float flankSlope = (farRidgeAt(screenUv.x + 0.015) - farRidgeAt(screenUv.x - 0.015)) / 0.03;
         day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 0.0), u_mountain_photo_ready * 0.78);
       }
       vec3 night = mix(vec3(0.018, 0.028, 0.041), vec3(0.052, 0.065, 0.078), haze * 0.30 + detail * 0.24);
+      night += vec3(0.008, 0.010, 0.014) * moonlitFlank(flankSlope, height, detail);
       return mix(day, night, u_night);
     }
 
@@ -520,11 +530,12 @@
       vec3 day = mix(vec3(0.012, 0.045, 0.052), vec3(0.052, 0.14, 0.145), detail * 0.58 + valleys * 0.14 + height * 0.08);
       day += vec3(0.005, 0.018, 0.016) * detail * (0.35 + height * 0.65);
       day *= 0.80 + detail * 0.34 + valleys * 0.06;
+      float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
       if (u_night < 0.999) {
-        float flankSlope = (nearRidgeAt(screenUv.x + 0.015) - nearRidgeAt(screenUv.x - 0.015)) / 0.03;
         day = mix(day, photoMountainColor(screenUv, ridge, flankSlope, 1.0), u_mountain_photo_ready * 0.96);
       }
       vec3 night = mix(vec3(0.003, 0.006, 0.009), vec3(0.019, 0.027, 0.032), detail * 0.62 + valleys * 0.12);
+      night += vec3(0.012, 0.015, 0.021) * moonlitFlank(flankSlope, height, detail);
       return mix(day, night, u_night);
     }
 
@@ -1050,7 +1061,13 @@
           * vec2(iResolution.x / iResolution.y, 1.0);
         float moonDistance = length(moonDelta);
         float moonRadius = 0.019;
-        float moonDisc = 1.0 - smoothstep(moonRadius * 0.97, moonRadius * 1.05, moonDistance);
+        // Reflection rays see a soft lobe, not the hard disc: a wave facet
+        // that happens to mirror the disc otherwise paints a hard-edged
+        // white splat on the water. Real glitter is the disc smeared by
+        // surface roughness, so the mirrored moon is wider and dimmer.
+        float moonDisc = detail > 0.5
+          ? 1.0 - smoothstep(moonRadius * 0.97, moonRadius * 1.05, moonDistance)
+          : exp(-pow(moonDistance / (moonRadius * 1.9), 2.0)) * 0.55;
         if (moonDisc > 0.001) {
           // Procedural lunar surface: low-frequency maria darken the basalt
           // plains, finer speckle hints at crater fields, the limb darkens
@@ -1205,7 +1222,8 @@
       // folding them into the base normal raised fresnel everywhere and
       // sheened the whole bay gray. The base normal keeps the water dark and
       // smooth; the glint normal makes individual wavelets catch the sun.
-      float microReach = (1.0 - smoothstep(3.0, 60.0, distanceToWater)) * (1.0 - u_night);
+      // Night keeps the facets too: the moon glade is built from them.
+      float microReach = 1.0 - smoothstep(3.0, 60.0, distanceToWater);
       vec3 glintNormal = normal;
       if (microReach > 0.001) {
         vec2 microUv = waterPosition.xz * 4.5 + vec2(iTime * 0.35, -iTime * 0.22);
@@ -1266,11 +1284,38 @@
       // fresnel glints and subsurface glow read. All of the day water's light
       // now comes from the sky it reflects and the sun shining through it
       // (M3fGDl port).
-      vec3 scatteringBase = mix(vec3(0.0025, 0.022, 0.05), vec3(0.02, 0.02, 0.03), u_night);
+      // Night water is near-black indigo: the old body and fog sat brighter
+      // than the sky above the ridge, so the bay read as a pewter sheet and
+      // every swell showed as a gray lump. Only what the surface mirrors
+      // (sky, moon, town lights) should carry light after dark.
+      vec3 scatteringBase = mix(vec3(0.0025, 0.022, 0.05), vec3(0.006, 0.007, 0.012), u_night);
       vec3 scattering = scatteringBase * (0.2 + (waterPosition.y + WATER_DEPTH) / WATER_DEPTH);
       vec3 color = fresnel * reflection + scattering;
-      vec3 waterBody = mix(vec3(0.003, 0.03, 0.075), vec3(0.012, 0.014, 0.022), u_night);
+      vec3 waterBody = mix(vec3(0.003, 0.03, 0.075), vec3(0.004, 0.005, 0.010), u_night);
       color += waterBody * (1.0 - fresnel) * 0.72;
+
+      vec3 moonGlitter = vec3(0.0);
+      if (u_night > 0.001) {
+        // Moon glitter from the same micro facets the sun uses by day: a
+        // silver specular lobe toward the moon's mirror direction, with
+        // hard pinpoint cores on top. The facets, not an airbrushed cone,
+        // decide where the glade breaks. Added after the fog so the column
+        // stays brightest toward the horizon, as a real glade does.
+        vec2 moonUv = (vec2(MOON_SCREEN_X, MOON_SCREEN_Y) * 2.0 - 1.0) * vec2(iResolution.x / iResolution.y, 1.0);
+        vec3 moonDir = CAMERA_TILT * normalize(vec3(moonUv, 1.5));
+        vec3 moonReflection = normalize(reflect(ray, glintNormal));
+        moonReflection.y = abs(moonReflection.y);
+        float moonDot = max(0.0, dot(moonReflection, moonDir));
+        float moonFresnel = 0.04 + 0.96 * pow(1.0 - max(0.0, dot(-glintNormal, ray)), 5.0);
+        vec3 moonSilver = vec3(0.72, 0.78, 0.92);
+        // The pinpoint lobe alone traces the smooth micro-noise contours and
+        // draws foam-like ribbons. A fine noise gate breaks it into beads,
+        // and the near field thins out: real glitter is densest toward the
+        // horizon and sparse at the viewer's feet.
+        float bead = smoothstep(0.40, 0.70, fbm(waterPosition.xz * 16.0 + vec2(iTime * 0.6, -iTime * 0.4)));
+        float nearGate = mix(0.4, 1.0, smoothstep(2.0, 18.0, distanceToWater));
+        moonGlitter = moonSilver * (pow(moonDot, 90.0) * 0.05 + pow(moonDot, 600.0) * 3.0 * bead) * moonFresnel * nearGate * u_night;
+      }
 
       // Subsurface scattering, the pair of terms that make M3fGDl's water
       // look like water: crests between the camera and the sun transmit
@@ -1313,13 +1358,14 @@
       // made the FAR water the darkest, most saturated blue in the scene —
       // atmospheric perspective inverted, and a hard graphic band under the
       // shore. Distance should wash toward the sky's horizon haze.
-      vec3 fogColor = mix(vec3(0.145, 0.215, 0.30), vec3(0.03, 0.035, 0.05), u_night);
+      vec3 fogColor = mix(vec3(0.145, 0.215, 0.30), vec3(0.016, 0.019, 0.030), u_night);
       // Sunrise haze: distance fog on the sun's side of the bay carries the
       // burst's warmth, so the far water pools gold under the sun instead of
       // cutting to neutral blue-gray at the fog line.
       float fogWarmth = exp(-pow((screenUv.x - SUN_SCREEN_X) / 0.20, 2.0)) * (1.0 - u_night);
       fogColor = mix(fogColor, vec3(0.86, 0.62, 0.38), fogWarmth * 0.58);
       color = mix(color, fogColor, fogAmount);
+      color += moonGlitter * (1.0 - fogAmount * 0.55);
 
       // Fog at full strength erased every trace of the shore in the water,
       // leaving a razor-straight cut along the entire waterline. A hazed
@@ -1364,7 +1410,9 @@
       float gladeCenter = MOON_SCREEN_X - waterProgress * 0.045 + pathDrift * 0.6;
       float gladeDistance = (screenUv.x - gladeCenter) / (pathWidth * 0.78);
       float moonGlade = exp(-gladeDistance * gladeDistance * 1.35);
-      color += vec3(0.68, 0.72, 0.80) * moonGlade * brokenPath * pathFade * u_night * 0.17;
+      // Only a faint painted glade remains under the facet glitter above; the
+      // old 0.17 airbrushed a milky cone over the whole right bay.
+      color += vec3(0.68, 0.72, 0.80) * moonGlade * brokenPath * pathFade * u_night * 0.05;
 
       color = compositeCruiseShip(screenUv, color);
       float waterLift = 1.0 + 0.13 * sunProgress() * (1.0 - u_night);
@@ -1388,7 +1436,9 @@
 
       float nightNoise = gaussian(noiseSample, 0.0, 0.36);
       float nightGray = clamp(sourceGray + nightNoise * (1.0 - sourceGray) * 0.055, 0.0, 1.0);
-      vec3 monochrome = mix(vec3(0.018, 0.026, 0.052), vec3(0.86, 0.90, 1.0), nightGray);
+      // Deeper indigo duotone: measured R-B was only 12/255 across sky, ridge
+      // and water, which reads as gray dusk rather than a moonlit night.
+      vec3 monochrome = mix(vec3(0.010, 0.016, 0.052), vec3(0.80, 0.86, 1.0), nightGray);
       float warmHighlight = smoothstep(0.03, 0.36, source.r - source.b) * smoothstep(0.14, 0.62, source.r);
       vec3 nightColor = mix(monochrome, source, warmHighlight * 0.88);
 
