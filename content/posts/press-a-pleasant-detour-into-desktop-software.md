@@ -24,11 +24,11 @@ There's enough there to make an actual application: a file list, thumbnails, sor
 
 The first audit found PNGs hiding behind WebP filenames in my own ImageGuide directory. I've [written about that discovery separately](/posts/59-webp-files-were-pngs/). It gave the experiment a useful first result before conversion even existed.
 
-Press now audits folders and converts images locally to WebP, AVIF and JPEG XL. The normal copy workflow writes to an output folder. Auditing, comparing and converting don't require sending those images to a server.
+Press now audits folders and converts images locally to WebP, AVIF, JPEG XL and JPEG. The normal copy workflow writes to an output folder. Auditing, comparing and converting don't require sending those images to a server.
 
-<img src="/images/press/audit-2026-08-26.webp" alt="Press listing twelve images with their formats and file sizes beside the conversion settings, captured on August 26, 2026" loading="lazy" decoding="async">
+<img src="/images/press/audit-2026-09-08.webp" alt="Press 0.6.6 listing six product-photo exports beside the folder sidebar and conversion settings, captured on September 8, 2026" width="1170" height="768" loading="lazy" decoding="async">
 
-*The audit view in August 2026. The interface has continued to evolve since this capture.*
+*The audit view in Press 0.6.6, captured on macOS on September 8, 2026. [Capture details and demo photo credits](https://github.com/IgorVaryvoda/press/blob/main/docs/screenshots.md).*
 
 ## The appeal of GPUI
 
@@ -62,9 +62,9 @@ Press puts the original and converted result beside each other. I can change the
 
 There are small choices in that workflow that matter. When an output-size limit is set, the original side is resized for comparison too, so I'm comparing compression at the intended dimensions. After a batch finishes, the result view reads the files that were actually written instead of generating another preview.
 
-<img src="/images/press/comparison-2026-08-26.webp" alt="Press showing an original image and its converted result in the August 2026 comparison interface" loading="lazy" decoding="async">
+<img src="/images/press/comparison-2026-09-08.webp" alt="Press 0.6.6 showing a product photo and its WebP preview with a draggable comparison divider" width="1170" height="768" loading="lazy" decoding="async">
 
-*The August 2026 comparison view. The useful question is whether I would use the output, not just how many bytes it saved.*
+*The September 2026 comparison view. The useful question is whether I would use the output, not just how many bytes it saved.*
 
 This is the scale of work I enjoy in Press. A folder browser, a comparison, a better place for a control. Each change gives me something concrete to try, and often suggests the next improvement.
 

@@ -6,16 +6,16 @@ draft: false
 homepage_weight: 5
 project_url: "https://www.imageguide.dev/press/"
 github_url: "https://github.com/IgorVaryvoda/press"
-image: "/images/press/audit-2026-08-26.webp"
-image_alt: "Press showing image formats, dimensions and file sizes beside conversion settings in an August 2026 capture"
+image: "/images/press/audit-2026-09-08.webp"
+image_alt: "Press 0.6.6 showing six selected product-photo exports beside the folder sidebar and conversion settings"
 description: "A native desktop app for inspecting, comparing and batch-converting images locally, with a CLI and optional Sirv Studio tools. Built in Rust."
 hero_kicker: "Your images. Your machine."
 hero_intro: "Open a folder, see what's taking up space, and compare a smaller version before converting the batch. Press does the image work locally, with optional Sirv and Studio connections when you need them."
 hero_mark: "Desktop + CLI"
 hero_scope: "macOS · Windows · Linux"
 hero_primary_label: "Get Press"
-hero_frame_label: "Press / August 2026"
-hero_frame_status: "Earlier interface capture"
+hero_frame_label: "Press 0.6.6 / September 2026"
+hero_frame_status: "Current macOS app"
 hero_flow:
   - "Open your images"
   - "Find what needs work"
@@ -55,13 +55,17 @@ The list and gallery are virtualized, and thumbnails are decoded as they come in
 
 ## Compare, then convert
 
-Choose WebP, AVIF or JPEG XL, set the quality or lossless option, and cap the longest edge when you need a smaller image. Inspect the original and converted result side by side, then move through the images with the keyboard to check the awkward ones.
+Choose WebP, AVIF, JPEG XL or JPEG, set the quality or lossless option, and cap the longest edge when you need a smaller image. Inspect the original and converted result side by side, then move through the images with the keyboard to check the awkward ones.
 
-<img src="/images/press/comparison-2026-08-26.webp" alt="Original and converted image shown side by side in Press, captured in August 2026" loading="lazy" decoding="async">
+<img src="/images/press/comparison-2026-09-08.webp" alt="Press 0.6.6 comparing a product photo with its WebP preview, captured on September 8, 2026" width="1170" height="768" loading="lazy" decoding="async">
 
-*An August 2026 view of the comparison. The interface has continued to evolve; this is an actual earlier capture, not a mockup.*
+*The current comparison view, captured from Press 0.6.6 on macOS. The divider lets me inspect the original and the WebP preview.*
 
 Before a batch runs, Press estimates the output size from a sample. Afterwards, it reports the files it actually wrote, including any that got bigger. A large savings percentage is less interesting than an image that still looks right.
+
+<img src="/images/press/results-2026-09-08.webp" alt="Press 0.6.6 reviewing six saved WebP files, with per-file savings below the comparison" width="1170" height="768" loading="lazy" decoding="async">
+
+*The finished batch: six actual output files. [Capture details and demo photo credits](https://github.com/IgorVaryvoda/press/blob/main/docs/screenshots.md).*
 
 By default, conversion writes copies under `optimized/` or another destination you choose. Replacing originals is a separate, explicit mode with an originals backup. You shouldn't have to overwrite the source just to try an encoder.
 
