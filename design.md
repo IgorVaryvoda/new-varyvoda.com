@@ -65,7 +65,7 @@ The work index uses a scenic masthead and a paper atlas. Project pages lead with
 
 ### Writing
 
-The index uses a large sans-serif masthead and compact metadata. Articles use a serif editorial cover followed by a plain reading surface. Old articles may keep their original embedded media, but they inherit the current reading rhythm.
+The index uses a large sans-serif masthead and compact metadata. Articles pair a serif title with uncropped editorial artwork in the cover, stacking them on small screens, followed by a plain reading surface. Old articles may keep their original embedded media, but they inherit the current reading rhythm.
 
 ### About and contact
 
@@ -115,6 +115,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 - Run WebGL only on the homepage and project pages with `atmosphere: true`.
 - Use the static scene elsewhere.
 - Keep Sirv transforms, responsive `srcset`, intrinsic dimensions for local images, image descriptions, and lazy loading.
+- Article cover images load eagerly with high priority; media in the reading surface stays lazy.
 - Product screenshots live in framed technical surfaces. Portraits and editorial images do not reuse that frame by default.
 
 ## Voice

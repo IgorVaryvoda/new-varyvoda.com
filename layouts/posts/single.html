@@ -20,7 +20,7 @@
 }}
 <script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
 <article class="article-page article-page--editorial">
-  <header class="article-hero">
+  <header class="article-hero{{ with .Params.featuredImage }} article-hero--illustrated{{ end }}">
     <div class="article-hero-inner">
       <div class="article-hero-top">
         <p><a href="/posts/">Writing index</a><span>{{ .Params.content_type | default "Field note" }}</span></p>
@@ -29,6 +29,9 @@
 
       <div class="article-hero-title">
         <h1>{{ .Title }}</h1>
+        {{ with .Params.featuredImage }}
+          {{ partial "responsive-local-image.html" (dict "src" . "alt" ($.Params.image_alt | default $.Title) "sizes" "(max-width: 680px) calc(100vw - 3.6rem), (max-width: 900px) 92vw, (max-width: 1304px) 44vw, 576px" "fallbackWidth" 800 "loading" "eager" "fetchpriority" "high") }}
+        {{ end }}
       </div>
 
       <div class="article-hero-bottom">
@@ -51,9 +54,6 @@
       </aside>
 
       <div class="article-prose prose">
-        {{ with .Params.featuredImage }}
-          {{ partial "responsive-local-image.html" (dict "src" . "alt" ($.Params.image_alt | default $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 740px" "fallbackWidth" 800) }}
-        {{ end }}
         {{ .Content }}
         <footer class="article-end">
           <span>— End of {{ .Params.content_type | default "note" | lower }}</span>
