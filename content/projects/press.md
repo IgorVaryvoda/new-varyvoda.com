@@ -1,68 +1,91 @@
 ---
 title: "Press"
 date: 2026-08-19
-lastmod: 2026-09-04
+lastmod: 2026-09-08
 draft: false
 homepage_weight: 5
 project_url: "https://www.imageguide.dev/press/"
 github_url: "https://github.com/IgorVaryvoda/press"
 image: "/images/press/audit-2026-08-26.webp"
-image_alt: "Press auditing a folder of twelve images beside its conversion settings, captured in August 2026"
-description: "A desktop image auditor and converter. Read what a folder contains, compare the output and convert locally to WebP, AVIF or JPEG XL."
-hero_kicker: "Local image work"
-hero_intro: "I built Press to audit and convert folders of images on my own machine. Its first audit found PNGs hidden behind WebP filenames on my own site."
+image_alt: "Press listing image formats, dimensions and file sizes beside its conversion settings, captured in August 2026"
+description: "An open-source desktop app for preparing images: inspect folders, compare compression, resize and convert in batches, with local AI and optional Studio tools."
+hero_kicker: "Image preparation, on your computer"
+hero_intro: "Get a folder of images ready to use. Inspect what's there, resize and convert in batches, and compare the result before writing it. Built in Rust, with a desktop interface and a command line."
 hero_mark: "Desktop + CLI"
-hero_scope: "Folder to checked output"
+hero_scope: "Audit · Compare · Convert"
 hero_primary_label: "Get Press"
 hero_frame_label: "Press / August 2026"
-hero_frame_status: "Repository capture"
+hero_frame_status: "Earlier interface"
 hero_flow:
-  - "Open a folder"
-  - "Inspect the findings"
+  - "Open your images"
+  - "Find what needs work"
   - "Compare the result"
-  - "Write the output"
+  - "Export the batch"
 tech_stack: ["Rust", "GPUI", "WebP", "AVIF", "JPEG XL"]
-role: "Creator and builder"
+role: "Creator, product design and AI-assisted development"
 stewardship:
   state: "evolving"
-  note: "I improve the scanner, comparison, conversion and desktop packaging against real image folders."
-last_tended: "2026-09-04"
+  note: "An enjoyable desktop experiment I keep improving through use. The app works; its longer-term direction is still taking shape."
+last_tended: "2026-09-08"
 feedback_url: "https://github.com/IgorVaryvoda/press/issues"
 proof:
-  - value: "59 / 169"
-    label: "Mislabeled files in the first historical audit"
-  - value: "Open source"
-    label: "Scanner, converters and tests"
-imperfect: "Camera raw and unsupported HEIC files are counted but excluded from the audit. Savings projections are samples, and local AI availability depends on the platform."
+  - value: "3 export formats"
+    label: "WebP, AVIF and JPEG XL, with size and quality controls"
+  - value: "Local AI"
+    label: "Background removal and 4× upscaling on supported builds"
+imperfect: "Camera raw, HEIC and HEIF files are counted but not decoded or converted. Local AI needs model downloads and a supported runtime; setup differs by platform. The screenshots show the August interface, which has since evolved."
 weight: 5
 ---
 
-## The first folder was mine
+## Start with the files you already have
 
-The first audit found 59 PNG files among 169 files named `.webp` in ImageGuide's public directory. Reading the historical Git blobs reproduced the count. A file extension had been telling me the wrong thing about my own images.
+A folder of product photos, screenshots or website exports often needs a few things before it is useful: a look through the files, smaller dimensions, a better format, perhaps a background removed. Press brings that work into one desktop app.
 
-Press reads file contents to identify formats, then lists dimensions, weight and findings. The [first-audit story](/posts/59-webp-files-were-pngs/) explains what that changed.
+Open a folder or drop in a selection of images. The audit shows actual formats, dimensions and file sizes, with the heaviest files first. Browse as a list or a gallery, narrow the selection, and work on the images that need it. You don't need an account to audit, compare or convert locally.
 
-## Compare before writing
+The format check reads the file, not its name. My first audit found [59 PNGs hiding behind WebP filenames](/posts/59-webp-files-were-pngs/) on my own site. That was a useful first discovery, but Press has grown beyond telling me what was wrong with a folder.
 
-The interface puts conversion settings beside the files. Choose the format, quality and maximum size, then compare the original and result. It can write WebP, AVIF and JPEG XL.
+## See the difference before exporting
 
-The ordinary copy workflow writes under `optimized/` or another selected destination. The current app also has an explicit replacement mode with an originals backup. Choosing replacement is different from making a copy.
+Choose WebP, AVIF or JPEG XL, adjust the quality, and set a maximum image size. The comparison puts the original beside the proposed result. Step through the folder with the arrow keys while keeping those settings, rather than setting up each image from scratch.
 
-<img src="/images/press/comparison-2026-08-26.webp" alt="Press original and converted image comparison from the August 2026 repository screenshots" loading="lazy" decoding="async">
+The useful question is whether you would actually use the output, not just how many bytes it saved. The comparison gives you a place to make that decision before running the batch.
 
-*August 2026 repository capture. The comparison lets you inspect the image rather than judging compression from a percentage alone.*
+<img src="/images/press/comparison-2026-08-26.webp" alt="Press displaying an original image beside its converted result in the August 2026 comparison interface" loading="lazy" decoding="async">
 
-Projected savings are estimates. Completed output sizes come from the written files, including files that grew.
+*The comparison view in August 2026. The interface has changed since this capture.*
 
-## Keep the local path local
+Batch conversion writes copies into `optimized/` or a destination you choose, preserving the folder structure. In-place replacement is a separate, explicit choice with an originals backup. After a run, Press shows the files it actually wrote, including any that grew. The estimate before a run is a sample; the sizes afterwards come from the output files.
 
-Audit, comparison and conversion run on the computer. Sirv transfers and hosted Studio tools are explicit remote operations. They are not part of scanning a folder.
+## Local tools, optional connections
 
-The scanner reads headers first. The virtualized list requests thumbnails for visible rows instead of decoding every photograph in a large folder. The CLI provides the same local audit and conversion work, with JSON output for scripts and agents.
+Background removal and 4× upscaling can run locally too, using BiRefNet Lite and Real-ESRGAN through vision.cpp. On supported builds, Press downloads the models it needs and processes the image on your computer. You can compare the result, then keep or discard it.
 
-## Part of ImageGuide
+There are also optional connections to Sirv and [Sirv Studio](/projects/sirv-studio/). Pair a local folder with Sirv to see which files are missing or different and choose what to transfer. With a Studio API key, run hosted image operations such as background replacement, upscaling and product lifestyle generation, then inspect the returned image in Press.
 
-[ImageGuide](/projects/imageguide/) explains delivery choices and audits images already on a web page. Press works on the files before they reach that page. Both need to distinguish a measured result from an estimate.
+Auditing and local conversion don't upload your images. Sending files to Sirv or running a hosted Studio tool does.
 
-The public download page links to packaged builds. The screenshots here record the August interface, while the repository continues to change.
+## Built to keep the interface out of the way
+
+Press uses Rust and GPUI for its desktop interface. The scanner reads image headers before doing expensive decoding; the list and gallery are virtualised, and thumbnails load off the main thread as they come into view. Opening a large folder doesn't mean decoding every image before you can browse it.
+
+The command line handles the same local audit and conversion work without opening a window. JSON reports make it usable from scripts and agents:
+
+```bash
+press audit ./images --json
+press convert ./images --format avif --max-edge 1600 --quality 60 --output ./ready
+```
+
+For a conversion plan without writing files, add `--dry-run`. The [command reference](https://github.com/IgorVaryvoda/press#status) covers the available options.
+
+## A pleasant detour, still finding its shape
+
+[Studio](/projects/sirv-studio/) is my main project. Press is an enjoyable change of pace: a different stack, a smaller application, and image work I can try directly on my own files. Like my other recent projects, I build it with AI assistance.
+
+I don't have its entire future mapped out. I enjoy improving it, and using it keeps suggesting things worth building next.
+
+Press already sits alongside [ImageGuide](/projects/imageguide/): ImageGuide audits images on the web; Press works on the files on your computer. I can see it becoming a useful way for people to discover Studio as their needs grow. For now, I want it to be a desktop tool worth using in its own right.
+
+## Try it on a folder
+
+Press is open source, with packaged builds for macOS, Windows and Linux. [Get Press](https://www.imageguide.dev/press/) for installation options, or [browse the source](https://github.com/IgorVaryvoda/press).
