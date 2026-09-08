@@ -1,0 +1,64 @@
+/* Shared type roles. Loaded after the legacy theme/custom bundle and before
+   page-family styles. Layout and headline scales remain with their owners. */
+:root {
+  --type-compact-label: 1.3rem;
+  --type-compact-action: 1.4rem;
+  --type-supporting: 1.6rem;
+  --type-reading: clamp(1.8rem, 1.65rem + 0.35vw, 2rem);
+  --measure-prose: 65ch;
+}
+
+/* Ordinary interface copy is not a technical annotation. Keep monospace for
+   code, dates, identifiers and the technical diagrams, not navigation. */
+.theme-toggle,
+.site-navigation[data-navigation-ready] > .menu-button,
+.eyebrow,
+.text-link,
+.project-cta,
+.work-atlas-action,
+.article-end,
+.project-chapters-rail nav a {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.theme-toggle,
+.site-navigation[data-navigation-ready] > .menu-button,
+.text-link,
+.project-cta,
+.work-atlas-action,
+.article-end,
+.project-chapters-rail nav a {
+  font-size: var(--type-compact-action);
+  line-height: 1.5;
+}
+
+/* Do not accidentally shrink the existing 22px mobile navigation. */
+@media (min-width: 681px) {
+  .primary-navigation a { font-size: var(--type-compact-action); }
+}
+
+/* Reflow supporting actions instead of clipping their now-readable labels. */
+.text-link { white-space: normal; }
+.work-atlas-action { align-items: baseline; gap: 1rem; }
+.work-atlas-action b { flex: none; }
+.build-status,
+.work-status { flex-wrap: wrap; white-space: normal; }
+
+.prose {
+  font-size: var(--type-reading);
+  line-height: 1.7;
+}
+
+/* Keep the project/diagram canvas intact; article measure is set in posts.css. */
+.prose p { margin-bottom: 1.5em; }
+.prose pre { max-width: 100%; }
+.prose pre code { font-size: 1em; }
+
+/* Short project summaries are for scanning; long project stories stay serif. */
+.work-atlas-copy > p:not(.work-atlas-meta) {
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+}

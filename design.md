@@ -25,20 +25,26 @@ Dark is the default. Light mode is a full theme, not an inverted afterthought. A
 
 ### Type
 
-- **Geologica** (`--display`): navigation, UI, product and index headings.
-- **Literata** (`--reading`): prose, editorial headlines, reflective statements.
-- **System monospace** (`--mono`): dates, status, labels, evidence, controls.
+Shared type roles and size tokens live in `assets/css/typography.css`. It loads after the legacy theme/custom/font styles and before page-family styles, in both development and the production bundle. Keep page-specific headline scales and layout in their existing owners.
+
+- **Geologica** (`--display`): navigation, controls, ordinary labels, short project/career summaries, product and index headings. Use sentence case for ordinary interface copy.
+- **Literata** (`--reading`): prose, editorial headlines, reflective statements and the homepage introduction.
+- **System monospace** (`--mono`): code, dates, identifiers and technical evidence. It is an accent, not the default treatment for anything secondary.
+
+At the usual 16px browser default, the existing 62.5% root makes `1rem` equal 10px. Shared compact labels are `1.3rem`, actions `1.4rem`, supporting summaries `1.6rem`, and prose scales from `1.8rem` to `2rem` with 1.7 leading. The mobile hero introduction has a `1.7rem` floor. Do not add smaller mobile overrides to make copy fit. Let it wrap or grow the section instead. Preserve the existing larger mobile navigation.
 
 Headline scale follows the page's job. The homepage statement, an index masthead, and an article title are different roles; they do not need one shared size. Reuse the existing role before adding another clamp.
 
-Body copy uses a narrow measure, generous leading, and no automatic hyphenation. Balance headings, pretty-wrap short introductions, and allow long URLs or identifiers to break only when they must.
+Body copy uses a narrow measure, generous leading, and no automatic hyphenation. Articles additionally cap their prose at `--measure-prose: 65ch`; project/diagram canvases keep their existing width. Balance headings, pretty-wrap short introductions, and allow long URLs or identifiers to break only when they must.
+
+Geologica and Literata stay self-hosted; do not add a third downloaded family. The current assets contain normal faces only. True Literata italics remain a font-asset follow-up: vendor the licensed files and appropriate character subsets before declaring them. Do not introduce missing-file URLs or disable emphasis synthesis before a replacement is available.
 
 ### Layout
 
 - Main canvas: `--canvas: 120rem`.
 - Responsive edge: `--gutter`.
 - Metadata rail: `--rail`.
-- Reading measure: `--measure-reading` (`74rem`); wider project prose may reach `86rem`.
+- Reading canvas: `--measure-reading` (`74rem`), with article text additionally capped at `--measure-prose` (`65ch`); wider project prose may reach `86rem`.
 - Section rhythm: `--section-space`.
 - Minimum control target: `--control-min` (`44px`).
 - Borders and spacing create hierarchy. Cards are used only when the content is genuinely a separate object.
@@ -49,7 +55,7 @@ Keep grid and flex children at `min-width: 0`. Full-bleed bands may escape the c
 
 ### Homepage
 
-Use the full interactive scene. The hero carries one sentence, one short introduction, and one personal line. Current focus comes first; career, selected work, care, and writing follow as separate bands.
+Use the full interactive scene. The hero carries one sentence, one short introduction, and one personal line. Current focus comes first; career, selected work, care, and writing follow as separate bands. On mobile, origin and latest-post labels follow the message in normal flow so readable text does not collide with absolute corners.
 
 ### Work index and projects
 
@@ -73,6 +79,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 
 | Pattern | Template | Styles |
 | --- | --- | --- |
+| Shared typography | `layouts/_default/baseof.html` | `assets/css/typography.css` |
 | Site shell, navigation, footer | `layouts/partials/header.html`, `layouts/partials/footer.html` | `assets/css/custom.css` |
 | Homepage scene and bands | `layouts/partials/home.html` | `assets/css/pages/home.css` |
 | Portfolio cards and care feed | `layouts/partials/recent-care.html` | `assets/css/components/portfolio.css` |
@@ -94,7 +101,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 
 ## Responsive rules
 
-- Core checks: `1280x800` desktop and `390x844` mobile.
+- Core checks: `1280x800` desktop and `390x844` mobile; include `320x568` and `768x1024` for typography changes.
 - No page may make `document.documentElement.scrollWidth` exceed `clientWidth`.
 - Keep linked hero phrases intact, but do not use `white-space: nowrap` on paragraphs or metadata rows that need to adapt.
 - At the mobile breakpoint, rails become rows or stack above the content.
@@ -117,8 +124,9 @@ Write like Igor: direct, specific, conversational, and technically precise. Stat
 Before shipping a visual change:
 
 1. Run Hugo `0.161.1+extended` and `make quality-gate`.
-2. Check home, work, one project, writing, one article, about, and contact at desktop and mobile sizes.
-3. Check dark and light modes, keyboard focus, reduced motion, hover, and horizontal overflow.
-4. Confirm the production smoke test after the SFTP sync.
+2. With Hugo serving locally, run `python3 scripts/check-typography.py`. Its module docstring contains the optional development-only Playwright setup. It checks seven page families at four viewports in both themes, including font loading, computed sizes, hero overlap, article measure and navigation. Use `--article-path` to repeat on a long-title or legacy article, and `--browser webkit` for a WebKit pass.
+3. Check home, work, one project, writing, one article, about, and contact visually at desktop and mobile sizes. Review the real font rendering over the scene; computed-style checks cannot establish contrast or optical quality.
+4. Check dark and light modes, keyboard focus, reduced motion, hover, text enlargement, and horizontal overflow.
+5. Confirm the production smoke test after the SFTP sync.
 
 Production lives on Igor's own server. GitHub Actions syncs `public/` over SFTP; Cloudflare may proxy the traffic but does not host the site.

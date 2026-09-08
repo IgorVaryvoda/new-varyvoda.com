@@ -41,6 +41,7 @@
 
     {{ $normalize := resources.Get "css/normalize.css" }}
     {{ $fonts := resources.Get "css/fonts.css" }}
+    {{ $typography := resources.Get "css/typography.css" }}
     {{ if hugo.IsServer }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css" "enableSourceMap" true) }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
@@ -49,11 +50,13 @@
       {{ $custom := resources.Get "css/custom.css" | fingerprint }}
       <link rel="stylesheet" href="{{ $custom.RelPermalink }}" integrity="{{ $custom.Data.Integrity }}" crossorigin="anonymous" media="screen">
       <link rel="stylesheet" href="{{ $fonts.RelPermalink }}">
+      {{ $typography = $typography | fingerprint }}
+      <link rel="stylesheet" href="{{ $typography.RelPermalink }}" integrity="{{ $typography.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ else }}
       {{ $cssOpts := (dict "targetPath" "css/coder.css") }}
       {{ $styles := resources.Get "scss/coder.scss" | resources.ExecuteAsTemplate "style.coder.css" . | toCSS $cssOpts }}
       {{ $custom := resources.Get "css/custom.css" }}
-      {{ $bundle := slice $normalize $styles $custom $fonts | resources.Concat "css/site.css" | minify | fingerprint }}
+      {{ $bundle := slice $normalize $styles $custom $fonts $typography | resources.Concat "css/site.css" | minify | fingerprint }}
       <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ end }}
 
