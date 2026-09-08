@@ -36,11 +36,11 @@
 .scene-message .scene-sentence::before { content: none; }
 
 .scene-intro {
-  max-width: var(--measure-reading);
+  max-width: min(100%, 60ch);
   margin: 0;
   color: var(--ink);
   font-family: var(--reading);
-  font-size: clamp(1.45rem, 1.65vw, 1.8rem);
+  font-size: var(--type-intro);
   line-height: 1.65;
   text-wrap: pretty;
 }
@@ -48,10 +48,13 @@
 .scene-personality {
   margin: 0.2rem 0 0;
   color: var(--slate);
-  font-family: var(--mono);
-  font-size: var(--type-compact-label);
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
+  text-wrap: pretty;
 }
 
 :root:not([data-theme="dark"]) :where(.scene-intro, .scene-personality) {
@@ -62,10 +65,12 @@
 .build-role {
   margin: 1.2rem 0 0;
   color: var(--harbor-muted);
-  font-family: var(--mono);
-  font-size: 1.15rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+  text-transform: none;
 }
 
 .career-band {
@@ -86,9 +91,9 @@
 
 .career-strip li + li { border-left: 1px solid var(--rule); }
 .career-strip a { display: grid; min-height: 24rem; align-content: start; gap: 1.3rem; padding: 2.2rem 1.8rem; }
-.career-strip a > span { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.05em; text-transform: uppercase; }
+.career-strip a > span { color: var(--muted); font-family: var(--display); font-size: var(--type-supporting); font-weight: 500; letter-spacing: normal; text-transform: none; }
 .career-strip strong { color: var(--ink); font-size: 1.8rem; line-height: 1.25; }
-.career-strip p { margin: 0; color: var(--slate); font-family: var(--reading); font-size: 1.4rem; line-height: 1.6; }
+.career-strip p { margin: 0; color: var(--slate); font-family: var(--display); font-size: var(--type-card-copy); line-height: 1.6; }
 .career-strip a:hover { background: var(--accent-soft); }
 
 .portfolio-thesis {
@@ -111,12 +116,15 @@
 }
 
 @media (max-width: 680px) {
-  .scene-message { min-width: 0; width: 100%; gap: 1.2rem; padding: 0 0.8rem; transform: translateY(-8vh); }
+  /* Let larger supporting copy take space instead of shrinking it to fit. */
+  .scene-hero { padding-block: 5rem 10rem; }
+  .scene-message { min-width: 0; width: 100%; gap: 1.6rem; padding: 0 0.8rem; transform: translateY(-4vh); }
   .scene-message::before { inset-inline: 0; }
   .scene-message .scene-sentence { min-width: 0; width: 100%; max-width: none; font-size: clamp(3.2rem, 10.8vw, 5rem); }
-  .scene-intro { max-width: 38rem; font-size: 1.35rem; line-height: 1.55; }
-  .scene-personality { font-size: 0.95rem; }
-  .scene-corner { font-size: 0.9rem; }
+  /* Keep each phrase together when it fits; enlarged text may wrap inside it. */
+  .scene-message .scene-sentence a { display: inline-block; max-width: 100%; white-space: normal; }
+  .scene-intro { max-width: 38rem; }
+  .scene-corner { font-size: var(--type-compact-label); }
   .career-strip { grid-template-columns: 1fr; }
   .career-strip li:nth-child(even) { border-left: 0; }
   .career-strip li:nth-child(n + 2) { border-top: 1px solid var(--rule); }

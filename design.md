@@ -25,9 +25,17 @@ Dark is the default. Light mode is a full theme, not an inverted afterthought. A
 
 ### Type
 
-- **Geologica** (`--display`): navigation, UI, product and index headings.
+- **Geologica** (`--display`): navigation, controls, scannable career/work cards, product and index headings.
 - **Literata** (`--reading`): prose, editorial headlines, reflective statements.
-- **System monospace** (`--mono`): dates, status, labels, evidence, controls.
+- **System monospace** (`--mono`): code, identifiers, dates, status, and restrained evidence labels. Not the default for navigation or ordinary supporting copy.
+
+Shared size and reading-role tokens live in `assets/css/typography.css`. The base template loads this after the legacy shell and before route-family styles in both development and production. Its compact tokens supersede the older defaults in `custom.css`; change the role token here rather than adding another local override.
+
+At a 16px browser default (the existing root is 62.5%), compact metadata is 12.5px, ordinary controls 14px, supporting copy 13px, scannable card copy 16px, introductions 17–19px, and long-form prose 18–20px with 1.72 leading. Keep sizes in rem-based tokens so browser text-size preferences still scale them. Uppercase is reserved for short metadata and established brand lettering; normal controls and supporting sentences retain their authored case.
+
+The homepage uses a sans headline, serif introduction, and sans personal line. On small screens, let the scene grow to accommodate the text instead of restoring the old 9–13.5px overrides. Article navigation uses Geologica and a 44px minimum row target. Fenced code stays monospace at the action size; nested `code` inherits that size instead of shrinking it again.
+
+Font files and loading remain self-hosted and unchanged. Real Literata italic files are not supplied by this typography pass: italic synthesis remains enabled until matching licensed italic assets and their Unicode subsets are added and verified. Do not declare a nonexistent local font URL or disable synthesis before supplying the face.
 
 Headline scale follows the page's job. The homepage statement, an index masthead, and an article title are different roles; they do not need one shared size. Reuse the existing role before adding another clamp.
 
@@ -38,7 +46,7 @@ Body copy uses a narrow measure, generous leading, and no automatic hyphenation.
 - Main canvas: `--canvas: 120rem`.
 - Responsive edge: `--gutter`.
 - Metadata rail: `--rail`.
-- Reading measure: `--measure-reading` (`74rem`); wider project prose may reach `86rem`.
+- Reading layout column: `--measure-reading` (`74rem`); wider project prose may reach `86rem`. Article text uses `--measure-prose: 64ch`, resolved in Literata at the paragraph size; do not apply that limit to technical project diagrams.
 - Section rhythm: `--section-space`.
 - Minimum control target: `--control-min` (`44px`).
 - Borders and spacing create hierarchy. Cards are used only when the content is genuinely a separate object.
@@ -74,6 +82,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 | Pattern | Template | Styles |
 | --- | --- | --- |
 | Site shell, navigation, footer | `layouts/partials/header.html`, `layouts/partials/footer.html` | `assets/css/custom.css` |
+| Shared typography roles | `layouts/_default/baseof.html` | `assets/css/typography.css` |
 | Homepage scene and bands | `layouts/partials/home.html` | `assets/css/pages/home.css` |
 | Portfolio cards and care feed | `layouts/partials/recent-care.html` | `assets/css/components/portfolio.css` |
 | Start-here groups | `layouts/partials/start-here.html` | `assets/css/components/start-here.css` |
@@ -86,7 +95,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 
 - Reading-prose links keep a subtle underline at rest.
 - Navigation, cards, labels, and buttons do not inherit prose underlines.
-- Homepage hero phrases stay on one line. At rest they use a crisp, full-color dotted underline with proportional weight and offset; on hover or keyboard focus it becomes the animated shoreline wave.
+- Homepage hero phrases stay on one line when they fit; on mobile, an enlarged phrase may wrap inside its link rather than clip. At rest they use a crisp, full-color dotted underline with proportional weight and offset; on hover or keyboard focus it becomes the animated shoreline wave.
 - Keep that established wave for the hero and the small latest-post link; do not replace it with native wavy text decoration.
 - Keyboard focus uses `--focus-ring` and `--focus-ring-offset`. Do not remove an outline without a replacement.
 - Buttons and primary navigation controls use at least `--control-min`.
@@ -96,7 +105,7 @@ This is a reuse map, not a separate component library. Check it before adding an
 
 - Core checks: `1280x800` desktop and `390x844` mobile.
 - No page may make `document.documentElement.scrollWidth` exceed `clientWidth`.
-- Keep linked hero phrases intact, but do not use `white-space: nowrap` on paragraphs or metadata rows that need to adapt.
+- Keep linked hero phrases intact when space permits, but do not use `white-space: nowrap` on paragraphs or metadata rows that need to adapt.
 - At the mobile breakpoint, rails become rows or stack above the content.
 - A component that needs horizontal scrolling must own it explicitly; the page never does.
 
@@ -116,9 +125,9 @@ Write like Igor: direct, specific, conversational, and technically precise. Stat
 
 Before shipping a visual change:
 
-1. Run Hugo `0.161.1+extended` and `make quality-gate`.
+1. Run Hugo `0.161.1+extended` and `make quality-gate`. `make test-typography` also runs the dependency-free source contracts independently; these are not a visual pass.
 2. Check home, work, one project, writing, one article, about, and contact at desktop and mobile sizes.
-3. Check dark and light modes, keyboard focus, reduced motion, hover, and horizontal overflow.
+3. Check dark and light modes, keyboard focus, reduced motion, hover, and horizontal overflow. Include 320px width, short landscape, larger browser text, and Ukrainian glyphs (`Ґґ Єє Іі Її`). Confirm actual Geologica/Literata faces load, hero corners do not overlap, and long table-of-contents links wrap. Do not count a fallback-font fixture as full visual verification.
 4. Confirm the production smoke test after the SFTP sync.
 
 Production lives on Igor's own server. GitHub Actions syncs `public/` over SFTP; Cloudflare may proxy the traffic but does not host the site.
