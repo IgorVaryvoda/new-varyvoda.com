@@ -12,7 +12,7 @@ description: "An open-source desktop app for preparing images: inspect folders, 
 hero_kicker: "Image preparation, on your computer"
 hero_intro: "Get a folder of images ready to use. Inspect what's there, resize and convert in batches, and compare the result before writing it. Built in Rust, with a desktop interface and a command line."
 hero_mark: "Desktop + CLI"
-hero_scope: "Audit · Compare · Convert"
+hero_scope: "macOS · Windows · Linux"
 hero_primary_label: "Get Press"
 hero_frame_label: "Press / August 2026"
 hero_frame_status: "Earlier interface"
@@ -22,7 +22,7 @@ hero_flow:
   - "Compare the result"
   - "Export the batch"
 tech_stack: ["Rust", "GPUI", "WebP", "AVIF", "JPEG XL"]
-role: "Creator, product design and AI-assisted development"
+role: "Creator, designer and builder; AI-assisted development"
 stewardship:
   state: "evolving"
   note: "An enjoyable desktop experiment I keep improving through use. The app works; its longer-term direction is still taking shape."
@@ -72,11 +72,17 @@ Press uses Rust and GPUI for its desktop interface. The scanner reads image head
 The command line handles the same local audit and conversion work without opening a window. JSON reports make it usable from scripts and agents:
 
 ```bash
+# Inspect a folder and get a machine-readable report.
 press audit ./images --json
-press convert ./images --format avif --max-edge 1600 --quality 60 --output ./ready
+
+# Preview the conversion plan without writing files.
+press convert ./images --format avif --max-edge 1600 --quality 60 --dry-run
+
+# Write converted copies to a separate directory.
+press convert ./images --format avif --max-edge 1600 --quality 60 --output ./exports
 ```
 
-For a conversion plan without writing files, add `--dry-run`. The [command reference](https://github.com/IgorVaryvoda/press#status) covers the available options.
+The [command reference](https://github.com/IgorVaryvoda/press#status) covers the options, JSON reports and exit codes. `press skill` prints the bundled instructions for coding agents.
 
 ## A pleasant detour, still finding its shape
 
@@ -89,3 +95,5 @@ Press already sits alongside [ImageGuide](/projects/imageguide/): ImageGuide aud
 ## Try it on a folder
 
 Press is open source, with packaged builds for macOS, Windows and Linux. [Get Press](https://www.imageguide.dev/press/) for installation options, or [browse the source](https://github.com/IgorVaryvoda/press).
+
+For more on how this fits alongside my main work: [I get bored. I still ship.](/posts/i-get-bored-i-still-ship/)
