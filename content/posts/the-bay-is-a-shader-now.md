@@ -6,7 +6,9 @@ draft: false
 content_type: "Build record"
 page_css: ["shader"]
 description: "I saw a raymarched ocean on earendil.com and wanted one. Now my homepage draws the bay I live on, and Lighthouse taught me who browses without a GPU."
-ogImage: "https://www.varyvoda.com/images/posts/the-bay-is-a-shader-now-og.jpg"
+ogImage: "https://www.varyvoda.com/images/posts/the-bay-is-a-shader-now.jpg"
+featuredImage: "/images/posts/the-bay-is-a-shader-now.webp"
+image_alt: "A mountainous bay breaks into painted pixel-like fragments and fine flowing contour lines."
 ---
 
 

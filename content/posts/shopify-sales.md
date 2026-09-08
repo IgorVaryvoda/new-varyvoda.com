@@ -9,6 +9,9 @@ page_css: ["shopify-sales"]
 canonicalUrl: "https://sirv.com/blog/increase-shopify-sales/"
 sitemap:
   disable: true
+featuredImage: "/images/posts/shopify-sales.webp"
+image_alt: "A path of rounded stepping forms emerges from tangled dark shapes toward a clear warm opening."
+ogImage: "https://www.varyvoda.com/images/posts/shopify-sales.jpg"
 ---
 <img src="https://sirv.sirv.com/blog/Shopify%20Sales/online_shopping.svg" alt="Increase Shopify sales - graphic">
 

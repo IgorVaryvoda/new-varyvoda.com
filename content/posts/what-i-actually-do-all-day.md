@@ -5,6 +5,9 @@ lastmod: 2026-09-04
 draft: false
 content_type: "Essay"
 description: "One Saturday produced 31 pushes across three repositories. This is what I was doing while agents wrote the code."
+featuredImage: "/images/posts/what-i-actually-do-all-day.webp"
+image_alt: "Interwoven painted paths connect symbols for reading, decisions, waiting, redirection and approval."
+ogImage: "https://www.varyvoda.com/images/posts/what-i-actually-do-all-day.jpg"
 ---
 
 On Saturday 15 August 2026, my GitHub log showed thirty-one pushes across three repositories, and two brand-new repositories created eight seconds apart at 20:04. First push at 06:41, last at 22:04.

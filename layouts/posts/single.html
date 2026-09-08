@@ -51,7 +51,9 @@
       </aside>
 
       <div class="article-prose prose">
-        {{ if .Params.featuredImage }}<img src="{{ .Params.featuredImage }}" alt="Featured image">{{ end }}
+        {{ with .Params.featuredImage }}
+          {{ partial "responsive-local-image.html" (dict "src" . "alt" ($.Params.image_alt | default $.Title) "sizes" "(max-width: 960px) calc(100vw - 3.6rem), 740px" "fallbackWidth" 800) }}
+        {{ end }}
         {{ .Content }}
         <footer class="article-end">
           <span>— End of {{ .Params.content_type | default "note" | lower }}</span>

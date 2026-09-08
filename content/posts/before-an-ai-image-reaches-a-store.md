@@ -4,6 +4,9 @@ date: 2026-09-04
 draft: false
 content_type: "Field note"
 description: "Studio's publishing checks have to account for changed permissions, lost responses and the difference between an internal receipt and actual Shopify state."
+featuredImage: "/images/posts/before-an-ai-image-reaches-a-store.webp"
+image_alt: "An amber sphere passes through a checked panel into a stylized storefront, followed by a second inspection."
+ogImage: "https://www.varyvoda.com/images/posts/before-an-ai-image-reaches-a-store.jpg"
 ---
 
 An image can look right, pass review and still be unsafe to publish. The merchant may have changed the product. The app may have been disconnected. An earlier write may have succeeded while its response disappeared.

@@ -4,6 +4,9 @@ date: 2026-09-04
 draft: false
 content_type: "Build record"
 description: "Building the ImageGuide extension meant separating a downloaded image from its uses, and measured bytes from estimated savings."
+featuredImage: "/images/posts/what-an-image-auditor-can-measure.webp"
+image_alt: "The same blue and amber circle appears at four sizes, each surrounded by fine measurement marks."
+ogImage: "https://www.varyvoda.com/images/posts/what-an-image-auditor-can-measure.jpg"
 ---
 
 An image can be the right size for a hero and too large for a thumbnail on the same page. Counting its URL once is useful for the resource list. Judging every use as if it were the hero is wrong.

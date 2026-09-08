@@ -5,7 +5,9 @@ draft: false
 content_type: "Essay"
 page_css: ["two-theories"]
 description: "One programmer writes the code. Another directs agents that write it. The second job moves more attention into specification, verification, and product judgement."
-ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
+ogImage: "https://www.varyvoda.com/images/posts/two-theories-of-a-programmer.jpg"
+featuredImage: "/images/posts/two-theories-of-a-programmer.webp"
+image_alt: "A single path of spheres meets an amber hub that connects to many parallel paths."
 ---
 
 <p class="two-theories-meta">2 Jul 2026 · data: 23 Mar to 2 Jul · one repo, three contributors, every commit counted</p>

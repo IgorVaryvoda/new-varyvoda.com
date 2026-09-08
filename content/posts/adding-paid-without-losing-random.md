@@ -4,6 +4,9 @@ date: 2026-09-04
 draft: false
 content_type: "Build record"
 description: "Earth Roulette gained airport-based trip suggestions and a paid membership path. The homepage still had to let people spin for a destination."
+featuredImage: "/images/posts/adding-paid-without-losing-random.webp"
+image_alt: "Loose blue and amber swirls flow alongside an ordered grid of rectangles and circles."
+ogImage: "https://www.varyvoda.com/images/posts/adding-paid-without-losing-random.jpg"
 ---
 
 On 30 August I made Wanderer the product on Earth Roulette's homepage. Another commit that day was called `Preserve random discovery on the homepage`.

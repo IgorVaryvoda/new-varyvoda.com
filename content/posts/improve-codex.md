@@ -5,6 +5,9 @@ draft: false
 content_type: "Build record"
 description: "A codebase audit becomes reviewed plans, isolated Codex worktrees, and implementation branches that still require a human merge decision."
 lastmod: 2026-09-04
+featuredImage: "/images/posts/improve-codex.webp"
+image_alt: "Three isolated platforms of blocks pass through separate inspection panels before meeting at one final gate."
+ogImage: "https://www.varyvoda.com/images/posts/improve-codex.jpg"
 ---
 
 [improve-codex](https://github.com/IgorVaryvoda/improve-codex) packages the audit and implementation loop I use on mature repositories.

@@ -4,6 +4,9 @@ date: 2026-09-08
 draft: false
 content_type: "Essay"
 description: "Press is a pleasant detour, Studio keeps moving, and I don't confuse needing variety with being unable to focus."
+featuredImage: "/images/posts/i-get-bored-i-still-ship.webp"
+image_alt: "Igor relaxes with a mug at his two-monitor desktop setup, with a split keyboard and the bay outside."
+ogImage: "https://www.varyvoda.com/images/posts/i-get-bored-i-still-ship.jpg"
 ---
 
 A friend looked at [Press](/projects/press/) and asked whether it was worth scattering my attention on another project.

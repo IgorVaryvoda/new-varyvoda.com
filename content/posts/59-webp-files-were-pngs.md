@@ -4,6 +4,9 @@ date: 2026-09-04
 draft: false
 content_type: "Build record"
 description: "The first Press audit found 59 PNGs hiding behind WebP filenames on my own image-optimization site. I checked the historical files again."
+featuredImage: "/images/posts/59-webp-files-were-pngs.webp"
+image_alt: "A slate-blue surface peels back to expose contrasting geometric layers lit with amber."
+ogImage: "https://www.varyvoda.com/images/posts/59-webp-files-were-pngs.jpg"
 ---
 
 The first folder I pointed my desktop image auditor at was `imageguide/public`. It contained 169 files named `.webp`. Fifty-nine were PNGs.

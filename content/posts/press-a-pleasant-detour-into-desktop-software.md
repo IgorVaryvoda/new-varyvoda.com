@@ -4,6 +4,9 @@ date: 2026-09-08
 draft: false
 content_type: "Build record"
 description: "Zed made me want to try GPUI. Press gave me a folder of images to work on. A personal detour into Rust, responsive interfaces and an app still finding its shape."
+featuredImage: "/images/posts/press-a-pleasant-detour-into-desktop-software.webp"
+image_alt: "A textured field of blue and grey fragments narrows into a compact cluster of shapes with amber accents."
+ogImage: "https://www.varyvoda.com/images/posts/press-a-pleasant-detour-into-desktop-software.jpg"
 ---
 
 I started Press because I wanted to play with GPUI.
