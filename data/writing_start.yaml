@@ -7,6 +7,9 @@
       url: "/posts/59-webp-files-were-pngs/"
 - group: "How I work"
   items:
+    - title: "I get bored. I still ship."
+      url: "/posts/i-get-bored-i-still-ship/"
+      description: "Press is a pleasant detour. The main projects keep moving."
     - title: "Why every agent rule has an incident"
       url: "/posts/scar-tissue-as-documentation/"
     - title: "What I actually do all day"
