@@ -1,4 +1,4 @@
-.PHONY: dev dev-drafts build drafts validate-projects quality-gate install-tools
+.PHONY: dev dev-drafts build drafts validate-projects test-typography quality-gate install-tools
 
 HTMLTEST := $(shell command -v htmltest 2>/dev/null || echo ./bin/htmltest)
 
@@ -17,7 +17,10 @@ drafts:
 validate-projects:
 	node scripts/validate-projects.mjs
 
-quality-gate: build
+test-typography:
+	node --test scripts/test-typography.mjs
+
+quality-gate: build test-typography
 	node scripts/validate-projects.mjs
 	$(HTMLTEST) -c .htmltest.yml
 	node scripts/test-agent-readiness.mjs

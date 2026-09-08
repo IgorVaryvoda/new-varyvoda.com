@@ -1,0 +1,60 @@
+/* Shared reading/UI roles, loaded after the legacy shell and before page CSS.
+   Page-specific display sizes and technical diagrams keep their own scale. */
+:root {
+  --type-compact-label: 1.25rem;
+  --type-compact-action: 1.4rem;
+  --type-supporting: 1.3rem;
+  --type-card-copy: 1.6rem;
+  --type-intro: clamp(1.7rem, 1.55rem + 0.4vw, 1.9rem);
+  --type-prose: clamp(1.8rem, 1.68rem + 0.32vw, 2rem);
+  --leading-prose: 1.72;
+  --measure-prose: 64ch;
+}
+
+/* Ordinary controls are not technical annotations. Keep brand lettering and
+   genuine dates, status, identifiers, and code in their existing roles. */
+body.builder-index .primary-navigation a,
+body.builder-index .theme-toggle,
+body.builder-index .menu-button,
+body.builder-index .text-link,
+body.builder-index .article-end {
+  font-family: var(--display);
+  font-size: var(--type-compact-action);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+body.builder-index .article-end { flex-wrap: wrap; }
+
+/* Override the legacy mobile prose shrink without affecting the root rem
+   scale, project diagram dimensions, or headline composition. */
+body.builder-index .prose {
+  font-size: var(--type-prose);
+  line-height: var(--leading-prose);
+  font-optical-sizing: auto;
+}
+
+body.builder-index .prose p { margin-bottom: 1.5em; }
+
+/* Inline code may be slightly smaller; a fenced block must not receive that
+   reduction a second time through its nested <code> element. */
+body.builder-index .prose pre {
+  max-width: 100%;
+  font-size: var(--type-compact-action);
+}
+body.builder-index .prose pre code { font-size: inherit; }
+
+/* Project summaries are scanned like cards; long-form stories stay serif. */
+body.builder-index .work-atlas-copy > p:not(.work-atlas-meta) {
+  font-family: var(--display);
+  font-size: var(--type-card-copy);
+  line-height: 1.6;
+}
+
+/* Larger labels must wrap instead of widening a narrow card. */
+body.builder-index .build-status,
+body.builder-index .work-status {
+  flex-wrap: wrap;
+  white-space: normal;
+}
