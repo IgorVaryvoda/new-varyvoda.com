@@ -238,10 +238,11 @@ img { max-width: 100%; }
   color: #fff;
   background: var(--ink);
   font-size: 1.3rem;
-  transform: translateY(-150%);
+  clip-path: inset(50%);
+  transition: none;
 }
 
-.skip-link:focus { transform: translateY(0); }
+.skip-link:focus-visible { clip-path: none; }
 
 .site-shell { position: relative; z-index: 1; min-height: 100vh; }
 .content {
