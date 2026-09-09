@@ -23,12 +23,16 @@ jobs:
         hugo-version: '0.161.1'
         extended: true
 
+    - name: Sync self-hosted font assets
+      run: python3 scripts/sync-literata-italics.py
+
     - name: Build
       run: hugo --gc --minify
 
     - name: Check links and HTML
       run: |
         curl -sfL https://github.com/wjdp/htmltest/releases/download/v0.17.0/htmltest_0.17.0_linux_amd64.tar.gz | tar -xz htmltest
+        python3 scripts/sync-literata-italics.py --check
         node scripts/validate-projects.mjs
         ./htmltest -c .htmltest.yml
         node scripts/test-agent-readiness.mjs

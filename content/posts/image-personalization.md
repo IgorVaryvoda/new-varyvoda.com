@@ -8,6 +8,9 @@ older_archive: true
 canonicalUrl: "https://sirv.com/blog/image-personalization-examples/"
 sitemap:
   disable: true
+featuredImage: "/images/posts/image-personalization.webp"
+image_alt: "One central painted circle connects to multiple panels that vary its colours, proportions and layout."
+ogImage: "https://www.varyvoda.com/images/posts/image-personalization.jpg"
 ---
 <div class="full-image__container">
     <div class="full-image--center">

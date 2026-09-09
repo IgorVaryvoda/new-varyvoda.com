@@ -8,6 +8,9 @@ lastmod: 2026-07-20
 canonicalUrl: "https://sirv.com/blog/image-seo-for-ecommerce/"
 sitemap:
   disable: true
+featuredImage: "/images/posts/image-seo.webp"
+image_alt: "Product-image fragments converge through layered panels and emerge as an ordered network of connected images."
+ogImage: "https://www.varyvoda.com/images/posts/image-seo.jpg"
 ---
 
 > **Update, July 2026:** I checked this advice again seven years later. Read [Image SEO in 2026: what changed since 2019](/posts/image-seo-2026/) for the current version.

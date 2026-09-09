@@ -5,6 +5,9 @@ draft: false
 content_type: "Essay"
 description: "Small software can be worth maintaining even when it never becomes a company."
 lastmod: 2026-09-04
+featuredImage: "/images/posts/why-i-dont-kill-side-projects.webp"
+image_alt: "Small illuminated forms in glass domes remain connected by fine gold lines as a watering can tends a central sprout."
+ogImage: "https://www.varyvoda.com/images/posts/why-i-dont-kill-side-projects.jpg"
 ---
 
 I have a lot of side projects. Most advice says I should kill them.

@@ -51,8 +51,23 @@ def check_bounds(page: Page, selector: str) -> None:
         assert box is not None
         assert box['x'] >= -1 and box['x'] + box['width'] <= width + 1, (
             f"Clipped {selector}: {box}, viewport={width}")
-        assert element.evaluate('el => el.scrollWidth <= el.clientWidth + 1'), (
-            f"Text exceeds its box: {selector}")
+        # Measure text, excluding decorative pseudo-elements such as the scene glow.
+        assert element.evaluate("""el => {
+            const decorated = ['::before', '::after'].some(p =>
+                !['none', 'normal'].includes(getComputedStyle(el, p).content));
+            if (!decorated) return el.scrollWidth <= el.clientWidth + 1;
+            const box = el.getBoundingClientRect();
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+            for (let node; (node = walker.nextNode());) {
+                if (!node.textContent.trim()) continue;
+                const range = document.createRange();
+                range.selectNodeContents(node);
+                for (const rect of range.getClientRects()) {
+                    if (rect.left < box.left - 1 || rect.right > box.right + 1) return false;
+                }
+            }
+            return true;
+        }"""), f"Text exceeds its box: {selector}"
 
 
 def check_home(page: Page) -> None:
@@ -83,7 +98,12 @@ def check_article(page: Page) -> None:
     check_bounds(page, '.article-prose')
     measure = page.locator('.article-prose').evaluate("""el => {
         const s = getComputedStyle(el);
-        return {width: el.getBoundingClientRect().width, max: parseFloat(s.maxWidth),
+        const probe = document.createElement('span');
+        probe.style.cssText = 'display:block;width:65ch';
+        el.append(probe);
+        const limit = probe.getBoundingClientRect().width;
+        probe.remove();
+        return {width: el.getBoundingClientRect().width, max: limit,
                 leading: parseFloat(s.lineHeight) / parseFloat(s.fontSize)};
     }""")
     assert measure['width'] <= measure['max'] + 1, f"Reading measure exceeded: {measure}"
@@ -149,7 +169,7 @@ def main() -> int:
                             if route == '/':
                                 check_home(page)
                                 loaded = page.evaluate("[...document.fonts].filter(f => f.status === 'loaded').map(f => f.family.replaceAll('\"', ''))")
-                                assert all(font in loaded for font in ('Geologica', 'Literata')), f'Webfonts did not load: {loaded}'
+                                assert all(font in [family.lower() for family in loaded] for font in ('geologica', 'literata')), f'Webfonts did not load: {loaded}'
                                 if width <= 680:
                                     page.locator('.menu-button').click()
                                     check_type(page, '.primary-navigation a', 22, 'Geologica')

@@ -6,7 +6,9 @@ draft: false
 content_type: "Essay"
 page_css: ["moat"]
 description: "Studio took seven months to build. That made one product question unavoidable: which parts would still be difficult for a competitor to reproduce?"
-ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
+ogImage: "https://www.varyvoda.com/images/posts/not-a-moat.jpg"
+featuredImage: "/images/posts/not-a-moat.webp"
+image_alt: "A row of repeated pale panels contrasts with deep irregular layers surrounding an amber core."
 ---
 
 <p class="moat-meta">1 Aug 2026 · written from Studio strategy notes</p>

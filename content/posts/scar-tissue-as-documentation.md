@@ -4,6 +4,9 @@ date: 2026-08-16
 draft: false
 content_type: "Essay"
 description: "Most rules in my agent skills folder exist because ignoring them already damaged real work."
+featuredImage: "/images/posts/scar-tissue-as-documentation.webp"
+image_alt: "Gold repairs join cracks in a curved slate path leading toward a soft amber light."
+ogImage: "https://www.varyvoda.com/images/posts/scar-tissue-as-documentation.jpg"
 ---
 
 There is a folder on my machine called `skills`. It explains how agents should commit on a shared branch, run a bug-fix loop, and audit a codebase.

@@ -14,7 +14,7 @@
 .start-here-grid li + li { border-top: 1px solid var(--harbor-rule); }
 .start-here-grid a { display: grid; gap: 0.6rem; padding: 1.6rem 0; }
 .start-here-grid strong { color: var(--harbor-ink); font-family: var(--reading); font-size: 1.8rem; font-weight: 600; line-height: 1.4; }
-.start-here-grid span { color: var(--harbor-muted); font-size: var(--type-supporting); line-height: 1.55; }
+.start-here-grid span { color: var(--harbor-muted); font-size: var(--type-card-copy); line-height: 1.55; }
 .start-here-grid a:hover strong { color: var(--accent); }
 
 .writing-start { width: auto; margin: 0; padding: 0; background: transparent; }

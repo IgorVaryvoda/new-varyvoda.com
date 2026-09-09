@@ -6,6 +6,9 @@ draft: false
 content_type: "Field note"
 older_archive: true
 lastmod: 2026-09-04
+featuredImage: "/images/posts/help-ukraine.webp"
+image_alt: "Blue and gold ribbons connect defence, medical, shelter, livelihood and animal-aid symbols to a supported outline of Ukraine."
+ogImage: "https://www.varyvoda.com/images/posts/help-ukraine.jpg"
 ---
 
 Russia is waging an unprovoked and vicious war against Ukraine. Millions of people got displaced, tens of thousands of people lost their loved ones and once beautiful Ukrainian cities are getting razed to the ground.

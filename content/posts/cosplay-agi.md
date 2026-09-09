@@ -5,6 +5,9 @@ draft: false
 content_type: "Essay"
 description: "One of my agent skills is triggered by 'cosplay AGI'. The joke is useful because the model alone is never the whole system."
 lastmod: 2026-09-04
+featuredImage: "/images/posts/cosplay-agi.webp"
+image_alt: "A smooth reflective sheet lifts at one corner to reveal an uneven structure of blocks beneath it."
+ogImage: "https://www.varyvoda.com/images/posts/cosplay-agi.jpg"
 ---
 
 One of my agent skills is triggered by **"cosplay AGI"**. It asks for a source-checked audit with file references and a fixed scoring scale.

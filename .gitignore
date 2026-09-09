@@ -9,3 +9,8 @@ node_modules/
 bin/
 tmp/
 social/
+
+# Reproducibly fetched by scripts/sync-literata-italics.py for dev/build.
+static/fonts/literata-italic.woff2
+static/fonts/literata-medium-italic.woff2
+static/fonts/literata-semibold-italic.woff2

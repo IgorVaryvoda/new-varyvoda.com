@@ -19,7 +19,7 @@
 .care-feed .care-key { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.02em; }
 .care-feed strong { color: var(--ink); font-size: 1.6rem; }
 .harbor-band .care-feed strong { color: var(--harbor-ink); }
-.care-feed p { margin: 0; color: var(--slate); font-family: var(--display); font-size: var(--type-supporting); line-height: 1.65; }
+.care-feed p { margin: 0; color: var(--slate); font-family: var(--display); font-size: var(--type-card-copy); line-height: 1.65; }
 
 .work-atlas-proof {
   display: grid;
