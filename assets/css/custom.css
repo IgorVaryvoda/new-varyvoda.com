@@ -26,6 +26,8 @@
   --tide-middle: rgba(213, 223, 220, 0.62);
   --footer-scene-edge: rgba(225, 239, 242, 0.7);
   --footer-scene-veil: rgba(225, 239, 242, 0.24);
+  --article-cover-edge: rgba(225, 239, 242, 0.9);
+  --article-cover-veil: rgba(225, 239, 242, 0.68);
   --scene-panel: rgba(235, 245, 246, 0.9);
   --scene-panel-muted: #31444d;
   --scene-panel-rule: rgba(17, 24, 32, 0.24);
@@ -82,6 +84,8 @@
   --tide-middle: rgba(10, 18, 23, 0.62);
   --footer-scene-edge: rgba(6, 11, 15, 0.94);
   --footer-scene-veil: rgba(6, 11, 15, 0.18);
+  --article-cover-edge: rgba(6, 11, 15, 0.88);
+  --article-cover-veil: rgba(6, 11, 15, 0.6);
   --scene-panel: rgba(6, 11, 15, 0.84);
   --scene-panel-muted: #a7b3b7;
   --scene-panel-rule: rgba(216, 229, 228, 0.19);
