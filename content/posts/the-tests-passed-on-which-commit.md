@@ -4,6 +4,9 @@ date: 2026-09-04
 draft: false
 content_type: "Build record"
 description: "VibeQ accepted an agent's commit and test report as text. The closeout now checks those claims against the actual pull request head."
+featuredImage: "/images/posts/the-tests-passed-on-which-commit.webp"
+image_alt: "Two contrasting panels of checked rows are joined by lines that fragment between them."
+ogImage: "https://www.varyvoda.com/images/posts/the-tests-passed-on-which-commit.jpg"
 ---
 
 [VibeQ](/projects/vibeq/) had a closeout path that accepted an agent's reported commit and test result as text. Those values reached the task comment and activity record without being checked against the pull request.

@@ -6,16 +6,16 @@ draft: false
 homepage_weight: 5
 project_url: "https://www.imageguide.dev/press/"
 github_url: "https://github.com/IgorVaryvoda/press"
-image: "/images/press/audit-2026-08-26.webp"
-image_alt: "Press listing image formats, dimensions and file sizes beside its conversion settings, captured in August 2026"
+image: "/images/press/audit-2026-09-08.webp"
+image_alt: "Press 0.6.6 showing six selected product-photo exports beside the folder sidebar and conversion settings"
 description: "An open-source desktop app for preparing images: inspect folders, compare compression, resize and convert in batches, with local AI and optional Studio tools."
 hero_kicker: "Image preparation, on your computer"
 hero_intro: "Get a folder of images ready to use. Inspect what's there, resize and convert in batches, and compare the result before writing it. Built in Rust, with a desktop interface and a command line."
 hero_mark: "Desktop + CLI"
 hero_scope: "macOS · Windows · Linux"
 hero_primary_label: "Get Press"
-hero_frame_label: "Press / August 2026"
-hero_frame_status: "Earlier interface"
+hero_frame_label: "Press 0.6.6 / September 2026"
+hero_frame_status: "Current macOS app"
 hero_flow:
   - "Open your images"
   - "Find what needs work"
@@ -29,11 +29,11 @@ stewardship:
 last_tended: "2026-09-08"
 feedback_url: "https://github.com/IgorVaryvoda/press/issues"
 proof:
-  - value: "3 export formats"
-    label: "WebP, AVIF and JPEG XL, with size and quality controls"
+  - value: "4 export formats"
+    label: "WebP, AVIF, JPEG XL and JPEG, with size and quality controls"
   - value: "Local AI"
     label: "Background removal and 4× upscaling on supported builds"
-imperfect: "Camera raw, HEIC and HEIF files are counted but not decoded or converted. Local AI needs model downloads and a supported runtime; setup differs by platform. The screenshots show the August interface, which has since evolved."
+imperfect: "Camera raw, HEIC and HEIF files are counted but not decoded or converted. Local AI needs model downloads and a supported runtime; setup differs by platform."
 weight: 5
 ---
 
@@ -47,15 +47,19 @@ The format check reads the file, not its name. My first audit found [59 PNGs hid
 
 ## See the difference before exporting
 
-Choose WebP, AVIF or JPEG XL, adjust the quality, and set a maximum image size. The comparison puts the original beside the proposed result. Step through the folder with the arrow keys while keeping those settings, rather than setting up each image from scratch.
+Choose WebP, AVIF, JPEG XL or JPEG, adjust the quality, and set a maximum image size. The comparison puts the original beside the proposed result. Step through the folder with the arrow keys while keeping those settings, rather than setting up each image from scratch.
 
 The useful question is whether you would actually use the output, not just how many bytes it saved. The comparison gives you a place to make that decision before running the batch.
 
-<img src="/images/press/comparison-2026-08-26.webp" alt="Press displaying an original image beside its converted result in the August 2026 comparison interface" loading="lazy" decoding="async">
+<img src="/images/press/comparison-2026-09-08.webp" alt="Press 0.6.6 comparing a product photo with its WebP preview, captured on September 8, 2026" width="1170" height="768" loading="lazy" decoding="async">
 
-*The comparison view in August 2026. The interface has changed since this capture.*
+*The current comparison view, captured from Press 0.6.6 on macOS. The divider lets me inspect the original and the WebP preview.*
 
 Batch conversion writes copies into `optimized/` or a destination you choose, preserving the folder structure. In-place replacement is a separate, explicit choice with an originals backup. After a run, Press shows the files it actually wrote, including any that grew. The estimate before a run is a sample; the sizes afterwards come from the output files.
+
+<img src="/images/press/results-2026-09-08.webp" alt="Press 0.6.6 reviewing six saved WebP files, with per-file savings below the comparison" width="1170" height="768" loading="lazy" decoding="async">
+
+*The finished batch: six actual output files. [Capture details and demo photo credits](https://github.com/IgorVaryvoda/press/blob/main/docs/screenshots.md).*
 
 ## Local tools, optional connections
 

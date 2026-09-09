@@ -7,7 +7,9 @@ url: /experts-nuxt-Sirv/
 draft: false
 content_type: "Guide"
 older_archive: true
-ogImage: "https://cdn.earthroulette.com/varyvoda/blog-images/boast2.png"
+ogImage: "https://www.varyvoda.com/images/posts/expets-sirv-optimization.jpg"
+featuredImage: "/images/posts/expets-sirv-optimization.webp"
+image_alt: "Dense painted blocks taper into smaller, widely spaced fragments across an open pale field."
 ---
 > Historical guide from 2023. The examples describe that version of Sirv Experts and its Nuxt configuration. The script-loading error handler was corrected in September 2026. For current delivery advice, read [Image SEO in 2026](/posts/image-seo-2026/).
 

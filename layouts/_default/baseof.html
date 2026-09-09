@@ -57,6 +57,8 @@
       <link rel="stylesheet" href="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" crossorigin="anonymous" media="screen">
     {{ end }}
 
+    {{ partial "stylesheet.html" "css/typography.css" }}
+
     {{ if .IsHome }}
       {{ partial "stylesheet.html" "css/pages/home.css" }}
       {{ partial "stylesheet.html" "css/components/portfolio.css" }}

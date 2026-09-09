@@ -5,6 +5,9 @@ draft: false
 content_type: "Essay"
 description: "I spent years coordinating developers, marketers, priorities, and execution across internet businesses without a title that explained the job."
 lastmod: 2026-09-04
+featuredImage: "/images/posts/the-title-was-fuzzy.webp"
+image_alt: "Four large textured circular forms connect through fine gold lines to a small amber centre."
+ogImage: "https://www.varyvoda.com/images/posts/the-title-was-fuzzy.jpg"
 ---
 
 For a few years, I had no useful answer to "what do you do?"

@@ -4,6 +4,9 @@ date: 2026-07-06
 draft: false
 content_type: "Guide"
 description: "I checked my 2019 image SEO guide again. The basics still hold, while formats, loading, product data, and visual discovery have changed."
+featuredImage: "/images/posts/image-seo-2026.webp"
+image_alt: "Four foundation blocks support branching ribbons that connect varied product and image motifs."
+ogImage: "https://www.varyvoda.com/images/posts/image-seo-2026.jpg"
 ---
 
 In 2019 I wrote a [guide to image SEO for e-commerce](/posts/image-seo/). Seven years later, some of it is still useful and some is plainly old.

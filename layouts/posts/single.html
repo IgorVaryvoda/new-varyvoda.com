@@ -20,7 +20,12 @@
 }}
 <script type="application/ld+json">{{ $article | jsonify | safeJS }}</script>
 <article class="article-page article-page--editorial">
-  <header class="article-hero">
+  <header class="article-hero{{ with .Params.featuredImage }} article-hero--illustrated{{ end }}">
+    {{ with .Params.featuredImage }}
+      <div class="article-hero-image">
+        {{ partial "responsive-local-image.html" (dict "src" . "alt" ($.Params.image_alt | default $.Title) "sizes" "100vw" "fallbackWidth" 1600 "loading" "eager" "fetchpriority" "high") }}
+      </div>
+    {{ end }}
     <div class="article-hero-inner">
       <div class="article-hero-top">
         <p><a href="/posts/">Writing index</a><span>{{ .Params.content_type | default "Field note" }}</span></p>
@@ -51,7 +56,6 @@
       </aside>
 
       <div class="article-prose prose">
-        {{ if .Params.featuredImage }}<img src="{{ .Params.featuredImage }}" alt="Featured image">{{ end }}
         {{ .Content }}
         <footer class="article-end">
           <span>— End of {{ .Params.content_type | default "note" | lower }}</span>
