@@ -23,12 +23,11 @@ function hasDeclaration(source, property, value) {
 }
 
 test("shared roles load once, after the shell and before page styles", () => {
-  const include = '{{ partial "stylesheet.html" "css/typography.css" }}';
-  assert.equal(template.split(include).length - 1, 1);
-  const index = template.indexOf(include);
-  assert.ok(index > template.indexOf('resources.Concat "css/site.css"'));
-  assert.ok(index < template.indexOf('"css/pages/home.css"'));
-  assert.match(template.slice(0, index), /\{\{ end \}\}\s*$/);
+  assert.equal(template.split('resources.Get "css/typography.css"').length - 1, 1);
+  assert.match(template, /slice \$normalize \$styles \$custom \$fonts \$typography/);
+  assert.match(template, /href="\{\{ \$typography.RelPermalink \}\}"/);
+  assert.doesNotMatch(template, /partial "stylesheet.html" "css\/typography.css"/);
+  assert.ok(template.indexOf('$typography.RelPermalink') < template.indexOf('"css/pages/home.css"'));
 });
 
 test("shared sizes preserve a readable rem-based floor", () => {

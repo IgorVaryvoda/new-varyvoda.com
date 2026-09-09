@@ -13,10 +13,12 @@
 
 /* Ordinary controls are not technical annotations. Keep brand lettering and
    genuine dates, status, identifiers, and code in their existing roles. */
-body.builder-index .primary-navigation a,
 body.builder-index .theme-toggle,
 body.builder-index .menu-button,
 body.builder-index .text-link,
+body.builder-index .project-cta,
+body.builder-index .work-atlas-action,
+body.builder-index .project-chapters-rail nav a,
 body.builder-index .article-end {
   font-family: var(--display);
   font-size: var(--type-compact-action);
@@ -26,6 +28,21 @@ body.builder-index .article-end {
 }
 
 body.builder-index .article-end { flex-wrap: wrap; }
+body.builder-index .eyebrow {
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+  font-weight: 500;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+@media (min-width: 681px) {
+  body.builder-index .primary-navigation a { font-size: var(--type-compact-action); }
+}
+
+body.builder-index .text-link { white-space: normal; }
+.work-atlas-action { align-items: baseline; gap: 1rem; }
+.work-atlas-action b { flex: none; }
 
 /* Override the legacy mobile prose shrink without affecting the root rem
    scale, project diagram dimensions, or headline composition. */

@@ -29,13 +29,13 @@ Dark is the default. Light mode is a full theme, not an inverted afterthought. A
 - **Literata** (`--reading`): prose, editorial headlines, reflective statements.
 - **System monospace** (`--mono`): code, identifiers, dates, status, and restrained evidence labels. Not the default for navigation or ordinary supporting copy.
 
-Shared size and reading-role tokens live in `assets/css/typography.css`. The base template loads this after the legacy shell and before route-family styles in both development and production. Its compact tokens supersede the older defaults in `custom.css`; change the role token here rather than adding another local override.
+Shared size and reading-role tokens live in `assets/css/typography.css`. The base template loads this after the legacy shell and before route-family styles, separately in development and inside the fingerprinted production bundle. Its compact tokens supersede the older defaults in `custom.css`; change the role token here rather than adding another local override.
 
 At a 16px browser default (the existing root is 62.5%), compact metadata is 12.5px, ordinary controls 14px, supporting copy 13px, scannable card copy 16px, introductions 17–19px, and long-form prose 18–20px with 1.72 leading. Keep sizes in rem-based tokens so browser text-size preferences still scale them. Uppercase is reserved for short metadata and established brand lettering; normal controls and supporting sentences retain their authored case.
 
-The homepage uses a sans headline, serif introduction, and sans personal line. On small screens, let the scene grow to accommodate the text instead of restoring the old 9–13.5px overrides. Article navigation uses Geologica and a 44px minimum row target. Fenced code stays monospace at the action size; nested `code` inherits that size instead of shrinking it again.
+The homepage uses a sans headline, serif introduction, and sans personal line. On small screens, keep the origin and latest-post labels in normal flow and let the scene grow to accommodate the text instead of restoring the old 9–13.5px overrides. Article navigation uses Geologica and a 44px minimum row target. Fenced code stays monospace at the action size; nested `code` inherits that size instead of shrinking it again.
 
-Font files and loading remain self-hosted and unchanged. Real Literata italic files are not supplied by this typography pass: italic synthesis remains enabled until matching licensed italic assets and their Unicode subsets are added and verified. Do not declare a nonexistent local font URL or disable synthesis before supplying the face.
+Font files remain self-hosted. The build verifies and fetches the pinned Literata italic faces through `scripts/sync-literata-italics.py`.
 
 Headline scale follows the page's job. The homepage statement, an index masthead, and an article title are different roles; they do not need one shared size. Reuse the existing role before adding another clamp.
 
@@ -127,7 +127,7 @@ Write like Igor: direct, specific, conversational, and technically precise. Stat
 Before shipping a visual change:
 
 1. Run Hugo `0.161.1+extended` and `make quality-gate`. `make test-typography` also runs the dependency-free source contracts independently; these are not a visual pass.
-2. Check home, work, one project, writing, one article, about, and contact at desktop and mobile sizes.
+2. Run `python3 scripts/check-typography.py` against the locally served site for seven routes, four viewports, and both themes. Repeat with `--browser webkit` and a legacy `--article-path`. Review home, work, one project, writing, one article, about, and contact visually at desktop and mobile sizes.
 3. Check dark and light modes, keyboard focus, reduced motion, hover, and horizontal overflow. Include 320px width, short landscape, larger browser text, and Ukrainian glyphs (`Ґґ Єє Іі Її`). Confirm actual Geologica/Literata faces load, hero corners do not overlap, and long table-of-contents links wrap. Do not count a fallback-font fixture as full visual verification.
 4. Confirm the production smoke test after the SFTP sync.
 

@@ -57,16 +57,33 @@
   text-wrap: pretty;
 }
 
+.scene-corner {
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.scene-corner--latest { font-size: var(--type-compact-action); font-weight: 500; }
+
 :root:not([data-theme="dark"]) :where(.scene-intro, .scene-personality) {
   color: rgba(243, 248, 252, 0.94);
   text-shadow: 0 1px 1.2rem rgba(8, 28, 46, 0.55), 0 0 0.3rem rgba(8, 28, 46, 0.4);
+}
+
+.build-summary > div:first-child > p:first-child {
+  margin: 0;
+  color: var(--harbor-ink);
+  font-family: var(--reading);
+  font-size: var(--type-prose);
+  line-height: 1.65;
 }
 
 .build-role {
   margin: 1.2rem 0 0;
   color: var(--harbor-muted);
   font-family: var(--display);
-  font-size: var(--type-supporting);
+  font-size: var(--type-compact-action);
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: normal;
@@ -116,15 +133,15 @@
 }
 
 @media (max-width: 680px) {
-  /* Let larger supporting copy take space instead of shrinking it to fit. */
-  .scene-hero { padding-block: 5rem 10rem; }
-  .scene-message { min-width: 0; width: 100%; gap: 1.6rem; padding: 0 0.8rem; transform: translateY(-4vh); }
+  /* Keep the hero footer in flow so enlarged text cannot collide with it. */
+  .scene-hero { grid-template-rows: 1fr auto auto; gap: 1.6rem; padding: 4rem 0 2.6rem; }
+  .scene-message { min-width: 0; width: 100%; gap: 1.6rem; padding: 0 0.8rem; transform: none; }
   .scene-message::before { inset-inline: 0; }
   .scene-message .scene-sentence { min-width: 0; width: 100%; max-width: none; font-size: clamp(3.2rem, 10.8vw, 5rem); }
   /* Keep each phrase together when it fits; enlarged text may wrap inside it. */
   .scene-message .scene-sentence a { display: inline-block; max-width: 100%; white-space: normal; }
   .scene-intro { max-width: 38rem; }
-  .scene-corner { font-size: var(--type-compact-label); }
+  .scene-corner { position: static; width: fit-content; max-width: 100%; text-align: center; }
   .career-strip { grid-template-columns: 1fr; }
   .career-strip li:nth-child(even) { border-left: 0; }
   .career-strip li:nth-child(n + 2) { border-top: 1px solid var(--rule); }

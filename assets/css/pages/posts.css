@@ -177,13 +177,11 @@
 .article-rail dt,
 .article-rail dd {
   margin: 0;
-  font-family: var(--mono);
   font-size: var(--type-compact-label);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  line-height: 1.5;
 }
-.article-rail dt { color: var(--muted); }
-.article-rail dd { color: var(--slate); }
+.article-rail dt { color: var(--muted); font-family: var(--display); }
+.article-rail dd { color: var(--slate); font-family: var(--mono); }
 
 /* ch is resolved using the prose's own font and size, not the shell's font. */
 .article-page--editorial .article-prose { width: min(100%, var(--measure-prose)); margin: 0; }
