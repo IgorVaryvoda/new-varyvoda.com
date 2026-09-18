@@ -1,7 +1,7 @@
 ---
 title: "Earth Roulette"
 date: 2021-06-15
-lastmod: 2026-09-04
+lastmod: 2026-09-18
 draft: false
 homepage_weight: 3
 project_url: "https://earthroulette.com"
@@ -9,7 +9,7 @@ app_store_url: "https://apps.apple.com/us/app/earth-roulette-trip-explorer/id644
 play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casznm"
 image: "https://iantiark.sirv.com/varyvoda/er.png"
 image_alt: "Earth Roulette destination discovery interface with travel filters and a random destination"
-description: "Random destination discovery with 5,000 places, filters and travel guides, now joined by Wanderer airport-based trip ideas."
+description: "Random destination discovery with 5,000 places, filters and travel guides, a native iOS app, and Wanderer airport-based trip ideas."
 hero_kicker: "Built from scratch"
 hero_intro: "Press the button for somewhere unexpected, or give Wanderer an airport, budget and travel window to narrow the trip ideas."
 hero_mark: "Travel discovery"
@@ -22,12 +22,12 @@ hero_flow:
   - "Spin the globe"
   - "Inspect the surprise"
   - "Plan the trip"
-tech_stack: ["Nuxt", "Vue", "Supabase", "Cloudflare Workers"]
+tech_stack: ["Nuxt", "Vue", "SwiftUI", "Supabase", "Cloudflare Workers"]
 role: "Creator and sole builder"
 stewardship:
   state: "long-running"
   note: "I keep the destination data, integrations, and mobile flows working, and add things when they are useful."
-last_tended: "2026-09-02"
+last_tended: "2026-09-18"
 feedback_url: "/contact/?project=earth-roulette&type=bug"
 proof:
   - value: "5,000+"
@@ -40,6 +40,7 @@ highlights:
   - "5,000 destinations across every continent"
   - "Filters for budget, country, continent, and activity"
   - "Destination profiles, bucket lists, and flight search"
+  - "Native SwiftUI app on iOS, in ten languages"
   - "Web, iOS, and Android apps"
 weight: 4
 ---
@@ -67,6 +68,12 @@ The fare data comes from cached provider observations. It is not live inventory,
 The membership work includes checkout, activation, stored preferences and digest delivery. Those are implementation facts. This page does not claim a subscriber count, retention result or proven demand for the paid offer.
 
 One homepage revision made Wanderer too dominant. I restored the original random heading, Spin button and Filters beside the trip form. [The build story](/posts/adding-paid-without-losing-random/) explains that choice.
+
+## The iOS app is native now
+
+The iOS app was a WKWebView pointed at the website. In September 2026 I replaced it with a SwiftUI app that calls the same APIs directly, in the ten languages the site speaks. Place and country names come from the same database rows the website reads, so a Japanese reader gets ハルシュタット rather than Hallstatt.
+
+Rebuilding every screen against those APIs surfaced faults the web front end had been absorbing quietly: destination pages asking for fares by place slug and reporting "no fares" when the request was rejected, a home airport that reported success while writing nothing, hotel cards quoting rates scraped in 2024 under a "live prices" heading, and 506 airport codes pointing at same-named places on other continents. [The build record](/posts/the-app-rewrite-was-a-backend-audit/) goes through them.
 
 ## What it became
 
