@@ -10,6 +10,7 @@ play_store_url: "https://play.google.com/store/apps/details?id=xyz.appmaker.casz
 image: "https://iantiark.sirv.com/varyvoda/er.png"
 image_alt: "Earth Roulette destination discovery interface with travel filters and a random destination"
 description: "Random destination discovery with 5,000 places, filters and travel guides, a native iOS app, and Wanderer airport-based trip ideas."
+page_css: ["appshots"]
 hero_kicker: "Built from scratch"
 hero_intro: "Press the button for somewhere unexpected, or give Wanderer an airport, budget and travel window to narrow the trip ideas."
 hero_mark: "Travel discovery"
@@ -72,6 +73,24 @@ One homepage revision made Wanderer too dominant. I restored the original random
 ## The iOS app is native now
 
 The iOS app was a WKWebView pointed at the website. In September 2026 I replaced it with a SwiftUI app that calls the same APIs directly, in the ten languages the site speaks. Place and country names come from the same database rows the website reads, so a Japanese reader gets ハルシュタット rather than Hallstatt.
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-discover.webp" alt="The spin screen showing Hallstatt, Austria with temperature and cost, and a Spin again button" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Spin</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-destination.webp" alt="A destination page for Banff with temperature, rating, places to stay and things to do" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Destination</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-planning.webp" alt="The flights screen listing fares from Milan to several destinations" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Flights</span>
+    </div>
+  </div>
+  <figcaption>Spin, destination and flights in the SwiftUI app.</figcaption>
+</figure>
 
 Rebuilding every screen against those APIs surfaced faults the web front end had been absorbing quietly: destination pages asking for fares by place slug and reporting "no fares" when the request was rejected, a home airport that reported success while writing nothing, hotel cards quoting rates scraped in 2024 under a "live prices" heading, and 506 airport codes pointing at same-named places on other continents. [The build record](/posts/the-app-rewrite-was-a-backend-audit/) goes through them.
 

@@ -3,12 +3,32 @@ title: "The app rewrite turned into a backend audit"
 date: 2026-09-18
 draft: false
 content_type: "Build record"
+page_css: ["appshots"]
 description: "Earth Roulette's iOS app was a webview wrapper. Rebuilding it in SwiftUI meant calling every API directly, and that is how I found faults the website had been living with for months."
 ---
 
 Earth Roulette's iOS app used to be a WKWebView pointed at the website. It worked, in the sense that it loaded. It was not an app.
 
 The replacement is SwiftUI, and rebuilding it meant re-implementing every screen against the same APIs the site uses. I expected that work to be tedious. Instead it behaved like an audit, because a second implementation asks the same questions differently and gets different answers.
+
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-discover.webp" alt="The spin screen showing Hallstatt, Austria with temperature and cost, and a Spin again button" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Spin</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-destination.webp" alt="A destination page for Banff with temperature, rating, places to stay and things to do" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Destination</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/the-app-rewrite-planning.webp" alt="The flights screen listing fares from Milan to several destinations" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Flights</span>
+    </div>
+  </div>
+  <figcaption>The SwiftUI app: spin, destination and flights. Same APIs as the website, asked for directly.</figcaption>
+</figure>
 
 ## Every place page said there were no flights
 

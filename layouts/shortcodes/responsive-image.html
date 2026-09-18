@@ -1,0 +1,13 @@
+{{- /*
+  Wraps partials/responsive-local-image.html so post bodies can use the same
+  srcset pipeline as the templates. The asset must live under assets/.
+
+    {{< responsive-image src="/images/posts/x.webp" alt="…" sizes="…" fallbackWidth="480" >}}
+*/ -}}
+{{- partial "responsive-local-image.html" (dict
+  "src" (.Get "src")
+  "alt" (.Get "alt")
+  "sizes" (.Get "sizes" | default "100vw")
+  "fallbackWidth" (int (.Get "fallbackWidth" | default 480))
+  "loading" (.Get "loading" | default "lazy")
+) -}}
