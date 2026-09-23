@@ -1,7 +1,7 @@
 ---
 title: "Sirv Marketing Machine"
 date: 2025-04-26
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 description: "Internal Sirv reporting and marketing software. One analytics repair shows why growth work sometimes starts in the revenue calculation."
 hero_title: "Marketing Machine"
@@ -26,7 +26,7 @@ feedback_url: "/contact/?project=sirv-marketing-machine&type=question"
 proof:
   - value: "Cash ≠ MRR"
     label: "Separate calculations and regression cases"
-imperfect: "The system is internal. This case study demonstrates a reporting repair, not a measured increase in revenue or campaign performance."
+imperfect: "It is internal, so you cannot try it. I also have no revenue result to attach to this repair."
 weight: 13
 ---
 
@@ -36,7 +36,7 @@ In August 2026, the analytics page labelled a value Average MRR while calculatin
 
 The repair separates cash collected from recurring revenue. Average MRR now averages point-in-time recurring revenue at month ends and the end of the selected period. Long ranges use bounded sampling.
 
-A regression case uses a $1,200 yearly payment. The cash result is $1,200 and the monthly recurring amount is $100. Those are synthetic test values, not Sirv's business figures.
+A regression test uses a $1,200 yearly payment. Cash collected is $1,200. MRR is $100. (Test values, not Sirv's numbers.)
 
 ## The rest of the report had to work too
 
@@ -44,10 +44,10 @@ Calendar-period queries could select a lookback the scheduler had not cached. Th
 
 The plan breakdown was a pie chart with eleven long labels. It became a ranked horizontal bar chart, with the remaining plans grouped separately. A Revenue card shows cash collected in the selected period.
 
-The change crossed the calculation, API, tests and interface. Correcting only the chart would have preserved the misleading metric.
+The change went through the calculation, the API, the tests and the interface. A nicer chart on top of the old formula would still have lied.
 
 ## Where it fits
 
-Marketing Machine brings together Sirv analytics and marketing workflows, including search, advertising and content work. Its integrations create useful context, but the report still depends on the definitions underneath each number.
+Marketing Machine brings together Sirv analytics and marketing workflows, including search, advertising and content work. All those integrations are only useful if each number means what its label says.
 
-This is an example of [what I mean by product and operations work](/posts/the-title-was-fuzzy/). The repository records the repair in `a23fcc74` on 10 August 2026. It does not establish that the change increased revenue, and I do not have a business outcome to attach to it here.
+This is [what I mean by product and operations work](/posts/the-title-was-fuzzy/). The repair is commit `a23fcc74`, from 10 August 2026.

@@ -1,7 +1,7 @@
 ---
 title: "UaHelp"
 date: 2022-03-01
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 project_url: "https://www.uahelp.me"
 image: "https://cdn.earthroulette.com/varyvoda/uahelp.png"
@@ -46,12 +46,12 @@ I built UaHelp after Russia's full-scale invasion of Ukraine to make one questio
 
 ## What it does
 
-The site organizes routes for military support, humanitarian help, medical aid, refugees, media, and other practical needs. It is a directory, not a campaign trying to put itself between people and the organizations doing the work.
+The site organizes routes for military support, humanitarian help, medical aid, refugees, media and other practical needs. It is a directory, not a campaign trying to put itself between people and the organizations doing the work.
 
 ## Why it is still here
 
-The war did not end when the first wave of international attention moved on. The resource remains public because the need remains real. Keeping it useful means correcting links, removing weak routes, and resisting the temptation to treat an urgent project as a finished launch.
+The war did not end when the first wave of international attention moved on. The resource remains public because the need remains real. Keeping it useful means correcting links, removing weak routes and resisting the temptation to treat an urgent project as a finished launch.
 
-The companion [ways to help Ukraine](/posts/help-ukraine/) article now links directly to a smaller set of organisation pages checked in September 2026. That check covers the article's links, not every entry in the wider directory.
+The companion article, [ways to help Ukraine](/posts/help-ukraine/), is a shorter list. I checked its links in September 2026.
 
 [Find a concrete way to help Ukraine](https://www.uahelp.me)

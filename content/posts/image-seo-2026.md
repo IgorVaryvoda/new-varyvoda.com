@@ -1,9 +1,10 @@
 ---
 title: "Image SEO in 2026: what changed since 2019"
 date: 2026-07-06
+lastmod: 2026-09-23
 draft: false
 content_type: "Guide"
-description: "I checked my 2019 image SEO guide again. The basics still hold, while formats, loading, product data, and visual discovery have changed."
+description: "I checked my 2019 image SEO guide again. The basics still hold, while formats, loading, product data and visual discovery have changed."
 featuredImage: "/images/posts/image-seo-2026.webp"
 image_alt: "Four foundation blocks support branching ribbons that connect varied product and image motifs."
 ogImage: "https://www.varyvoda.com/images/posts/image-seo-2026.jpg"
@@ -11,7 +12,7 @@ ogImage: "https://www.varyvoda.com/images/posts/image-seo-2026.jpg"
 
 In 2019 I wrote a [guide to image SEO for e-commerce](/posts/image-seo/). Seven years later, some of it is still useful and some is plainly old.
 
-The short version is simple: make images discoverable, describe them accurately, serve the right size quickly, and keep product data current. The implementation has changed.
+The goals haven't changed: make images discoverable, describe them accurately, serve the right size fast and keep product data current. How you do it has.
 
 ## What still matters
 
@@ -25,13 +26,13 @@ Vision models now make bulk alt text practical. They also produce confident mist
 
 ### Product data
 
-[Google's current product documentation](https://developers.google.com/search/docs/appearance/structured-data/product) recommends `Product` structured data, a Merchant Center feed, or both. The data can make products eligible for richer results in Search, Google Images, and Google Lens.
+[Google's current product documentation](https://developers.google.com/search/docs/appearance/structured-data/product) recommends `Product` structured data, a Merchant Center feed, or both. The data can make products eligible for richer results in Search, Google Images and Google Lens.
 
-Keep the important fields accurate: product name, price, availability, identifiers, variants, and image URLs. Markup that disagrees with the page or feed creates a different problem rather than solving SEO.
+Keep the important fields accurate: product name, price, availability, identifiers, variants and image URLs. Markup that disagrees with the page or the feed doesn't help your SEO. It gives Google a reason not to trust you.
 
 ### Fast, properly sized images
 
-Images are often the largest files on a product page. Serve them near the size at which they are displayed, set `width` and `height`, and use a CDN when it makes delivery faster and easier to manage.
+Images are often the largest files on a product page. Serve them near the size at which they are displayed, set `width` and `height` and use a CDN when it makes delivery faster and easier to manage.
 
 The 2019 advice to use your own image hostname still holds. It gives you more freedom to change CDN providers without changing every public image URL.
 
@@ -55,23 +56,23 @@ Do not lazy-load the image responsible for Largest Contentful Paint. Load that i
 
 ### Images now appear in more places
 
-The old guide treated Google Images as a separate destination. Images now appear across normal Search results, product results, Discover, Google Lens, and shopping features.
+The old guide treated Google Images as a separate destination. Images now show up in normal Search results, product results, Discover, Google Lens and shopping features.
 
-The practical work is still familiar. Google needs a crawlable `<img>` element, a useful landing page, clear context, and an image it can fetch. [Google's image guidance](https://developers.google.com/search/docs/appearance/google-images) still recommends responsive images, an ordinary `src` fallback, supported formats, and a balance between quality and speed.
+The practical work is still familiar. Google needs a crawlable `<img>` element, a useful landing page, clear context and an image it can fetch. [Google's image guidance](https://developers.google.com/search/docs/appearance/google-images) still recommends responsive images, an ordinary `src` fallback, supported formats and a balance between quality and speed.
 
 ### Metadata needs a more careful decision
 
 The old advice said to strip all metadata. That is too broad now.
 
-Removing unnecessary camera data can reduce file size and avoid publishing information you do not want to share. Copyright, creator, and licence metadata can still be useful. Google can display image rights information from IPTC fields or structured data. Keep provenance and rights data when it has a purpose.
+Removing unnecessary camera data can reduce file size and avoid publishing information you do not want to share. Copyright, creator and licence metadata can still be useful. Google can display image rights information from IPTC fields or structured data. Keep provenance and rights data when it has a purpose.
 
 ## More software reads the page
 
-Product pages are no longer read only by people and a classic search crawler. Shopping systems and AI assistants also use feeds, structured data, page text, and sometimes the image itself.
+Product pages are no longer read only by people and a classic search crawler. Shopping systems and AI assistants also read feeds, structured data, page text and sometimes the image itself.
 
-That does not require a separate "AI SEO" trick. It rewards the same boring work: accurate product data, clear images, honest descriptions, stable URLs, and fast delivery.
+You don't need a separate "AI SEO" trick for that. The same boring work pays off: accurate product data, clear images, honest descriptions, stable URLs and fast delivery.
 
-A useful product image set usually includes a clean main image, enough angles to understand the product, and an in-context image when scale or use is unclear. Generated images can fill gaps, but they should not invent product details.
+A useful product image set usually includes a clean main image, enough angles to understand the product and an in-context image when scale or use is unclear. Generated images can fill gaps, but they should not invent product details.
 
 ## The 2026 checklist
 
@@ -82,7 +83,7 @@ A useful product image set usually includes a clean main image, enough angles to
 5. Load the main image eagerly. Lazy-load images below the fold.
 6. Set explicit image dimensions.
 7. Keep useful rights and provenance metadata. Remove data you do not need to publish.
-8. Check that image URLs return `200`, are crawlable, and appear in the rendered HTML.
+8. Check that image URLs return `200`, are crawlable and appear in the rendered HTML.
 
 ## The old advice, checked again
 
@@ -97,4 +98,4 @@ A useful product image set usually includes a clean main image, enough angles to
 | Strip all metadata | Keep useful rights data and remove the rest |
 | Audit crawlability and broken image URLs | Still right |
 
-The details will change again. The durable part is still to show the product clearly, describe it honestly, and deliver the image without wasting the visitor's time.
+Some of this will be out of date again by 2030. Run the checklist on your five best-selling products first. That's where a broken image URL or a stale price costs you the most.

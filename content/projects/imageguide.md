@@ -1,7 +1,7 @@
 ---
 title: "ImageGuide"
 date: 2026-01-19
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 homepage_weight: 6
 project_url: "https://www.imageguide.dev/"
@@ -43,21 +43,21 @@ I have written about product images since 2018. Questions keep returning: which 
 
 ImageGuide collects the reference material, practical guides and conversion tools. The browser extension applies those questions to an open page. [Press](/projects/press/) handles local files.
 
-The site is powered by Sirv. It is part of the same image work, not an independent review of Sirv.
+The site runs on Sirv, and I work at Sirv. Keep that in mind when it recommends Sirv.
 
 ## The extension keeps the uses separate
 
 One file can appear in several places. The auditor groups the shared resource but retains each element's dimensions and markup findings. A hero and a small card do not need the same image size or alt text.
 
-Version 0.4.0 adds a persistent audit view, response-size checks and browser observations for LCP and layout shifts. The screenshot above comes from the repository's captures for that version. Its numbers describe the captured page, not a benchmark for the extension.
+Version 0.4.0 adds a persistent audit view, response-size checks and browser observations for LCP and layout shifts. The screenshot above is the 0.4.0 audit of a test fixture from the repository.
 
-The [build note](/posts/what-an-image-auditor-can-measure/) follows the distinction between response bytes, per-element findings and projected savings.
+The [build note](/posts/what-an-image-auditor-can-measure/) explains why measured bytes, per-element findings and estimated savings stay separate.
 
 ## Permission follows the action
 
-The normal audit starts when the user clicks the extension. It does not automatically transmit the report to ImageGuide. Optional cross-origin response-size checks request the permission they need and make requests without credentials.
+The audit starts when you click the extension. The extension does not send the report to ImageGuide. Optional cross-origin response-size checks request the permission they need and make requests without credentials.
 
-A browser audit does not rewrite the site's files. The report can be copied as Markdown or JSON for the person doing that work.
+The extension doesn't change the site. Copy the report as Markdown or JSON and give it to whoever fixes the images.
 
 ## The files need their own tool
 

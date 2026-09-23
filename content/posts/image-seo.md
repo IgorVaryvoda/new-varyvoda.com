@@ -4,7 +4,7 @@ date: 2019-06-13T22:52:03+01:00
 draft: false
 content_type: "Guide"
 older_archive: true
-lastmod: 2026-07-20
+lastmod: 2026-09-23
 canonicalUrl: "https://sirv.com/blog/image-seo-for-ecommerce/"
 sitemap:
   disable: true
@@ -32,7 +32,7 @@ ogImage: "https://www.varyvoda.com/images/posts/image-seo.jpg"
 <li>What effects will a CDN have on my image SEO?</li>
 </ul>
 
-<p>This guide answers each question with examples from e-commerce sites.</p>
+<p>This guide answers all of them, with examples from real stores.</p>
 
 <h2 id="what">What is image SEO?</h2>
 
@@ -47,14 +47,14 @@ ogImage: "https://www.varyvoda.com/images/posts/image-seo.jpg"
         <p class="wp-caption-text"><a href="https://sirv-cdn.sirv.com/blog/image%20seo/jumpshot-search-over-time-large.gif?format=png" target="_blank" rel="noopener noreferrer">Click for a larger image</a>. Data from JumpShot.</p>
 </div>
 
-<p>In the 2019 data below, Google Images had substantial search volume.</p>
+<p>In 2019, Google Images got a huge share of all searches:</p>
 
 <div class="protip">
 <p>Google Images holds <strong>second place</strong> in terms of search volume in the USA.</p>
 It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 times larger than Facebook.
 </div>
 
-<p>It received less SEO attention because many people considered its traffic difficult to convert.</p>
+<p>Most SEOs ignored it anyway, because they thought image traffic didn't convert.</p>
 
 <p>This is what Google Image search result looks like on a laptop computer today:</p>
 
@@ -200,10 +200,10 @@ It's 5 times bigger than YouTube, 10 times bigger than Yahoo/Bing/Amazon and 15 
 
 <div class="wp-caption aligncenter">
     <img class="Sirv" data-src="https://sirv-cdn.sirv.com/blog/image%20seo/perfectly-optimized-ecommerce-page.png" alt="an infographic about the anatomy of a perfect e-commerce page"/>
-            <p class="wp-caption-text">The anatomy of a perfect e-commerce page by Bryan Dean.</p>
+            <p class="wp-caption-text">The anatomy of a perfect e-commerce page by Brian Dean.</p>
     </div>
 
-<p>On-page content, such as the product description, matters in both regular and image <span style="text-decoration:underline dotted;" data-avia-tooltip="Search engine result pages">search results</span>. Bryan Dean's <a href="https://backlinko.com/ecommerce-seo" target="_blank" rel="noopener noreferrer">e-commerce SEO guide</a> covers the wider page.</p>
+<p>On-page content, such as the product description, matters in both regular and image <span style="text-decoration:underline dotted;" data-avia-tooltip="Search engine result pages">search results</span>. Brian Dean's <a href="https://backlinko.com/ecommerce-seo" target="_blank" rel="noopener noreferrer">e-commerce SEO guide</a> covers the wider page.</p>
 
 <h3>How to name images for better SEO</h3>
 

@@ -1,16 +1,16 @@
 ---
 title: "BudJet - Personal Finance Tracker"
 date: 2025-04-01
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 homepage_weight: 4
 project_url: "https://www.budjet.app"
 image: "https://cdn.earthroulette.com/budjet/og.png"
-image_alt: "BudJet personal finance overview with transactions, budgets, and receipt data"
+image_alt: "BudJet personal finance overview with transactions, budgets and receipt data"
 description: "A personal finance tracker I built because I wanted one I would actually use. Scan a receipt, let AI extract and categorize the line items, then see where the money went without turning bookkeeping into a second job."
 hero_title: "BudJet"
 hero_kicker: "Built for daily use"
-hero_intro: "I use BudJet every day. It scans receipts, keeps the line items, and shows where the money went without making me type every purchase."
+hero_intro: "I use BudJet every day. It scans receipts, keeps the line items and shows where the money went without making me type every purchase."
 hero_mark: "Personal finance"
 hero_scope: "Receipt to decision"
 hero_primary_label: "Open BudJet"
@@ -25,7 +25,7 @@ tech_stack: ["Nuxt 4", "Vue 3", "Supabase", "Gemini"]
 role: "Creator and sole builder"
 stewardship:
   state: "evolving"
-  note: "I use it every day and fix reported bugs in imports, integrations, and receipt handling."
+  note: "I use it every day and fix reported bugs in imports, integrations and receipt handling."
 last_tended: "2026-07-16"
 feedback_url: "/contact/?project=budjet&type=bug"
 proof:
@@ -37,9 +37,9 @@ users_changed: "Users found import and categorisation bugs I had not seen. Fixin
 imperfect: "Unusual receipt layouts and vague line items still need a human check. Corrections are quick, but they are still necessary."
 highlights:
   - "AI extraction and categorization down to receipt line items"
-  - "Personal, household, and all-household views"
-  - "Reports, subscriptions, savings goals, and recommendations"
-  - "Web app, installable PWA, and Telegram bot"
+  - "Personal, household and all-household views"
+  - "Reports, subscriptions, savings goals and recommendations"
+  - "Web app, installable PWA and Telegram bot"
 weight: 5
 ---
 
@@ -47,13 +47,13 @@ weight: 5
 
 Most finance trackers work perfectly if you enjoy entering every purchase by hand. I do not. If recording a coffee takes longer than buying it, the system has already lost.
 
-I built BudJet because I wanted a clear view of my money without turning expense tracking into a second job. The basic rule is simple: capture spending from the evidence that already exists, then make the useful part automatic.
+I built BudJet because I wanted a clear view of my money without turning expense tracking into a second job. The rule: capture spending from what already exists, like the receipt in your pocket, then automate the rest.
 
 ## It keeps the line items
 
-Take a photo of a receipt and BudJet extracts the merchant, date, total, and individual items. AI suggests categories, you fix anything it got wrong, and the budget updates. The same flow works through the web app or Telegram bot, and existing data can come in through CSV instead of being typed again.
+Take a photo of a receipt and BudJet extracts the merchant, date, total and individual items. AI suggests categories, you fix anything it got wrong and the budget updates. The same flow works through the web app or Telegram bot, and existing data can come in through CSV instead of being typed again.
 
-Keeping the line items matters. A supermarket receipt no longer becomes one mysterious €83 block called “Groceries.” BudJet can show what was bought, track price changes, and even look up nutrition data for food, because apparently I could not leave a receipt scanner alone.
+Keeping the line items matters. A supermarket receipt no longer becomes one mysterious €83 block called “Groceries.” BudJet can show what was bought, track price changes and even look up nutrition data for food, because apparently I could not leave a receipt scanner alone.
 
 ## Households
 
@@ -65,9 +65,9 @@ It also works across multiple currencies and seven languages. I live outside my 
 
 ## I use it every day
 
-On 16 July 2026, I replaced a removed model in the Telegram receipt handler. A receipt photo still needed to become editable line items after the provider changed its catalogue. I then aligned the web and Telegram paths on the same model and checked structured receipt output through both providers. That is maintenance a launch screenshot cannot show.
+On 16 July 2026, I replaced a removed model in the Telegram receipt handler. A receipt photo still needed to become editable line items after the provider changed its catalogue. Then I put the web app and the Telegram bot on the same model and checked receipt output through both providers. Nobody sees that kind of work in a launch screenshot.
 
-BudJet is not a finance dashboard I built for screenshots and forgot. I use it every day. That has forced me to care about the boring parts: fast entry, editable AI results, custom categories, household permissions, encrypted financial data, recurring transactions, and reports that answer a question without making me become an accountant first.
+BudJet is not a finance dashboard I built for screenshots and forgot. I use it every day. That has forced me to care about the boring parts: fast entry, editable AI results, custom categories, household permissions, encrypted financial data, recurring transactions and reports that answer a question without making me become an accountant first.
 
 There are more features than I first planned. The question is still whether they make tracking money less annoying. If they do not, they do not belong.
 

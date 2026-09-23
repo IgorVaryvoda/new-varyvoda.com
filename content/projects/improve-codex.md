@@ -32,7 +32,7 @@ proof:
     label: "Audit, plan, execute, review"
   - value: "Isolated"
     label: "One git worktree per plan"
-users_changed: "Failed runs and reviewer feedback led to nonce-verified reports, checks for incomplete runs, and checks against live local services."
+users_changed: "Failed runs and reviewer feedback led to nonce-verified reports, checks for incomplete runs and checks against live local services."
 imperfect: "It stops before merge and depends on each repository having good checks. It is slower than an autonomous code bot and much less likely to wreck the main checkout."
 highlights:
   - "Repo-local orchestration or isolated worktrees"
@@ -40,20 +40,20 @@ highlights:
   - "Independent plan and diff reviews"
   - "Approved work waits for a human merge decision"
 weight: 11
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 ---
 
 ## The plan comes first
 
 I built improve-codex because an audit finding is not yet an implementation task. "Fix the billing" leaves an executor to invent the scope, failure cases and proof.
 
-The orchestrating session turns findings into self-contained plans. Sol checks those plans against the repository. Terra implements accepted work. The main session and Sol review the resulting diffs.
+The main session turns findings into self-contained plans. Sol (`gpt-5.6-sol`, read-only) checks those plans against the repository. Terra (`gpt-5.6-terra`) implements accepted work. The main session and Sol review the resulting diffs.
 
 Codex or Claude Code can orchestrate. The important split is between proposing work, implementing it and checking it.
 
 ## Use the repository's execution path
 
-A repository with the full reviewed Symphony/Clanker contract can run its own serialized execution and integration workflow. Elsewhere, the portable runner creates an isolated git worktree for each plan.
+A repository that already has Studio's orchestration (Symphony and Clanker) set up runs plans through that. Elsewhere, the portable runner creates an isolated git worktree for each plan.
 
 That fallback confines writes, removes browser and MCP tools, applies a timeout and runs at lower CPU priority. It returns browser checks as skipped for the main session to finish. It does not try to install a fleet into a repository that only needs one worker.
 

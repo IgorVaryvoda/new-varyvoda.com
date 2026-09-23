@@ -1,7 +1,7 @@
 ---
 title: "Sirv AI Studio"
 date: 2026-07-02
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 hero: true
 atmosphere: true
@@ -296,7 +296,7 @@ My work in that loop is to set scope, approve plans, use the product, review evi
 
 One person owns the development branch each day and pushes to it directly. A short morning sync and handoff replace an internal pull-request queue. This works because branch ownership is explicit and the automated checks are blocking.
 
-I wrote the broader argument behind this operating model in [Two theories of a programmer](/posts/two-theories-of-a-programmer/). This page keeps the claim grounded in the Studio evidence.
+I wrote the broader argument behind this operating model in [The programmer who stopped typing](/posts/two-theories-of-a-programmer/). This page keeps the claim grounded in the Studio evidence.
 
 When Veniamin joined QA, his weekly output was near twenty commits while he built the coverage matrix, anti-forgery checks, and agent workflows. Two months later, the weekly counts were 277, 309, and 188. The increase followed the QA system, not a change in typing speed.
 

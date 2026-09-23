@@ -1,14 +1,14 @@
 ---
 title: "Travel Bot AI Assistant"
 date: 2025-03-15
-lastmod: 2026-07-18
+lastmod: 2026-09-23
 draft: false
 project_url: "https://www.travelbot.me"
 app_store_url: "https://apps.apple.com/us/app/travel-bot-assistant/id6504498653"
 play_store_url: "https://play.google.com/store/apps/details?id=me.travelbot.www"
 image: "https://cdn.earthroulette.com/varyvoda/travelbot.png"
 image_alt: "Travel Bot chat interface generating a day-by-day itinerary"
-description: "An AI travel planner I built on top of Earth Roulette's destination data. Describe the trip you want and it turns the conversation into a day-by-day itinerary with weather, flight, hotel, and local context."
+description: "An AI travel planner I built on top of Earth Roulette's destination data. Describe the trip you want and it turns the conversation into a day-by-day itinerary with weather, flight, hotel and local context."
 hero_title: "Travel Bot"
 hero_kicker: "AI travel assistant"
 hero_intro: "Describe the trip you want. Travel Bot builds each day using live travel data and 5,000+ Earth Roulette destinations."
@@ -26,7 +26,7 @@ tech_stack: ["AI", "Chat", "Travel API", "PWA"]
 role: "Creator and sole builder"
 stewardship:
   state: "maintained"
-  note: "I maintain the apps, live data integrations, and itinerary flow."
+  note: "I maintain the apps, live data integrations and itinerary flow."
 last_tended: "2026-05-10"
 feedback_url: "/contact/?project=travelbot&type=bug"
 proof:
@@ -37,9 +37,9 @@ proof:
 imperfect: "Vague requests still produce generic itineraries. The bot works better when the traveller gives it real constraints."
 highlights:
   - "Day-by-day itineraries in under 30 seconds"
-  - "Live weather, flight, and hotel context"
+  - "Live weather, flight and hotel context"
   - "5,000+ destinations from Earth Roulette"
-  - "Web, iOS, and Android apps"
+  - "Web, iOS and Android apps"
 weight: 7
 ---
 
@@ -51,9 +51,9 @@ It turns that into a day-by-day itinerary, then lets you keep talking until the 
 
 ## Earth Roulette underneath
 
-The bot is connected to the destination data I built for [Earth Roulette](/projects/earth-roulette/): more than 5,000 places with local context, backed by current weather, flight, and accommodation information. That gives it something more useful to work with than whatever a language model vaguely remembers about Barcelona.
+The bot is connected to the destination data I built for [Earth Roulette](/projects/earth-roulette/): more than 5,000 places with local context, backed by current weather, flight and accommodation information. That gives it something more useful to work with than whatever a language model vaguely remembers about Barcelona.
 
-It also remembers the practical details you give it, including travel style, dietary needs, budget, and preferences, so the next answer does not start from zero.
+It also remembers the practical details you give it, including travel style, dietary needs, budget and preferences, so the next answer does not start from zero.
 
 ## Built to be tried
 

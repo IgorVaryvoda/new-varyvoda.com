@@ -1,6 +1,7 @@
 ---
 title: "What an image auditor can actually measure"
 date: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 content_type: "Build record"
 description: "Building the ImageGuide extension meant separating a downloaded image from its uses, and measured bytes from estimated savings."
@@ -9,43 +10,47 @@ image_alt: "The same blue and amber circle appears at four sizes, each surrounde
 ogImage: "https://www.varyvoda.com/images/posts/what-an-image-auditor-can-measure.jpg"
 ---
 
-An image can be the right size for a hero and too large for a thumbnail on the same page. Counting its URL once is useful for the resource list. Judging every use as if it were the hero is wrong.
+An image can be the right size for a hero and way too big for a thumbnail on the same page. Count its URL once and you get a tidy resource list. Judge every use as if it were the hero and you get the wrong answer.
 
-That distinction became central to version 0.4.0 of the [ImageGuide extension](/projects/imageguide/).
+That problem shaped version 0.4.0 of the [ImageGuide extension](/projects/imageguide/).
+
+<img src="/images/imageguide/audit-0.4.0.png" alt="ImageGuide extension 0.4.0 audit of a test fixture showing 16 resources, 18 usages, 162 kB observed and an estimated 97 kB opportunity" width="1280" height="800" loading="lazy" decoding="async">
+
+*The 0.4.0 audit of a test fixture. 16 image resources, 18 usages, and a savings number clearly marked as an estimate.*
 
 ## One resource, several uses
 
-The collector groups a shared image resource while retaining the elements that use it. Each usage has its own slot size and markup findings.
+Look at the Markup card above: 16 resources, 18 usages. Some images are used more than once. The extension groups each shared resource but keeps every element that uses it, and each use gets its own slot size and markup findings.
 
-For example, a wide image may be appropriate at the top of the page but wasteful inside a small card. The card can have missing alt text even when the hero's description is correct. The resource and the element need separate records.
+So a wide image can be fine at the top of the page and wasteful inside a small card. The card can be missing alt text even when the hero's alt text is perfect. The file and the place it's used need separate records.
 
-The same care applies to responsive images. The auditor tries to match the browser's selected candidate to its `srcset` descriptor. If the candidate cannot be matched confidently, the source dimensions remain unknown. Guessing them could produce an impressive but false resize opportunity.
+Responsive images get the same care. The extension tries to match the candidate the browser picked to its `srcset` descriptor. If it can't match it with confidence, the source dimensions stay unknown. A guess would produce a nice big resize opportunity that isn't real.
 
-## A measured input does not make a measured saving
+## Knowing the size doesn't mean knowing the saving
 
-The browser can report encoded response size or transfer size through Resource Timing. Those fields are not interchangeable, and they are not always available for cross-origin resources.
+The browser can report encoded size or transfer size through Resource Timing. Those aren't the same number, and for cross-origin images you often get neither.
 
-An optional response-size check can ask the server for headers. It requests host permission when needed and omits credentials. An unavailable measurement stays unavailable.
+An optional check can ask the server for response headers. It requests host permission when it needs it and sends no credentials. If a size isn't available, the report says so.
 
-Even when the input size is known, the extension has not converted that image. Its proposed saving uses a model for resize and format changes. The interface labels that as an estimate.
+Even with a known input size, the extension hasn't converted anything. Its savings figure comes from a model of resize and format changes, so the interface calls it an estimate. That's the "≈97 kB" in the screenshot.
 
 | Statement | What supports it |
 |---|---|
-| This response had this encoded size | A browser timing entry or validated response header |
+| This response had this encoded size | A browser timing entry or a validated response header |
 | This element is oversized for its slot | Confirmed source dimensions and the current layout |
-| A different format may save bytes | A conversion model, not an encoded result |
-| This output saved this many bytes | An actual conversion, outside the extension's audit |
+| A different format may save bytes | A conversion model, not an encoded file |
+| This output saved this many bytes | A real conversion, outside the extension |
 
-For the last question, I built [Press](/projects/press/). It can encode the local file and show the result.
+For that last row, I built [Press](/projects/press/). It encodes the local file and shows you the result.
 
-## Visible now does not mean LCP
+## In the viewport doesn't mean LCP
 
-A lazy image currently inside the viewport is not necessarily the page's Largest Contentful Paint element. The visitor may already have scrolled. The extension keeps the viewport finding separate from the browser's LCP observation.
+A lazy image that is on screen right now isn't necessarily the page's Largest Contentful Paint element. The visitor may have scrolled. The extension keeps the viewport finding separate from the browser's own LCP entry.
 
-Layout-shift evidence needs similar restraint. An element that moved is not necessarily the element that caused the movement. The report records attribution without converting it into a diagnosis it cannot support.
+Layout shift is the same. The element that moved isn't always the element that caused the move. The report shows which element shifted and stops there.
 
 ## Say what the scan missed
 
-The extension bounds its scan by element, resource, usage and payload limits. It reports when one is reached. Inaccessible frames, closed shadow roots and canvas pixels also leave gaps.
+The scan has limits on elements, resources, usages and payload size, and the report tells you when it hits one. Frames it can't read, closed shadow roots and canvas pixels leave gaps too. You can see two of those warnings in the screenshot: a canvas it counted but couldn't map to a request, and a note that anything inside unreadable frames is missing.
 
-The [source and fixture tests](https://github.com/IgorVaryvoda/imageguide-extension) make those limits inspectable. An unknown size makes a less satisfying dashboard number. It gives the person fixing the page a more useful answer.
+The [source and fixture tests](https://github.com/IgorVaryvoda/imageguide-extension) show exactly where those limits are. "Unknown" makes a less impressive dashboard. It's a much more useful answer for the person fixing the page.

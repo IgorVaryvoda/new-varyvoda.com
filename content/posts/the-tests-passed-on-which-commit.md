@@ -1,6 +1,7 @@
 ---
 title: "The tests passed. On which commit?"
 date: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 content_type: "Build record"
 description: "VibeQ accepted an agent's commit and test report as text. The closeout now checks those claims against the actual pull request head."
@@ -9,38 +10,36 @@ image_alt: "Two contrasting panels of checked rows are joined by lines that frag
 ogImage: "https://www.varyvoda.com/images/posts/the-tests-passed-on-which-commit.jpg"
 ---
 
-[VibeQ](/projects/vibeq/) had a closeout path that accepted an agent's reported commit and test result as text. Those values reached the task comment and activity record without being checked against the pull request.
+When an agent finishes a task in [VibeQ](/projects/vibeq/), it reports two things: the commit it made and whether the tests passed. Until September, VibeQ just believed it.
 
-The agent could report a successful test for a commit that never reached the PR. The report would still look complete.
+Those two values went straight into the task comment and the activity log. Nothing checked them against the pull request. An agent could report green tests on a commit that never reached the PR, and the task would still look done.
 
-## Check the head that will be reviewed
+## Check the commit someone will actually review
 
-The September change reads the PR head from GitHub and compares it with the reported commit. It also reads the check runs attached to that head.
+The fix asks GitHub for the PR's current head and compares it with the commit the agent reported. Then it reads the check runs on that head.
 
-A commit mismatch or failed checks forces the terminal evidence flag to false, even when the agent supplied a positive claim. The note and event record carry the same verdict and head SHA.
+If the commits don't match, or the checks failed, the task is not marked verified. It doesn't matter how confident the agent's report sounds. The note and the activity log both record the verdict and the head SHA.
 
-That joins two facts which used to sit separately: what the agent says it tested and what the reviewer can actually inspect.
+So "the agent says it tested this" and "this is what the reviewer will see" are finally the same record.
 
-## Unverified is still a possible result
+## "Couldn't check" is a valid answer
 
-GitHub may be unavailable. The token may lack permission. A report may have no PR URL.
+Sometimes GitHub is down. Sometimes the token lacks a permission. Sometimes the report has no PR link.
 
-The verifier records those cases as unverified and allows the closeout to finish. It does not convert them into a successful external check. It also does not universally replace every existing evidence flag on an unverified result. A reader still needs to look at the verification state.
+In those cases VibeQ records the result as unverified and lets the task close anyway. It never turns "couldn't check" into "checked". You still have to look at the verification state before you trust the task.
 
-This is a limit of the current implementation. Ending a session and accepting its work are separate decisions.
+## The bug that would have hidden everything
 
-## The review found a missing permission
+A verifier that fails gracefully can look healthy while it verifies nothing. The first version almost did exactly that.
 
-The first implementation reused a GitHub read-token path that requested contents and metadata permissions. Reading PRs and check runs also needed the corresponding permissions. Without them, the feature could have produced unverified results for every attempt.
+It reused an existing GitHub token path that asked for contents and metadata access. Reading PRs and check runs needs two more permissions. Without them, every single task would have come back "unverified". Nothing would have crashed. Nothing would have looked wrong.
 
-Review added `pull_requests:read` and `checks:read` to that mint. A verifier which always degrades gracefully can appear healthy while verifying nothing. The failure result needs testing, but so does the successful external read.
+Review caught it, and the fix added `pull_requests:read` and `checks:read` to the token. The lesson for me: test the path where the external read works, not only the path where it fails.
 
-The implementation notes record passing local gates after that correction. They are evidence for the code change, not a substitute for checking a deployed run.
+## What's next
 
-## Close the task after the merge
+Related work checks that a PR is merged before VibeQ closes its task, and checks whether a human took over a branch before another agent starts on it. Each check sits at a different step.
 
-Related work verifies a PR merge before closing the task and checks whether a human has taken over a branch before starting another agent run. Each check belongs at a different transition.
-
-For the closeout path, the improvement is narrower: the completion record now says whether its commit matches the current PR head and what checks GitHub reports there. "Tests passed" finally has a commit to be questioned against.
+This one is smaller. When a task says the tests passed, it now also says on which commit, and whether that commit is the one in the PR.
 
 *Source: VibeQ plan 267, implementation `b8bd0902` and the read-permission correction `fc952bf9`, merged on 3 September 2026. The repository is private.*

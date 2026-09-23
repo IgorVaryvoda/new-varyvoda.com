@@ -1,6 +1,7 @@
 ---
-title: "Why every agent rule has an incident"
+title: "Every agent rule is scar tissue"
 date: 2026-08-16
+lastmod: 2026-09-23
 draft: false
 content_type: "Essay"
 description: "Most rules in my agent skills folder exist because ignoring them already damaged real work."
@@ -9,7 +10,7 @@ image_alt: "Gold repairs join cracks in a curved slate path leading toward a sof
 ogImage: "https://www.varyvoda.com/images/posts/scar-tissue-as-documentation.jpg"
 ---
 
-There is a folder on my machine called `skills`. It explains how agents should commit on a shared branch, run a bug-fix loop, and audit a codebase.
+There is a folder on my machine called `skills`. It explains how agents should commit on a shared branch, run a bug-fix loop and audit a codebase.
 
 Most of it is an incident log written as instructions.
 
@@ -19,7 +20,7 @@ One file says it directly: **"Every rule below exists because its violation dest
 
 The rules are specific because the failures were specific.
 
-**"Full output, never `| head -N`."** An agent truncated `git status`, missed two files, and committed the tests without the fix. The tests passed in its worktree because the source changes were still present there. The shared branch received only the tests.
+**"Full output, never `| head -N`."** An agent truncated `git status`, missed two files and committed the tests without the fix. The tests passed in its worktree because the source changes were still present there. The shared branch received only the tests.
 
 **"Never `git commit --amend` on the shared branch."** Concurrent Claude and Codex sessions use the same checkout. `HEAD` can move between two tool calls, so amend can target another session's commit. That happened twice. The recovery procedure now starts by creating a backup branch.
 
@@ -27,7 +28,7 @@ The rules are specific because the failures were specific.
 
 **"Never bare `git stash pop`."** If `git stash` saved nothing, a later bare pop can apply an older stash from another session. That happened with conflicts.
 
-**"No browsers for executors."** Several parallel headless browsers pinned the CPU, exhausted memory, and left orphaned processes behind. Executors no longer receive browser tools. Visual checks happen in a separate review lane.
+**"No browsers for executors."** Several parallel headless browsers pinned the CPU, exhausted memory and left orphaned processes behind. Executors no longer receive browser tools. Visual checks happen in a separate review lane.
 
 **"Verify at source first. Many are already fixed."** Roughly forty percent of the QA tasks I checked were already resolved by other work. Without this rule, agents attempted a second fix against code that had already moved on.
 
@@ -43,10 +44,6 @@ My skill files therefore keep the failure next to the rule. The instruction says
 
 ## The shared checkout
 
-Most git incidents share one cause: several sessions use one checkout, index, stash, and commit identity. The operating rules have to account for that shared state.
+Most git incidents share one cause: several sessions use one checkout, index, stash and commit identity. The operating rules have to account for that shared state.
 
-The files are long because the system has been used heavily for months. I still delete rules that no longer apply, but brevity is not useful if it removes the reason behind a safety rule.
-
-An audit finds what is wrong now. These files record what has already gone wrong and is likely to happen again.
-
-That is why I treat incident history as part of the instructions, not as a separate archive nobody reads.
+The files are long because the system has taken months of heavy use. I still delete rules that no longer apply. But I won't shorten a safety rule by cutting the story that explains it. The story is the part that stops the next session from amending on a shared branch.

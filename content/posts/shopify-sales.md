@@ -1,7 +1,7 @@
 ---
 title: "9 practical ways to increase Shopify sales"
 date: 2020-11-24T22:52:03+01:00
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 draft: false
 content_type: "Guide"
 older_archive: true
@@ -39,7 +39,7 @@ ogImage: "https://www.varyvoda.com/images/posts/shopify-sales.jpg"
     </ol>
 </div>
 <h3>Start with a measurable goal</h3>
-Choose the number you want to change before changing the store. Conversion rate, average order value, profit, returns, and repeat purchases answer different questions.
+Pick the number you want to move before you touch anything. Conversion rate, average order value, profit, returns and repeat purchases are different goals.
 
 Shopify Analytics is fine for tracking sales and inventory, but attribution is its <a target="_blank" rel="noopener noreferrer" href="https://blog.littledata.io/2019/11/05/shopify-analytics-vs-google-analytics-which-offers-better-ecommerce-data/">weak point</a>. This might not seem like a big deal at first, but when you start running marketing campaigns, you really need to get your attribution right, or else you'll waste your ad budget... We recommend using an external analytics service, like Google Analytics.
 
@@ -54,11 +54,11 @@ Use this <a target="_blank" rel="noopener noreferrer" href="https://acquireconve
 </div>
 <p>After you have your analytics sorted out, you can track what’s working to increase your Shopify sales.</p>
 
-It is difficult to isolate the effect of one store change from traffic, campaigns, seasonality, and outside events.
+The problem is that lots of things change at the same time as your store.
 
 Some time frames can be busier than others - a change you've made could coincide with a new marketing campaign, bringing in some quality high converting traffic, or on the contrary, one of your products could hit the front page of Reddit and lead thousands of visitors which aren't really interested in buying to your store.
 
-In all of these cases, the before-and-after numbers are easy to misread. An A/B test isolates one change by showing both versions during the same period.
+Either way, your before-and-after numbers lie. An A/B test fixes that by showing both versions at the same time.
 
 <h4>How does A/B testing Work?</h4>
 A/B testing is an experiment where two variations of your page(s) are shown to users at random, then the best performing page version is chosen based on your goal conversion rate and statistical significance.
@@ -71,12 +71,12 @@ No, Shopify does not provide built‐in tools for A/B testing, so you'll have to
 <li><a target="_blank" rel="noopener noreferrer" href="https://vwo.com/">VWO</a> - Visual Website Optimizer is another easy to use tool for running A/B tests on Shopify. Here's how to <a target="_blank" rel="noopener noreferrer" href="https://help.vwo.com/hc/en-us/articles/360021465793-Shopify">integrate VWO with Shopify</a>.</li>
 </ul>
 For more in-depth A/B testing advice, Shopify wrote a great article <a target="_blank" rel="noopener noreferrer" href="https://www.shopify.com/blog/the-complete-guide-to-ab-testing">here</a>.
-If you're looking for A/B testing ideas, Sumo have compiled a nice <a target="_blank" rel="noopener noreferrer" href="https://sumo.com/stories/ecommerce-ab-testing">list</a>.
+If you're looking for A/B testing ideas, Sumo has compiled a nice <a target="_blank" rel="noopener noreferrer" href="https://sumo.com/stories/ecommerce-ab-testing">list</a>.
 
 
 <h3 id="cta">Tip 2: Have a Clear Call to Action</h3>
 <h4>What is a call to action?</h4>
-A call to action (CTA) is a link or button that signals the main action on a page. Different pages need different CTAs:
+A call to action (CTA) is a link or button that signals the main action on a page. Every page needs one, and it's a different one on each page.
 
 Here is the buying path through <a target="_blank" rel="noopener noreferrer" href="https://bremont.com">Bremont's Shopify store</a>:
 <div class="imgwide">
@@ -275,7 +275,7 @@ There's no single formula for a product video that works for every Shopify store
 
 Here are some types of product videos that can help increase sales on your Shopify store:
 <ol>
-<li>Lifestyle videos should put your product in context, showing the product in use or why it’s valuable.
+<li>Lifestyle videos should put your product in context, showing the product in use or why it’s valuable.</li>
 <li>Storytelling videos can work wonders for luxurious or innovative products. </li>
 <li>Explainer videos work great for more complex products that require "how-to" explanations of a function or even installation.</li>
 <li>Testimonial videos can maximize social proof. Entire brands have been built on celebrity endorsements alone. </li>
@@ -287,9 +287,9 @@ You can easily add videos to your Shopify store with the <a target="_blank" rel=
 
 <h3 id="personalize">Tip 5: Increase Average Order Value. Upsells and Cross-sells
 </h3>
-Upselling and cross-selling is both the art and science of introducing customers to better or complementary products based on what they are currently interested in.
+Upselling means offering a better version of the product. Cross-selling means offering something that goes with it.
 
-Upselling and cross-selling can increase average order value. They can also help a customer choose the right product or remember something required to use it. Keep each recommendation relevant to the shopper and the product already under consideration.
+Both raise average order value. Done well, they also help: nobody wants a camera that arrives without a memory card. Keep every suggestion relevant to what the shopper is already looking at.
 
 For example, you can engage customers by showing a message which indicates "people who bought this, also bought this". You can play around with wording to match your store, here’s how <a target="_blank" rel="noopener noreferrer" href="https://www.vicicollection.com/">Vici Collection</a> handles this:
 <div class="imgwide">
@@ -308,7 +308,7 @@ Another great cross-selling tactic is to use the cart.
 <p class="wp-caption-text">Harry’s is both upselling and cross-selling in the cart at the same time. I’m sure it works great for them. </p>
 </div>
 
-There are several great Shopify apps that can help you increase sales with ups-sells and cross-sells: <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/reconvert-upsell-cross-sell">Reconvert</a> and <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/honeycomb-upsell-funnels">Honeycomb</a> are the top-rated ones.
+There are several great Shopify apps that can help you increase sales with upsells and cross-sells: <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/reconvert-upsell-cross-sell">Reconvert</a> and <a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/honeycomb-upsell-funnels">Honeycomb</a> are the top-rated ones.
 
 Further reading:
 <a target="_blank" rel="noopener noreferrer" href="https://www.shopify.com/blog/upselling-and-cross-selling">How to Upsell to Customers and Improve the Shopping Experience</a>
@@ -329,11 +329,11 @@ To write a great product description that will boost your sales as well as Googl
 <li>Highlight the benefits (features) of the product thoroughly</li>
 <li>Target the right SEO product keywords</li>
 </ul>
-To learn more about the intricacies of e-Commerce SEO, Bryan Dean has written a great <a target="_blank" rel="noopener noreferrer" href="https://backlinko.com/ecommerce-seo">E-commerce SEO guide</a> that we can wholeheartedly recommend.
+To learn more about the intricacies of e-Commerce SEO, Brian Dean has written a great <a target="_blank" rel="noopener noreferrer" href="https://backlinko.com/ecommerce-seo">E-commerce SEO guide</a> that we can wholeheartedly recommend.
 
 
 <h4>Optimize images for search</h4>
-Well-optimised product images can bring traffic from Google Images. Sirv has a detailed <a target="_blank" rel="noopener noreferrer" href="https://sirv.com/blog/image-seo-for-ecommerce/">guide to image SEO</a> with the implementation details.
+Well-optimized product images can bring traffic from Google Images. Sirv has a detailed <a target="_blank" rel="noopener noreferrer" href="https://sirv.com/blog/image-seo-for-ecommerce/">guide to image SEO</a> with the implementation details.
 
 <h4>Add structured data</h4>
 Structured data is a special type of mark-up, which provides key information about your product.
@@ -360,11 +360,11 @@ This is best done by your developer to add it to your theme, and we wouldn’t r
 <h3 id="email-marketing">Tip 7: Focus on Email Marketing</h3>
 Email marketing is one of the best channels to connect with your customers and generate sales.
 
-According to <a target="_blank" rel="noopener noreferrer" href="https://www.barilliance.com/email-marketing-statistics/#tab-con-2">Barillance</a>, e average email marketing ROI in e-commerce is 3,800% or $38 for every $1 invested.
+According to <a target="_blank" rel="noopener noreferrer" href="https://www.barilliance.com/email-marketing-statistics/#tab-con-2">Barilliance</a>, the average email marketing ROI in e-commerce is 3,800% or $38 for every $1 invested.
 
 Recommended Email Marketing Shopify apps:
 <ul>
-<li><a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/omnisend">Omniconvert</a></li>
+<li><a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/omnisend">Omnisend</a></li>
 <li><a target="_blank" rel="noopener noreferrer" href="https://apps.shopify.com/cm-commerce">Campaign Monitor</a></li>
 </ul>
 
@@ -377,7 +377,7 @@ Welcome emails tend to have the highest open rate and helps to get the customer 
 </div>
 </div>
 <h4>Referral email</h4>
-Feed two birds with one scone: let your customers promote your store to their friends.
+Let your customers promote your store to their friends.
 <div class="imgwide">
     <div class="Sirv" data-options="zoom.mode:deep;zoom.wheel:false;thumbnails.type:bullets;fullscreen.thumbnails.type:bullets;">
         <div data-src="https://sirv.sirv.com/blog/Shopify%20Sales/Email/referral.png?ch=1500" data-alt="Referral email example" data-type="zoom" data-options="hint.text.click:Referral email."></div>
@@ -412,7 +412,7 @@ The customer hasn’t stopped by your store for a while? Send them a reactivatio
 </div>
 </div>
 <h4>Survey email</h4>
-Use incentives; people don’t like surveys unless you throw in a gift card or a nice discount.</li>
+Use incentives; people don’t like surveys unless you throw in a gift card or a nice discount.
 <div class="imgwide">
     <div class="Sirv" data-options="zoom.mode:deep;zoom.wheel:false;thumbnails.type:bullets;fullscreen.thumbnails.type:bullets;">
         <div data-src="https://sirv.sirv.com/blog/Shopify%20Sales/Email/survey.png?ch=1500" data-alt="Survey email example" data-type="zoom" data-options="hint.text.click:Order confirmation + survey."></div>
@@ -496,6 +496,6 @@ Services like Klarna and Afterpay have become incredibly popular in the last cou
 
 James Parsons from Content Powered has an <a target="_blank" rel="noopener noreferrer" href="https://www.contentpowered.com/blog/afterpay-increase-shopify-sales/">interesting take</a> on whether these services will improve your bottom line in the long run.
 <h3>Keep Your Customers Happy</h3>
-The nine ideas above are starting points. Measure the current problem, change one important thing, and compare the result. A higher conversion rate is useful only if the change also protects profit, order value, returns, and the customer's experience.
+Don't try all nine at once. Pick the biggest problem, change one thing and measure it. A higher conversion rate is worth nothing if profit, order value or returns get worse.
 
 Snap36 and Sirv can help with product photography, high-resolution image delivery, zoom, and 360-degree product views.

@@ -1,8 +1,8 @@
 ---
-title: "Optimising a Vue/Nuxt site with Sirv"
+title: "Optimizing a Vue/Nuxt site with Sirv"
 description: "How I handled responsive images, lazy loading, CDN delivery, placeholders, and media galleries on Sirv Experts."
 date: 2023-09-30
-lastmod: 2026-09-04
+lastmod: 2026-09-23
 url: /experts-nuxt-Sirv/
 draft: false
 content_type: "Guide"
@@ -19,7 +19,7 @@ My latest project is [Sirv Experts](https://experts.sirv.com), a directory of pr
 
 The project is powered by Nuxt and has some tricky parts about it, like an [interactive map of experts closest to you](https://experts.sirv.com/360-product-photography/near-me), a portfolio showcase of each expert, and lots of images all over the website.
 
-That made it a useful test for Sirv's image delivery and media viewer.
+A good excuse to throw everything Sirv has at it.
 
 ## The problem
 We've compiled a list of things that we need to optimize for the project, and it's quite a list:
@@ -40,7 +40,7 @@ GTmetrix score of 100%, and a 0.5s largest contentful paint.
 And a 99% score on LightHouse. Yeah, we're working on accessibility right now, I know it's important. 😀
 
 ## Image optimization and lazy loading
-Sirv's [automatic responsive images](https://sirv.com/help/articles/responsive-images-smv/) covered the first two items. Images are lazy-loaded and served in a suitable format and size.
+Sirv's [automatic responsive images](https://sirv.com/help/articles/responsive-images-smv/) take care of the first two items out of the box. Images get lazy-loaded and served in the right format and size.
 
 Sirv.js requests a transformed version of the master image for the current device. We first loaded the script in `nuxt.config.js`, then moved it to the pages that actually needed it.
 ```js
@@ -63,7 +63,7 @@ getSirv()
 ```
 Alternatively, just use the [npm module](https://www.npmjs.com/package/sirv-media-viewer-script). 
 
-Our backend already stored its images on Sirv, so no migration was needed. The remaining issue was the placeholder shown while an image loaded.
+Our images were already on Sirv, so there was nothing to migrate. That left the placeholders.
 ## Improving first contentful paint & reducing layout shift
 
 Sirv's Dynamic Imaging parameters can return a placeholder at the required size, format, and colour. We used 10% quality for the small images on the [map page](https://experts.sirv.com/360-product-photography/anywhere).
@@ -75,7 +75,7 @@ Sirv's Dynamic Imaging parameters can return a placeholder at the required size,
   :alt="title"
 >
 ```
-Adding [blur](https://sirv.com/help/articles/dynamic-imaging/stylize/blur/) works pretty nice for bigger images, but we didn't really have any use-case for this.
+Adding [blur](https://sirv.com/help/articles/dynamic-imaging/stylize/blur/) works pretty nicely for bigger images, but we didn't really have any use-case for this.
 
 We also preloaded critical images and prefetched the Sirv CDN and Google Fonts domains in `nuxt.config.js`:
 ```js
@@ -108,7 +108,7 @@ which can be done via a [github action](https://github.com/marketplace/actions/s
 So now we have all of our images optimized, lazy-loaded, and hosted on the CDN, but we still have to deal with the experts' portfolios.
 
 ## Showcasing experts' portfolios
-Sirv's [Media Viewer](https://sirv.com/help/articles/media-viewer/) handles each expert's mixed-media gallery. A custom component reads the portfolio data and builds the viewer.
+This is where Sirv's [Media Viewer](https://sirv.com/help/articles/media-viewer/) shines. A small custom component takes the portfolio data and builds a gallery out of it.
 
 See the result [here](https://experts.sirv.com/revo-photo-revo-north-america). Or use this Nintendo Switch gallery:
 <div class="Sirv">

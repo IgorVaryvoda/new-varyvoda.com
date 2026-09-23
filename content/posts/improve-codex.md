@@ -3,14 +3,14 @@ title: "How improve-codex works"
 date: 2026-07-06
 draft: false
 content_type: "Build record"
-description: "A codebase audit becomes reviewed plans, isolated Codex worktrees, and implementation branches that still require a human merge decision."
-lastmod: 2026-09-04
+description: "A codebase audit becomes reviewed plans, isolated Codex worktrees and implementation branches that still require a human merge decision."
+lastmod: 2026-09-23
 featuredImage: "/images/posts/improve-codex.webp"
 image_alt: "Three isolated platforms of blocks pass through separate inspection panels before meeting at one final gate."
 ogImage: "https://www.varyvoda.com/images/posts/improve-codex.jpg"
 ---
 
-[improve-codex](https://github.com/IgorVaryvoda/improve-codex) packages the audit and implementation loop I use on mature repositories.
+[improve-codex](https://github.com/IgorVaryvoda/improve-codex) is the loop I run on mature repositories: audit the code, write plans, have a critic attack them, let agents implement them in isolation and review the result. It stops before the merge. That part stays mine.
 
 ```bash
 npx skills add igorvaryvoda/improve-codex
@@ -24,36 +24,34 @@ $improve-codex deep security
 $improve-codex execute 012 014
 ```
 
-It returns reviewed implementation work. It never merges or pushes approved implementation branches.
-
 ## The plan is the expensive part
 
-The orchestrating session reads the repository, chooses what is worth changing and writes self-contained plans. Each plan needs enough context for an executor that has never seen the conversation.
+The main session reads the repository, picks what is worth changing and writes self-contained plans. Each plan has to work for an executor that has never seen the conversation.
 
-A read-only Sol critic checks the plan against the code before implementation starts. It looks for false assumptions, missing failure paths, ambiguous scope and weak done criteria. A plan that merely sounds sensible is not ready.
+Before anything gets built, a critic reads each plan against the actual code. The critic is Sol (`gpt-5.6-sol` at high effort) in a read-only sandbox. It hunts for false assumptions, missing failure paths, vague scope and weak done criteria. A plan that only sounds sensible goes back.
 
-Codex or Claude Code can orchestrate. The division is by responsibility, rather than a requirement that different model families occupy every stage.
+Codex or Claude Code can run the main session. What matters is that planning, criticism and execution are separate jobs, not which model does which.
 
 ## Two execution paths
 
-When a repository already has a complete, reviewed Symphony/Clanker contract, the skill uses its serialized execution and integration workflow. It does not copy Studio's orchestration into an unrelated repository.
+Studio has its own orchestration (Symphony and Clanker). If a repository already has that set up and reviewed, the skill uses it and runs plans one at a time through that workflow.
 
-Otherwise, a portable runner gives each plan an isolated git worktree and a guarded Terra executor. Dependent plans wait for their prerequisites.
+Everywhere else, a portable runner gives each plan its own git worktree and an executor running Terra (`gpt-5.6-terra`). Plans that depend on other plans wait for them.
 
-The portable runner removes MCP servers, plugins, browser and other interactive tool surfaces. It applies a timeout and lower CPU priority. Browser verification stays with the main session or the user after the executor marks it skipped. These are the portable runner's rules, not a description of every repo-local execution environment.
+The runner strips the executor down. No MCP servers, no plugins, no browser. It gets a timeout and a lower CPU priority. If a check needs a browser, the executor marks it skipped and the main session or I do it later.
 
 ## Review the result
 
-The main session reruns the done criteria and reviews the diff. Sol supplies a separate final criticism. Neither a successful process exit nor a plausible completion summary is enough.
+The main session reruns the done criteria and reviews the diff. Sol does a separate final review. A clean exit code and a confident summary don't count for anything.
 
-The runner requires a usable status report. Critic verdicts must carry the identifier for that run. Report paths cannot overwrite an earlier round. Missing authentication, timeout support or valid reports fail the run.
+The runner wants a usable status report. Every critic verdict carries the ID of its run. A later round can't overwrite an earlier report. If authentication, timeout support or a valid report is missing, the run fails.
 
-An independent reviewer can still miss the same defect as the author. The useful protection is a specific objection that can be checked against a file, test or observed result. A different model name alone does not provide that.
+A second reviewer can still miss the same bug as the author. What helps is a specific objection you can check against a file, a test or an observed result. A different model name on the review doesn't give you that.
 
 ## Where it stops
 
-The final verdict is **APPROVE**, **REVISE** or **BLOCK**. Review is capped at two rounds per plan. Work with a surviving major blocker must be split or approached again, rather than pushed through another ceremonial review.
+The final verdict is **APPROVE**, **REVISE** or **BLOCK**. Review stops after two rounds per plan. If a major blocker survives both, the work gets split or rethought. It doesn't go through a third round of ceremony.
 
-Approved work still needs a merge decision. Browser-dependent checks still need a browser. Each repository still needs tests capable of catching its failures.
+Approved work still needs me to merge it. Browser checks still need a browser. And the whole thing is only as good as the repository's tests.
 
-The public repository documents the [current workflow and runner settings](https://github.com/IgorVaryvoda/improve-codex#workflow). This article describes that contract checked on 4 September 2026.
+The repository has the [current workflow and runner settings](https://github.com/IgorVaryvoda/improve-codex#workflow). This post matches them as of 4 September 2026.
