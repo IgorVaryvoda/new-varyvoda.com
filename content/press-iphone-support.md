@@ -6,13 +6,13 @@ url: /press-iphone/support/
 draft: false
 ---
 
-Press makes smaller copies of the videos and photos on your iPhone, finds similar photos, and helps you remove what you no longer need. It all runs on the device.
+Press makes smaller copies of the videos and photos on your iPhone, finds similar photos and helps you remove what you no longer need. It all runs on the device.
 
 ## Common questions
 
 **Why didn't my free space go up right away?** Removed originals go to Recently Deleted in Photos and stay there for about 30 days. Empty Recently Deleted to get the space back now. With iCloud Photos, the space may be freed in iCloud rather than on the iPhone.
 
-**Some items say they are left alone.** Press skips files it can't copy without losing something, such as Portrait photos (the depth effect), HDR, and Cinematic videos. It says why on each item.
+**Some items say they are left alone.** Press skips files it can't copy without losing something, such as Portrait photos (the depth effect), HDR and Cinematic videos. It says why on each item.
 
 **Can I undo a removal?** Yes, for about 30 days: open Photos → Albums → Recently Deleted and recover the original.
 
