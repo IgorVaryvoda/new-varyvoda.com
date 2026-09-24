@@ -22,10 +22,10 @@
 }
 
 .scene-message .scene-sentence {
-  max-width: none;
+  max-width: 24ch;
   padding: 0;
   font-family: var(--display);
-  font-size: clamp(4rem, 6.4vw, 8rem);
+  font-size: clamp(3.4rem, 4.4vw, 6.2rem);
   font-style: normal;
   font-weight: 500;
   line-height: 1.05;
@@ -34,17 +34,6 @@
 }
 
 .scene-message .scene-sentence::before { content: none; }
-
-.scene-message .scene-intro {
-  max-width: min(100%, 60ch);
-  margin: 0;
-  color: var(--ink);
-  font-family: var(--reading);
-  font-size: var(--type-intro);
-  font-weight: 400;
-  line-height: 1.65;
-  text-wrap: pretty;
-}
 
 .scene-corner {
   font-family: var(--display);
@@ -55,10 +44,6 @@
 
 .scene-corner--latest { font-size: var(--type-compact-action); font-weight: 500; }
 
-:root:not([data-theme="dark"]) :where(.scene-intro) {
-  color: rgba(243, 248, 252, 0.94);
-  text-shadow: 0 0 0.1rem rgba(8, 28, 46, 0.9), 0 0 0.3rem rgba(8, 28, 46, 0.85), 0 0 0.3rem rgba(8, 28, 46, 0.6), 0 0 0.8rem rgba(8, 28, 46, 0.6), 0 1px 1.8rem rgba(8, 28, 46, 0.5);
-}
 
 .build-summary > div:first-child > p:first-child {
   margin: 0;
@@ -126,10 +111,9 @@
   .scene-hero { grid-template-rows: 1fr auto auto; gap: 1.6rem; padding: 4rem 0 2.6rem; }
   .scene-message { min-width: 0; width: 100%; gap: 1.6rem; padding: 0 0.8rem; transform: none; }
   .scene-message::before { inset-inline: 0; }
-  .scene-message .scene-sentence { min-width: 0; width: 100%; max-width: none; font-size: clamp(3.2rem, 10.8vw, 5rem); }
+  .scene-message .scene-sentence { min-width: 0; width: 100%; max-width: none; font-size: clamp(2.8rem, 8vw, 4rem); }
   /* Keep each phrase together when it fits; enlarged text may wrap inside it. */
   .scene-message .scene-sentence a { display: inline-block; max-width: 100%; white-space: normal; }
-  .scene-intro { max-width: 38rem; }
   .scene-corner { position: static; width: fit-content; max-width: 100%; text-align: center; }
   .career-strip { grid-template-columns: 1fr; }
   .career-strip li:nth-child(even) { border-left: 0; }
