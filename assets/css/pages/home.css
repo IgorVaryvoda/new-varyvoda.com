@@ -35,12 +35,13 @@
 
 .scene-message .scene-sentence::before { content: none; }
 
-.scene-intro {
+.scene-message .scene-intro {
   max-width: min(100%, 60ch);
   margin: 0;
   color: var(--ink);
   font-family: var(--reading);
   font-size: var(--type-intro);
+  font-weight: 400;
   line-height: 1.65;
   text-wrap: pretty;
 }

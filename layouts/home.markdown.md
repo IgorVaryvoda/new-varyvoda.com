@@ -1,7 +1,5 @@
 # {{ .Site.Params.author }}
 
-I build products—and I keep them alive.
-
 I'm Igor Varyvoda. I run Sirv Studio, and I build my own apps when I have an idea I cannot ignore.
 
 ## Current focus
