@@ -26,7 +26,7 @@ check_page() {
   exit 1
 }
 
-check_page "/" "living portfolio of independent software."
+check_page "/" "have an idea I cannot ignore."
 check_page "/projects/" "Choose a product."
 check_page "/about/" "I started by building and operating a profitable content website."
 check_page "/projects/sirv-studio/" "Contributions"
