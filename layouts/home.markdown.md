@@ -2,7 +2,7 @@
 
 I build products—and I keep them alive.
 
-I'm Igor Varyvoda, a product builder and operator behind Sirv Studio and a living portfolio of independent software.
+I'm Igor Varyvoda. I run Sirv Studio, and I build my own apps when I have an idea I cannot ignore.
 
 ## Current focus
 {{ range first 1 (where (where .Site.RegularPages "Section" "projects") ".Params.hero" true) }}

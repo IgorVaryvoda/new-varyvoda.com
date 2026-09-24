@@ -45,18 +45,6 @@
   text-wrap: pretty;
 }
 
-.scene-personality {
-  margin: 0.2rem 0 0;
-  color: var(--slate);
-  font-family: var(--display);
-  font-size: var(--type-supporting);
-  font-weight: 500;
-  line-height: 1.5;
-  letter-spacing: normal;
-  text-transform: none;
-  text-wrap: pretty;
-}
-
 .scene-corner {
   font-family: var(--display);
   font-size: var(--type-supporting);
@@ -66,7 +54,7 @@
 
 .scene-corner--latest { font-size: var(--type-compact-action); font-weight: 500; }
 
-:root:not([data-theme="dark"]) :where(.scene-intro, .scene-personality) {
+:root:not([data-theme="dark"]) :where(.scene-intro) {
   color: rgba(243, 248, 252, 0.94);
   text-shadow: 0 1px 1.2rem rgba(8, 28, 46, 0.55), 0 0 0.3rem rgba(8, 28, 46, 0.4);
 }
