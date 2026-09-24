@@ -1868,20 +1868,32 @@
     // long-exposure stripe. Two offset rows of low-contrast cloud knots
     // follow its real projected arc and leave a natural central dust lane.
     context.globalCompositeOperation = "lighter";
+    // The band is only in frame for part of the year (it rises at the left
+    // edge from late September). Extinction and the coastal light dome eat
+    // it below ~30 degrees: without the altitude fade its brightest end sat
+    // on the ridge and the band read as a searchlight beam from the town.
+    // Per-knot jitter and patch strength break the even column into clouds.
     var galacticLatitudes = [-5.5, 5.5];
     for (var latitudeIndex = 0; latitudeIndex < galacticLatitudes.length; latitudeIndex++) {
       for (var galacticLongitude = 0; galacticLongitude < 360; galacticLongitude += 3.0) {
-        var cloudEquatorial = galacticToEquatorial(galacticLongitude, galacticLatitudes[latitudeIndex]);
+        var knotSeed = galacticLongitude * 1.93 + latitudeIndex * 41.7;
+        var cloudEquatorial = galacticToEquatorial(
+          galacticLongitude + (starHash(knotSeed + 5.3) - 0.5) * 2.4,
+          galacticLatitudes[latitudeIndex] + (starHash(knotSeed + 9.1) - 0.5) * 5.0
+        );
         var cloudPoint = projectEquatorial(cloudEquatorial.ra, cloudEquatorial.dec, siderealTime, aspect);
         if (!cloudPoint || cloudPoint.altitude < 0 || cloudPoint.u < -0.08 || cloudPoint.u > 1.08
           || cloudPoint.v < 0.36 || cloudPoint.v > 1.08) continue;
+        var clearSky = Math.min(1, Math.max(0, (cloudPoint.altitude * 180 / Math.PI - 12) / 20));
+        clearSky = clearSky * clearSky * (3 - 2 * clearSky);
+        if (clearSky <= 0) continue;
         var cloudX = cloudPoint.u * textureWidth;
         var cloudY = (1 - cloudPoint.v) * textureHeight;
         var cloudShape = 0.5 + 0.5 * Math.sin(
           galacticLongitude * 0.173 + Math.sin(galacticLongitude * 0.047) * 2.1 + latitudeIndex * 1.7
         );
         var cloudRadius = textureHeight * (0.030 + cloudShape * 0.034);
-        var cloudAlpha = 0.012 + cloudShape * 0.028;
+        var cloudAlpha = (0.012 + cloudShape * 0.028) * clearSky * (0.25 + 0.75 * starHash(knotSeed));
         var cloudGradient = context.createRadialGradient(cloudX, cloudY, 0, cloudX, cloudY, cloudRadius);
         cloudGradient.addColorStop(0, "rgba(126, 138, 166, " + cloudAlpha + ")");
         cloudGradient.addColorStop(0.48, "rgba(101, 116, 148, " + (cloudAlpha * 0.55) + ")");
@@ -2165,7 +2177,7 @@
     shipReady = 1;
     refreshFrame();
   };
-  shipImage.src = "/images/herceg-novi-cruise-ship.png";
+  shipImage.src = "/images/herceg-novi-cruise-ship.png?v=2";
 
   // Two device pixels per CSS pixel preserve Retina detail without paying
   // the 2.25x fragment cost of a 3x display. Adaptive quality can still step
