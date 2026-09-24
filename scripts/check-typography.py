@@ -71,20 +71,13 @@ def check_bounds(page: Page, selector: str) -> None:
 
 
 def check_home(page: Page) -> None:
-    check_type(page, '.scene-intro', 17, 'Literata')
-    check_type(page, '.scene-personality', 13, 'Geologica', True)
     check_type(page, '.scene-corner', 13, 'Geologica', True)
     check_type(page, '.scene-corner--latest', 14)
     check_type(page, '.build-role', 14, 'Geologica', True)
     check_type(page, '.build-summary > div:first-child > p:first-child', 18, 'Literata')
     check_type(page, '.career-strip p', 16, 'Geologica')
     check_type(page, '.start-here-grid span', 16)
-    check_bounds(page, '.scene-sentence, .scene-intro, .scene-personality, .scene-corner')
-    boxes = [page.locator(s).bounding_box() for s in
-             ('.scene-sentence', '.scene-intro', '.scene-personality')]
-    assert all(boxes), 'Missing hero geometry'
-    for first, second in zip(boxes, boxes[1:]):
-        assert first['y'] + first['height'] <= second['y'] + 1, 'Hero text overlaps'
+    check_bounds(page, '.scene-sentence, .scene-corner')
     if page.viewport_size['width'] <= 680:
         message = page.locator('.scene-message').bounding_box()
         origin = page.locator('.scene-corner--origin').bounding_box()

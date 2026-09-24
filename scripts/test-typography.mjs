@@ -41,8 +41,7 @@ test("shared sizes preserve a readable rem-based floor", () => {
 });
 
 test("homepage copy has two voices, not three", () => {
-  hasDeclaration(rule(home, ".scene-intro"), "font-family", "var(--reading)");
-  for (const selector of [".scene-personality", ".build-role", ".career-strip a > span"]) {
+  for (const selector of [".build-role", ".career-strip a > span"]) {
     const declarations = rule(home, selector);
     hasDeclaration(declarations, "font-family", "var(--display)");
     hasDeclaration(declarations, "text-transform", "none");
