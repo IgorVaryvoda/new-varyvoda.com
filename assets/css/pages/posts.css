@@ -107,6 +107,64 @@
 
 .article-start { white-space: nowrap; }
 
+.article-hero-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 1.6rem; }
+
+.article-listen { display: flex; align-items: center; gap: 1.4rem; }
+.article-listen-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 0.8rem 1.8rem 0.8rem 0.8rem;
+  color: var(--harbor-ink);
+  background: var(--harbor-raised);
+  border: 1px solid var(--harbor-rule);
+  border-radius: 99rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.article-listen-toggle:hover { border-color: var(--accent); }
+.article-listen-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.article-listen-icon {
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  background: var(--accent);
+  border-radius: 50%;
+}
+.article-listen-icon::before {
+  content: "";
+  width: 0;
+  height: 0;
+  margin-left: 0.3rem;
+  border-style: solid;
+  border-width: 0.6rem 0 0.6rem 1rem;
+  border-color: transparent transparent transparent var(--harbor-deep);
+}
+.article-listen.is-playing .article-listen-icon::before {
+  width: 1rem;
+  height: 1.2rem;
+  margin: 0;
+  border: 0;
+  border-inline: 0.35rem solid var(--harbor-deep);
+}
+.article-listen-seek { display: none; width: 14rem; accent-color: var(--accent); }
+.article-listen.is-docked .article-listen-seek { display: block; }
+
+.article-listen.is-docked {
+  position: fixed;
+  right: var(--gutter);
+  bottom: 2rem;
+  z-index: 20;
+  padding: 0.6rem 1.6rem 0.6rem 0.6rem;
+  background: var(--harbor-raised);
+  border: 1px solid var(--harbor-rule);
+  border-radius: 99rem;
+  box-shadow: 0 1.2rem 3rem var(--harbor-shadow);
+}
+.article-listen.is-docked .article-listen-toggle { border-color: transparent; }
+
 .article-reading-surface {
   width: 100%;
   padding: clamp(7rem, 10vw, 12rem) 0 clamp(9rem, 12vw, 15rem);
@@ -233,6 +291,9 @@
   .article-hero-title { padding: 7rem 0 5rem; }
   .article-page--editorial .article-hero-title h1 { font-size: clamp(4.2rem, 12vw, 5.4rem); }
   .article-hero-bottom { grid-template-columns: 1fr; align-items: start; gap: 3rem; }
+  .article-hero-actions { align-items: flex-start; }
+  .article-listen.is-docked { left: var(--gutter); }
+  .article-listen.is-docked .article-listen-seek { flex: 1; width: auto; min-width: 0; }
   .article-reading-surface { padding: 6rem 0 9rem; }
   .article-reading-inner { grid-template-columns: 1fr; gap: 5rem; }
   .article-rail { position: static; max-height: none; overflow: visible; }
