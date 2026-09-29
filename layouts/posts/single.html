@@ -6,7 +6,11 @@
 {{ $ogImage := .Params.ogImage | default "https://cdn.earthroulette.com/varyvoda/og.jpg?cy=350&ch=900" }}
 {{ $canonical := .Params.canonicalUrl | default .Permalink }}
 {{ $audio := "" }}
-{{ with .File }}{{ if fileExists (printf "static/audio/posts/%s.mp3" .ContentBaseName) }}{{ $audio = printf "/audio/posts/%s.mp3" .ContentBaseName }}{{ end }}{{ end }}
+{{ $words := "" }}
+{{ with .File }}
+  {{ if fileExists (printf "static/audio/posts/%s.mp3" .ContentBaseName) }}{{ $audio = printf "/audio/posts/%s.mp3" .ContentBaseName }}{{ end }}
+  {{ if fileExists (printf "static/audio/posts/%s.json" .ContentBaseName) }}{{ $words = printf "/audio/posts/%s.json" .ContentBaseName }}{{ end }}
+{{ end }}
 {{ $desc := .Description | default (.Summary | plainify | htmlUnescape | replaceRE `\s+` " " | strings.TrimSpace | truncate 160) }}
 {{ $article := dict
   "@context" "https://schema.org"
@@ -43,7 +47,7 @@
         {{ with .Description }}<p class="article-dek">{{ . }}</p>{{ end }}
         <div class="article-hero-actions">
           {{ with $audio }}
-            <div class="article-listen" data-listen>
+            <div class="article-listen" data-listen{{ with $words }} data-listen-words="{{ . }}"{{ end }}>
               <button type="button" class="article-listen-toggle" aria-label="Play narration">
                 <span class="article-listen-icon" aria-hidden="true"></span>
                 <span data-listen-time>Listen</span>

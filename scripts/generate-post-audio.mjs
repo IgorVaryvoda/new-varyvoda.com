@@ -62,13 +62,39 @@ async function speak(text, previous_text, next_text) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-for (const slug of process.argv.slice(2)) {
+// Word timings for the read-along highlight: [[word, start, end], ...] in seconds.
+async function align(mp3, text) {
+  const form = new FormData();
+  form.append("file", new Blob([mp3], { type: "audio/mpeg" }), "audio.mp3");
+  form.append("text", text);
+  const res = await fetch("https://api.elevenlabs.io/v1/forced-alignment", {
+    method: "POST",
+    headers: { "xi-api-key": process.env.ELEVENLABS_KEY },
+    body: form,
+  });
+  if (!res.ok) throw new Error(`${res.status} ${await res.text()}`);
+  const { words } = await res.json();
+  return words.filter((w) => w.text.trim()).map((w) => [w.text.trim(), +w.start.toFixed(2), +w.end.toFixed(2)]);
+}
+
+// --align re-times existing MP3s without generating new speech.
+const alignOnly = process.argv.includes("--align");
+for (const slug of process.argv.slice(2).filter((a) => a !== "--align")) {
   const text = narration(await readFile(`content/posts/${slug}.md`, "utf8"));
   if (process.env.DRY) { console.log(`=== ${slug} (${text.length} chars)\n${text}\n`); continue; }
-  const parts = chunks(text);
-  const audio = [];
-  for (const [i, part] of parts.entries()) audio.push(await speak(part, parts[i - 1]?.slice(-500), parts[i + 1]?.slice(0, 500)));
-  await mkdir("static/audio/posts", { recursive: true });
-  await writeFile(`static/audio/posts/${slug}.mp3`, Buffer.concat(audio));
-  console.log(`${slug}: ${text.length} chars in ${parts.length} request(s) -> static/audio/posts/${slug}.mp3`);
+  const file = `static/audio/posts/${slug}`;
+  let mp3;
+  if (alignOnly) {
+    mp3 = await readFile(`${file}.mp3`);
+  } else {
+    const parts = chunks(text);
+    const audio = [];
+    for (const [i, part] of parts.entries()) audio.push(await speak(part, parts[i - 1]?.slice(-500), parts[i + 1]?.slice(0, 500)));
+    mp3 = Buffer.concat(audio);
+    await mkdir("static/audio/posts", { recursive: true });
+    await writeFile(`${file}.mp3`, mp3);
+  }
+  const words = await align(mp3, text);
+  await writeFile(`${file}.json`, JSON.stringify(words));
+  console.log(`${slug}: ${text.length} chars, ${words.length} timed words -> ${file}.mp3/.json`);
 }

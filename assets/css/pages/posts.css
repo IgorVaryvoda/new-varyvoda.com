@@ -165,6 +165,11 @@
 }
 .article-listen.is-docked .article-listen-toggle { border-color: transparent; }
 
+::highlight(listen-word) {
+  color: var(--harbor-ink);
+  background-color: color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
 .article-reading-surface {
   width: 100%;
   padding: clamp(7rem, 10vw, 12rem) 0 clamp(9rem, 12vw, 15rem);
