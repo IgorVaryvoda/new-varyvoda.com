@@ -2,7 +2,8 @@
   const player = document.querySelector("[data-listen]");
   if (!player) return;
   const audio = player.querySelector("audio");
-  const toggle = player.querySelector("button");
+  const toggle = player.querySelector(".article-listen-toggle");
+  const speed = player.querySelector("[data-listen-speed]");
   const seek = player.querySelector("input");
   const time = player.querySelector("[data-listen-time]");
   const hero = player.closest(".article-hero");
@@ -23,6 +24,18 @@
 
   toggle.addEventListener("click", () => (audio.paused ? audio.play() : audio.pause()));
   seek.addEventListener("input", () => { audio.currentTime = seek.value; });
+
+  const RATES = [1, 1.25, 1.5, 1.75, 2];
+  const setRate = (rate) => {
+    audio.playbackRate = audio.defaultPlaybackRate = rate;
+    speed.textContent = `${rate}×`;
+    speed.setAttribute("aria-label", `Playback speed ${rate}×`);
+    try { localStorage.setItem("listen-rate", rate); } catch {}
+  };
+  speed.addEventListener("click", () => setRate(RATES[(RATES.indexOf(audio.playbackRate) + 1) % RATES.length]));
+  let savedRate = 1;
+  try { savedRate = Number(localStorage.getItem("listen-rate")); } catch {}
+  setRate(RATES.includes(savedRate) ? savedRate : 1);
   ["play", "pause", "timeupdate", "loadedmetadata", "ended"].forEach((e) => audio.addEventListener(e, render));
   new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; render(); }).observe(hero);
   render();

@@ -150,6 +150,19 @@
   border-inline: 0.35rem solid var(--harbor-deep);
 }
 .article-listen-seek { display: none; width: 14rem; accent-color: var(--accent); }
+.article-listen-speed {
+  min-width: 5.6rem;
+  padding: 0.8rem 1.2rem;
+  color: var(--harbor-ink);
+  background: transparent;
+  border: 1px solid var(--harbor-rule);
+  border-radius: 99rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.article-listen-speed:hover { border-color: var(--accent); }
+.article-listen-speed:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .article-listen.is-docked .article-listen-seek { display: block; }
 
 .article-listen.is-docked {

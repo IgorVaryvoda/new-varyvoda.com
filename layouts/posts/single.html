@@ -53,6 +53,7 @@
                 <span data-listen-time>Listen</span>
               </button>
               <input type="range" class="article-listen-seek" min="0" max="0" step="1" value="0" aria-label="Narration position">
+              <button type="button" class="article-listen-speed" data-listen-speed aria-label="Playback speed 1×">1×</button>
               <audio preload="metadata" src="{{ . }}"></audio>
             </div>
           {{ end }}
