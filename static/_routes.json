@@ -1,6 +1,8 @@
 {
   "version": 1,
-  "include": ["/*"],
+  "include": [
+    "/*"
+  ],
   "exclude": [
     "/css/*",
     "/fonts/*",
@@ -12,6 +14,7 @@
     "/projects/index.xml",
     "/projects/sirv-studio/build-record/*",
     "/posts/index.xml",
+    "/app-ads.txt",
     "/robots.txt",
     "/sitemap.xml"
   ]
