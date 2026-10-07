@@ -4,7 +4,7 @@ date: 2026-10-07
 draft: false
 content_type: "Build record"
 page_css: ["appshots"]
-description: "A cozy thread puzzle built from what players hate about its competitors: solver-checked levels, no forced ads and a real cross-stitch chart for every picture. Store-ready in three and a half days."
+description: "A cozy thread puzzle built from what players hate about its competitors: solver-checked levels, no forced ads and a real cross-stitch chart for every picture. Now on Google Play, three and a half days after the first commit."
 featuredImage: "/images/posts/stitch-puzzle-reviews-first.webp"
 image_alt: "An embroidery hoop holds a half-unpicked cross-stitch fox, with thread spools and loose amber thread around it."
 ogImage: "https://www.varyvoda.com/images/posts/stitch-puzzle-reviews-first.jpg"
@@ -14,7 +14,7 @@ The first commit of Stitch Puzzle had no game in it.
 
 It had a study of about 1,775 reviews of Yarn Loop and 1,896 reviews of Pixel Flow, two popular thread puzzles. It had a teardown of how they monetise, rough revenue estimates and a pitch deck. The code came after.
 
-Three and a half days later the game had 216 levels, iOS and Android builds and a [support page](/stitch-puzzle/support/) on this site.
+Three and a half days later the game had 216 levels, iOS and Android builds and a [support page](/stitch-puzzle/support/) on this site. It's [live on Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) now. The iOS version is still waiting for App Review.
 
 ## The game
 
@@ -115,4 +115,4 @@ It's Godot 4.7 with about 7,000 lines of GDScript. The rules were prototyped in 
 
 Progress backs up to my own Supabase with a code you type on the new phone. There are no analytics.
 
-[Stitch Puzzle support](/stitch-puzzle/support/) · [cross-stitch converter](https://github.com/IgorVaryvoda/cross-stitch)
+[Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) · [Stitch Puzzle support](/stitch-puzzle/support/) · [cross-stitch converter](https://github.com/IgorVaryvoda/cross-stitch)
