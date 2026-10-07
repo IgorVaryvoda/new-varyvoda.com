@@ -3,6 +3,7 @@ title: "Ortholinear: a keyboard for big thumbs"
 date: 2026-10-07
 draft: false
 content_type: "Build record"
+page_css: ["appshots"]
 description: "iOS won't let you resize its keyboard, so I built one you can. Ukrainian and English, straight rows, 72 pt keys and no Full Access. Ten days from first commit to the App Store, then a paid Pro tier a month later."
 featuredImage: "/images/posts/ortholinear-a-keyboard-for-big-thumbs.webp"
 image_alt: "A straight grid of large blank keycaps recedes into fog, with one key glowing amber in the middle."
@@ -17,6 +18,25 @@ I like smaller phones, so I use an iPhone 15 Pro. On that screen the stock keybo
 
 So I built [Ortholinear](https://apps.apple.com/us/app/ortholinear-keyboard/id6808996711). It's a keyboard for iPhone and iPad with Ukrainian and English, 72 pt keys, 28 pt letters and a grid where every letter gets the same cell. The first commit landed on 5 September. Apple published version 0.3.0 on 15 September. Version 0.6.0, with a paid Pro tier, went live yesterday.
 
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-ukrainian.webp" alt="The Ukrainian keyboard in a test field: four rows of large square keys with no period or comma" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Ukrainian</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-english.webp" alt="The English QWERTY keyboard with the same straight grid and large keys" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">English</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-app.webp" alt="The Ortholinear app home screen with a test field and the Ukrainian keyboard below it" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">The app</span>
+    </div>
+  </div>
+  <figcaption>Same grid in both languages. The app has a test field so you can try a size before you commit to it.</figcaption>
+</figure>
+
 ## Bigger keys mean fewer keys
 
 You can't make keys bigger without taking something away. The default letter page has no period, no comma and no header strip. The letters spread across the space they free up.
@@ -24,6 +44,25 @@ You can't make keys bigger without taking something away. The default letter pag
 Ukrainian needed the same treatment. Ґ lives on a long press of Г instead of taking its own key. Ї can move to a long press of І, which widens the whole top row. The apostrophe types ʼ (U+02BC), the same character the macOS Ukrainian layout uses, not the typewriter one.
 
 Everything else is a slider. Key height runs from 36 to 88 pt, letters from 18 to 36 pt, gaps from zero to 12. There are three presets for people who don't want to touch sliders, and a "fill gaps" switch that turns the whole grid into one surface of touch targets.
+
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-settings.webp" alt="Keyboard settings with presets and sliders for key height, control row height and spacing" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Size</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-themes.webp" alt="The theme picker showing Warm Light, Soft Dark, Tokyo Night and Nord keyboards" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Themes</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/ortholinear-languages.webp" alt="The language list with Ukrainian and English on and other layouts available" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Languages</span>
+    </div>
+  </div>
+  <figcaption>Size every key, pick a theme, add layouts. Screenshots from the App Store listing.</figcaption>
+</figure>
 
 The one thing I refused was per-letter widths. It would break the grid the app is named after, and it would skew the distances that glide typing and suggestions depend on.
 

@@ -3,6 +3,7 @@ title: "Press for iPhone: report savings honestly"
 date: 2026-10-07
 draft: false
 content_type: "Build record"
+page_css: ["appshots"]
 description: "Phone cleaner apps sell fear and weekly subscriptions. Press for iPhone is now on the App Store: it compresses photos and videos on the device, asks before it deletes anything and charges once."
 featuredImage: "/images/posts/press-for-iphone.webp"
 image_alt: "A loose stack of photo prints and film strips flows into a small, neat block that glows amber."
@@ -25,11 +26,49 @@ Around that core:
 - **Fit a size.** Pick a file size for a video and Press works out the bitrate, with a floor so it never turns ugly just to hit a number.
 - **Old screenshots** and a weekly reminder, if you want one.
 
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-swipe.webp" alt="Swipe review showing one video card with remove, compress and keep buttons" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Swipe to decide</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-similar.webp" alt="Groups of similar photos with a suggested keeper in each group" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Similar photos</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-live.webp" alt="A grid of Live Photos showing how much of each file is the motion part" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Live Photos</span>
+    </div>
+  </div>
+  <figcaption>Swipe review, near-duplicates and Live Photos. Screenshots from the App Store listing.</figcaption>
+</figure>
+
 In the simulator a 4K clip went from 68.1 MB to 23.5 MB, and a PNG went from 409 KB to 112 KB as HEIC.
 
 ## Delete is a separate question
 
 Compressing and deleting are two decisions, and Press asks them separately. It saves the smaller copy, checks the copy is valid, verifies it landed in Photos and only then offers to remove the original.
+
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-compare.webp" alt="A smaller copy of a video next to the original, 78.5 MB smaller, with save and keep buttons" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Compare first</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-videos.webp" alt="Large videos with three selected and separate Compress and Remove buttons" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Biggest videos</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/press-ios-home.webp" alt="The home screen with 19 items waiting for review and free storage on the iPhone" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Home</span>
+    </div>
+  </div>
+  <figcaption>The copy sits next to the original before anything is saved. Compress and Remove are always separate buttons.</figcaption>
+</figure>
 
 Even then, the original goes to Recently Deleted, where it waits about 30 days. Every copy also goes into a "Press" album, so it's easy to find and undo. Press never suggests compressing its own copies. The screen that lists what it left alone says how many.
 

@@ -27,11 +27,23 @@ The DMQ Design SPIN is a small QMK macro pad with 12 keys, three clickable knobs
 
 Turning the bottom knob is always volume. That one was not up for negotiation.
 
+
+<figure>
+  {{< responsive-image src="/images/posts/codex-numpad-codex.webp" alt="The Codex mode layout: twelve keys for focus, new task, search, history, task cycling, dictation, command and enter, with three knobs" sizes="(max-width: 900px) calc(100vw - 3.6rem), 860px" fallbackWidth="860" >}}
+  <figcaption>Codex mode, from the interactive cheatsheet in the repo.</figcaption>
+</figure>
+
 ## Prompt banks
 
 Tap a knob a second time and you get a prompt bank: 12 keys that each type a ready-made prompt.
 
 The Herdr bank is the mined one. "Go on", "do it", "fix all", "status?", "land it", "run migrations", "Continue from where you left off." and a few reviews. One key runs [/improve-codex](/projects/improve-codex/), which I used 30 times. It took the slot from "converge", which I used eight times. The data decides.
+
+
+<figure>
+  {{< responsive-image src="/images/posts/codex-numpad-herdr-prompts.webp" alt="The Herdr prompt bank: plan, go on, do it, fix all, autoreview, adversarial, status, resume, improve-codex, migrate, land it and send" sizes="(max-width: 900px) calc(100vw - 3.6rem), 860px" fallbackWidth="860" >}}
+  <figcaption>The Herdr prompt bank. Every key is a phrase from my own history.</figcaption>
+</figure>
 
 The keys type the prompt but don't send it. The cursor stays put so I can add a sentence, and a separate Send key presses Enter. A macro that fires a half-right prompt at an agent is worse than no macro.
 

@@ -3,6 +3,7 @@ title: "Stitch Puzzle: I read 3,600 reviews before I wrote a line"
 date: 2026-10-07
 draft: false
 content_type: "Build record"
+page_css: ["appshots"]
 description: "A cozy thread puzzle built from what players hate about its competitors: solver-checked levels, no forced ads and a real cross-stitch chart for every picture. Store-ready in three and a half days."
 featuredImage: "/images/posts/stitch-puzzle-reviews-first.webp"
 image_alt: "An embroidery hoop holds a half-unpicked cross-stitch fox, with thread spools and loose amber thread around it."
@@ -20,6 +21,25 @@ Three and a half days later the game had 216 levels, iOS and Android builds and 
 Spools of thread travel round an embroidery hoop. Each spool pulls out the first stitch in its line of sight if that stitch is its colour. A spool with thread left over waits on a shelf. Fill every slot on the shelf and you lose.
 
 It's calm, it's a little bit clever and you can play it with one thumb on the sofa.
+
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-play.webp" alt="Level 42, an arctic fox in stitches, with numbered thread spools on the shelf and in the hoop below" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">A level</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-hold.webp" alt="Level 17, a watermelon, with a hint that the held spool pulls four stitches and then waits on the shelf" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Hold to preview</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-daily.webp" alt="The daily picture, a lemon, with a tip that leftover thread waits on the shelf" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Daily picture</span>
+    </div>
+  </div>
+  <figcaption>Hold a spool to see what it will pull before you commit. The shelf is the only way to lose.</figcaption>
+</figure>
 
 ## What the reviews said
 
@@ -61,6 +81,25 @@ The money comes from rewarded ads you choose to watch for a free continue, and c
 The plan said, in writing: no races, no story, no home to decorate.
 
 The game now has a cottage with four rooms, a cat you feed once a day, crafter XP and a button-jar mini-game. So much for the plan.
+
+
+<figure class="appshots">
+  <div class="appshots-grid">
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-chart.webp" alt="A printable cross-stitch chart of a teapot with a symbol grid and a DMC thread key" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">The real chart</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-cottage.webp" alt="The craft room of the cottage with framed stitched pictures, an armchair and a cat in its bed" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Craft room</span>
+    </div>
+    <div class="appshots-panel">
+      {{< responsive-image src="/images/posts/stitch-puzzle-kitchen.webp" alt="The cottage kitchen with a dresser, a stove, a table and the cat" sizes="(max-width: 680px) calc(100vw - 3.6rem), 300px" fallbackWidth="480" >}}
+      <span class="appshots-label">Kitchen</span>
+    </div>
+  </div>
+  <figcaption>The chart you get for every finished picture, and two of the four cottage rooms.</figcaption>
+</figure>
 
 ## The hint that walked into a wall
 
