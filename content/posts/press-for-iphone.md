@@ -1,9 +1,9 @@
 ---
 title: "Press for iPhone: report savings honestly"
 date: 2026-10-07
-draft: true
+draft: false
 content_type: "Build record"
-description: "Phone cleaner apps sell fear and weekly subscriptions. Press for iPhone compresses photos and videos on the device, asks before it deletes anything and charges once."
+description: "Phone cleaner apps sell fear and weekly subscriptions. Press for iPhone is now on the App Store: it compresses photos and videos on the device, asks before it deletes anything and charges once."
 featuredImage: "/images/posts/press-for-iphone.webp"
 image_alt: "A loose stack of photo prints and film strips flows into a small, neat block that glows amber."
 ogImage: "https://www.varyvoda.com/images/posts/press-for-iphone.jpg"
@@ -11,7 +11,7 @@ ogImage: "https://www.varyvoda.com/images/posts/press-for-iphone.jpg"
 
 Phone storage cleaners are a grim category. Scary storage warnings, weekly subscriptions and "free up 12 GB!" buttons that don't say what they'll delete.
 
-[Press](/projects/press/) started as a desktop app for auditing a folder of images. The iPhone version does the same job for your camera roll, with three rules: compress locally, review before deleting and report savings honestly.
+[Press](/projects/press/) started as a desktop app for auditing a folder of images. [Press for iPhone](https://apps.apple.com/us/app/press-photo-video-compressor/id6814991311) does the same job for your camera roll, with three rules: compress locally, review before deleting and report savings honestly. It's on the App Store now.
 
 ## What it does
 
@@ -31,7 +31,7 @@ In the simulator a 4K clip went from 68.1 MB to 23.5 MB, and a PNG went from 409
 
 Compressing and deleting are two decisions, and Press asks them separately. It saves the smaller copy, checks the copy is valid, verifies it landed in Photos and only then offers to remove the original.
 
-Every copy also goes into a "Press" album, so it's easy to find and undo. Press never suggests compressing its own copies. The screen that lists what it left alone says how many.
+Even then, the original goes to Recently Deleted, where it waits about 30 days. Every copy also goes into a "Press" album, so it's easy to find and undo. Press never suggests compressing its own copies. The screen that lists what it left alone says how many.
 
 Batches write a journal as they go. If the app gets killed halfway, it picks up where it was, and it never treats an interrupted batch as permission to delete.
 
@@ -55,8 +55,10 @@ The feature is gone. A wrong number in a storage app is worse than no number.
 
 Weekly subscriptions are the biggest complaint in this category, so Press charges once: $9.99 for the full version. Free gets you looking, swiping, removing and ten smaller copies a day. A refused copy doesn't count.
 
-## Two days, then the slow part
+## Two days to build, two weeks to ship
 
 The plan came first, on 20 September. The app arrived the same day as an 8,700-line commit with 99 tests, and several features came from agents working in parallel. By the end of the next day there were 49 commits.
 
-The slow part is next: validating the risky flows on real iPhones. That hasn't happened yet, and Press for iPhone won't ship until it has.
+Then came the slow part: testing the risky flows on real iPhones. Press 1.0 went live on 4 October. It needs iOS 26 and weighs about 7 MB.
+
+[App Store](https://apps.apple.com/us/app/press-photo-video-compressor/id6814991311) · [Press for desktop](/projects/press/)
