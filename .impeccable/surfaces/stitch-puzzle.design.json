@@ -297,11 +297,15 @@
       },
       "action": {
         "displayName": "Action",
-        "purpose": "Closing download and browser-play actions."
+        "purpose": "Closing download actions."
       },
       "legal": {
         "displayName": "Legal",
         "purpose": "Purchase disclosures."
+      },
+      "text-action": {
+        "displayName": "Text Action",
+        "purpose": "Browser-play action retaining the 18px base size."
       }
     },
     "shadows": [
@@ -499,7 +503,7 @@
       "refersTo": "text-link",
       "description": "Bold underlined action with a minimum height of 44px.",
       "html": "<a class=\"ds-sp-text-link\" href=\"https://stitch-puzzle.vercel.app/\">Try it in your browser <span aria-hidden=\"true\">↗</span></a>",
-      "css": ".ds-sp-text-link{display:inline-block;min-height:44px;font-size:17px;font-weight:850;line-height:1.65;color:var(--moss,#52643c);text-underline-offset:4px;text-decoration-thickness:1px;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-text-link:hover{text-decoration-thickness:2px}.ds-sp-text-link:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}"
+      "css": ".ds-sp-text-link{display:inline-block;min-height:44px;font-size:18px;font-weight:850;line-height:1.65;color:var(--moss,#52643c);text-underline-offset:4px;text-decoration-thickness:1px;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-text-link:hover{text-decoration-thickness:2px}.ds-sp-text-link:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}"
     }
   ],
   "narrative": {

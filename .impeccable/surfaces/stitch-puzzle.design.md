@@ -64,6 +64,11 @@ typography:
     fontSize: "17px"
     fontWeight: 850
     lineHeight: 1.65
+  text-action:
+    fontFamily: "Nunito, ui-rounded, sans-serif"
+    fontSize: "18px"
+    fontWeight: 850
+    lineHeight: 1.65
   legal:
     fontFamily: "Nunito, ui-rounded, sans-serif"
     fontSize: "13px"
@@ -116,7 +121,7 @@ components:
     textColor: "{colors.gold}"
   text-link:
     textColor: "{colors.moss}"
-    typography: "{typography.action}"
+    typography: "{typography.text-action}"
   table-note:
     backgroundColor: "{colors.note-paper}"
     textColor: "{colors.note-ink}"
@@ -176,7 +181,7 @@ The stylesheet also declares thread red (`--thread`), but no current selector co
 - **Introduction:** `introduction` becomes smaller (22px) at 760px and below.
 - **Navigation:** `navigation` becomes smaller (14px) on mobile and smaller again (13px) at 360px and below. The brand uses a heavier weight (850), with desktop/mobile sizes (24px/21px).
 - **Store label and kicker:** `store-label` and `store-kicker` keep the platform name distinct from its supporting line. The final 480px rule restores the full label size in vertically stacked controls.
-- **Action and legal:** `action` supplies the closing download links; they become smaller (16px) on mobile. `legal` is used for purchase disclosures, with a narrow-screen note override (12px).
+- **Action and legal:** `action` supplies the closing download links; they become smaller (16px) on mobile. `text-action` preserves the base-size browser-play link (18px). `legal` is used for purchase disclosures, with a narrow-screen note override (12px).
 
 **The One Family Rule.** Use self-hosted Nunito for this lander, including its controls; do not import the personal site's display and reading type roles.
 
