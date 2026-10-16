@@ -1,8 +1,13 @@
-<section class="container centered">
-  <div class="error">
-    <h1>404</h1>
-    <h2>Page not found</h2>
+<section class="not-found-page" aria-labelledby="not-found-title">
+  <div class="not-found-code" aria-hidden="true">404</div>
+  <div class="not-found-copy">
+    <h1 id="not-found-title">Page not found</h1>
     <p>That path does not exist.</p>
-    <p>Try the <a href="/">homepage</a>, <a href="/projects/">project index</a>, <a href="/posts/">writing index</a>, or <a href="/sitemap.xml">sitemap</a>.</p>
+    <nav class="not-found-actions" aria-label="Find another page">
+      <a class="project-primary-action" href="/">Go to homepage</a>
+      <a href="/projects/">Project index</a>
+      <a href="/posts/">Writing index</a>
+      <a href="/sitemap.xml">Sitemap</a>
+    </nav>
   </div>
 </section>

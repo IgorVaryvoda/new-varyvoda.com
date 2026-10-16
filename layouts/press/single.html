@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Description }}">
+  <meta name="theme-color" content="#0f1519">
+  <meta name="author" content="Igor Varyvoda">
+  <link rel="canonical" href="{{ .Permalink }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ .Description }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:image" content="{{ .Params.ogImage }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ .Title }}">
+  <meta name="twitter:description" content="{{ .Description }}">
+  <meta name="twitter:image" content="{{ .Params.ogImage }}">
+  <meta name="apple-itunes-app" content="app-id=6814991311">
+  {{ $icon := resources.Get "images/press-iphone/icon.webp" }}
+  {{ $favicon := $icon.Resize "48x png" }}
+  {{ $touchIcon := $icon.Resize "180x png" }}
+  <link rel="icon" href="{{ $favicon.RelPermalink }}" type="image/png">
+  <link rel="apple-touch-icon" href="{{ $touchIcon.RelPermalink }}">
+  <link rel="preload" href="/fonts/geologica-latin.woff2" as="font" type="font/woff2" crossorigin>
+  {{ $fonts := resources.Get "css/fonts.css" }}
+  {{ $shared := resources.Get "css/custom.css" }}
+  {{ $page := resources.Get "css/systems/press-iphone.css" }}
+  {{ $css := slice $fonts $shared $page | resources.Concat "css/press-iphone.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{ $theme := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $theme.RelPermalink }}" integrity="{{ $theme.Data.Integrity }}"></script>
+  <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "SoftwareApplication" "name" "Press: Photo Video Compressor" "url" .Permalink "description" .Description "image" ($icon.Permalink) "applicationCategory" "PhotoApplication" "operatingSystem" "iOS 26.0 or later" "installUrl" .Params.app_store_url "author" (dict "@type" "Person" "name" "Igor Varyvoda" "url" .Site.BaseURL) "offers" (dict "@type" "Offer" "price" "0" "priceCurrency" "USD" "description" "Free with an optional one-time in-app purchase") | jsonify | safeJS }}</script>
+</head>
+<body class="press-page">
+  <a class="press-skip" href="#main">Skip to content</a>
+  <header class="press-header press-wrap">
+    <a class="press-brand" href="/press-iphone/" aria-label="Press for iPhone home">
+      <img src="{{ $icon.RelPermalink }}" width="40" height="40" alt="">
+      <span>Press <small>for iPhone</small></span>
+    </a>
+    <nav class="press-nav" aria-label="Press">
+      <a href="#inside">Inside the app</a>
+      <a href="#pricing">Pricing</a>
+      <a href="/press-iphone/support/">Support</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="press-hero press-wrap" aria-labelledby="press-title">
+      <div class="press-hero-copy">
+        <h1 id="press-title">Make room<br>for more.</h1>
+        <p class="press-intro">Your memories, with a little more space around them.</p>
+        <p class="press-dek">Make smaller copies of your photos and videos. Compare them before you save. Choose what stays and what goes.</p>
+        {{ partial "press-download.html" (dict "url" .Params.app_store_url) }}
+        <p class="press-download-note">Free to start · iOS 26 or later</p>
+        <a class="press-text-link" href="#how-it-works">See how it works <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 4v16m-6-6 6 6 6-6"/></svg></a>
+      </div>
+      <figure class="press-hero-preview">
+        <div class="press-phone">
+          {{ partial "responsive-local-image.html" (dict "src" "/images/press-iphone/compare.webp" "alt" "Press comparing a video with its smaller copy: 78.5 MB smaller, with options to save and keep the original or ask to remove it" "sizes" "(max-width: 700px) 70vw, 290px" "fallbackWidth" 800 "loading" "eager" "fetchpriority" "high") }}
+        </div>
+        <figcaption>A real preview. Your decision.</figcaption>
+      </figure>
+    </section>
+
+    <div class="press-local-note">
+      <p class="press-wrap"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14v3"/></svg><span>Your library stays yours. <strong>No account, no uploads, no analytics.</strong></span></p>
+    </div>
+
+    <section class="press-workflow press-wrap press-section" id="how-it-works" aria-labelledby="workflow-title">
+      <div class="press-section-heading">
+        <h2 id="workflow-title">Smaller files.<br>Same say in what stays.</h2>
+        <p>Compressing a video shouldn’t mean crossing your fingers. Press puts the result in front of you first.</p>
+      </div>
+      <ol class="press-steps">
+        <li><h3>Find the big stuff.</h3><p>Start with your largest videos, old screenshots, or photos you no longer need. See their actual sizes before you decide.</p></li>
+        <li><h3>Look at the smaller copy.</h3><p>Compare it with the original. Save it to Photos when you’re happy, or discard the copy and leave everything as it was.</p></li>
+        <li><h3>Remove only what you choose.</h3><p>Press checks that your copy is saved before offering to remove the original. Removal always needs your approval in Photos.</p></li>
+      </ol>
+      <p class="press-recovery-note">Removed originals go to Recently Deleted for about 30 days. You can recover them there, or empty it to reclaim the space sooner.</p>
+    </section>
+
+    <section class="press-inside press-section" id="inside" aria-labelledby="inside-title">
+      <div class="press-wrap">
+        <div class="press-section-heading press-inside-heading">
+          <h2 id="inside-title">A camera roll.<br>A clearer way through.</h2>
+          <p>Work through one item at a time, find the repeat shots, or keep just the still from a Live Photo.</p>
+        </div>
+        <div class="press-screens">
+          <figure>
+            <div class="press-screen-copy"><h3>Swipe to decide.</h3><p>Keep, compress, or remove. One photo or video at a time, with undo when you change your mind.</p></div>
+            <div class="press-phone">{{ partial "responsive-local-image.html" (dict "src" "/images/press-iphone/swipe.webp" "alt" "Swipe review in Press, showing a video and separate remove, compress and keep controls" "sizes" "(max-width: 700px) 68vw, 260px" "fallbackWidth" 480 "loading" "lazy") }}</div>
+          </figure>
+          <figure>
+            <div class="press-screen-copy"><h3>Keep the best shot.</h3><p>Similar photos grouped on your phone. Press suggests a keeper; you make the choice.</p></div>
+            <div class="press-phone">{{ partial "responsive-local-image.html" (dict "src" "/images/press-iphone/similar.webp" "alt" "Similar photo groups in Press, each showing a suggested keeper and the photos available to review" "sizes" "(max-width: 700px) 68vw, 260px" "fallbackWidth" 480 "loading" "lazy") }}</div>
+          </figure>
+          <figure>
+            <div class="press-screen-copy"><h3>Keep the moment.</h3><p>Turn a Live Photo into a still when you don’t need the motion. See how much space the video takes.</p></div>
+            <div class="press-phone">{{ partial "responsive-local-image.html" (dict "src" "/images/press-iphone/live.webp" "alt" "Live Photos in Press with the size of the motion part shown on each thumbnail" "sizes" "(max-width: 700px) 68vw, 260px" "fallbackWidth" 480 "loading" "lazy") }}</div>
+          </figure>
+        </div>
+        <p class="press-gallery-note">Screens from the app. Similar photos and Live Photo stills are part of the full version.</p>
+      </div>
+    </section>
+
+    <section class="press-pricing press-wrap press-section" id="pricing" aria-labelledby="pricing-title">
+      <div class="press-section-heading">
+        <h2 id="pricing-title">Start free.<br>Pay once if you need more.</h2>
+        <p>No weekly subscription. Try Press on your own library before deciding.</p>
+      </div>
+      <div class="press-plans">
+        <div class="press-plan">
+          <h3>Free</h3>
+          <p class="press-price">$0</p>
+          <p>Room to get started, every day.</p>
+          <ul><li>10 smaller copies a day</li><li>Browse and review your library</li><li>Swipe, keep, and remove with undo</li><li>Compare before you save</li></ul>
+        </div>
+        <div class="press-plan">
+          <h3>Full version</h3>
+          <p class="press-price">$9.99 <span>once</span></p>
+          <p>Everything in Free, plus:</p>
+          <ul><li>Unlimited smaller copies</li><li>Find and review similar photos</li><li>Turn Live Photos into stills</li><li>Restore your purchase in Settings</li></ul>
+        </div>
+      </div>
+      <p class="press-price-note">US App Store price. Local pricing may vary. Unlock the full version inside the app.</p>
+    </section>
+
+    <section class="press-questions press-wrap press-section" aria-labelledby="questions-title">
+      <h2 id="questions-title">A few things worth knowing.</h2>
+      <div class="press-faqs">
+        <details><summary>Does anything leave my phone?<svg class="press-disclosure" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14"/><path class="press-disclosure-vertical" d="M12 5v14"/></svg></summary><p>Press processes your photos and videos on your device. It has no account, server, or analytics. Items stored only in iCloud are downloaded when you choose to compress them. Your own iCloud Photos settings still apply to your library. <a href="/press-iphone/privacy/">Read the privacy policy.</a></p></details>
+        <details><summary>Will the smaller copy look exactly the same?<svg class="press-disclosure" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14"/><path class="press-disclosure-vertical" d="M12 5v14"/></svg></summary><p>Compression can change image quality. Press uses HEVC for videos and HEIC for photos, keeping photos at the same pixel dimensions. Compare the result with your original before saving, and keep the original whenever you prefer.</p></details>
+        <details><summary>Why hasn’t my free space changed?<svg class="press-disclosure" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14"/><path class="press-disclosure-vertical" d="M12 5v14"/></svg></summary><p>Removed originals stay in Recently Deleted in Photos for about 30 days. Empty that album if you want to reclaim the space sooner. With iCloud Photos, space may be freed in iCloud rather than on your iPhone.</p></details>
+        <details><summary>Will Press compress everything?<svg class="press-disclosure" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14"/><path class="press-disclosure-vertical" d="M12 5v14"/></svg></summary><p>Some files are better left alone. Press skips media it can’t copy without losing something important, such as Portrait photos with depth, HDR videos, and Cinematic videos. It tells you why each item was skipped.</p></details>
+        <details><summary>Where can I find my saved copies?<svg class="press-disclosure" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 12h14"/><path class="press-disclosure-vertical" d="M12 5v14"/></svg></summary><p>In your Photos library, and in a “Press” album unless you turn that off in Settings. Press recognises its own copies and won’t suggest compressing them again.</p></details>
+      </div>
+      <a class="press-text-link" href="/press-iphone/support/">More help and support <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 18 18 6M6 6h12v12"/></svg></a>
+    </section>
+
+    <section class="press-closing" aria-labelledby="closing-title">
+      <div class="press-wrap">
+        <img src="{{ $icon.RelPermalink }}" alt="" width="72" height="72" loading="lazy">
+        <h2 id="closing-title">A little room<br>for what comes next.</h2>
+        <p>Try Press on your own photos and videos.</p>
+        {{ partial "press-download.html" (dict "url" .Params.app_store_url) }}
+        <p class="press-download-note">Free to start · iOS 26 or later</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="press-footer press-wrap">
+    <div><a href="/">Made by Igor Varyvoda</a><p><a href="/posts/press-for-iphone/">The story behind Press</a> · <a href="/projects/press/">Press for desktop</a></p></div>
+    <nav aria-label="Help and information"><a href="/press-iphone/support/">Support</a><a href="/press-iphone/privacy/">Privacy</a><button type="button" data-theme-toggle aria-label="Switch to light mode" aria-pressed="true"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg><span data-theme-label>Light</span></button></nav>
+    <p class="press-copyright">© {{ now.Year }} Igor Varyvoda</p>
+  </footer>
+</body>
+</html>

@@ -12,7 +12,7 @@ ogImage: "https://www.varyvoda.com/images/posts/press-for-iphone.jpg"
 
 Phone storage cleaners are a grim category. Scary storage warnings, weekly subscriptions and "free up 12 GB!" buttons that don't say what they'll delete.
 
-[Press](/projects/press/) started as a desktop app for auditing a folder of images. [Press for iPhone](https://apps.apple.com/us/app/press-photo-video-compressor/id6814991311) does the same job for your camera roll, with three rules: compress locally, review before deleting and report savings honestly. It's on the App Store now.
+[Press](/projects/press/) started as a desktop app for auditing a folder of images. [Press for iPhone](/press-iphone/) does the same job for your camera roll, with three rules: compress locally, review before deleting and report savings honestly. It's on the App Store now.
 
 ## What it does
 

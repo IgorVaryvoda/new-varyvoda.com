@@ -1,3 +1,73 @@
+/* 404: inherit both site themes rather than the old theme's black headings. */
+.not-found-page {
+  display: grid;
+  grid-template-columns: minmax(0, .65fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(3rem, 6vw, 8rem);
+  width: min(calc(100% - (2 * var(--gutter))), var(--canvas));
+  min-height: 48rem;
+  margin: 0 auto;
+  padding: clamp(6rem, 9vw, 10rem) 0;
+  color: var(--ink);
+}
+
+.not-found-code {
+  color: var(--slate);
+  font-family: var(--display);
+  font-size: clamp(8rem, 15vw, 18rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.not-found-copy { min-width: 0; }
+.not-found-copy h1 {
+  margin: 0 0 2rem;
+  color: var(--ink);
+  font-size: clamp(3.2rem, 4vw, 5.2rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
+  text-wrap: balance;
+}
+.not-found-copy > p {
+  margin: 0;
+  color: var(--slate);
+  font-family: var(--reading);
+  font-size: var(--type-intro);
+  line-height: 1.65;
+}
+.not-found-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 2.4rem;
+  margin-top: 3rem;
+}
+.not-found-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-min);
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: var(--type-compact-action);
+  text-decoration: underline;
+  text-underline-offset: .25em;
+}
+.not-found-actions a:hover { color: var(--ink); }
+.not-found-actions .project-primary-action,
+.not-found-actions .project-primary-action:hover {
+  color: var(--accent-ink);
+  text-decoration: none;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+@media (max-width: 680px) {
+  .not-found-page { grid-template-columns: 1fr; min-height: 0; gap: 3rem; padding: 5rem 0 7rem; }
+}
+
 /* About: one grounded profile composition, not a detached hero. */
 .about-page { width: 100%; }
 
