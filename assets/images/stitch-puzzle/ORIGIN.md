@@ -1,0 +1,1 @@
+These assets are copied from IgorVaryvoda/stitch-puzzle at 7adab31: game/icon.png, game/art/room/cat_sit.png, game/art/linen.png, game/art/wood.png and game/art/room_bg.webp. They are existing game artwork. Nunito and its SIL OFL license are copied from game/fonts. Screenshots reused from assets/images/posts are the existing real game captures published with the build article.

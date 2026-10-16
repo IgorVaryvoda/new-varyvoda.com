@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ .Description }}">
+  <meta name="theme-color" content="#4a3934">
+  <link rel="canonical" href="{{ .Permalink }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stitch Puzzle — a little puzzle, a little peace">
+  <meta property="og:description" content="{{ .Description }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:image" content="{{ .Params.ogImage }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ .Params.ogImage }}">
+  {{ $icon := resources.Get "images/stitch-puzzle/icon.png" }}
+  {{ $favicon := $icon.Resize "64x webp" }}
+  <link rel="icon" href="{{ $favicon.RelPermalink }}">
+  <link rel="preload" href="/fonts/stitch-puzzle/Nunito.ttf" as="font" type="font/ttf" crossorigin>
+  {{ $css := resources.Get "css/systems/stitch-puzzle.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{ $room := resources.Get "images/stitch-puzzle/room-bg.webp" }}
+  {{ $linen := resources.Get "images/stitch-puzzle/linen.png" }}
+  <style>:root { --room-image: url('{{ $room.RelPermalink }}'); --linen-image: url('{{ $linen.RelPermalink }}'); }</style>
+  <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "VideoGame" "name" "Stitch Puzzle: Cross-Stitch" "url" .Permalink "description" .Description "genre" "Puzzle" "operatingSystem" (slice "iOS 17.0 or later" "Android") "author" (dict "@type" "Person" "name" "Igor Varyvoda" "url" .Site.BaseURL) "installUrl" (slice "https://apps.apple.com/app/id6819591230" "https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle") | jsonify | safeJS }}</script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="header wrap">
+    <a class="brand" href="/stitch-puzzle/" aria-label="Stitch Puzzle home"><img src="{{ $favicon.RelPermalink }}" alt="" width="48" height="48"><span>Stitch Puzzle</span></a>
+    <nav aria-label="Game"><a href="#how-to-play">The game</a><a href="#real-chart">Real charts</a><a href="/stitch-puzzle/support/">Support</a></nav>
+  </header>
+  <main id="main">
+    <section class="welcome wrap" aria-labelledby="welcome-title">
+      <div class="welcome-paper">
+        <h1 id="welcome-title">A little puzzle.<br>A little peace.</h1>
+        <p class="intro">Pull a thread. Clear the hoop.<br>Make something lovely.</p>
+        <p>A cozy cross-stitch puzzle for a quiet moment on the sofa. Think a few moves ahead, then watch the picture come together.</p>
+        <div class="downloads" aria-label="Download Stitch Puzzle">
+          <a class="store-link" href="https://apps.apple.com/app/id6819591230"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.1 12.3c0-2.1 1.7-3.2 1.8-3.3-1-1.5-2.6-1.7-3.1-1.7-1.3-.2-2.5.7-3.2.7-.6 0-1.7-.7-2.8-.7-1.5 0-2.8.8-3.5 2-1.5 2.5-.4 6.3 1 8.3.7 1 1.4 2 2.5 1.9 1 0 1.4-.6 2.7-.6s1.6.6 2.8.6 1.8-1 2.5-1.9c.8-1.1 1.1-2.1 1.1-2.1-.1 0-2.2-.9-2.2-3.2ZM15 5.9c.5-.7.9-1.6.8-2.5-.8 0-1.8.5-2.4 1.2-.5.6-1 1.6-.9 2.5.9.1 1.9-.5 2.5-1.2Z"/></svg><span><small>Download on the</small>App Store</span></a>
+          <a class="store-link" href="https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 3.2v17.6L14.5 12 4 3.2Zm1.8-1L16 10.8l3.1-2.6L5.8 2.2Zm0 19.6 13.3-6L16 13.2 5.8 21.8Zm15-12.5L17.5 12l3.3 2.7c1.6-.8 1.6-4.6 0-5.4Z"/></svg><span><small>Get it on</small>Google Play</span></a>
+        </div>
+        <p class="download-note">Free to play · Optional in-app purchases</p>
+        <p class="quiet-promise">No timers. No lives.<br>No ads interrupting your game.</p>
+      </div>
+      <figure class="game-preview">
+        {{ partial "responsive-local-image.html" (dict "src" "/images/posts/stitch-puzzle-play.webp" "alt" "The real game: an arctic fox in an embroidery hoop, with thread spools waiting below" "sizes" "(max-width: 760px) 78vw, 340px" "fallbackWidth" 480 "loading" "eager") }}
+      </figure>
+      <div class="table-note"><span>From your screen<br>to real stitches.</span><a href="#real-chart">Every picture has a free chart</a></div>
+    </section>
+
+    <section class="how cloth" id="how-to-play" aria-labelledby="how-title">
+      <div class="wrap how-inner">
+        <div class="how-heading"><h2 id="how-title">One spool.<br>Just the right moment.</h2><p>Easy to pick up. A little trickier to put down.</p></div>
+        <div class="how-steps">
+          <p><strong>Send a spool around the hoop.</strong> It pulls out the stitches that match its colour. Thread left over waits on your shelf.</p>
+          <p><strong>Keep a little room.</strong> Plan the order so your shelf doesn’t fill up. Hold a spool to preview its move before you commit.</p>
+          <p><strong>Enjoy the finish.</strong> Clear the hoop and see the picture stitched back together. Every puzzle has a checked, winning solution.</p>
+          <a class="text-link" href="https://stitch-puzzle.vercel.app/">Try it in your browser <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="cottage wrap" aria-labelledby="cottage-title">
+      <figure class="cottage-picture">
+        {{ partial "responsive-local-image.html" (dict "src" "/images/posts/stitch-puzzle-cottage.webp" "alt" "Your finished craft room, with stitched pictures on the wall, a green armchair and an orange cat" "sizes" "(max-width: 760px) 78vw, 340px" "fallbackWidth" 480 "loading" "lazy") }}
+      </figure>
+      <div class="cottage-copy"><h2 id="cottage-title">A home for<br>your handiwork.</h2><p>Spend the coins you earn on a cottage of your own. Pick the furniture, hang your finished pictures, and make four rooms feel like home.</p><p>There’s a cat, of course. Give it a name, a soft bed and a little attention. It might bring you something.</p><p class="handwritten">The cat insisted on being here.</p>{{ $cat := resources.Get "images/stitch-puzzle/cat.png" }}{{ $cat = $cat.Resize "320x webp" }}<img class="cat" src="{{ $cat.RelPermalink }}" alt="The game's little orange cat" width="{{ $cat.Width }}" height="{{ $cat.Height }}" loading="lazy"></div>
+    </section>
+
+    <section class="chart cloth" id="real-chart" aria-labelledby="chart-title">
+      <div class="wrap chart-inner">
+        <div class="chart-copy"><h2 id="chart-title">Love the picture?<br>Stitch it for real.</h2><p>Every finished puzzle gives you a free cross-stitch chart. Real DMC thread numbers, a symbol for every colour, stitch counts and the finished size on 14-count Aida.</p><p>Save it. Share it. Put the kettle on and make it on real fabric.</p><p class="chart-detail">The charts are free for everyone.</p></div>
+        <figure class="chart-picture">{{ partial "responsive-local-image.html" (dict "src" "/images/posts/stitch-puzzle-chart.webp" "alt" "A real printable teapot cross-stitch chart from the game, with a symbol grid and DMC thread key" "sizes" "(max-width: 760px) 70vw, 290px" "fallbackWidth" 480 "loading" "lazy") }}<figcaption>A proper pattern. Yours to keep.</figcaption></figure>
+      </div>
+    </section>
+
+    <section class="little-things wrap" aria-labelledby="little-title"><h2 id="little-title">Settle in. There’s plenty to make.</h2><div class="little-columns"><p><strong>A fresh picture every day.</strong> Come back for the daily puzzle, fill your albums, and collect DMC colours in your thread box.</p><p><strong>Play at your own pace.</strong> Restart for free, play offline, and turn on chart symbols if colours are hard to tell apart.</p><p><strong>Your progress comes along.</strong> Make a backup code in Settings and use it to bring your cottage and pictures to a new phone.</p></div></section>
+
+    <section class="closing cloth" id="download" aria-labelledby="closing-title"><div class="wrap"><h2 id="closing-title">Your hoop is waiting.</h2><p>Find Stitch Puzzle on iPhone, iPad and Android.</p><div class="closing-links"><a class="download-button" href="https://apps.apple.com/app/id6819591230">Download for iPhone &amp; iPad</a><a class="download-button" href="https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle">Download for Android</a></div><p class="download-note">Free to play, with optional purchases and ads you choose to watch.</p></div></section>
+  </main>
+  <footer class="footer wrap"><div><a class="brand" href="/">Made by Igor Varyvoda</a><p>I read 3,600 player reviews before writing the game.<br><a href="{{ (site.GetPage "posts/stitch-puzzle-reviews-first").RelPermalink }}">Read the story behind Stitch Puzzle</a></p></div><nav aria-label="Help and information"><a href="/stitch-puzzle/support/">Support</a><a href="/stitch-puzzle/privacy/">Privacy</a><a href="mailto:igor@varyvoda.com">Get in touch</a><a href="/">varyvoda.com</a></nav><p class="copyright">© {{ now.Year }} Igor Varyvoda</p></footer>
+</body>
+</html>

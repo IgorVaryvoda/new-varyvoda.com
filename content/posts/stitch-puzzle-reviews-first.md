@@ -14,7 +14,7 @@ The first commit of Stitch Puzzle had no game in it.
 
 It had a study of about 1,775 reviews of Yarn Loop and 1,896 reviews of Pixel Flow, two popular thread puzzles. It had a teardown of how they monetise, rough revenue estimates and a pitch deck. The code came after.
 
-Three and a half days later the game had 216 levels, iOS and Android builds and a [support page](/stitch-puzzle/support/) on this site. It's [live on Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) now. The iOS version is still waiting for App Review.
+Three and a half days later the game had 216 levels, iOS and Android builds and a [support page](/stitch-puzzle/support/) on this site. It's now on [Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) and the [App Store](https://apps.apple.com/app/id6819591230). [See the game and download it](/stitch-puzzle/).
 
 ## The game
 
@@ -115,4 +115,4 @@ It's Godot 4.7 with about 7,000 lines of GDScript. The rules were prototyped in 
 
 Progress backs up to my own Supabase with a code you type on the new phone. There are no analytics.
 
-[Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) · [Stitch Puzzle support](/stitch-puzzle/support/) · [cross-stitch converter](https://github.com/IgorVaryvoda/cross-stitch)
+[Stitch Puzzle](/stitch-puzzle/) · [App Store](https://apps.apple.com/app/id6819591230) · [Google Play](https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle) · [Stitch Puzzle support](/stitch-puzzle/support/) · [cross-stitch converter](https://github.com/IgorVaryvoda/cross-stitch)

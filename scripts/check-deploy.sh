@@ -31,5 +31,6 @@ check_page "/projects/" "Choose a product."
 check_page "/about/" "I started by building and operating a profitable content website."
 check_page "/projects/sirv-studio/" "Contributions"
 check_page "/posts/" "Start here"
+check_page "/stitch-puzzle/" "Your hoop is waiting."
 
 STRICT_HEADERS=0 SITE="$SITE" bash scripts/check-headers.sh

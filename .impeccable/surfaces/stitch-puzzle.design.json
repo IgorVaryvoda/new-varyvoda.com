@@ -1,0 +1,545 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-16T10:56:26Z",
+  "title": "Design System: Stitch Puzzle lander",
+  "extensions": {
+    "scope": {
+      "route": "/stitch-puzzle/",
+      "designDocument": ".impeccable/surfaces/stitch-puzzle.design.md",
+      "template": "layouts/stitch/single.html",
+      "stylesheet": "assets/css/systems/stitch-puzzle.css",
+      "incumbentAuthority": "design.md",
+      "isolation": "A complete standalone HTML template loads only its game-identity CSS. Root design.md is preserved. Scoped filenames do not replace the default root Impeccable panel artifacts."
+    },
+    "colorMeta": {
+      "walnut": {
+        "role": "neutral",
+        "displayName": "Walnut",
+        "tonalRamp": [
+          "oklch(15.000% 0.02578 37.001)",
+          "oklch(26.429% 0.02578 37.001)",
+          "oklch(37.857% 0.02578 37.001)",
+          "oklch(49.286% 0.02578 37.001)",
+          "oklch(60.714% 0.02578 37.001)",
+          "oklch(72.143% 0.02578 37.001)",
+          "oklch(83.571% 0.02578 37.001)",
+          "oklch(95.000% 0.02578 37.001)"
+        ]
+      },
+      "walnut-deep": {
+        "role": "neutral",
+        "displayName": "Deep Walnut",
+        "tonalRamp": [
+          "oklch(15.000% 0.01681 42.955)",
+          "oklch(26.429% 0.01681 42.955)",
+          "oklch(37.857% 0.01681 42.955)",
+          "oklch(49.286% 0.01681 42.955)",
+          "oklch(60.714% 0.01681 42.955)",
+          "oklch(72.143% 0.01681 42.955)",
+          "oklch(83.571% 0.01681 42.955)",
+          "oklch(95.000% 0.01681 42.955)"
+        ]
+      },
+      "linen": {
+        "role": "neutral",
+        "displayName": "Linen",
+        "tonalRamp": [
+          "oklch(15.000% 0.01814 78.241)",
+          "oklch(26.429% 0.01814 78.241)",
+          "oklch(37.857% 0.01814 78.241)",
+          "oklch(49.286% 0.01814 78.241)",
+          "oklch(60.714% 0.01814 78.241)",
+          "oklch(72.143% 0.01814 78.241)",
+          "oklch(83.571% 0.01814 78.241)",
+          "oklch(95.000% 0.01814 78.241)"
+        ]
+      },
+      "linen-veil": {
+        "role": "neutral",
+        "displayName": "Linen Veil",
+        "tonalRamp": [
+          "oklch(15.000% 0.01814 78.241)",
+          "oklch(26.429% 0.01814 78.241)",
+          "oklch(37.857% 0.01814 78.241)",
+          "oklch(49.286% 0.01814 78.241)",
+          "oklch(60.714% 0.01814 78.241)",
+          "oklch(72.143% 0.01814 78.241)",
+          "oklch(83.571% 0.01814 78.241)",
+          "oklch(95.000% 0.01814 78.241)"
+        ],
+        "note": "Ramp shows the underlying linen hue; the normative token retains its source alpha. All synthesized ramps are reference previews, not implemented theme scales."
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Dark Ink",
+        "tonalRamp": [
+          "oklch(15.000% 0.01166 55.829)",
+          "oklch(26.429% 0.01166 55.829)",
+          "oklch(37.857% 0.01166 55.829)",
+          "oklch(49.286% 0.01166 55.829)",
+          "oklch(60.714% 0.01166 55.829)",
+          "oklch(72.143% 0.01166 55.829)",
+          "oklch(83.571% 0.01166 55.829)",
+          "oklch(95.000% 0.01166 55.829)"
+        ]
+      },
+      "soft-ink": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "tonalRamp": [
+          "oklch(15.000% 0.02996 57.031)",
+          "oklch(26.429% 0.02996 57.031)",
+          "oklch(37.857% 0.02996 57.031)",
+          "oklch(49.286% 0.02996 57.031)",
+          "oklch(60.714% 0.02996 57.031)",
+          "oklch(72.143% 0.02996 57.031)",
+          "oklch(83.571% 0.02996 57.031)",
+          "oklch(95.000% 0.02996 57.031)"
+        ]
+      },
+      "moss": {
+        "role": "primary",
+        "displayName": "Moss",
+        "tonalRamp": [
+          "oklch(15.000% 0.06447 128.345)",
+          "oklch(26.429% 0.06447 128.345)",
+          "oklch(37.857% 0.06447 128.345)",
+          "oklch(49.286% 0.06447 128.345)",
+          "oklch(60.714% 0.06447 128.345)",
+          "oklch(72.143% 0.06447 128.345)",
+          "oklch(83.571% 0.06447 128.345)",
+          "oklch(95.000% 0.06447 128.345)"
+        ]
+      },
+      "moss-hover": {
+        "role": "primary",
+        "displayName": "Deep Moss",
+        "tonalRamp": [
+          "oklch(15.000% 0.06213 129.933)",
+          "oklch(26.429% 0.06213 129.933)",
+          "oklch(37.857% 0.06213 129.933)",
+          "oklch(49.286% 0.06213 129.933)",
+          "oklch(60.714% 0.06213 129.933)",
+          "oklch(72.143% 0.06213 129.933)",
+          "oklch(83.571% 0.06213 129.933)",
+          "oklch(95.000% 0.06213 129.933)"
+        ]
+      },
+      "gold": {
+        "role": "primary",
+        "displayName": "Warm Gold",
+        "tonalRamp": [
+          "oklch(15.000% 0.09769 77.960)",
+          "oklch(26.429% 0.09769 77.960)",
+          "oklch(37.857% 0.09769 77.960)",
+          "oklch(49.286% 0.09769 77.960)",
+          "oklch(60.714% 0.09769 77.960)",
+          "oklch(72.143% 0.09769 77.960)",
+          "oklch(83.571% 0.09769 77.960)",
+          "oklch(95.000% 0.09769 77.960)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Cream",
+        "tonalRamp": [
+          "oklch(15.000% 0.02317 82.122)",
+          "oklch(26.429% 0.02317 82.122)",
+          "oklch(37.857% 0.02317 82.122)",
+          "oklch(49.286% 0.02317 82.122)",
+          "oklch(60.714% 0.02317 82.122)",
+          "oklch(72.143% 0.02317 82.122)",
+          "oklch(83.571% 0.02317 82.122)",
+          "oklch(95.000% 0.02317 82.122)"
+        ]
+      },
+      "supporting-cream": {
+        "role": "neutral",
+        "displayName": "Supporting Cream",
+        "tonalRamp": [
+          "oklch(15.000% 0.03528 70.132)",
+          "oklch(26.429% 0.03528 70.132)",
+          "oklch(37.857% 0.03528 70.132)",
+          "oklch(49.286% 0.03528 70.132)",
+          "oklch(60.714% 0.03528 70.132)",
+          "oklch(72.143% 0.03528 70.132)",
+          "oklch(83.571% 0.03528 70.132)",
+          "oklch(95.000% 0.03528 70.132)"
+        ]
+      },
+      "footer-muted": {
+        "role": "neutral",
+        "displayName": "Footer Muted",
+        "tonalRamp": [
+          "oklch(15.000% 0.03656 65.883)",
+          "oklch(26.429% 0.03656 65.883)",
+          "oklch(37.857% 0.03656 65.883)",
+          "oklch(49.286% 0.03656 65.883)",
+          "oklch(60.714% 0.03656 65.883)",
+          "oklch(72.143% 0.03656 65.883)",
+          "oklch(83.571% 0.03656 65.883)",
+          "oklch(95.000% 0.03656 65.883)"
+        ]
+      },
+      "seam": {
+        "role": "neutral",
+        "displayName": "Stitched Seam",
+        "tonalRamp": [
+          "oklch(15.000% 0.06564 59.626)",
+          "oklch(26.429% 0.06564 59.626)",
+          "oklch(37.857% 0.06564 59.626)",
+          "oklch(49.286% 0.06564 59.626)",
+          "oklch(60.714% 0.06564 59.626)",
+          "oklch(72.143% 0.06564 59.626)",
+          "oklch(83.571% 0.06564 59.626)",
+          "oklch(95.000% 0.06564 59.626)"
+        ]
+      },
+      "wood-edge": {
+        "role": "neutral",
+        "displayName": "Wood Edge",
+        "tonalRamp": [
+          "oklch(15.000% 0.08386 68.248)",
+          "oklch(26.429% 0.08386 68.248)",
+          "oklch(37.857% 0.08386 68.248)",
+          "oklch(49.286% 0.08386 68.248)",
+          "oklch(60.714% 0.08386 68.248)",
+          "oklch(72.143% 0.08386 68.248)",
+          "oklch(83.571% 0.08386 68.248)",
+          "oklch(95.000% 0.08386 68.248)"
+        ]
+      },
+      "footer-rule": {
+        "role": "neutral",
+        "displayName": "Footer Rule",
+        "tonalRamp": [
+          "oklch(15.000% 0.04228 54.780)",
+          "oklch(26.429% 0.04228 54.780)",
+          "oklch(37.857% 0.04228 54.780)",
+          "oklch(49.286% 0.04228 54.780)",
+          "oklch(60.714% 0.04228 54.780)",
+          "oklch(72.143% 0.04228 54.780)",
+          "oklch(83.571% 0.04228 54.780)",
+          "oklch(95.000% 0.04228 54.780)"
+        ]
+      },
+      "note-paper": {
+        "role": "neutral",
+        "displayName": "Note Paper",
+        "tonalRamp": [
+          "oklch(15.000% 0.08054 81.939)",
+          "oklch(26.429% 0.08054 81.939)",
+          "oklch(37.857% 0.08054 81.939)",
+          "oklch(49.286% 0.08054 81.939)",
+          "oklch(60.714% 0.08054 81.939)",
+          "oklch(72.143% 0.08054 81.939)",
+          "oklch(83.571% 0.08054 81.939)",
+          "oklch(95.000% 0.08054 81.939)"
+        ]
+      },
+      "note-ink": {
+        "role": "neutral",
+        "displayName": "Note Ink",
+        "tonalRamp": [
+          "oklch(15.000% 0.03028 66.613)",
+          "oklch(26.429% 0.03028 66.613)",
+          "oklch(37.857% 0.03028 66.613)",
+          "oklch(49.286% 0.03028 66.613)",
+          "oklch(60.714% 0.03028 66.613)",
+          "oklch(72.143% 0.03028 66.613)",
+          "oklch(83.571% 0.03028 66.613)",
+          "oklch(95.000% 0.03028 66.613)"
+        ]
+      },
+      "scrollbar": {
+        "role": "neutral",
+        "displayName": "Warm Scrollbar",
+        "tonalRamp": [
+          "oklch(15.000% 0.06968 69.214)",
+          "oklch(26.429% 0.06968 69.214)",
+          "oklch(37.857% 0.06968 69.214)",
+          "oklch(49.286% 0.06968 69.214)",
+          "oklch(60.714% 0.06968 69.214)",
+          "oklch(72.143% 0.06968 69.214)",
+          "oklch(83.571% 0.06968 69.214)",
+          "oklch(95.000% 0.06968 69.214)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The page h1, with mobile overrides."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section h2 headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Base prose; local 17px and 16px overrides remain in source."
+      },
+      "introduction": {
+        "displayName": "Introduction",
+        "purpose": "Welcome introduction."
+      },
+      "navigation": {
+        "displayName": "Navigation",
+        "purpose": "Header anchors."
+      },
+      "store-label": {
+        "displayName": "Store Label",
+        "purpose": "Bold platform names."
+      },
+      "store-kicker": {
+        "displayName": "Store Kicker",
+        "purpose": "Supporting platform instruction."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Closing download and browser-play actions."
+      },
+      "legal": {
+        "displayName": "Legal",
+        "purpose": "Purchase disclosures."
+      }
+    },
+    "shadows": [
+      {
+        "name": "welcome-paper",
+        "value": "0 18px 45px #1f17174d",
+        "purpose": "Lift the linen welcome sheet."
+      },
+      {
+        "name": "hero-screen",
+        "value": "0 24px 55px #21150f80",
+        "purpose": "Separate the real game screen from the room."
+      },
+      {
+        "name": "cottage-screen",
+        "value": "0 20px 45px #20161366",
+        "purpose": "Lift the cottage screenshot on walnut."
+      },
+      {
+        "name": "chart-screen",
+        "value": "0 18px 40px #49352033",
+        "purpose": "Lift the printable-chart screenshot on linen."
+      },
+      {
+        "name": "table-note",
+        "value": "0 7px 18px #21150f4d",
+        "purpose": "Lift the small desktop chart note."
+      },
+      {
+        "name": "store-rest",
+        "value": "0 3px 6px #30262224",
+        "purpose": "Resting download-control depth."
+      },
+      {
+        "name": "store-hover",
+        "value": "0 5px 12px #30262236",
+        "purpose": "Hover feedback without moving layout."
+      }
+    ],
+    "motion": [
+      {
+        "name": "store-feedback",
+        "value": "background .2s ease-out, box-shadow .2s ease-out",
+        "purpose": "Store-link hover feedback."
+      },
+      {
+        "name": "download-feedback",
+        "value": "background .2s ease-out",
+        "purpose": "Closing download-link feedback."
+      },
+      {
+        "name": "anchor-scroll",
+        "value": "smooth",
+        "purpose": "In-page navigation only."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "scroll-behavior: auto; transition: none !important; animation: none !important",
+        "purpose": "Applied through prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "full-canvas-min",
+        "value": "1244px"
+      },
+      {
+        "name": "compact-canvas-max",
+        "value": "1243px"
+      },
+      {
+        "name": "compact-columns-max",
+        "value": "920px"
+      },
+      {
+        "name": "single-column-max",
+        "value": "760px"
+      },
+      {
+        "name": "stacked-store-links-max",
+        "value": "480px"
+      },
+      {
+        "name": "narrow-max",
+        "value": "360px"
+      }
+    ],
+    "focus": {
+      "width": "3px",
+      "offset": "6px",
+      "darkSurface": "var(--gold)",
+      "lightSurface": "var(--moss)"
+    },
+    "dimensions": {
+      "canvasMax": "1180px",
+      "controlMin": "44px",
+      "storeLinkMin": "58px",
+      "downloadButtonMin": "54px"
+    },
+    "material": {
+      "linenBackground": "linear-gradient(#f6eee2e8,#f6eee2e8),var(--linen-image) center/420px,var(--linen)",
+      "roomImage": "var(--room-image) center 63%/cover",
+      "roomOpacity": ".4",
+      "mobileRoomOpacity": ".65",
+      "paperSeam": "1px dashed #a27b5c; inset: 13px",
+      "instructionBandEdge": "8px solid #a67b4b",
+      "rotations": {
+        "welcome": "-1.2deg",
+        "welcomeMobile": "-.6deg",
+        "game": "3deg",
+        "gameMobile": "2deg",
+        "cottage": "-3deg",
+        "chart": "3deg",
+        "tableNote": "-5deg"
+      }
+    },
+    "responsive": {
+      "displayMobile": "clamp(37px, 9vw, 58px)",
+      "displayNarrow": "36px",
+      "storeStack": "At max-width:480px, links are full-width rows with 58px minimum height and 22px platform labels. This rule is last in source and takes precedence over narrower label reductions.",
+      "desktopNote": "Hidden at max-width:920px. No hero caption remains; the chart caption stays below the chart image."
+    },
+    "evidence": {
+      "checked": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "PRODUCT.md",
+        "design.md",
+        ".impeccable/surfaces/stitch-puzzle.md",
+        "content/stitch-puzzle.md",
+        "layouts/stitch/single.html",
+        "assets/css/systems/stitch-puzzle.css",
+        "assets/images/stitch-puzzle/ORIGIN.md",
+        "assets/images/stitch-puzzle/room-bg.webp.json",
+        "assets/images/posts/stitch-puzzle-play.webp.json",
+        "assets/images/posts/stitch-puzzle-cottage.webp.json",
+        "assets/images/posts/stitch-puzzle-chart.webp.json",
+        ".impeccable/review/desktop.png",
+        ".impeccable/review/mobile.png",
+        ".impeccable/review/mobile-320.png"
+      ],
+      "artSource": "IgorVaryvoda/stitch-puzzle at 7adab31",
+      "screenshotsSource": "Existing build-article captures; metadata names new-varyvoda.com at fe85c34.",
+      "approvedComp": false,
+      "imageGeneration": false,
+      "finishReview": "Ship, as reported by the parent after bounded fix-list verification. Mobile store-label overflow and the obscured desktop hero caption were resolved; initial review found contract match and no rebuild needed. This is not exhaustive browser or accessibility certification.",
+      "rasterProvenance": "Parent reports the embedded-origin scan found four game rasters and zero missing records; reused article screenshots also have embedded origin metadata.",
+      "incumbentDesignSha256": "1ab1e95b06c2c7d9f6d8fa2834f55e7febf1e1e1f5f8ca037cb73997733a8b49"
+    }
+  },
+  "components": [
+    {
+      "name": "App Store store link",
+      "kind": "button",
+      "refersTo": "store-link",
+      "description": "Actual platform download control; the page group stacks at 480px and below.",
+      "html": "<a class=\"ds-sp-store\" href=\"https://apps.apple.com/app/id6819591230\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M17.1 12.3c0-2.1 1.7-3.2 1.8-3.3-1-1.5-2.6-1.7-3.1-1.7-1.3-.2-2.5.7-3.2.7-.6 0-1.7-.7-2.8-.7-1.5 0-2.8.8-3.5 2-1.5 2.5-.4 6.3 1 8.3.7 1 1.4 2 2.5 1.9 1 0 1.4-.6 2.7-.6s1.6.6 2.8.6 1.8-1 2.5-1.9c.8-1.1 1.1-2.1 1.1-2.1-.1 0-2.2-.9-2.2-3.2ZM15 5.9c.5-.7.9-1.6.8-2.5-.8 0-1.8.5-2.4 1.2-.5.6-1 1.6-.9 2.5.9.1 1.9-.5 2.5-1.2Z\"/></svg><span><small>Download on the</small>App Store</span></a>",
+      "css": ".ds-sp-store{display:inline-flex;align-items:center;gap:8px;background:var(--walnut-deep,#302622);color:var(--cream,#fff6e6);min-height:58px;padding:8px 16px;border-radius:10px;text-decoration:none;box-shadow:0 3px 6px #30262224;transition:background .2s ease-out,box-shadow .2s ease-out;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-store svg{width:29px;height:29px;flex-shrink:0}.ds-sp-store span{white-space:nowrap;font-size:22px;font-weight:850;line-height:1.15}.ds-sp-store small{display:block;font-size:11px;letter-spacing:.02em;font-weight:650}.ds-sp-store:hover{background:var(--moss,#52643c);box-shadow:0 5px 12px #30262236}.ds-sp-store:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}@media(prefers-reduced-motion:reduce){.ds-sp-store{transition:none}}"
+    },
+    {
+      "name": "Google Play store link",
+      "kind": "button",
+      "refersTo": "store-link",
+      "description": "Actual platform download control; the page group stacks at 480px and below.",
+      "html": "<a class=\"ds-sp-store\" href=\"https://play.google.com/store/apps/details?id=com.varyvoda.stitchpuzzle\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M4 3.2v17.6L14.5 12 4 3.2Zm1.8-1L16 10.8l3.1-2.6L5.8 2.2Zm0 19.6 13.3-6L16 13.2 5.8 21.8Zm15-12.5L17.5 12l3.3 2.7c1.6-.8 1.6-4.6 0-5.4Z\"/></svg><span><small>Get it on</small>Google Play</span></a>",
+      "css": ".ds-sp-store{display:inline-flex;align-items:center;gap:8px;background:var(--walnut-deep,#302622);color:var(--cream,#fff6e6);min-height:58px;padding:8px 16px;border-radius:10px;text-decoration:none;box-shadow:0 3px 6px #30262224;transition:background .2s ease-out,box-shadow .2s ease-out;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-store svg{width:29px;height:29px;flex-shrink:0}.ds-sp-store span{white-space:nowrap;font-size:22px;font-weight:850;line-height:1.15}.ds-sp-store small{display:block;font-size:11px;letter-spacing:.02em;font-weight:650}.ds-sp-store:hover{background:var(--moss,#52643c);box-shadow:0 5px 12px #30262236}.ds-sp-store:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}@media(prefers-reduced-motion:reduce){.ds-sp-store{transition:none}}"
+    },
+    {
+      "name": "Closing download link",
+      "kind": "button",
+      "refersTo": "download-button",
+      "description": "Moss download action on linen, with a minimum height of 54px.",
+      "html": "<a class=\"ds-sp-download\" href=\"https://apps.apple.com/app/id6819591230\">Download for iPhone &amp; iPad</a>",
+      "css": ".ds-sp-download{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:12px 22px;background:var(--moss,#52643c);border-radius:10px;color:var(--cream,#fff6e6);font-size:17px;font-weight:850;line-height:1.65;text-decoration:none;transition:background .2s ease-out;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-download:hover{background:#3f512c}.ds-sp-download:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}@media(prefers-reduced-motion:reduce){.ds-sp-download{transition:none}}"
+    },
+    {
+      "name": "Game navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Unboxed anchor navigation on walnut; the first anchor hides on mobile.",
+      "html": "<nav class=\"ds-sp-nav\" aria-label=\"Game\"><a href=\"#how-to-play\">The game</a><a href=\"#real-chart\">Real charts</a><a href=\"/stitch-puzzle/support/\">Support</a></nav>",
+      "css": ".ds-sp-nav{display:flex;gap:32px;background:var(--walnut,#4a3934);color:var(--cream,#fff6e6);font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-nav a{display:flex;align-items:center;min-height:44px;font-size:16px;font-weight:750;line-height:1.65;color:inherit;text-decoration:none}.ds-sp-nav a:hover{color:var(--gold,#f2c784)}.ds-sp-nav a:focus-visible{outline:3px solid var(--gold,#f2c784);outline-offset:6px}@media(max-width:760px){.ds-sp-nav{gap:16px}.ds-sp-nav a{font-size:14px}.ds-sp-nav a:first-child{display:none}}@media(max-width:360px){.ds-sp-nav{gap:12px}.ds-sp-nav a{font-size:13px}}"
+    },
+    {
+      "name": "Welcome paper",
+      "kind": "card",
+      "refersTo": "welcome-paper",
+      "description": "The source paper silhouette and seam. The standalone preview uses the linen fallback; production also layers the real game texture.",
+      "html": "<div class=\"ds-sp-paper\"><h1>A little puzzle.<br>A little peace.</h1><p>Pull a thread. Clear the hoop.<br>Make something lovely.</p></div>",
+      "css": ".ds-sp-paper{position:relative;max-width:635px;padding:48px 44px 40px;background:var(--linen,#f6eee2);color:var(--ink,#2a2420);border-radius:6px 6px 38px 6px;box-shadow:0 18px 45px #1f17174d;transform:rotate(-1.2deg);font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-paper:before{content:\"\";position:absolute;inset:13px;border:1px dashed #a27b5c;border-radius:2px 2px 26px 2px;pointer-events:none}.ds-sp-paper h1{position:relative;margin:0;font-size:clamp(42px,4.8vw,68px);font-weight:850;line-height:1.08;letter-spacing:-.035em;text-wrap:balance}.ds-sp-paper p{position:relative;margin:24px 0 0;font-size:25px;font-weight:750;line-height:1.4}@media(max-width:1243px){.ds-sp-paper{padding:40px 32px}}@media(max-width:920px){.ds-sp-paper{padding:34px 28px}}@media(max-width:760px){.ds-sp-paper{transform:rotate(-.6deg)}.ds-sp-paper h1{font-size:clamp(37px,9vw,58px)}.ds-sp-paper p{font-size:22px;margin-top:20px}}@media(max-width:360px){.ds-sp-paper{padding:28px 22px}.ds-sp-paper h1{font-size:36px}}"
+    },
+    {
+      "name": "Browser-play text link",
+      "kind": "custom",
+      "refersTo": "text-link",
+      "description": "Bold underlined action with a minimum height of 44px.",
+      "html": "<a class=\"ds-sp-text-link\" href=\"https://stitch-puzzle.vercel.app/\">Try it in your browser <span aria-hidden=\"true\">↗</span></a>",
+      "css": ".ds-sp-text-link{display:inline-block;min-height:44px;font-size:17px;font-weight:850;line-height:1.65;color:var(--moss,#52643c);text-underline-offset:4px;text-decoration-thickness:1px;font-family:Nunito,ui-rounded,sans-serif;}.ds-sp-text-link:hover{text-decoration-thickness:2px}.ds-sp-text-link:focus-visible{outline:3px solid var(--moss,#52643c);outline-offset:6px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "A Little Craft Table",
+    "overview": "This scoped identity carries the existing game's cozy craft world into its standalone lander. Walnut surrounds light linen, rounded Nunito lettering feels friendly, and real screenshots supply the visual detail. Paper, cloth, the cottage and the orange cat come from the game rather than a new illustration style.\n\nDepth comes from the physical character of a few objects: a stitched paper edge, gently tilted screens and diffuse shadows. Reading areas remain open and calm. The established craft-table language and descriptive color names are extracted from the implemented page and its direction contract; they do not introduce a new visual world.",
+    "keyCharacteristics": [
+      "Warm walnut and linen surfaces with clear dark-on-light or light-on-dark text.",
+      "One self-hosted rounded type family with strong, compact headings.",
+      "Actual game screens, game artwork and modest physical depth.",
+      "Spacious prose bands and conspicuous, comfortably sized download actions."
+    ],
+    "rules": [
+      {
+        "name": "The Material Contrast Rule",
+        "body": "Put dark ink on linen and cream on walnut; keep moss for actions and quiet reassurance.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "Use self-hosted Nunito for this lander, including its controls; do not import the personal site's display and reading type roles.",
+        "section": "typography"
+      },
+      {
+        "name": "The Physical Surface Rule",
+        "body": "Use diffuse shadows for paper and real screen images; keep prose bands flat.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use the game's real artwork and screenshots, preserving responsive images, intrinsic proportions and origin metadata.",
+      "Do keep dark ink on linen and cream on walnut, with visible focus rings on both materials.",
+      "Do retain the final vertical store-link stack at 480px and below and keep labels inside the paper.",
+      "Do reserve diffuse shadows and static rotations for the physical paper and image objects.",
+      "Do preserve support, privacy, the making-of article and both store destinations when adjusting the composition."
+    ],
+    "donts": [
+      "Don't import the personal site's masthead, theme switch or Geologica/Literata type roles into this standalone lander.",
+      "Don't replace the game's art with generic decoration or invent testimonials, ratings or product claims.",
+      "Don't place notes or decoration over a screenshot caption or download control.",
+      "Don't introduce automatic entrance motion or remove the existing reduced-motion behavior."
+    ]
+  }
+}

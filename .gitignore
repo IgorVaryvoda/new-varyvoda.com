@@ -14,3 +14,6 @@ social/
 static/fonts/literata-italic.woff2
 static/fonts/literata-medium-italic.woff2
 static/fonts/literata-semibold-italic.woff2
+
+# Local design review captures; the route brief and design record are committed.
+.impeccable/review/
