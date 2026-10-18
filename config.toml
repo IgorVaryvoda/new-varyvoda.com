@@ -85,3 +85,9 @@ disqusShortname = "varyvoda"
   name = "Contact me"
   weight = 3
   url = "contact/"
+
+# Free Stitch Puzzle charts: content/stitch-charts, pages made from data/stitch_charts.json
+[permalinks.page]
+  stitch-charts = "/stitch-puzzle/charts/:contentbasename/"
+[permalinks.section]
+  stitch-charts = "/stitch-puzzle/charts/"

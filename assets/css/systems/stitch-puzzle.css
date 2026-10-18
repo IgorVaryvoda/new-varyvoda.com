@@ -774,3 +774,305 @@ h2 {
     height: 29px;
   }
 }
+
+/* Free chart pages: /stitch-puzzle/charts/ and one page per chart */
+.crumbs {
+  font-size: 15px;
+  font-weight: 750;
+  color: #e7d4bf;
+}
+.crumbs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control);
+}
+.pattern-hero,
+.charts-intro {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 48px;
+  align-items: center;
+  padding: 12px 0 72px;
+}
+.charts-intro {
+  grid-template-columns: minmax(0, 760px);
+  padding-top: 32px;
+}
+.charts-intro .welcome-paper {
+  max-width: none;
+}
+.pattern-hero h1 span {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.42em;
+  letter-spacing: 0;
+  color: var(--thread);
+}
+.welcome-paper h1 + p {
+  margin-top: 24px;
+}
+.welcome-paper p {
+  max-width: 52ch;
+}
+.welcome-paper > p:not(.intro, .actions) {
+  font-size: 17px;
+  color: var(--soft-ink);
+}
+.welcome-paper a:not(.download-button) {
+  color: var(--moss);
+  font-weight: 800;
+}
+.facts {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: start;
+  gap: 8px 28px;
+  margin: 26px 0 0;
+}
+.facts dt {
+  font-size: 13px;
+  color: var(--soft-ink);
+}
+.facts dd {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 850;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin-top: 28px;
+}
+.actions .text-link {
+  margin-top: 0;
+  display: inline-flex;
+  align-items: center;
+}
+.finished {
+  justify-self: center;
+  width: min(100%, 460px);
+  transform: rotate(2deg);
+}
+.finished img {
+  border-radius: 6px;
+  box-shadow: 0 24px 55px #21150f80;
+}
+.finished figcaption {
+  padding-top: 14px;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 800;
+}
+.pattern-chart {
+  padding-block: 64px;
+  border-block: 8px solid #a67b4b;
+}
+.chart-help {
+  max-width: 62ch;
+  margin-top: 18px;
+  color: var(--soft-ink);
+}
+.chart-help a,
+.threads a {
+  color: var(--moss);
+  font-weight: 800;
+}
+.chart-page {
+  margin-top: 32px;
+}
+.chart-page img {
+  margin-inline: auto;
+  width: auto;
+  max-height: none;
+  max-width: min(100%, 900px);
+  background: #fff;
+  box-shadow: 0 14px 34px #49352033;
+}
+.threads {
+  padding-block: 64px;
+}
+.threads > p {
+  margin-top: 16px;
+  color: #e7d4bf;
+}
+.threads table {
+  margin-top: 26px;
+  border-collapse: collapse;
+  min-width: min(100%, 560px);
+}
+.threads th {
+  text-align: left;
+  font-size: 13px;
+  font-weight: 750;
+  color: #ceb9a5;
+  padding: 0 24px 8px 0;
+}
+.threads td {
+  padding: 8px 24px 8px 0;
+  border-top: 1px solid #806655;
+}
+.threads td:last-child,
+.threads th:last-child {
+  text-align: right;
+  padding-right: 0;
+}
+.sym {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--thread), #fff 55%);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px #0006;
+  border-right: 8px solid var(--thread);
+  font-size: 16px;
+  line-height: 1;
+}
+.threads .size {
+  font-weight: 800;
+  color: var(--cream);
+}
+.closing > .wrap > p:not(.download-note) {
+  max-width: 54ch;
+  margin-inline: auto;
+}
+.album-more,
+.album {
+  padding-block: 56px 8px;
+}
+.album-more {
+  padding-bottom: 40px;
+}
+.album h2,
+.album-more h2,
+.album-index h2 {
+  font-size: clamp(28px, 3vw, 38px);
+}
+.chart-grid {
+  list-style: none;
+  padding: 0;
+  margin: 26px 0 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 22px;
+}
+.chart-grid a {
+  display: block;
+  text-decoration: none;
+}
+.chart-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: #efe7d8;
+  border-radius: 6px;
+  box-shadow: 0 8px 20px #21150f59;
+}
+.chart-grid span {
+  display: block;
+  margin-top: 10px;
+  font-weight: 850;
+  line-height: 1.3;
+}
+.chart-grid a:hover span {
+  color: var(--gold);
+}
+.chart-grid small {
+  display: block;
+  font-size: 13px;
+  color: #ceb9a5;
+}
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid #806655;
+}
+.pager a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control);
+  font-weight: 800;
+}
+.album-index ul {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 20px;
+}
+.album-index a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control);
+  color: #e7d4bf;
+  font-weight: 750;
+}
+.album {
+  scroll-margin-top: 16px;
+}
+@media (max-width: 760px) {
+  .pattern-hero {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-bottom: 48px;
+  }
+  .finished {
+    width: 86%;
+    transform: rotate(1.5deg);
+  }
+  .facts {
+    grid-template-columns: repeat(2, auto);
+  }
+  .pattern-chart,
+  .threads {
+    padding-block: 48px;
+  }
+  .chart-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .threads table {
+    width: 100%;
+  }
+  .threads th,
+  .threads td {
+    padding-right: 12px;
+  }
+}
+@media print {
+  .charts .header,
+  .charts .footer,
+  .charts .crumbs,
+  .charts .pattern-hero,
+  .charts .threads,
+  .charts .closing,
+  .charts .album-more,
+  .charts .chart-help,
+  .charts #chart-title {
+    display: none;
+  }
+  :root,
+  .cloth {
+    background: #fff;
+  }
+  .pattern-chart {
+    padding: 0;
+    border: 0;
+  }
+  .chart-page {
+    margin: 0;
+  }
+  .chart-page img {
+    max-width: 100%;
+    max-height: 100vh;
+    box-shadow: none;
+  }
+}

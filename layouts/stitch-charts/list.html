@@ -1,0 +1,27 @@
+{{ define "schema" }}
+<script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "CollectionPage" "name" .Title "description" .Params.description "url" .Permalink "isPartOf" (dict "@type" "WebSite" "name" site.Title "url" site.BaseURL) | jsonify | safeJS }}</script>
+{{ end }}
+
+{{ define "main" }}
+{{ $cdn := site.Params.stitchcdn | default hugo.Data.stitch_charts.cdn }}
+{{ $all := hugo.Data.stitch_charts.charts }}
+{{ $albums := slice }}
+{{ $seen := slice }}
+{{ range $all }}{{ if not (in $seen .album) }}{{ $seen = $seen | append .album }}{{ $albums = $albums | append . }}{{ end }}{{ end }}
+<section class="charts-intro wrap" aria-labelledby="charts-title">
+  <div class="welcome-paper">
+    <h1 id="charts-title">Free cross&#8209;stitch patterns</h1>
+    <p class="intro">{{ len $all }} printable charts in {{ len $albums }} albums.</p>
+    <p>Every chart is a picture from Stitch Puzzle, my cross-stitch puzzle game. Each one has a symbol grid with bold lines every 10 stitches, the DMC thread list with stitch counts and the finished size on 14-count Aida. They use whole cross stitches only, with no backstitch.</p>
+    <p>They are free to stitch. You can also <a href="/stitch-puzzle/">play them as puzzles</a> in your browser, on iPhone and on Android.</p>
+  </div>
+</section>
+<nav class="album-index wrap" aria-label="Albums"><h2>Albums</h2><ul>{{ range $albums }}<li><a href="#{{ .album_slug }}">{{ .album }}</a></li>{{ end }}</ul></nav>
+{{ range $albums }}
+{{ $list := where $all "album_slug" .album_slug }}
+<section class="album wrap" id="{{ .album_slug }}" aria-labelledby="album-{{ .album_slug }}">
+  <h2 id="album-{{ .album_slug }}">{{ .album }}</h2>
+  <ul class="chart-grid">{{ range $list }}{{ partial "stitch-chart-card.html" (dict "c" . "cdn" $cdn) }}{{ end }}</ul>
+</section>
+{{ end }}
+{{ end }}

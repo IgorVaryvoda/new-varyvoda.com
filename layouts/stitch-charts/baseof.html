@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{ $desc := .Params.description }}
+  {{ $cdn := site.Params.stitchcdn | default hugo.Data.stitch_charts.cdn }}
+  {{ $og := "https://www.varyvoda.com/images/posts/stitch-puzzle-reviews-first.jpg" }}
+  {{ with .Params.chart }}{{ $og = printf "%s/previews/%s.jpg?w=1200" $cdn .slug }}{{ end }}
+  <title>{{ .Title }}</title>
+  <meta name="description" content="{{ $desc }}">
+  <meta name="theme-color" content="#4a3934">
+  <link rel="canonical" href="{{ .Permalink }}">
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+  <meta property="og:title" content="{{ .Title }}">
+  <meta property="og:description" content="{{ $desc }}">
+  <meta property="og:url" content="{{ .Permalink }}">
+  <meta property="og:image" content="{{ $og }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ $og }}">
+  {{ $icon := resources.Get "images/stitch-puzzle/icon.png" }}
+  {{ $favicon := $icon.Resize "64x webp" }}
+  <link rel="icon" href="{{ $favicon.RelPermalink }}">
+  <link rel="preload" href="/fonts/stitch-puzzle/Nunito.ttf" as="font" type="font/ttf" crossorigin>
+  {{ $css := resources.Get "css/systems/stitch-puzzle.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  {{ $linen := resources.Get "images/stitch-puzzle/linen.png" }}
+  <style>:root { --linen-image: url('{{ $linen.RelPermalink }}'); }</style>
+  {{ block "schema" . }}{{ end }}
+</head>
+<body class="charts">
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="header wrap">
+    <a class="brand" href="/stitch-puzzle/" aria-label="Stitch Puzzle home"><img src="{{ $favicon.RelPermalink }}" alt="" width="48" height="48"><span>Stitch Puzzle</span></a>
+    <nav aria-label="Game"><a href="/stitch-puzzle/">The game</a><a href="/stitch-puzzle/charts/">Free charts</a><a href="/stitch-puzzle/support/">Support</a></nav>
+  </header>
+  <main id="main">{{ block "main" . }}{{ end }}</main>
+  <footer class="footer wrap"><div><a class="brand" href="/">Made by Igor Varyvoda</a><p>Every chart here comes from a picture in Stitch Puzzle, a free cross-stitch puzzle game.<br><a href="/stitch-puzzle/">See the game</a></p></div><nav aria-label="Help and information"><a href="/stitch-puzzle/charts/">All free charts</a><a href="/stitch-puzzle/support/">Support</a><a href="/stitch-puzzle/privacy/">Privacy</a><a href="mailto:igor@varyvoda.com">Get in touch</a></nav><p class="copyright">© {{ now.Year }} Igor Varyvoda</p></footer>
+</body>
+</html>

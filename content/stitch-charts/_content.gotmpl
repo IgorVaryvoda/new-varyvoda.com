@@ -1,0 +1,8 @@
+{{- range hugo.Data.stitch_charts.charts }}
+  {{- $.AddPage (dict
+    "kind" "page"
+    "path" .slug
+    "title" (printf "%s: free cross-stitch pattern" .title)
+    "params" (dict "chart" . "description" .description)
+  ) }}
+{{- end }}
