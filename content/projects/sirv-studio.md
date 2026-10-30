@@ -1,7 +1,7 @@
 ---
 title: "Sirv AI Studio"
 date: 2026-07-02
-lastmod: 2026-09-23
+lastmod: 2026-10-30
 draft: false
 hero: true
 atmosphere: true
@@ -13,13 +13,13 @@ image_alt: "Sirv Studio AI batch creation interface"
 ogImage: "https://www.varyvoda.com/images/studio/sirv-studio-og.png"
 description: "I created and built Sirv Studio. It scans Shopify catalogs, runs AI work in batches, routes supplier uploads through review, and publishes with versioning and rollback."
 hero_note: "30+ AI tools, workflows, an MCP server and API for agents, supplier portals, Stripe billing, retries, idempotency, and rollback."
-hero_kicker: "Built end to end"
-hero_intro: "I started Sirv Studio in December 2025. Sirv now uses it to scan catalogs, run AI batches, review supplier uploads, and publish to Shopify."
+hero_kicker: "Public launch, 30 October 2026"
+hero_intro: "I started Sirv Studio in December 2025. On 30 October 2026 the new Studio took over www.sirv.studio: one question to set up, 25 free fixes and a three-step path to a first publish."
 hero_mark: "Product content"
 hero_scope: "Catalog to Shopify"
-hero_primary_label: "Open Sirv Studio"
+hero_primary_label: "Start free"
 hero_frame_label: "Studio / create"
-hero_frame_status: "Live product"
+hero_frame_status: "Launched Oct 30"
 hero_secondary_url: "/projects/sirv-studio/build-record/"
 hero_secondary_label: "Read the build record"
 homepage_label: "Current focus"
@@ -30,6 +30,8 @@ hero_flow:
   - "Human review"
   - "Safe publish"
 project_chapters:
+  - label: "Launch"
+    href: "#the-new-studio-is-live"
   - label: "Day one"
     href: "#it-started-over-a-beer"
   - label: "Product"
@@ -45,19 +47,19 @@ role: "Creator, product lead, architect and principal engineer"
 stewardship:
   state: "primary-focus"
   note: "My main product. I spend most of my product, engineering, and commercial time on it."
-last_tended: "2026-08-29"
+last_tended: "2026-10-30"
 feedback_url: "/contact/?project=sirv-studio&type=bug"
 proof:
   - value: "Production"
     label: "Enterprise supplier workflow"
-  - value: "47"
-    label: "Tools in the MCP server snapshot"
+  - value: "55"
+    label: "Tools in the MCP server"
 summary:
   problem: "Keep AI-assisted product content correct from intake through publication"
-  shipped: "Catalog scanning, AI batches, supplier portals, review, Shopify publishing, rollback, API and MCP"
+  shipped: "Catalog scanning, AI batches, supplier portals, review, multi-language PIM, Shopify publishing, channel exports, rollback, API and MCP"
   real_use: "Enterprise supplier workflow in production"
   team: "Igor, Veniamin and other contributors. Max Wish contributed substantially from March to June 2026."
-  current_state: "Primary focus, actively evolving"
+  current_state: "Public launch at www.sirv.studio on 30 October 2026"
 collaborators:
   - name: "Max Wish"
     url: "https://maxvyshniakov.com/"
@@ -66,15 +68,33 @@ collaborators:
     url: "https://www.linkedin.com/in/veniamin-krachun/"
     contribution: "QA, including the testing and verification infrastructure."
 users_changed: "A real supplier workflow turned the portal from a simple upload link into intake, review, and publishing."
-imperfect: "I have shipped more than I have proved. Activation, onboarding, rollback evidence, and the unfinished PIM work matter more now than another tool."
+imperfect: "I have shipped more than I have proved. The launch is the test: activation, first publishes and rollback evidence matter more now than another tool."
 highlights:
-  - "Creator & architect, first commit to production"
+  - "Creator & architect, first commit to public launch"
   - "Supplier portal live with a real enterprise customer"
-  - "47-tool MCP server + API platform for AI agents"
+  - "55-tool MCP server + API platform for AI agents"
   - "Safe Shopify publishing with drift detection and rollback"
 weight: 1
 ---
 
+
+## The new Studio is live
+
+On 30 October 2026 the Studio described on this page replaced the old app at [www.sirv.studio](https://www.sirv.studio). Existing accounts move across with their plans and credits, and existing API keys keep working.
+
+The launch is built around the first hour, not the tool count. Setup asks one question: where are your products now? The answer can be Shopify, a spreadsheet, a folder of photos or a sample catalog of 48 products. Then Today walks the new workspace through three steps: bring products in, fix the gaps, then publish to Shopify, export a CSV or use the photos.
+
+- **25 free setup fixes.** AI fixes on up to 25 images cost nothing until the first publish. The Free plan adds 25 credits every month.
+- **Billing inside the app.** Credit packs, automatic top-up and plan changes with the price shown first. Shopify merchants can pay through Shopify.
+- **Product content in more than one language.** Copy per language, images tagged by language and Shopify storefronts that show the right images in each market. The interface also speaks Spanish.
+- **A real PIM layer.** Product families, attribute groups, variant prices and imports that create attributes as they go.
+- **More places to publish.** Shopify sync, CSV feeds with mapped columns and an ABOUT YOU export. Amazon and eBay are in preview.
+- **One Review area.** Supplier submissions, AI results, design work and activity sit in one queue before anything goes live.
+- **Search that understands photos.** Search by image, typo tolerance, Spanish word forms and search by meaning on Growth plans.
+
+Between the July snapshot and launch day the repository grew from 11,950 to 24,323 commits. October alone had 6,433.
+
+<a href="https://www.sirv.studio" target="_blank">Start free at www.sirv.studio →</a>
 
 ## It started over a beer
 
@@ -105,7 +125,7 @@ I took Studio from that first commit to the production platform described here. 
 <figure class="studio-visual studio-timeline" aria-labelledby="studio-timeline-title">
   <div class="studio-visual-head">
     <span id="studio-timeline-title">what shipped, in order</span>
-    <strong>Dec 2, 2025 → Jul 2026 · condensed from 48 milestones</strong>
+    <strong>Dec 2, 2025 → Oct 30, 2026 · condensed from the git log</strong>
   </div>
   <ol>
     <li><time>Dec 2</time><div><b>A product before lunch</b><span>Image tools, auth, billing, rate limits, Sirv storage, batch mode, and compare mode all land on day one.</span></div></li>
@@ -124,24 +144,31 @@ I took Studio from that first commit to the production platform described here. 
     <li><time>Jun 11</time><div><b>Risk-tiered quality gates</b><span>Edit, session, and release gates are joined by an analytics dashboard and a coverage matrix checked by tooling.</span></div></li>
     <li><time>Jun 26</time><div><b>The catalog-health loop becomes executable</b><span>A detected product gap connects to a controlled action: AI fix, supplier request, Shopify sync, or channel export.</span></div></li>
     <li><time>Jul 4</time><div><b>The product points at activation</b><span>Catalog health leads the dashboard. Workflow recipes and drift-aware publishing run on selected products.</span></div></li>
+    <li><time>Aug 21</time><div><b>The interface learns Spanish</b><span>Spanish (Colombia) becomes the first translated locale.</span></div></li>
+    <li><time>Sep 25</time><div><b>Off Vercel, onto our own servers</b><span>The app moves to a Hetzner node with its own deployer. A second node and a load balancer follow a month later.</span></div></li>
+    <li><time>Oct 10</time><div><b>Billing moves inside the app</b><span>Credit packs, automatic top-up, plan changes with the price shown first and Shopify Billing.</span></div></li>
+    <li><time>Oct 22</time><div><b>One question to set up, and a new database</b><span>Setup asks where the products live. The same day, production Postgres moves to PlanetScale.</span></div></li>
+    <li><time>Oct 29</time><div><b>A PIM with families, groups and languages</b><span>Product families, attribute groups, variant prices and per-language images reach Shopify storefronts.</span></div></li>
+    <li><time>Oct 30</time><div><b>Public launch at www.sirv.studio</b><span>The new Studio replaces the old app. Accounts, plans and credits move across.</span></div></li>
   </ol>
-  <figcaption>Sixteen of the 48 milestones on the <a href="/projects/sirv-studio/build-record/">build record</a>, which dates each one to its commits. Tools became workflows, workflows grew a DAM and PIM, and supplier intake gained review and publishing.</figcaption>
+  <figcaption>Sixteen milestones to July come from the <a href="/projects/sirv-studio/build-record/">build record</a>, which dates each one to its commits. The rest come from the git log after it. Tools became workflows, workflows grew a DAM and PIM, and the PIM became the launch.</figcaption>
 </figure>
 
 ## What it does
 
 The product is organized around one loop: **ingest → fix → validate → review → publish → track**.
 
-- **30+ AI tools** for background work, upscaling, lifestyle images, ghost mannequin, virtual try-on, alt text, descriptions, translation, 3D, and video. The snapshot contains 57 registered models routed through fal.ai, OpenAI, and OpenRouter.
+- **30+ AI tools** for background work, upscaling, lifestyle images, ghost mannequin, virtual try-on, alt text, descriptions, translation, 3D, and video. The registry holds 73 model IDs, routed mainly through fal.ai, OpenAI and OpenRouter. Colour Variants is the newest tool: it recolours a photo or a 360 spin into up to 12 colours, with a free preview.
 - **A visual workflow orchestrator**: a drag-and-drop DAG builder with 40 registered step types, so a merchant can chain "remove background → generate lifestyle shot → write alt text → human review → push to Shopify" and run it across an entire catalog. Workflows execute on durable background jobs with pause/resume, review gates, and live progress, and can be triggered from the UI, the API, webhooks, or an AI agent.
 - **A supplier portal** gives brands a scoped upload link or SFTP drop. Files are checked against filename, SKU, and image rules, sent through AI autofix, and held for review before they can reach the catalog.
 - **Marketplace checks** validate dimensions, backgrounds, watermarks, and frame fill against Amazon, eBay, Walmart, and Shopify rules. Autofix can repair some failures.
-- **Asset and product management** adds search by image, duplicate detection, auto-tagging, and licence tracking that can block a publish. Integrations include Shopify, Zapier, n8n, a REST API, and MCP.
+- **Asset and product management** adds search by image, duplicate detection, auto-tagging, and licence tracking that can block a publish. Products carry families, attribute groups, variant prices and content in more than one language.
+- **Channels and integrations** cover Shopify sync, CSV feeds, an ABOUT YOU export, Amazon and eBay in preview, Zapier, n8n, a REST API and MCP.
 
 <figure class="studio-visual studio-toolwall" aria-labelledby="studio-toolwall-title">
   <div class="studio-visual-head">
     <span id="studio-toolwall-title">the toolbox</span>
-    <strong>34 tool routes · 57 models · counted from the code</strong>
+    <strong>40 tool routes · 73 model IDs · counted from the code</strong>
   </div>
   <div class="studio-toolwall-grid">
     <div class="studio-toolwall-cat">
@@ -150,7 +177,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
     </div>
     <div class="studio-toolwall-cat">
       <b class="is-green">edit</b>
-      <span>background removal</span><span>background replace</span><span>object removal</span><span>prompt-based editing</span><span>upscaling · up to 8×</span><span>smart crop</span><span>shadows</span><span>ghost mannequin</span><span>color variants</span><span>depth maps</span><span>GLB optimizer</span>
+      <span>background removal</span><span>background replace</span><span>object removal</span><span>prompt-based editing</span><span>upscaling · up to 8×</span><span>smart crop</span><span>shadows</span><span>ghost mannequin</span><span>colour variants · photos &amp; spins</span><span>spin ↔ video</span><span>depth maps</span><span>GLB optimizer</span>
     </div>
     <div class="studio-toolwall-cat">
       <b class="is-amber">product content</b>
@@ -158,7 +185,7 @@ The product is organized around one loop: **ingest → fix → validate → revi
     </div>
     <div class="studio-toolwall-cat">
       <b class="is-violet">automate &amp; review</b>
-      <span>batch · every tool, catalog-scale</span><span>orchestrator · 40 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>webhooks · API · Zapier · n8n · MCP</span>
+      <span>batch · every tool, catalog-scale</span><span>orchestrator · 40 step types</span><span>AI routing</span><span>review gates &amp; autofix loops</span><span>marketplace optimizer</span><span>image review · Amazon/eBay/Walmart</span><span>spin export · Amazon/Walmart/Home Depot</span><span>CSV feeds · ABOUT YOU</span><span>webhooks · API · Zapier · n8n · MCP</span>
     </div>
     <div class="studio-toolwall-cat studio-toolwall-wide">
       <b>asset intelligence</b>
@@ -174,7 +201,9 @@ The product is organized around one loop: **ingest → fix → validate → revi
 
 ## How it's built
 
-The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite and deployed on Vercel. Data lives in PostgreSQL 17 behind Drizzle ORM, with 286 committed migrations in the July 24 snapshot. Background work runs on Inngest across sync, publishing, billing, imports, repair jobs, and workflow execution, self-hosted on Hetzner with a Patroni HA Postgres cluster behind it. Redis handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 5,244 tracked test and spec files across unit, integration, contract, Storybook, and browser layers. Capacitor shells package it for iOS and Android. The infrastructure bill for all of this, at current capacity, is about $70 a month.
+The app is a TanStack Start + React 19 application (migrated off Next.js, running the React Compiler) built with Vite. On 25 September it left Vercel. It now runs as a Nitro build on Bun across two Hetzner app nodes behind a load balancer, with rolling blue/green releases and Cloudflare in front. A deployer watches `main`, and a new commit is live in about five minutes. October had 111 promotions from `dev` to `main`.
+
+Data lives in PostgreSQL behind Drizzle ORM, on PlanetScale since 22 October, with 460 committed migrations. The old Hetzner cluster stays as a frozen rollback copy. Background work runs on 179 Inngest functions across sync, publishing, billing, imports, repair jobs and workflow execution, self-hosted on Hetzner. Redis with Sentinel handles rate limiting, Sentry/PostHog/Grafana handle observability, and the repo contains 7,980 test and spec files across unit, integration, contract, Storybook and browser layers. Capacitor shells package it for iOS and Android.
 
 {{< studio-architecture >}}
 
@@ -208,7 +237,7 @@ This supplier workflow is in production with an enterprise customer.
 
 ## Making it operable by AI agents
 
-Studio ships a production MCP server with stdio and hosted HTTP transports. The snapshot exposes **47 tools** for AI processing, asset management, product changes, Shopify sync, and supplier review. A published OpenAPI surface contains **64 operations**.
+Studio ships a production MCP server with stdio and hosted HTTP transports. It exposes **55 tools** for AI processing, asset management, product changes, Shopify sync, supplier review and Sirv CDN files. It works as a custom connector in Claude and in ChatGPT developer mode. A published OpenAPI surface contains **70 operations**.
 
 Agents receive the same permissions, approvals, budgets, and rollback rules as the UI. Authentication uses OAuth 2.0 with PKCE or API keys. Mutating and credit-spending tools check authorisation on the server. Every call validates organisation membership, and MCP annotations identify read-only, destructive, and idempotent operations. An agent can run a batch or workflow, but it cannot skip a required review.
 
@@ -259,29 +288,29 @@ The supplier portal shipped on 2 April. The first TanStack Start slice landed on
 
 The migration depended on broad tests, route-by-route checks, and review gates. Fast edits would not have been enough without them.
 
-## How three people and a fleet ship this fast
+## How a small team and a fleet ship this fast
 
-February was the quietest month. It focused on billing, supplier intake, permissions, and other production work, and still contained 316 of my commits. In the first 235 calendar days, five had no commit.
+February was the quietest month. It focused on billing, supplier intake, permissions, and other production work, and still contained 316 of my commits. In the first 333 calendar days, eight had no commit of mine.
 
 {{< commit-curve >}}
 
 <figure class="studio-visual studio-snapshot" aria-labelledby="studio-snapshot-title">
   <div class="studio-visual-head">
     <span id="studio-snapshot-title">repository snapshot</span>
-    <strong>dev @ 86a69aac · Jul 24, 2026</strong>
+    <strong>dev @ 92868cbb · Oct 30, 2026</strong>
   </div>
   <div class="studio-snapshot-grid">
-    <div class="studio-snapshot-card"><strong>11,950</strong><span>commits in the repo</span></div>
-    <div class="studio-snapshot-card"><strong>8,317</strong><span>under my primary author identity</span></div>
-    <div class="studio-snapshot-card"><strong>230 / 235</strong><span>calendar days with a commit</span></div>
-    <div class="studio-snapshot-card"><strong>5,244</strong><span>tracked test and spec files</span></div>
-    <div class="studio-snapshot-card"><strong>286</strong><span>Drizzle migrations</span></div>
-    <div class="studio-snapshot-card"><strong>47</strong><span>tools in the MCP server</span></div>
+    <div class="studio-snapshot-card"><strong>24,323</strong><span>commits in the repo</span></div>
+    <div class="studio-snapshot-card"><strong>15,083</strong><span>under my primary author identity</span></div>
+    <div class="studio-snapshot-card"><strong>325 / 333</strong><span>calendar days with a commit of mine</span></div>
+    <div class="studio-snapshot-card"><strong>7,980</strong><span>tracked test and spec files</span></div>
+    <div class="studio-snapshot-card"><strong>460</strong><span>Drizzle migrations</span></div>
+    <div class="studio-snapshot-card"><strong>55</strong><span>tools in the MCP server</span></div>
   </div>
-  <figcaption>A moving snapshot, not decorative numerology. The build record includes the exact command behind each count.</figcaption>
+  <figcaption>A moving snapshot, not decorative numerology. The build record lists the command behind each count. Its own figures stop at the 24 July snapshot.</figcaption>
 </figure>
 
-At the 24 July snapshot, the core three account for **11,792 commits**: 8,317 mine, 2,748 from Veniamin, 727 from Max, and 158 from other contributors, bots, and alternate identities. Commit volume is not value. The relevant observation is that output increased after the agent workflow became more structured.
+On launch day the repository holds **24,323 commits**: 15,083 mine, 5,940 from Veniamin, 727 from Max, and 2,573 from other contributors, bots and alternate identities. Commit volume is not value. The relevant observation is that output increased after the agent workflow became more structured.
 
 - **VibeQ** holds human and agent tasks. Agents claim work through MCP, check for duplicates, and update the task as they work.
 - **The Clanker Army** turns reviewed plans into isolated worktrees and runs them in supervised batches.
@@ -310,7 +339,9 @@ Fast implementation created more features than the team had proved it needed. Ev
 
 Q3 therefore froze new tools, channels, and workflow steps unless approved explicitly. Work moved to activation, onboarding, rollback proof, and helping merchants reach a first approved publish.
 
-Building quickly is no longer the main problem. Choosing what to build is.
+The freeze mostly held. Workflow step types stayed at 40 from July to launch. What shipped instead was the road to a first publish: one-question setup, a sample catalog, free setup fixes, Today and billing that works without leaving the app. October did add channel exports and a colour tool.
+
+Building quickly is no longer the main problem. Choosing what to build is. The launch is where the July verdict gets tested against real merchants.
 
 ## So is it any good?
 
@@ -324,7 +355,7 @@ These were ten passes from one model family, not ten independent opinions. The r
 
 The strongest areas use executable checks. Import-safety tests protect architecture boundaries. The E2E coverage matrix requires a signed result from a real run. Static analysis checks organisation scoping, and the schema prevents cross-tenant links.
 
-The audit also identified unfinished variant editing, limited channel sync beyond Shopify, storage quotas still in warning mode, several 2,000-line components, and circular imports in the library layer. Each confirmed finding received an implementation plan.
+The audit also identified unfinished variant editing, limited channel sync beyond Shopify, storage quotas still in warning mode, several 2,000-line components, and circular imports in the library layer. Each confirmed finding received an implementation plan. By launch, asset, storage and product quotas block at the limit, and variants have their own prices. Shopify is still the only direct channel sync. The other channels are file exports.
 
 Rechecking reduced several findings. One suspected legacy billing path had no production callers. The reviewers also estimated that comparable scope would require more than 200 engineer-months in a conventional team. That estimate is directional, but it gives context for the roughly ten months spent here.
 
