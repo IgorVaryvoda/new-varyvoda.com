@@ -58,7 +58,7 @@ summary:
   problem: "Keep AI-assisted product content correct from intake through publication"
   shipped: "Catalog scanning, AI batches, supplier portals, review, multi-language PIM, Shopify publishing, channel exports, rollback, API and MCP"
   real_use: "Enterprise supplier workflow in production"
-  team: "Igor, Veniamin and other contributors. Max Wish contributed substantially from March to June 2026."
+  team: "Igor, Veniamin, Mariia and other contributors. Max Wish contributed substantially from March to June 2026."
   current_state: "Public launch at www.sirv.studio on 30 October 2026"
 collaborators:
   - name: "Max Wish"
@@ -67,6 +67,9 @@ collaborators:
   - name: "Veniamin Krachun"
     url: "https://www.linkedin.com/in/veniamin-krachun/"
     contribution: "QA, including the testing and verification infrastructure."
+  - name: "Mariia Osadcha"
+    url: "https://github.com/MariiaOsadcha"
+    contribution: "Products and PIM, the Spanish interface, Shopify fixes and accessibility from July 2026."
 users_changed: "A real supplier workflow turned the portal from a simple upload link into intake, review, and publishing."
 imperfect: "I have shipped more than I have proved. The launch is the test: activation, first publishes and rollback evidence matter more now than another tool."
 highlights:
@@ -120,7 +123,7 @@ The next morning I started at six. `Initial commit from Create Next App` landed 
 
 Six days later, the workflow canvas existed. Durable Inngest jobs followed after twelve days, an MCP server after eighteen, and the embedded Shopify app after twenty-five. December closed at 602 commits. The main product areas were already visible.
 
-I took Studio from that first commit to the production platform described here. Max Wish made major contributions to the design system, virtualized data grid and asset interface from March to June 2026. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built QA and verification infrastructure. The separate [build record](/projects/sirv-studio/build-record/) has 48 dated milestones and the commands behind its repository counts.
+I took Studio from that first commit to the production platform described here. Max Wish made major contributions to the design system, virtualized data grid and asset interface from March to June 2026. [Veniamin Krachun](https://www.linkedin.com/in/veniamin-krachun/) built QA and verification infrastructure. Mariia Osadcha joined in July and took on products, the PIM and the Spanish interface. The separate [build record](/projects/sirv-studio/build-record/) has 48 dated milestones and the commands behind its repository counts.
 
 <figure class="studio-visual studio-timeline" aria-labelledby="studio-timeline-title">
   <div class="studio-visual-head">
@@ -310,7 +313,7 @@ February was the quietest month. It focused on billing, supplier intake, permiss
   <figcaption>A moving snapshot, not decorative numerology. The build record lists the command behind each count. Its own figures stop at the 24 July snapshot.</figcaption>
 </figure>
 
-On launch day the repository holds **24,323 commits**: 15,083 mine, 5,940 from Veniamin, 727 from Max, and 2,573 from other contributors, bots and alternate identities. Commit volume is not value. The relevant observation is that output increased after the agent workflow became more structured.
+On launch day the repository holds **24,323 commits**: 15,083 mine, 5,940 from Veniamin, 727 from Max, 714 from Mariia, and 1,859 from other contributors, bots and alternate identities. Commit volume is not value. The relevant observation is that output increased after the agent workflow became more structured.
 
 - **VibeQ** holds human and agent tasks. Agents claim work through MCP, check for duplicates, and update the task as they work.
 - **The Clanker Army** turns reviewed plans into isolated worktrees and runs them in supervised batches.
