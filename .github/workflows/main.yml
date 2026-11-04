@@ -42,14 +42,18 @@ jobs:
         curl https://rclone.org/install.sh | sudo bash
 
     - name: Configure rclone
+      env:
+        SFTP_KEY: ${{ secrets.SFTP_KEY }}
       run: |
-        mkdir -p ~/.config/rclone
+        mkdir -p ~/.config/rclone ~/.ssh
+        printf '%s\n' "$SFTP_KEY" > ~/.ssh/er_deploy
+        chmod 600 ~/.ssh/er_deploy
         echo "[sftp]
         type = sftp
         host = ${{ secrets.SFTP_HOST }}
         user = ${{ secrets.SFTP_USER }}
         port = ${{ secrets.SFTP_PORT }}
-        pass = ${{ secrets.SFTP_PASS }}" > ~/.config/rclone/rclone.conf
+        key_file = $HOME/.ssh/er_deploy" > ~/.config/rclone/rclone.conf
 
     - name: Sync public directory to server
       run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
