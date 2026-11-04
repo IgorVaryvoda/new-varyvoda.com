@@ -14,9 +14,9 @@
 .harbor-band .care-feed .care-key { color: var(--harbor-muted); }
 
 .care-feed { margin: 0; padding: 0; border-top: 1px solid var(--rule-dark); list-style: none; }
-.care-feed li { display: grid; grid-template-columns: 13rem minmax(14rem, 0.35fr) minmax(0, 1fr); gap: 2rem; align-items: baseline; padding: 2.2rem 0; border-bottom: 1px solid var(--rule); }
+.care-feed li { display: grid; grid-template-columns: 16rem minmax(14rem, 0.35fr) minmax(0, 1fr); gap: 2rem; align-items: baseline; padding: 2.2rem 0; border-bottom: 1px solid var(--rule); }
 .care-feed time,
-.care-feed .care-key { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.02em; }
+.care-feed .care-key { color: var(--muted); font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
 .care-feed strong { color: var(--ink); font-size: 1.6rem; }
 .harbor-band .care-feed strong { color: var(--harbor-ink); }
 .care-feed p { margin: 0; color: var(--slate); font-family: var(--display); font-size: var(--type-card-copy); line-height: 1.65; }
@@ -33,10 +33,14 @@
 }
 
 .work-atlas-proof > strong { color: #edf2f0; font-size: clamp(5rem, 9vw, 11rem); font-weight: 500; letter-spacing: -0.06em; }
-.work-atlas-proof > span:not(.work-atlas-visual-action) { color: #a7b3b7; font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.02em; }
+.work-atlas-proof > span { color: #a7b3b7; font-family: var(--mono); font-size: var(--type-compact-label); letter-spacing: 0.02em; }
 
 @media (max-width: 680px) {
   .care-feed li { grid-template-columns: 1fr; gap: 0.6rem; }
   .work-atlas-proof { min-height: 25rem; }
   .work-atlas-proof { aspect-ratio: auto; }
 }
+.care-feed a strong { text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 32%, transparent); text-decoration-thickness: 1px; text-underline-offset: 0.25em; transition: text-decoration-color 160ms ease; }
+.care-feed a:hover strong,
+.care-feed a:focus-visible strong { text-decoration-color: currentColor; }
+.care-feed a { display: inline-flex; min-height: var(--control-min); align-items: center; }

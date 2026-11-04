@@ -34,21 +34,20 @@
     {{ end }}
     <div class="article-hero-inner">
       <div class="article-hero-top">
-        <p><a href="/posts/">Writing index</a><span>{{ .Params.content_type | default "Field note" }}</span></p>
+        <p><a href="/posts/"><span aria-hidden="true">←</span> Writing index</a><span>{{ .Params.content_type | default "Field note" }}</span></p>
         <p><span>{{ .Date.Format "02 Jan 2006" }}</span><span>{{ .ReadingTime }} min read</span></p>
       </div>
 
       <div class="article-hero-title">
-        <h1>{{ .Title }}</h1>
+        <h1>{{ .Title | markdownify }}</h1>
       </div>
 
       <div class="article-hero-bottom">
-        <p class="article-hero-number">{{ .Date.Format "2006" }} / {{ printf "%02d" .Date.Month }}</p>
         {{ with .Description }}<p class="article-dek">{{ . }}</p>{{ end }}
         <div class="article-hero-actions">
           {{ with $audio }}
             <div class="article-listen" data-listen{{ with $words }} data-listen-words="{{ . }}"{{ end }}>
-              <button type="button" class="article-listen-toggle" aria-label="Play narration">
+              <button type="button" class="article-listen-toggle" aria-label="Listen to narration">
                 <span class="article-listen-icon" aria-hidden="true"></span>
                 <span data-listen-time>Listen</span>
               </button>
@@ -63,9 +62,10 @@
     </div>
   </header>
 
-  <section class="article-reading-surface" id="article-body">
+  <section class="article-reading-surface">
     <div class="article-reading-inner">
-      <aside class="article-rail" aria-label="Article contents">
+      <a class="chapter-jump" href="#article-contents" hidden><span aria-hidden="true">↑</span> Contents</a>
+      <aside class="article-rail" id="article-contents" aria-label="Article contents">
         <p class="article-rail-label">In this {{ .Params.content_type | default "note" | lower }}</p>
         {{ .TableOfContents }}
         <dl>
@@ -74,11 +74,11 @@
         </dl>
       </aside>
 
-      <div class="article-prose prose">
+      <div class="article-prose prose" id="article-body" tabindex="-1">
         {{ .Content }}
         <footer class="article-end">
-          <span>— End of {{ .Params.content_type | default "note" | lower }}</span>
-          <a href="/posts/">Back to writing index</a>
+          <span>End of {{ .Params.content_type | default "note" | lower }}</span>
+          <a href="/posts/"><span aria-hidden="true">←</span> Writing index</a>
         </footer>
         {{ partial "posts/series.html" . }}
         {{ partial "posts/utterances.html" . }}

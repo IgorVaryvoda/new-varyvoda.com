@@ -1,5 +1,6 @@
-.shader-evidence {
-  margin: 3.2rem 0;
+/* .content scoping beats the theme's `.content figure { margin: 0; padding: 0 }`. */
+.content .shader-evidence {
+  margin: 3.2rem 0 4.4rem;
 }
 
 .shader-evidence-grid,
@@ -21,9 +22,11 @@
   background: var(--stage);
 }
 
-.shader-evidence-panel img {
+.content .shader-evidence-panel img {
   display: block;
   width: 100%;
+  margin: 0;
+  border: 0;
   aspect-ratio: 16 / 9;
   object-fit: cover;
 }
@@ -36,7 +39,7 @@
   color: #edf2f0;
   background: rgba(8, 12, 15, 0.82);
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: var(--type-compact-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -45,13 +48,15 @@
 .shader-scorecard figcaption {
   margin-top: 1.2rem;
   color: var(--slate);
-  font-family: var(--mono);
-  font-size: 1.15rem;
-  line-height: 1.55;
+  font-family: var(--display);
+  font-size: var(--type-supporting);
+  line-height: 1.5;
+  text-align: left;
 }
 
 .shader-notes {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-block: 3.2rem 4.4rem;
 }
 
 .shader-note {
@@ -65,7 +70,7 @@
   display: block;
   color: var(--slate);
   font-family: var(--mono);
-  font-size: 1rem;
+  font-size: var(--type-compact-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -87,8 +92,8 @@
   line-height: 1.5;
 }
 
-.shader-scorecard {
-  margin: 3.2rem 0;
+.content .shader-scorecard {
+  margin: 3.2rem 0 4.4rem;
   padding: clamp(1.8rem, 4vw, 3rem);
   color: #edf2f0;
   background: #0a1217;
@@ -102,14 +107,16 @@
 
 .shader-metric {
   padding: 1.8rem;
+  color: #e8eef0;
   background: #0a1217;
 }
 
 .shader-metric strong {
   display: block;
   margin-top: 0.8rem;
+  color: #e8eef0;
   font-family: var(--display);
-  font-size: clamp(1.9rem, 3vw, 2.8rem);
+  font-size: clamp(1.7rem, 2vw, 2.2rem);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -136,3 +143,5 @@
     grid-template-columns: 1fr;
   }
 }
+.shader-metric del,
+.shader-metric b { white-space: nowrap; }

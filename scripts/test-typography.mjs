@@ -72,3 +72,16 @@ test("fenced code is not scaled down twice", () => {
   hasDeclaration(rule(type, "body.builder-index .prose pre"), "font-size", "var(--type-compact-action)");
   hasDeclaration(rule(type, "body.builder-index .prose pre code"), "font-size", "inherit");
 });
+
+test("reduced motion never hides content, only animation", async () => {
+  const custom = await read("assets/css/custom.css");
+  for (const block of custom.split("@media (prefers-reduced-motion: reduce)").slice(1)) {
+    const body = block.slice(0, block.indexOf("\n}\n"));
+    for (const [, selectors, declarations] of body.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+      if (/opacity:\s*0\b|visibility:\s*hidden|display:\s*none/.test(declarations)) {
+        const visible = selectors.split(",").map((s) => s.trim()).filter((s) => !/::?(before|after)\b/.test(s));
+        assert.deepEqual(visible, [], `Reduced motion hides real content: ${visible.join(", ")}`);
+      }
+    }
+  }
+});

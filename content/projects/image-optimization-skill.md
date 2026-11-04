@@ -4,8 +4,7 @@ date: 2026-07-18
 lastmod: 2026-09-23
 draft: false
 project_url: "https://github.com/IgorVaryvoda/image-optimization-skill"
-image: "https://opengraph.githubassets.com/varyvoda-projects/IgorVaryvoda/image-optimization-skill"
-image_alt: "Image and Media Skills open-source repository overview"
+image_alt: "Image and Media Skills: eight focused media skills"
 description: "A practical skill pack for AI coding agents working on image optimization, Sirv APIs, product viewers, video delivery, 360 spins and e-commerce media."
 hero_title: "Image & Media Skills"
 hero_title_size: "compact"
@@ -25,7 +24,7 @@ tech_stack: ["Agent Skills", "Web Performance", "Sirv", "Media APIs"]
 role: "Creator and maintainer"
 stewardship:
   state: "evolving"
-  note: "I update it when browsers, media formats, Sirv APIs, or agent workflows change."
+  note: "I update it when browsers, media formats, Sirv APIs or agent workflows change."
 last_tended: "2026-07-03"
 feedback_url: "https://github.com/IgorVaryvoda/image-optimization-skill/issues"
 proof:
@@ -44,13 +43,13 @@ weight: 10
 
 ## I kept repeating the same advice
 
-Image work gets messy fast. A request to “optimize this page” can mean choosing formats, correcting `srcset`, protecting the LCP image, reserving layout space, moving delivery to a CDN, or discovering that the thing called an image is actually a video, a 360 spin, or a product gallery.
+Image work gets messy fast. A request to “optimize this page” can mean choosing formats, correcting `srcset`, protecting the LCP image, reserving layout space, moving delivery to a CDN or discovering that the thing called an image is actually a video, a 360 spin or a product gallery.
 
 I kept explaining the same decisions to coding agents. The answers lived across product documentation, browser guidance, API references and records of pages that looked fast but were not. Repeating that context in every session was both slow and unreliable.
 
 ## Docs list options. The skill chooses.
 
-Reference documentation tells an agent which options exist. It rarely tells the agent which option fits the page in front of it, what should be measured first, or how to prove that the change helped.
+Reference documentation tells an agent which options exist. It rarely tells the agent which option fits the page in front of it, what should be measured first or how to prove that the change helped.
 
 I packaged a workflow: inspect the media, identify the delivery constraint, make the smallest correct change and verify the rendered result.
 

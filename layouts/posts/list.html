@@ -13,6 +13,12 @@
         <div>
           <p class="eyebrow">Essays, records, guides</p>
           <h1>Writing</h1>
+          <nav class="writing-jump" aria-label="Writing sections">
+            {{ with $essays }}<a href="#essays-title">Essays</a>{{ end }}
+            {{ with $builds }}<a href="#build-records-title">Build records</a>{{ end }}
+            {{ with $guides }}<a href="#guides-title">Technical guides</a>{{ end }}
+            {{ with $older }}<a href="#older-title">Older archive</a>{{ end }}
+          </nav>
         </div>
       </div>
       {{ partial "start-here.html" (dict "site" .Site "class" "writing-start") }}

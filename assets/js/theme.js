@@ -20,14 +20,12 @@
   }
 
   function syncControl(theme) {
-    var control = document.querySelector("[data-theme-toggle]");
-    if (!control) return;
-
     var isDark = theme === "dark";
-    var label = control.querySelector("[data-theme-label]");
-    control.setAttribute("aria-label", "Switch to " + (isDark ? "light" : "dark") + " mode");
-    control.setAttribute("aria-pressed", String(isDark));
-    if (label) label.textContent = isDark ? "Light" : "Dark";
+    document.querySelectorAll("[data-theme-toggle]").forEach(function (control) {
+      var label = control.querySelector("[data-theme-label]");
+      control.setAttribute("aria-label", "Switch to " + (isDark ? "light" : "dark") + " mode");
+      if (label) label.textContent = isDark ? "Light" : "Dark";
+    });
   }
 
   function applyTheme(theme) {
@@ -52,11 +50,10 @@
   window.varyvodaTheme = { toggle: toggleTheme };
 
   function bindControl() {
-    var control = document.querySelector("[data-theme-toggle]");
-    if (!control) return;
-
     syncControl(root.dataset.theme);
-    control.addEventListener("click", toggleTheme);
+    document.querySelectorAll("[data-theme-toggle]").forEach(function (control) {
+      control.addEventListener("click", toggleTheme);
+    });
   }
 
   if (document.readyState === "loading") {

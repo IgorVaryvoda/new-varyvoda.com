@@ -34,7 +34,7 @@ Stitch Puzzle is a calm puzzle game: send thread spools round the hoop to pull o
 
 **Does it work offline?** Yes, apart from the cloud backup and the rewarded ads.
 
-**Is anything uploaded?** Only your game progress, and only when you make a backup code. See the [privacy policy](/stitch-puzzle/privacy/).
+**Is anything uploaded?** Only your game progress, and only when you make a backup code. See the [privacy policy](/stitch-puzzle/privacy/) and the [terms of use](/stitch-puzzle/terms/).
 
 ## Contact
 

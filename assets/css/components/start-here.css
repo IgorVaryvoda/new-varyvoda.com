@@ -20,8 +20,14 @@
 .writing-start { width: auto; margin: 0; padding: 0; background: transparent; }
 .writing-start .home-section-inner { width: 100%; }
 .writing-start .home-section-heading { margin-bottom: 3rem; }
+.writing-start .home-section-heading h2 { font-size: clamp(3.6rem, 5vw, 6.4rem); }
 
 @media (max-width: 900px) {
   .start-here-grid { grid-template-columns: 1fr; }
   .start-here-grid > section + section { border-top: 1px solid var(--harbor-rule); border-left: 0; }
 }
+.start-here-grid a strong { text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 32%, transparent); text-decoration-thickness: 1px; text-underline-offset: 0.25em; transition: text-decoration-color 160ms ease; }
+.start-here-grid a:hover strong,
+.start-here-grid a:focus-visible strong { text-decoration-color: currentColor; }
+.start-here-grid strong { text-wrap: balance; }
+:root:not([data-theme="dark"]) .start-here-grid h3 { color: #1c45b4; }

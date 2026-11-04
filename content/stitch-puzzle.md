@@ -1,5 +1,5 @@
 ---
-title: "Stitch Puzzle — a little puzzle, a little peace"
+title: "Stitch Puzzle: a little puzzle, a little peace"
 description: "A cozy cross-stitch puzzle for iPhone, iPad and Android. Pull threads, decorate a cottage, and get a real DMC chart for every picture. No timers, no lives, no forced ads."
 type: stitch
 url: /stitch-puzzle/

@@ -19,7 +19,8 @@ body.builder-index .text-link,
 body.builder-index .project-cta,
 body.builder-index .work-atlas-action,
 body.builder-index .project-chapters-rail nav a,
-body.builder-index .article-end {
+body.builder-index .article-end,
+body.builder-index .project-masthead-meta a {
   font-family: var(--display);
   font-size: var(--type-compact-action);
   font-weight: 500;
@@ -63,7 +64,7 @@ body.builder-index .prose pre {
 body.builder-index .prose pre code { font-size: inherit; }
 
 /* Project summaries are scanned like cards; long-form stories stay serif. */
-body.builder-index .work-atlas-copy > p:not(.work-atlas-meta) {
+body.builder-index .work-atlas-copy > p:not(.work-atlas-meta, .work-atlas-role) {
   font-family: var(--display);
   font-size: var(--type-card-copy);
   line-height: 1.6;
@@ -75,3 +76,5 @@ body.builder-index .work-status {
   flex-wrap: wrap;
   white-space: normal;
 }
+
+.nowrap { white-space: nowrap; }

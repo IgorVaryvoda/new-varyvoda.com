@@ -6,7 +6,7 @@
       <div class="about-stage-inner">
         {{ with .Site.Params.avatarURL }}
           <figure class="about-portrait-frame">
-            <img src="{{ . | relURL }}" alt="Igor Varyvoda" decoding="async">
+            {{ $base := index (split . "?") 0 }}<img src="{{ $base }}?w=600" srcset="{{ $base }}?w=300 300w, {{ $base }}?w=600 600w, {{ $base }}?w=900 900w" sizes="(max-width: 680px) 160px, 300px" width="300" height="375" alt="Igor Varyvoda" decoding="async">
           </figure>
         {{ end }}
         <div class="about-copy">
@@ -25,17 +25,16 @@
         <header class="contact-heading">
           <p class="eyebrow">Contact</p>
           <h1>Tell me about it.</h1>
-          <p>Ask about a product, report a bug, or send me something interesting.</p>
+          <p>Ask about a product, report a bug or send me something interesting.</p>
           <div class="contact-links">
-            {{ range sort .Site.Params.social "weight" }}
+            {{ range sort .Site.Params.social "weight" }}{{ if ne .name "Email" }}
               <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
-            {{ end }}
+            {{ end }}{{ end }}
           </div>
         </header>
         <div class="contact-panel">
           <div class="contact-panel-header">
             <span>Send me a message</span>
-            <a href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Open form</a>
           </div>
           <div class="contact-brief">
             <p class="contact-brief-lead">What’s this about?</p>
@@ -47,7 +46,7 @@
               <li><strong>Something else</strong></li>
             </ol>
             <div class="contact-brief-action">
-              <a class="project-primary-action" href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Send a message</a>
+              <a class="project-primary-action" href="{{ .Params.form_url }}" data-contact-form target="_blank" rel="noopener">Send a message <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens Typeform in a new tab)</span></a>
               <p>Email works too: <a href="mailto:{{ .Params.email }}" data-contact-email>{{ .Params.email }}</a></p>
             </div>
           </div>

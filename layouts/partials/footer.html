@@ -1,20 +1,27 @@
 <footer class="site-footer">
+  {{- /* Contact is the destination, and project pages end with their own feedback card. */ -}}
+  {{ if not (or (eq .Kind "404") (eq .RelPermalink "/contact/") (and .IsPage (eq .Section "projects"))) }}
   <div class="footer-closing">
     <p>Got a hard problem or a strange idea?</p>
     <a class="footer-cta" href="/contact/">Tell me about it</a>
   </div>
+  {{ end }}
   <div class="site-footer-grid">
     <p class="footer-index">IV / {{ now.Year }}</p>
-    <p class="footer-note">Products, notes, and working records.</p>
+    <p class="footer-note">Products, notes and working records.</p>
     <div class="footer-tools">
       <div class="footer-links">
         {{ range sort .Site.Params.social "weight" }}
           <a href="{{ .url | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if .rel }} rel="{{ .rel }}"{{ end }}>{{ .name }}</a>
         {{ end }}
       </div>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" aria-pressed="false">
-        <span class="theme-toggle-mark" aria-hidden="true">◐</span>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode">
+        <svg class="theme-toggle-mark" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
         <span data-theme-label>Dark</span>
+      </button>
+      <button class="theme-toggle" type="button" data-motion-toggle hidden>
+        <svg class="theme-toggle-mark" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="4" y="3" width="2.5" height="10" rx="0.6" fill="currentColor"/><rect x="9.5" y="3" width="2.5" height="10" rx="0.6" fill="currentColor"/></svg>
+        <span data-motion-label>Pause scene</span>
       </button>
     </div>
   </div>

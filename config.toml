@@ -32,7 +32,7 @@ disqusShortname = "varyvoda"
   hideCopyright = false
   since = 2025
 
-  enableTwemoji = true
+  enableTwemoji = false
 
   colorScheme = "dark"
   hidecolorschemetoggle = true
@@ -59,7 +59,7 @@ disqusShortname = "varyvoda"
     weight = 4
     url = "https://www.linkedin.com/in/igorvaryvoda/"
 [[params.social]]
-  name = "Github"
+  name = "GitHub"
   icon = "fa fa-github fa-2x"
   weight = 1
   url = "https://github.com/igorvaryvoda/"

@@ -77,7 +77,7 @@ html:has(.press-page) { font-size: 100%; scrollbar-color: var(--rule-dark) var(-
 .press-plan li::marker { color: var(--accent); }
 .press-price-note { margin-top: 2rem !important; color: var(--slate); font-size: .8125rem; }
 .press-questions { display: grid; grid-template-columns: 1fr 1.2fr; column-gap: 5rem; border-top: 1px solid var(--rule); }
-.press-questions h2 { max-width: 18rem; }
+.press-questions h2 { max-width: 24rem; text-wrap: balance; }
 .press-faqs { min-width: 0; }
 .press-faqs details { border-bottom: 1px solid var(--rule); }
 .press-faqs details:first-child { border-top: 1px solid var(--rule); }
@@ -91,7 +91,7 @@ html:has(.press-page) { font-size: 100%; scrollbar-color: var(--rule-dark) var(-
 .press-questions > .press-text-link { grid-column: 2; justify-self: start; margin-top: 1.5rem; }
 .press-closing { padding-block: 5rem; background: var(--paper-raised); border-block: 1px solid var(--rule); text-align: center; }
 .press-closing img { margin: 0 auto 1.5rem; border-radius: 1rem; }
-.press-closing h2 { font-size: clamp(2.5rem, 4.5vw, 4rem); }
+.press-closing h2 { font-size: clamp(2.5rem, 4.5vw, 4rem); text-wrap: balance; }
 .press-closing h2 + p { margin-top: 1.25rem; color: var(--slate); }
 .press-closing .press-store { margin-top: 1.5rem; text-align: left; }
 .press-footer { display: grid; grid-template-columns: 1fr auto; gap: 1rem 3rem; padding-block: 2.5rem; font-size: .8125rem; }
@@ -112,8 +112,8 @@ html:has(.press-page) { font-size: 100%; scrollbar-color: var(--rule-dark) var(-
 @media (max-width: 700px) {
   .press-header { min-height: 5.5rem; flex-wrap: wrap; gap: .25rem 1rem; padding-block: 1rem; }
   .press-brand small { display: none; }
-  .press-nav { gap: 1rem; }
-  .press-nav a { font-size: .75rem; }
+  .press-nav { gap: .75rem; }
+  .press-nav a { font-size: .875rem; }
   .press-hero { grid-template-columns: 1fr; gap: 2.5rem; padding-block: 2rem 2.5rem; }
   .press-hero-copy { padding-block: 0; }
   .press-hero h1 { font-size: clamp(3.5rem, 12.5vw, 5rem); }
@@ -147,9 +147,15 @@ html:has(.press-page) { font-size: 100%; scrollbar-color: var(--rule-dark) var(-
 @media (max-width: 380px) {
   .press-header { gap: .25rem; }
   .press-nav { width: 100%; justify-content: space-between; }
+}
+@media (max-width: 480px) {
   .press-plans { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) {
   html:has(.press-page) { scroll-behavior: auto; }
   .press-page *, .press-page *::before, .press-page *::after { transition: none !important; }
+}
+.press-footer div > a { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 700px) {
+  .press-closing h2 { font-size: 2.125rem; }
 }

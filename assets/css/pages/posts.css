@@ -35,7 +35,7 @@
 
 .article-hero-top p,
 .article-hero-bottom p { margin: 0; }
-.article-hero-top p { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+.article-hero-top p { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; }
 .article-hero-top a,
 .article-start { color: var(--accent); font-family: var(--display); font-size: var(--type-compact-action); font-weight: 500; letter-spacing: normal; text-decoration: none; text-transform: none; }
 .article-hero-top a:hover,
@@ -60,7 +60,7 @@
 
 .article-hero-bottom {
   display: grid;
-  grid-template-columns: 14rem minmax(0, 78rem) auto;
+  grid-template-columns: minmax(0, 78rem) auto;
   align-items: end;
 }
 
@@ -149,13 +149,14 @@
   border: 0;
   border-inline: 0.35rem solid var(--harbor-deep);
 }
-.article-listen-seek { display: none; width: 14rem; accent-color: var(--accent); }
+.article-listen-seek { display: none; width: 14rem; min-height: var(--control-min); accent-color: var(--accent); }
 .article-listen-speed {
-  min-width: 5.6rem;
+  min-width: var(--control-min);
+  min-height: var(--control-min);
   padding: 0.8rem 1.2rem;
   color: var(--harbor-ink);
-  background: transparent;
-  border: 1px solid var(--harbor-rule);
+  background: var(--harbor-raised);
+  border: 1px solid var(--rule-dark);
   border-radius: 99rem;
   font: inherit;
   font-variant-numeric: tabular-nums;
@@ -163,6 +164,7 @@
 }
 .article-listen-speed:hover { border-color: var(--accent); }
 .article-listen-speed:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.article-listen.is-playing .article-listen-seek,
 .article-listen.is-docked .article-listen-seek { display: block; }
 
 .article-listen.is-docked {
@@ -193,9 +195,9 @@
 .article-reading-inner {
   display: grid;
   grid-template-columns: 20rem minmax(0, var(--measure-reading));
-  justify-content: center;
+  justify-content: start;
   gap: clamp(5rem, 8vw, 11rem);
-  width: min(calc(100% - (2 * var(--gutter))), 112rem);
+  width: min(calc(100% - (2 * var(--gutter))), var(--canvas));
   margin: 0 auto;
 }
 
@@ -242,7 +244,7 @@
 .article-rail a.is-active,
 .article-rail a[aria-current="location"] {
   padding-left: 1rem;
-  color: var(--accent);
+  color: color-mix(in srgb, var(--accent) 82%, var(--ink));
   background: var(--accent-soft);
   border-bottom-color: color-mix(in srgb, var(--accent) 45%, var(--rule));
   box-shadow: inset 2px 0 var(--accent);
@@ -257,7 +259,7 @@
   line-height: 1.5;
 }
 .article-rail dt { color: var(--muted); font-family: var(--display); }
-.article-rail dd { color: var(--slate); font-family: var(--mono); }
+.article-rail dd { color: var(--slate); font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ch is resolved using the prose's own font and size, not the shell's font. */
 .article-page--editorial .article-prose { width: min(100%, var(--measure-prose)); margin: 0; }
@@ -294,12 +296,12 @@
 .writing-groups { display: grid; gap: clamp(8rem, 12vw, 15rem); }
 .writing-group { min-width: 0; }
 .writing-group .writing-archive-heading { margin-bottom: 3rem; }
-.writing-index-full .writing-title-group h3 { margin: 0; font-family: var(--reading); font-size: clamp(2.7rem, 4vw, 5rem); font-weight: 500; line-height: 1.16; }
+.writing-index-full .writing-title-group h3 { margin: 0; font-family: var(--reading); font-size: clamp(2.3rem, 2.6vw, 3.4rem); font-weight: 500; line-height: 1.2; }
+.writing-index-full .writing-title-group p { margin-top: 0.8rem; }
 .writing-index-full .writing-meta { min-width: 13rem; }
 
 @media (max-width: 900px) {
   .article-hero-bottom { grid-template-columns: minmax(0, 1fr) auto; }
-  .article-hero-number { display: none; }
   .article-reading-inner { grid-template-columns: 16rem minmax(0, var(--measure-reading)); gap: 5rem; }
 }
 
@@ -322,4 +324,28 @@
     scrollbar-width: thin;
   }
   .article-rail dl { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; }
+}
+
+.writing-jump { display: flex; flex-wrap: wrap; gap: 0 2.4rem; margin-top: 2.4rem; }
+.writing-jump a { display: inline-flex; align-items: center; min-height: var(--control-min); color: var(--accent); font-family: var(--display); font-size: var(--type-compact-action); font-weight: 500; text-decoration: none; }
+.writing-jump a:hover { color: var(--harbor-ink); }
+.writing-group h2[id] { scroll-margin-top: 3rem; }
+.article-hero-top a,
+.article-start { display: inline-flex; align-items: center; min-height: var(--control-min); }
+#article-body { scroll-margin-top: 3rem; }
+#article-body:focus { outline: none; }
+.article-start span { margin-left: 0.4rem; }
+.article-hero-top a { gap: 0.6rem; color: var(--harbor-ink); }
+.article-hero-top a:hover { color: var(--accent); }
+:root:not([data-theme="dark"]) .article-start { color: #1c45b4; }
+@media (max-width: 900px) {
+  /* The hero already shows the date and reading time on small screens. */
+  .article-rail dl { display: none; }
+}
+.article-rail a:focus-visible { outline-offset: -2px; }
+@media (max-width: 680px) {
+  .article-listen { flex-wrap: wrap; max-width: 100%; }
+  .article-listen-seek { flex: 1 1 10rem; width: auto; min-width: 0; }
+  /* In the hero the seek bar takes its own row; the docked pill keeps one line. */
+  .article-listen.is-playing:not(.is-docked) .article-listen-seek { order: 3; flex-basis: 100%; }
 }

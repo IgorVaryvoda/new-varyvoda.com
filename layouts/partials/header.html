@@ -12,11 +12,14 @@
         <span class="menu-button-mark" aria-hidden="true">+</span>
       </button>
       <nav class="primary-navigation" id="primary-navigation" aria-label="Main navigation" data-primary-navigation>
-        <a href="/projects/"{{ if eq .Section "projects" }} aria-current="page"{{ end }}>Work</a>
-        <a href="/posts/"{{ if eq .Section "posts" }} aria-current="page"{{ end }}>Writing</a>
+        <a href="/projects/"{{ if eq .RelPermalink "/projects/" }} aria-current="page"{{ else if eq .Section "projects" }} aria-current="true"{{ end }}>Work</a>
+        <a href="/posts/"{{ if eq .RelPermalink "/posts/" }} aria-current="page"{{ else if eq .Section "posts" }} aria-current="true"{{ end }}>Writing</a>
         <a href="/about/"{{ if eq .RelPermalink "/about/" }} aria-current="page"{{ end }}>About</a>
         <a href="/contact/"{{ if eq .RelPermalink "/contact/" }} aria-current="page"{{ end }}>Contact</a>
       </nav>
     </div>
+    <button class="header-theme-toggle" type="button" data-theme-toggle aria-label="Switch to light mode">
+      <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg>
+    </button>
   </div>
 </header>

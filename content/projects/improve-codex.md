@@ -3,8 +3,7 @@ title: "improve-codex"
 date: 2026-07-18
 draft: false
 project_url: "https://github.com/IgorVaryvoda/improve-codex"
-image: "https://opengraph.githubassets.com/varyvoda-projects/IgorVaryvoda/improve-codex"
-image_alt: "improve-codex open-source repository overview"
+image_alt: "improve-codex: four stages, audit, plan, execute and review"
 description: "A codebase audit becomes reviewed plans and bounded implementation, through repo-local orchestration or isolated worktrees. Approved branches still need a merge decision."
 hero_title: "improve-codex"
 hero_title_size: "compact"

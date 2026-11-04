@@ -11,7 +11,7 @@
       {{ if .Params.hero_flow }}
       <div class="project-system-top">
         <p class="project-masthead-meta">
-          <a href="/projects/">Work ←</a>
+          <a href="/projects/"><span aria-hidden="true">←</span> Work index</a>
           <span>{{ $period }}</span>
           <span class="stewardship-state">● {{ $state | humanize }}</span>
         </p>
@@ -22,13 +22,13 @@
         <div class="project-heading project-system-copy">
           <p class="eyebrow">{{ .Params.hero_kicker | default "Product story" }}</p>
           <h1{{ with .Params.hero_title_size }} class="project-system-title--{{ . }}"{{ end }}>{{ .Params.hero_title | default .Title }}</h1>
-          <p class="project-dek">{{ .Params.hero_intro | default .Params.description }}</p>
+          <p class="project-dek">{{ .Params.hero_intro | default .Params.description | markdownify }}</p>
           <div class="project-actions project-system-actions">
-            {{ with .Params.project_url }}<a class="project-primary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }} <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.project_url }}<a class="project-primary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }} <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>{{ end }}
             {{ with .Params.hero_secondary_url }}<a class="project-secondary-action" href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read more" }} <span aria-hidden="true">→</span></a>{{ end }}
-            {{ with .Params.github_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">→</span></a>{{ end }}
-            {{ with .Params.app_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS <span aria-hidden="true">→</span></a>{{ end }}
-            {{ with .Params.play_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android <span aria-hidden="true">→</span></a>{{ end }}
+            {{ with .Params.github_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>{{ end }}
+            {{ with .Params.app_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>{{ end }}
+            {{ with .Params.play_store_url }}<a class="project-secondary-action" href="{{ . }}" target="_blank" rel="noopener noreferrer">Android <span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span></a>{{ end }}
           </div>
         </div>
 
@@ -40,15 +40,6 @@
           {{ else }}
             <img src="{{ . }}?w=1000" srcset="{{ . }}?w=640 640w, {{ . }}?w=1000 1000w, {{ . }}?w=1600 1600w" sizes="(max-width: 960px) calc(100vw - 3.6rem), 50vw" alt="{{ $.Params.image_alt }}" fetchpriority="high" decoding="async">
           {{ end }}
-          {{ if or $.Params.project_url $.Params.hero_secondary_url $.Params.github_url $.Params.app_store_url $.Params.play_store_url }}
-          <nav class="project-system-visual-actions" aria-label="{{ $.Title }} links">
-            {{ with $.Params.project_url }}<a class="project-system-visual-primary" href="{{ . }}" target="_blank" rel="noopener noreferrer">{{ $.Params.hero_primary_label | default "Open project" }}</a>{{ end }}
-            {{ with $.Params.hero_secondary_url }}<a href="{{ . }}">{{ $.Params.hero_secondary_label | default "Read more" }} <span aria-hidden="true">→</span></a>{{ end }}
-            {{ with $.Params.github_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">GitHub</a>{{ end }}
-            {{ with $.Params.app_store_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">iOS</a>{{ end }}
-            {{ with $.Params.play_store_url }}<a href="{{ . }}" target="_blank" rel="noopener noreferrer">Android</a>{{ end }}
-          </nav>
-          {{ end }}
         </figure>
         {{ end }}
       </div>
@@ -57,7 +48,7 @@
         {{ range $index, $step := .Params.hero_flow }}<li><span>{{ printf "%02d" (add $index 1) }}</span><strong>{{ $step }}</strong></li>{{ end }}
       </ol>
       {{ else }}
-      <p class="project-masthead-meta"><a href="/projects/">Work ↖</a><span>{{ $period }}</span><span class="stewardship-state">● {{ $state | humanize }}</span></p>
+      <p class="project-masthead-meta"><a href="/projects/"><span aria-hidden="true">←</span> Work index</a><span>{{ $period }}</span><span class="stewardship-state">● {{ $state | humanize }}</span></p>
       <div class="project-heading">
         <p class="eyebrow">Build record</p>
         <h1>{{ .Title }}</h1>
@@ -80,28 +71,29 @@
 
   <div class="project-story index-section{{ with .Params.hero_flow }} project-story--system{{ end }}{{ with .Params.project_chapters }} project-story--chapters{{ end }}">
     {{ with .Params.project_chapters }}
-    <aside class="project-facts project-chapters-rail">
+    <a class="chapter-jump" href="#chapters" hidden><span aria-hidden="true">↑</span> Chapters</a>
+    <aside class="project-facts project-chapters-rail" id="chapters">
       <p class="project-chapters-label">On this page</p>
       <nav aria-label="Project chapters">{{ range $index, $chapter := . }}<a href="{{ $chapter.href }}"><span>{{ printf "%02d" (add $index 1) }}</span>{{ $chapter.label }}</a>{{ end }}</nav>
-      <div class="project-chapter-facts">
-        <span>Stewardship / {{ $state | humanize }}</span>
-        <span>Started / {{ $period }}</span>
-        <span>Last tended / {{ $.Params.last_tended }}</span>
-      </div>
+      <dl class="project-facts-list project-chapter-facts">
+        <div><dt>Stewardship</dt><dd>{{ $state | humanize }}</dd></div>
+        <div><dt>Started</dt><dd>{{ $period }}</dd></div>
+        <div><dt>Last tended</dt><dd><time datetime="{{ $.Params.last_tended }}">{{ time.Format "02 Jan 2006" $.Params.last_tended }}</time></dd></div>
+      </dl>
     </aside>
     {{ else }}
-    <aside class="project-facts artifact-rail">
-      <span>Project facts</span>
-      <span>Stewardship / {{ $state | humanize }}</span>
-      <span>Started / {{ $period }}</span>
-      <span>Last tended / {{ .Params.last_tended }}</span>
-      <span>{{ .Params.role }}</span>
-      {{ with .Params.tech_stack }}<span>{{ delimit . " · " }}</span>{{ end }}
-      <i aria-hidden="true"></i>
+    <aside class="project-facts artifact-rail" aria-label="Project facts">
+      <dl class="project-facts-list">
+        <div><dt>Stewardship</dt><dd>{{ $state | humanize }}</dd></div>
+        <div><dt>Started</dt><dd>{{ $period }}</dd></div>
+        <div><dt>Last tended</dt><dd><time datetime="{{ .Params.last_tended }}">{{ time.Format "02 Jan 2006" .Params.last_tended }}</time></dd></div>
+        <div><dt>Role</dt><dd>{{ .Params.role }}</dd></div>
+        {{ with .Params.tech_stack }}<div><dt>Stack</dt><dd>{{ delimit . ", " }}</dd></div>{{ end }}
+      </dl>
     </aside>
     {{ end }}
     <div class="project-prose prose">
-      {{ with .Params.summary }}
+      {{ with .Params.product_summary }}
       <section class="project-brief" aria-labelledby="project-brief-title">
         <p class="eyebrow">60-second summary</p>
         <h2 id="project-brief-title">The shape of the product</h2>
@@ -151,11 +143,11 @@
         <p class="eyebrow">Bug or idea?</p>
         <h2>Tell me.</h2>
         <p>I still maintain this product and read every report.</p>
-        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>Send feedback <span aria-hidden="true">→</span></a>
+        <a class="project-primary-action" href="{{ . }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>Send feedback {{ if hasPrefix . "http" }}<span aria-hidden="true">↗</span><span class="visually-hidden"> (opens in a new tab)</span>{{ else }}<span aria-hidden="true">→</span>{{ end }}</a>
       </aside>
       {{ end }}
 
-      <footer class="article-end"><span>— End of {{ if or .Params.project_chapters .Params.hero_flow }}product story{{ else }}build record{{ end }}</span><a href="/projects/">Back to work index ↑</a></footer>
+      <footer class="article-end"><span>End of {{ if or .Params.project_chapters .Params.hero_flow }}product story{{ else }}build record{{ end }}</span><a href="/projects/"><span aria-hidden="true">←</span> Work index</a></footer>
     </div>
   </div>
 </article>

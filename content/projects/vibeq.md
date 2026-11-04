@@ -49,7 +49,7 @@ tech_stack: ["React 19", "Cloudflare Workers", "D1", "R2", "Durable Objects", "H
 role: "Creator, product lead and principal builder"
 stewardship:
   state: "evolving"
-  note: "I change it when a real run, Slack thread, or incident exposes a gap."
+  note: "I change it when a real run, Slack thread or incident exposes a gap."
 last_tended: "2026-09-03"
 feedback_url: "/contact/?project=vibeq&type=question"
 proof:
@@ -101,7 +101,7 @@ The QA Monitor tracks how old the latest proof is and which product areas have n
 A task now carries its branch, pull request, checks and review evidence alongside its title and status. When I look away for an afternoon, the board tells me what changed.
 
 <img src="/images/vibeq/vibeq-today.jpg" alt="VibeQ Today view showing the best next move, the live pulse, failing QA, stalled reviews and work that still needs evidence" width="1276" height="718" loading="lazy" decoding="async"/>
-<p><em>Today reduces the queue to one next move, then shows the work that is stuck, failing, or still missing delivery evidence.</em></p>
+<p><em>Today reduces the queue to one next move, then shows the work that is stuck, failing or still missing delivery evidence.</em></p>
 
 ## Agents use the same queue
 
@@ -118,13 +118,13 @@ Seeing a task does not grant authority to change it. Agent actions still depend 
 
 In June, VibeQ changed category. **Sirvant**, the agent runtime with a public Slack identity, landed in the same repository.
 
-Sirvant is the Slack interface for this system. It can answer a product question, continue an old thread, investigate a bug, prepare a report, or handle a scoped implementation request. Voice notes are transcribed into the same flow.
+Sirvant is the Slack interface for this system. It can answer a product question, continue an old thread, investigate a bug, prepare a report or handle a scoped implementation request. Voice notes are transcribed into the same flow.
 
-Depending on the profile, Sirvant can use VibeQ, Basecamp, Sentry, the internal knowledge base and Sirv Marketing Machine data. It can triage work, reproduce an issue, inspect code, schedule automation, or open a pull request. Thread replies continue the existing session.
+Depending on the profile, Sirvant can use VibeQ, Basecamp, Sentry, the internal knowledge base and Sirv Marketing Machine data. It can triage work, reproduce an issue, inspect code, schedule automation or open a pull request. Thread replies continue the existing session.
 
-Sirvant does not start a worker for every message. Hermes or OMP first loads the relevant history and decides whether it can answer directly. Work that needs a repository, browser, tests, or command-line tools receives a disposable execution cell.
+Sirvant does not start a worker for every message. Hermes or OMP first loads the relevant history and decides whether it can answer directly. Work that needs a repository, browser, tests or command-line tools receives a disposable execution cell.
 
-VibeQ stores the request, decisions, tool results, approvals, failures, artifacts and final status. A Slack retry, supervisor restart, or deleted work cell should not erase that history or create a duplicate job.
+VibeQ stores the request, decisions, tool results, approvals, failures, artifacts and final status. A Slack retry, supervisor restart or deleted work cell should not erase that history or create a duplicate job.
 
 Read-only inspection needs no extra approval. A requested implementation can produce a branch and pull request. Direct shared-branch pushes, merges, deploys, production writes and destructive actions still need explicit approval.
 
@@ -142,7 +142,7 @@ Profiles narrow the tools and approval rules for each kind of work. Sirvant uses
 
 The pull-request path can run a review-and-fix loop. It stops on a clean review, refuses a moved or unsafe branch, never force-pushes and allows at most three rounds.
 
-Memory results point back to the session, event, or artifact that supports them. Reusable lessons can be promoted and deduplicated. Task state remains in VibeQ rather than a model's private memory.
+Memory results point back to the session, event or artifact that supports them. Reusable lessons can be promoted and deduplicated. Task state remains in VibeQ rather than a model's private memory.
 
 <img src="/images/vibeq/vibeq-sirvant.jpg" alt="Sirvant control room showing supervisor and runner health, failed runs, verification warnings and the Hermes to Cloudflare execution topology" width="1280" height="720" loading="lazy" decoding="async"/>
 <p><em>Sirvant's control room: supervisor and runner health above, the durable Hermes-to-Cloudflare execution path below and warnings where scheduled work can strand.</em></p>
@@ -213,7 +213,7 @@ I currently prefer keeping it specialised over turning it into a general task-bo
 
 ## Next
 
-Most work currently starts with a person, webhook, or schedule. The next step is to let known conditions start specific jobs automatically. Examples include a failing QA area, stalled review, new Sentry error, or completed task with no remote branch.
+Most work currently starts with a person, webhook or schedule. The next step is to let known conditions start specific jobs automatically. Examples include a failing QA area, stalled review, new Sentry error or completed task with no remote branch.
 
 The same boundaries still apply: record the work first, scope credentials, require delivery evidence and ask for approval before production changes.
 

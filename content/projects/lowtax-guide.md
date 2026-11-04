@@ -30,4 +30,4 @@ Compare 15+ countries for crypto-friendly taxes, visas, and banking. Find the be
 
 A comparative resource for cryptocurrency investors and digital nomads seeking tax-optimized jurisdictions. Detailed country profiles for nations like Portugal, UAE, Singapore, Georgia, El Salvador, and Switzerland.
 
-<a href="https://www.lowtax.guide" target="_blank">Find your ideal crypto-friendly destination</a>
+<a href="https://www.lowtax.guide" target="_blank" rel="noopener">Find your ideal crypto-friendly destination</a>

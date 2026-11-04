@@ -1,5 +1,5 @@
 ---
-title: "Press for iPhone — Make room for more"
+title: "Press for iPhone: make room for more"
 description: "Make smaller copies of your photos and videos, compare before you save, and choose what to remove. All on your iPhone. Free to start, with a one-time unlock."
 type: press
 url: /press-iphone/

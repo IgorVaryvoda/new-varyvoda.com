@@ -46,7 +46,7 @@ Body copy uses a narrow measure, generous leading, and no automatic hyphenation.
 - Main canvas: `--canvas: 120rem`.
 - Responsive edge: `--gutter`.
 - Metadata rail: `--rail`.
-- Reading layout column: `--measure-reading` (`74rem`); wider project prose may reach `86rem`. Article text uses `--measure-prose: 64ch`, resolved in Literata at the paragraph size; do not apply that limit to technical project diagrams.
+- Reading layout column: `--measure-reading` (`74rem`). Project stories fill the rail grid so technical figures reach the canvas edge, while their paragraphs, lists and headings stop at `70rem`. Article text uses `--measure-prose: 64ch`, resolved in Literata at the paragraph size; do not apply that limit to technical project diagrams.
 - Section rhythm: `--section-space`.
 - Minimum control target: `--control-min` (`44px`).
 - Borders and spacing create hierarchy. Cards are used only when the content is genuinely a separate object.
@@ -65,7 +65,7 @@ The work index uses a scenic masthead and a paper atlas. Project pages lead with
 
 ### Writing
 
-The index uses a large sans-serif masthead and compact metadata. Articles pair a serif title with uncropped editorial artwork in the cover, stacking them on small screens, followed by a plain reading surface. Old articles may keep their original embedded media, but they inherit the current reading rhythm.
+The index uses a large sans-serif masthead, compact metadata and jump links to its sections. Article heroes set the serif title over the post's editorial artwork as a full-width, veiled background, followed by a plain reading surface. Old articles may keep their original embedded media, but they inherit the current reading rhythm.
 
 ### About and contact
 

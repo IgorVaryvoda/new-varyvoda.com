@@ -1,7 +1,7 @@
 
 ---
 template: page
-title: Contact Igor Varyvoda
+title: Contact
 description: "Contact Igor Varyvoda about a product, a role, a bug, or something else."
 slug: contact
 draft: false

@@ -35,7 +35,11 @@
     }
   }
 
-  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var reducedMotion = motionQuery.matches;
+  // WCAG 2.2.2: visitors can pause the scene; it then holds its current frame.
+  var userPaused = false;
+  try { userPaused = window.localStorage.getItem("varyvoda-motion") === "paused"; } catch (_) {}
   var contextAvailable = true;
   var frameRequest = null;
   var activeElapsed = 0;
@@ -2425,7 +2429,7 @@
   }
 
   function animationEligible() {
-    return calibrated && !reducedMotion && contextAvailable && !document.hidden &&
+    return calibrated && !reducedMotion && !userPaused && contextAvailable && !document.hidden &&
       (!observerReady || observerFallback || intersectingSurfaces.size > 0);
   }
 
@@ -2547,6 +2551,33 @@
   window.addEventListener("varyvoda:themechange", function () {
     if (reducedMotion || !animationEligible()) refreshFrame();
   });
+
+  var motionToggle = document.querySelector("[data-motion-toggle]");
+  function syncMotionToggle() {
+    if (!motionToggle) return;
+    var label = motionToggle.querySelector("[data-motion-label]");
+    if (label) label.textContent = userPaused ? "Play scene" : "Pause scene";
+  }
+  if (motionQuery.addEventListener) {
+    motionQuery.addEventListener("change", function (event) {
+      reducedMotion = event.matches;
+      if (motionToggle) motionToggle.hidden = reducedMotion;
+      if (!reducedMotion && !document.hidden) startCalibration();
+      updateAnimationState(performance.now());
+      refreshFrame();
+    });
+  }
+  if (motionToggle) {
+    motionToggle.hidden = reducedMotion;
+    syncMotionToggle();
+    motionToggle.addEventListener("click", function () {
+      userPaused = !userPaused;
+      try { window.localStorage.setItem("varyvoda-motion", userPaused ? "paused" : "playing"); } catch (_) {}
+      syncMotionToggle();
+      updateAnimationState(performance.now());
+      if (userPaused) refreshFrame();
+    });
+  }
   document.addEventListener("visibilitychange", function () {
     // A page that loaded in a background tab gets no rAF ticks; calibrate
     // once it first becomes visible.

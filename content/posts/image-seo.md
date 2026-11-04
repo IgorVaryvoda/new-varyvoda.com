@@ -1,5 +1,6 @@
 ---
 title: "Image SEO for E-commerce"
+description: "How to make product images findable in Google Images: alt text, file names, sitemaps and optimization. Archived Sirv guide from 2019."
 date: 2019-06-13T22:52:03+01:00
 draft: false
 content_type: "Guide"

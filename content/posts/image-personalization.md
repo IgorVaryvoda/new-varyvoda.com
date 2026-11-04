@@ -1,5 +1,6 @@
 ---
 title: "Image personalization: examples and implementation"
+description: "Real examples of personalized images in email, landing pages and banners, with a bot that puts your name in them. Archived Sirv article from 2018."
 date: 2018-08-03T22:52:03+01:00
 lastmod: 2026-09-23
 draft: false

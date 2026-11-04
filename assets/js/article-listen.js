@@ -8,21 +8,39 @@
   const time = player.querySelector("[data-listen-time]");
   const hero = player.closest(".article-hero");
   const clock = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+  const spoken = (s) => {
+    const m = Math.floor(s / 60);
+    const r = Math.floor(s % 60);
+    return `${m} minute${m === 1 ? "" : "s"} ${r} second${r === 1 ? "" : "s"}`;
+  };
   let heroVisible = true;
 
   const render = () => {
+    if (toggle.disabled) return;
     const playing = !audio.paused;
     player.classList.toggle("is-playing", playing);
-    player.classList.toggle("is-docked", !heroVisible && (playing || audio.currentTime > 0));
-    toggle.setAttribute("aria-label", playing ? "Pause narration" : "Play narration");
+    player.classList.toggle("is-docked", !heroVisible && (playing || (audio.currentTime > 0 && !audio.ended)));
+    toggle.setAttribute("aria-label", playing ? "Pause narration" : "Listen to narration");
     if (audio.duration) {
       seek.max = Math.floor(audio.duration);
       seek.value = Math.floor(audio.currentTime);
+      seek.setAttribute("aria-valuetext", `${spoken(audio.currentTime)} of ${spoken(audio.duration)}`);
       time.textContent = audio.currentTime || playing ? `${clock(audio.currentTime)} / ${clock(audio.duration)}` : `Listen · ${clock(audio.duration)}`;
     }
   };
 
-  toggle.addEventListener("click", () => (audio.paused ? audio.play() : audio.pause()));
+  // A failed play or a missing file must say so instead of leaving a control that silently does nothing.
+  const fail = () => {
+    player.classList.remove("is-playing");
+    time.textContent = "Audio unavailable";
+    toggle.setAttribute("aria-label", "Narration audio unavailable");
+    toggle.disabled = true;
+  };
+  audio.addEventListener("error", fail);
+  toggle.addEventListener("click", () => {
+    if (audio.paused) audio.play().catch((error) => { if (error.name !== "AbortError") fail(); });
+    else audio.pause();
+  });
   seek.addEventListener("input", () => { audio.currentTime = seek.value; });
 
   const RATES = [1, 1.25, 1.5, 1.75, 2];
@@ -52,7 +70,8 @@
   let timed = null;
   let loading = null;
   let current = -1;
-  let userScrolledAt = 0;
+  // A reader who scrolls away keeps their place; following resumes when the spoken word is back on screen or on the next play.
+  let following = true;
 
   // Whitespace-separated words as Ranges; "Zed's" split across a link and a text node stays one word.
   const tokens = () => {
@@ -102,14 +121,22 @@
   };
 
   const follow = (range) => {
-    if (audio.paused || Date.now() - userScrolledAt < 4000) return;
+    if (audio.paused) return;
     const r = range.getBoundingClientRect();
+    if (!following) {
+      if (r.top >= 0 && r.bottom <= innerHeight) following = true;
+      return;
+    }
     if (r.top < innerHeight * 0.15 || r.bottom > innerHeight * 0.75) {
       scrollTo({ top: scrollY + r.top - innerHeight * 0.35, behavior: reduceMotion.matches ? "instant" : "smooth" });
     }
   };
 
+  // One pending frame at most: play and seeked both call tick, and two chained loops would double the work.
+  let frame = 0;
   const tick = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
     if (!timed) return;
     const t = audio.currentTime;
     let lo = 0;
@@ -124,12 +151,19 @@
       highlight?.clear();
       if (i >= 0) { highlight?.add(timed[i].range); follow(timed[i].range); }
     }
-    if (!audio.paused) requestAnimationFrame(tick);
+    if (!audio.paused) frame = requestAnimationFrame(tick);
   };
 
-  const load = () => (loading ??= fetch(wordsUrl).then((r) => r.json()).then((words) => { timed = match(words, tokens()); }));
-  audio.addEventListener("play", () => load().then(tick));
+  // Timing data is optional: narration plays without read-along if it fails, and the next play retries it.
+  const load = () => (loading ??= fetch(wordsUrl)
+    .then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then((words) => { timed = match(words, tokens()); })
+    .catch(() => { loading = null; }));
+  audio.addEventListener("play", () => { following = true; load().then(tick); });
   audio.addEventListener("seeked", tick);
-  audio.addEventListener("ended", () => { highlight?.clear(); current = -1; });
-  ["wheel", "touchmove", "keydown"].forEach((e) => addEventListener(e, () => { userScrolledAt = Date.now(); }, { passive: true }));
+  audio.addEventListener("pause", () => { cancelAnimationFrame(frame); frame = 0; });
+  audio.addEventListener("ended", () => { cancelAnimationFrame(frame); frame = 0; highlight?.clear(); current = -1; });
+  ["wheel", "touchmove", "keydown"].forEach((e) => addEventListener(e, (event) => {
+    if (!audio.paused && !player.contains(event.target)) following = false;
+  }, { passive: true }));
 })();

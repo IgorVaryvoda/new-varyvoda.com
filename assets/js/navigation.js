@@ -32,6 +32,18 @@
   document.addEventListener("pointerdown", function (event) {
     if (button.getAttribute("aria-expanded") === "true" && !navigation.contains(event.target)) {
       setOpen(false, false);
+      // The tap outside only dismisses the menu; it must not also follow a link under the scrim.
+      // A drag or scroll may never produce a click, so the guard also expires.
+      var swallow = function (click) { click.preventDefault(); click.stopPropagation(); };
+      document.addEventListener("click", swallow, { capture: true, once: true });
+      setTimeout(function () { document.removeEventListener("click", swallow, true); }, 500);
+    }
+  });
+
+  // Keyboard focus that leaves the open menu closes it, so focus never lands behind the panel.
+  navigation.addEventListener("focusout", function (event) {
+    if (button.getAttribute("aria-expanded") === "true" && event.relatedTarget && !navigation.contains(event.relatedTarget)) {
+      setOpen(false, false);
     }
   });
 

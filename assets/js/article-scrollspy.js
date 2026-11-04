@@ -8,6 +8,9 @@
   if (!rail) {
     rail = document.createElement("nav");
     rail.id = "TableOfContents";
+  }
+  rail.setAttribute("aria-label", "In this article");
+  if (!rail.parentNode) {
     var railLabel = railShell.querySelector(".article-rail-label");
     railShell.insertBefore(rail, railLabel ? railLabel.nextSibling : railShell.firstChild);
   }
@@ -110,7 +113,8 @@
   function update() {
     scheduled = false;
     var threshold = Math.min(window.innerHeight * 0.42, 320);
-    var index = 0;
+    // No current section until the reader reaches the first heading.
+    var index = -1;
 
     entries.forEach(function (entry, entryIndex) {
       if (entry.heading.getBoundingClientRect().top <= threshold) index = entryIndex;

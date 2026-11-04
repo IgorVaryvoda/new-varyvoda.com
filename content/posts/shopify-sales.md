@@ -1,5 +1,6 @@
 ---
 title: "9 practical ways to increase Shopify sales"
+description: "Nine changes worth testing on a Shopify store, from A/B tests and product media to checkout. Archived Sirv guide from 2020."
 date: 2020-11-24T22:52:03+01:00
 lastmod: 2026-09-23
 draft: false

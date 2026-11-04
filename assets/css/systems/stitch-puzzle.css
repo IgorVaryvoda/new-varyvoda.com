@@ -1,6 +1,6 @@
 @font-face {
   font-family: Nunito;
-  src: url("/fonts/stitch-puzzle/Nunito.ttf") format("truetype");
+  src: url("/fonts/stitch-puzzle/Nunito.woff2") format("woff2"), url("/fonts/stitch-puzzle/Nunito.ttf") format("truetype");
   font-weight: 200 900;
   font-style: normal;
   font-display: swap;
@@ -29,7 +29,7 @@
 }
 body {
   margin: 0;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.65;
 }
 a {
@@ -70,10 +70,10 @@ h2 {
   text-wrap: balance;
 }
 h1 {
-  font-size: clamp(42px, 4.8vw, 68px);
+  font-size: clamp(2.625rem, 4.8vw, 4.25rem);
 }
 h2 {
-  font-size: clamp(34px, 3.8vw, 52px);
+  font-size: clamp(2.125rem, 3.8vw, 3.25rem);
 }
 .wrap {
   width: min(1180px, calc(100% - 64px));
@@ -103,7 +103,7 @@ h2 {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 850;
   text-decoration: none;
   line-height: 1.2;
@@ -120,7 +120,7 @@ h2 {
   display: flex;
   align-items: center;
   min-height: var(--control);
-  font-size: 16px;
+  font-size: 1rem;
   text-decoration: none;
   font-weight: 750;
 }
@@ -171,14 +171,14 @@ h2 {
   position: relative;
 }
 .intro {
-  font-size: 25px;
+  font-size: 1.5625rem;
   line-height: 1.4;
   font-weight: 750;
   margin-top: 24px;
 }
 .welcome-paper > .intro + p {
   max-width: 42ch;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: var(--soft-ink);
   margin-top: 18px;
 }
@@ -210,13 +210,13 @@ h2 {
 }
 .store-link span {
   white-space: nowrap;
-  font-size: 22px;
+  font-size: 1.375rem;
   font-weight: 850;
   line-height: 1.15;
 }
 .store-link small {
   display: block;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.02em;
   font-weight: 650;
 }
@@ -229,13 +229,13 @@ h2 {
   outline-color: var(--moss);
 }
 .download-note {
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
   color: var(--soft-ink);
   margin-top: 13px;
 }
 .quiet-promise {
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 800;
   line-height: 1.5;
   margin-top: 26px;
@@ -255,7 +255,7 @@ h2 {
 .game-preview figcaption {
   padding: 14px 0 0;
   text-align: center;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--cream);
   font-weight: 800;
 }
@@ -269,11 +269,11 @@ h2 {
   padding: 16px 24px;
   box-shadow: 0 7px 18px #21150f4d;
   max-width: 235px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .table-note span {
   display: block;
-  font-size: 21px;
+  font-size: 1.3125rem;
   line-height: 1.2;
   font-weight: 850;
   margin-bottom: 5px;
@@ -341,7 +341,8 @@ h2 {
   margin-top: 24px;
 }
 .cottage-copy .handwritten {
-  font-size: 17px;
+  text-wrap: balance;
+  font-size: 1.0625rem;
   color: var(--gold);
   margin-top: 30px;
   max-width: 23ch;
@@ -385,7 +386,7 @@ h2 {
 }
 .chart-picture figcaption {
   text-align: center;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 750;
   margin-top: 16px;
   color: var(--soft-ink);
@@ -404,12 +405,12 @@ h2 {
 }
 .little-columns p {
   margin: 0;
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: #e7d4bf;
 }
 .little-columns strong {
   display: block;
-  font-size: 20px;
+  font-size: 1.25rem;
   color: var(--cream);
   margin-bottom: 8px;
 }
@@ -436,7 +437,7 @@ h2 {
   background: var(--moss);
   border-radius: 10px;
   color: var(--cream);
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 850;
   text-decoration: none;
   transition: background 0.2s ease-out;
@@ -452,10 +453,10 @@ h2 {
   grid-template-columns: 1fr auto;
   gap: 30px;
   padding-block: 48px 30px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .footer .brand {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 .footer p {
   margin-top: 14px;
@@ -477,7 +478,7 @@ h2 {
   margin: 0;
   padding-top: 24px;
   border-top: 1px solid #806655;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #ceb9a5;
 }
 @media (min-width: 1244px) {
@@ -515,7 +516,7 @@ h2 {
     padding-inline: 12px;
   }
   .store-link span {
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
   .downloads {
     gap: 8px;
@@ -544,7 +545,7 @@ h2 {
     padding-block: 18px;
   }
   .brand {
-    font-size: 21px;
+    font-size: 1.3125rem;
     gap: 9px;
   }
   .brand img {
@@ -555,7 +556,7 @@ h2 {
     gap: 16px;
   }
   .header nav a {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   .header nav a:first-child {
     display: none;
@@ -579,14 +580,14 @@ h2 {
     width: 100%;
   }
   h1 {
-    font-size: clamp(37px, 9vw, 58px);
+    font-size: clamp(2.3125rem, 9vw, 3.625rem);
   }
   .intro {
-    font-size: 22px;
+    font-size: 1.375rem;
     margin-top: 20px;
   }
   .welcome-paper > .intro + p {
-    font-size: 16px;
+    font-size: 1rem;
   }
   .downloads {
     gap: 10px;
@@ -598,13 +599,13 @@ h2 {
     padding: 9px 11px;
   }
   .store-link span {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
   .store-link svg {
     width: 25px;
   }
   .quiet-promise {
-    font-size: 16px;
+    font-size: 1rem;
     margin-top: 20px;
   }
   .game-preview {
@@ -625,7 +626,7 @@ h2 {
     margin-top: 18px;
   }
   .how-steps p {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .cottage {
     grid-template-columns: 1fr;
@@ -637,7 +638,7 @@ h2 {
     padding-bottom: 130px;
   }
   .cottage-copy > p {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .cottage-picture {
     width: 78%;
@@ -649,7 +650,7 @@ h2 {
     right: 10px;
   }
   .cottage-copy .handwritten {
-    font-size: 16px;
+    font-size: 1rem;
     max-width: 19ch;
   }
   .chart-inner {
@@ -657,7 +658,7 @@ h2 {
     gap: 36px;
   }
   .chart-copy p {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .chart-picture {
     width: 70%;
@@ -686,7 +687,7 @@ h2 {
   }
   .download-button {
     width: 100%;
-    font-size: 16px;
+    font-size: 1rem;
   }
   .footer {
     grid-template-columns: 1fr;
@@ -713,7 +714,7 @@ h2 {
     gap: 12px;
   }
   .header nav a {
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .downloads {
     gap: 8px;
@@ -724,19 +725,19 @@ h2 {
     gap: 5px;
   }
   .store-link span {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .store-link small {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .store-link svg {
     width: 21px;
   }
   .download-note {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
   h1 {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -764,10 +765,10 @@ h2 {
     min-height: 58px;
   }
   .store-link span {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
   .store-link small {
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
   .store-link svg {
     width: 29px;
@@ -777,7 +778,7 @@ h2 {
 
 /* Free chart pages: /stitch-puzzle/charts/ and one page per chart */
 .crumbs {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 750;
   color: #e7d4bf;
 }
@@ -815,10 +816,10 @@ h2 {
   max-width: 52ch;
 }
 .welcome-paper > p:not(.intro, .actions) {
-  font-size: 17px;
+  font-size: 1.0625rem;
   color: var(--soft-ink);
 }
-.welcome-paper a:not(.download-button) {
+.welcome-paper a:not(.download-button, .store-link) {
   color: var(--moss);
   font-weight: 800;
 }
@@ -830,12 +831,12 @@ h2 {
   margin: 26px 0 0;
 }
 .facts dt {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--soft-ink);
 }
 .facts dd {
   margin: 0;
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 850;
 }
 .actions {
@@ -862,7 +863,7 @@ h2 {
 .finished figcaption {
   padding-top: 14px;
   text-align: center;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 800;
 }
 .pattern-chart {
@@ -904,7 +905,7 @@ h2 {
 }
 .threads th {
   text-align: left;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 750;
   color: #ceb9a5;
   padding: 0 24px 8px 0;
@@ -928,7 +929,7 @@ h2 {
   color: var(--ink);
   box-shadow: inset 0 0 0 1px #0006;
   border-right: 8px solid var(--thread);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1;
 }
 .threads .size {
@@ -949,15 +950,30 @@ h2 {
 .album h2,
 .album-more h2,
 .album-index h2 {
-  font-size: clamp(28px, 3vw, 38px);
+  font-size: clamp(1.75rem, 3vw, 2.375rem);
 }
 .chart-grid {
   list-style: none;
   padding: 0;
   margin: 26px 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
   gap: 22px;
+}
+@media (max-width: 760px) {
+  /* Each album owns a swipeable row so one leftover tile never sits alone. */
+  .chart-grid {
+    grid-auto-flow: column;
+    grid-auto-columns: 40%;
+    grid-template-columns: none;
+    overflow-x: auto;
+    /* Room for the 3px focus ring at its 6px offset; the negative margin keeps card positions. */
+    margin: 17px -9px 0;
+    padding: 9px 9px 10px;
+    scroll-padding-inline: 9px;
+    scroll-snap-type: x mandatory;
+  }
+  .chart-grid li { scroll-snap-align: start; }
 }
 .chart-grid a {
   display: block;
@@ -982,7 +998,7 @@ h2 {
 }
 .chart-grid small {
   display: block;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: #ceb9a5;
 }
 .pager {
@@ -1018,6 +1034,23 @@ h2 {
 .album {
   scroll-margin-top: 16px;
 }
+.album-index summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--control);
+  cursor: pointer;
+  list-style: none;
+}
+.album-index summary::-webkit-details-marker { display: none; }
+.album-index summary::after {
+  content: "+";
+  color: var(--gold);
+  font-size: 1.75rem;
+  line-height: 1;
+}
+.album-index details[open] summary::after { content: "\2212"; }
+.album-index summary h2 { margin: 0; }
 @media (max-width: 760px) {
   .pattern-hero {
     grid-template-columns: 1fr;
@@ -1035,10 +1068,7 @@ h2 {
   .threads {
     padding-block: 48px;
   }
-  .chart-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
+  .chart-grid { gap: 18px; }
   .threads table {
     width: 100%;
   }
@@ -1076,3 +1106,33 @@ h2 {
     box-shadow: none;
   }
 }
+.album-index summary:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+}
+.header nav a[aria-current] { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.35em; }
+@media (max-width: 480px) {
+  .intro .intro-line { display: block; }
+  .intro br { display: none; }
+}
+@media (min-width: 761px) {
+  /* Six-chart albums fill one row instead of leaving a single tile on a second row. */
+  .chart-grid:has(> li:nth-child(6):last-child) { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  /* Mandatory snapping fights the browser's focus scroll; release it while a card has focus. */
+  .chart-grid:focus-within { scroll-snap-type: none; }
+  .chart-grid li { scroll-margin-inline: 9px; }
+}
+/* The album picker stays at the top of the long catalog, so a reader can switch albums from anywhere. */
+.charts .album-index {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding-block: 8px;
+  background: var(--walnut);
+  box-shadow: 0 10px 18px -12px #00000080;
+}
+.charts .album-index summary h2 { font-size: 1.25rem; }
+.charts .album-index details[open] ul { max-height: 60vh; overflow-y: auto; padding-bottom: 8px; }
+.charts .album { scroll-margin-top: 72px; }

@@ -27,7 +27,7 @@
     <p class="scene-corner scene-corner--origin">Made in Ukraine. Based in Montenegro.</p>
     {{ range $latestPosts }}
       <a class="scene-corner scene-corner--latest" href="{{ .RelPermalink }}">
-        Latest&nbsp;&mdash; {{ .Title }} <span aria-hidden="true">→</span>
+        Latest: {{ .Title | markdownify }} <span aria-hidden="true">→</span>
       </a>
     {{ end }}
   </section>
@@ -41,7 +41,7 @@
       <aside class="current-build-rail">
         <div>
           <p class="eyebrow">{{ .Params.homepage_label | default "Current focus" }}</p>
-          <p class="build-status"><span class="stewardship-state">● {{ .Params.stewardship.state | humanize }}</span><span>Last tended {{ .Params.last_tended }}</span></p>
+          <p class="build-status"><span class="stewardship-state">● {{ .Params.stewardship.state | humanize }}</span><span>Last tended <time class="nowrap" datetime="{{ .Params.last_tended }}">{{ time.Format "02 Jan 2006" .Params.last_tended }}</time></span></p>
         </div>
       </aside>
 
@@ -64,7 +64,7 @@
             <p class="build-role">{{ .Params.role }}</p>
           </div>
           <div class="build-meta">
-            {{ with .Params.tech_stack }}<p class="quiet-meta">{{ delimit . " · " }}</p>{{ end }}
+            {{ with .Params.tech_stack }}<ul class="quiet-meta stack-list" aria-label="Tech stack">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
             <a class="project-cta" href="{{ .RelPermalink }}">{{ .Params.homepage_cta | default "View project" }} <span aria-hidden="true">→</span></a>
           </div>
         </div>
@@ -97,7 +97,7 @@
     <div class="home-section-inner">
       <header class="home-section-heading">
         <div><p class="eyebrow">A living portfolio</p><h2 id="selected-work-title">Still running.</h2></div>
-        <a class="text-link" href="/projects/">Full index</a>
+        <a class="text-link" href="/projects/">All work</a>
       </header>
       <p class="portfolio-thesis">Some became businesses. Some stayed small and useful. I still look after them.</p>
       <ol class="care-feed">
@@ -105,7 +105,7 @@
         <li>
           <span class="care-key">{{ .Params.period | default (.Date.Format "2006") }} · {{ .Params.stewardship.state | humanize }}</span>
           <a href="{{ .RelPermalink }}"><strong>{{ .Params.hero_title | default .Title }}</strong></a>
-          <p>{{ .Params.hero_intro | default .Params.description }}</p>
+          <p>{{ .Params.hero_intro | default .Params.description | markdownify }}</p>
         </li>
         {{ end }}
       </ol>

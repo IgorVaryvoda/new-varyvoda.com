@@ -16,12 +16,12 @@
     <p>They are free to stitch. You can also <a href="/stitch-puzzle/">play them as puzzles</a> in your browser, on iPhone and on Android.</p>
   </div>
 </section>
-<nav class="album-index wrap" aria-label="Albums"><h2>Albums</h2><ul>{{ range $albums }}<li><a href="#{{ .album_slug }}">{{ .album }}</a></li>{{ end }}</ul></nav>
-{{ range $albums }}
+<nav class="album-index wrap" aria-label="Albums"><details><summary><h2>Browse {{ len $albums }} albums</h2></summary><ul>{{ range $albums }}<li><a href="#{{ .album_slug }}">{{ .album }}</a></li>{{ end }}</ul></details></nav>
+{{ range $albumIndex, $album := $albums }}
 {{ $list := where $all "album_slug" .album_slug }}
 <section class="album wrap" id="{{ .album_slug }}" aria-labelledby="album-{{ .album_slug }}">
   <h2 id="album-{{ .album_slug }}">{{ .album }}</h2>
-  <ul class="chart-grid">{{ range $list }}{{ partial "stitch-chart-card.html" (dict "c" . "cdn" $cdn) }}{{ end }}</ul>
+  <ul class="chart-grid">{{ range $list }}{{ partial "stitch-chart-card.html" (dict "c" . "cdn" $cdn "eager" (eq $albumIndex 0)) }}{{ end }}</ul>
 </section>
 {{ end }}
 {{ end }}
