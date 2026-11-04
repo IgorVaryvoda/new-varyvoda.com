@@ -23,6 +23,10 @@ export function narration(md) {
     .replace(/`[^`\n]*`|<[^>]+>/g, (m) => (m[0] === "`" ? m : ""))
     .replace(/&(amp|lt|gt|quot|#39|nbsp);/g, (_, e) => ENTITIES[e])
     .replace(/`/g, "")
+    // Tag names written as prose in inline code are read as words; arrows and dash entities become pauses.
+    .replace(/<\/?([a-z][\w-]*)>/gi, "$1")
+    .replace(/\s*->\s*/g, ", then ")
+    .replace(/&(mdash|ndash);/g, ", ")
     .replace(/https?:\/\/\S+/g, "")
     .replace(/^\s*>\s?/gm, "")
     .replace(/(\*\*|__)(.+?)\1/g, "$2")

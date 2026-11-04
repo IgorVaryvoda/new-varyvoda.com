@@ -129,6 +129,6 @@ Before shipping a visual change:
 1. Run Hugo `0.161.1+extended` and `make quality-gate`. `make test-typography` also runs the dependency-free source contracts independently; these are not a visual pass.
 2. Run `python3 scripts/check-typography.py` against the locally served site for seven routes, four viewports, and both themes. Repeat with `--browser webkit` and a legacy `--article-path`. Review home, work, one project, writing, one article, about, and contact visually at desktop and mobile sizes.
 3. Check dark and light modes, keyboard focus, reduced motion, hover, and horizontal overflow. Include 320px width, short landscape, larger browser text, and Ukrainian glyphs (`Ґґ Єє Іі Її`). Confirm actual Geologica/Literata faces load, hero corners do not overlap, and long table-of-contents links wrap. Do not count a fallback-font fixture as full visual verification.
-4. Confirm the production smoke test after the SFTP sync.
+4. Confirm the Cloudflare Pages deploy for the commit succeeded, then check the changed pages on `www.varyvoda.com`.
 
-Production lives on Igor's own server. GitHub Actions syncs `public/` over SFTP; Cloudflare may proxy the traffic but does not host the site.
+Production is Cloudflare Pages project `new-varyvoda-com`. GitHub Actions only validates.

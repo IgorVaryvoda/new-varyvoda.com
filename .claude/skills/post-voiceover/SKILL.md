@@ -29,9 +29,9 @@ ELEVENLABS_KEY=$(grep '^ELEVENLABS_KEY' /home/igor/Projects/sirv-showreel/.env.l
 
 ## Cost and quota
 
-- `eleven_v4` speech costs 0.11 credits per character. Forced alignment costs about 18 credits per minute of audio. Together this is about 117 credits per minute of narration.
+- `eleven_v4` speech costs **0.40 credits per character** (measured 2026-11-04 from the history API: 3,778 characters cost 1,511 credits). Forced alignment adds about 18 credits per minute of audio. Together this is about 400 credits per minute of narration.
 - The Starter plan ($6 per month) has about 32,000 credits. Other projects (sirv-showreel music and TTS) use the same quota.
-- Check the balance before a batch. Estimate the batch as `chars × 0.11 + minutes × 18`; narration runs at about 16 characters per second.
+- Check the balance before a batch. Estimate the batch as `chars × 0.40 + minutes × 18`; narration runs at about 16 characters per second. One Starter month covers about 75,000 characters, roughly ten average posts. A 20,000-character guide alone costs about 8,000 credits.
 
 ```bash
 curl -s https://api.elevenlabs.io/v1/user/subscription -H "xi-api-key: $ELEVENLABS_KEY" | jq '{left: (.character_limit - .character_count), reset: (.next_character_count_reset_unix | todate)}'

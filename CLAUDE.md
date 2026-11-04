@@ -73,10 +73,10 @@ Main config: `/config.toml`
 
 ## Deployment
 
-- Production is hosted on Igor's own server. GitHub Actions builds `main` with Hugo `0.161.1`, validates it, and syncs `public/` to that server over SFTP.
-- Cloudflare may proxy production traffic, but it is not the host and there is no Cloudflare Pages deployment.
-- The SFTP workflow checks production and submits changed URLs to IndexNow. It does not deploy `functions/`; verify that surface separately before describing it as live.
-- `netlify.toml` is legacy.
+- Production is Cloudflare Pages project `new-varyvoda-com` (custom domain `www.varyvoda.com`). Pages builds `main` with the build command `hugo` and `HUGO_VERSION=0.161.1`, and deploys `functions/` as Pages Functions.
+- The real deploy signal is the "Cloudflare Pages" check run on the commit. A Pages build can stall and time out after cloning; retry it from the dashboard or with `POST /accounts/{account}/pages/projects/new-varyvoda-com/deployments/{id}/retry`.
+- `.github/workflows/main.yml` only validates (build, links, contracts, agent readiness) and submits changed URLs to IndexNow. It does not deploy.
+- The old SFTP server copy and `netlify.toml` are legacy.
 
 ## Important Notes
 

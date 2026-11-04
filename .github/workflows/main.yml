@@ -1,15 +1,14 @@
-name: Deploy Hugo Site
+# Cloudflare Pages builds and serves www.varyvoda.com from main. This workflow only validates.
+name: Validate site
 
 on:
   push:
     branches:
-      - main  # Adjust with your branch
-  schedule:
-    - cron: '15 6 * * *'  # daily rebuild so future-dated posts publish on their day
+      - main
   workflow_dispatch:
 
 jobs:
-  deploy:
+  validate:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -37,33 +36,6 @@ jobs:
         node --test scripts/test-typography.mjs
         ./htmltest -c .htmltest.yml
         node scripts/test-agent-readiness.mjs
-
-    - name: Install rclone
-      run: |
-        curl https://rclone.org/install.sh | sudo bash
-
-    - name: Configure rclone
-      env:
-        SFTP_KEY: ${{ secrets.SFTP_KEY }}
-      run: |
-        mkdir -p ~/.config/rclone ~/.ssh
-        printf '%s\n' "$SFTP_KEY" > ~/.ssh/er_deploy
-        chmod 600 ~/.ssh/er_deploy
-        echo "[sftp]
-        type = sftp
-        host = ${{ secrets.SFTP_HOST }}
-        user = ${{ secrets.SFTP_USER }}
-        port = ${{ secrets.SFTP_PORT }}
-        key_file = $HOME/.ssh/er_deploy" > ~/.config/rclone/rclone.conf
-
-    - name: Sync public directory to server
-      run: rclone sync public sftp:${{ secrets.SFTP_DIR }} --sftp-ask-password=false
-
-    - name: Post-deployment smoke check
-      env:
-        SITE: https://www.varyvoda.com
-        CACHE_BUSTER: ${{ github.sha }}
-      run: bash scripts/check-deploy.sh
 
     - name: Notify IndexNow of changed URLs
       if: github.event_name == 'push'

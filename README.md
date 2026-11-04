@@ -67,7 +67,7 @@ See [`design.md`](design.md) before changing the visual system.
 
 ## Machine-readable output
 
-Hugo emits HTML and Markdown for home, section, and page routes. `functions/_middleware.js` contains optional edge content negotiation and a read-only `/api` index; `static/openapi.json` documents it. The production SFTP workflow does not deploy `functions/`, so do not assume that middleware is live without a separate deployment check.
+Hugo emits HTML and Markdown for home, section, and page routes. `functions/_middleware.js` contains optional edge content negotiation and a read-only `/api` index; `static/openapi.json` documents it. Cloudflare Pages deploys `functions/` as Pages Functions with each build.
 
 Verify the generated surface with:
 
@@ -77,14 +77,14 @@ node scripts/test-agent-readiness.mjs
 
 ## Deployment
 
-Production is hosted on Igor's own server. Cloudflare may proxy requests, but it does not host the site. `.github/workflows/main.yml` is the authoritative deployment path.
+Production is Cloudflare Pages project `new-varyvoda-com`, served at `www.varyvoda.com`. Pages builds every push to `main` with `hugo` (`HUGO_VERSION=0.161.1`). Check the "Cloudflare Pages" status on the commit to confirm a deploy.
 
-Pushes to `main`, daily scheduled runs, and manual dispatches run:
+`.github/workflows/main.yml` validates pushes to `main` and manual dispatches:
 
 1. Build with Hugo `0.161.1+extended`.
-2. Validate project records, generated HTML, links, and machine-readable output.
-3. Sync `public/` to the production server over SFTP with rclone.
-4. Smoke-test `https://www.varyvoda.com` after the sync settles.
-5. Submit changed URLs to IndexNow on push events.
+2. Validate project records, generated HTML, links, typography contracts and machine-readable output.
+3. Submit changed URLs to IndexNow on push events.
+
+Future-dated posts need a Pages rebuild on their publish day.
 
 `netlify.toml` is legacy. Header and cache policy can live on the origin server or at the Cloudflare proxy; see `docs/edge-headers.md`. Run `bash scripts/check-headers.sh` for the strict policy audit or `STRICT_HEADERS=0 bash scripts/check-headers.sh` for the reachability/header smoke used after deployment.
