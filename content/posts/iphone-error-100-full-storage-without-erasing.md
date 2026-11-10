@@ -3,13 +3,13 @@ title: "Fix iPhone update error 100 (06A6.0064) without erasing your data"
 date: 2026-11-10
 draft: false
 content_type: "Guide"
-description: "\"The iPhone could not be updated. An unknown error occurred (100)\" on a nearly full iPhone stuck in Recovery Mode after an iOS update. How I finished the update with no backup and kept all my data."
+description: "\"The iPhone could not be updated. An unknown error occurred (100)\" on a nearly full iPhone stuck in Recovery Mode after an iOS update. How I finished the update on a friend's phone with no backup and kept all the data."
 featuredImage: "/images/posts/iphone-error-100-full-storage-without-erasing.webp"
 image_alt: "A small wooden boat with a glowing amber lantern waits at closed canal lock gates on a misty night, a line of light in the gap, cleared rubble and a shovel on the quay."
 ogImage: "https://www.varyvoda.com/images/posts/iphone-error-100-full-storage-without-erasing.jpg"
 ---
 
-The iOS 27.2.1 update left my iPhone 12 Pro Max on the cable-and-computer screen. I plugged it into the Mac and asked Claude Code to fix it, carefully. It took a morning, one wrong conclusion and a patch written by a stranger. The phone is back, on 27.2.1, with all its data.
+The iOS 27.2.1 update left a friend's iPhone 12 Pro Max on the cable-and-computer screen. I plugged it into my Mac and asked Claude Code to fix it, carefully. It took a morning, one wrong conclusion and a patch written by a stranger. The phone is back, on 27.2.1, with all its data.
 
 If you're here because Finder showed you this, the short version is in [the fix](#the-fix).
 
@@ -26,7 +26,7 @@ irecovery -n
 
 It rebooted straight back into recovery. So iOS itself was half-installed.
 
-Next was Finder's **Update**, which reinstalls iOS and keeps your data. **Restore** is the button next to it, and it erases everything. I had no backup on the Mac and none in iCloud, so Claude drove Finder through accessibility scripting with a guard: it read the dialog text and the serial number first, and pressed only a button named exactly "Update".
+Next was Finder's **Update**, which reinstalls iOS and keeps your data. **Restore** is the button next to it, and it erases everything. There was no backup on the Mac and none in iCloud, so Claude drove Finder through accessibility scripting with a guard: it read the dialog text and the serial number first, and pressed only a button named exactly "Update".
 
 Finder downloaded 11.5 GB, installed for a few minutes and failed with error 100. Then it changed its offer:
 
@@ -62,9 +62,9 @@ That was a fair reading of the log and the wrong answer. I asked ChatGPT for a s
 
 ## Why it fails
 
-Senne's explanation, which matched my numbers line for line:
+Senne's explanation, which matched the numbers in our log line for line:
 
-1. The phone reserves the whole system image in one request. APFS refuses a single reservation bigger than about 84% of free space. Mine was 5,898 of 6,869 MB, or 86%.
+1. The phone reserves the whole system image in one request. APFS refuses a single reservation bigger than about 84% of free space. Ours was 5,898 of 6,869 MB, or 86%.
 2. The space check before it doesn't know about that limit. It adds up sizes, sees 629 MB to spare and says fine.
 3. The phone has a low-space cleanup that would free the missing room. It only runs when the space check fails. The check passed, so it never ran.
 
@@ -74,7 +74,7 @@ So the fix is to send a bigger number. The check fails, the phone cleans up, and
 
 ## The fix
 
-The patch is 45 lines in one file of [idevicerestore](https://github.com/libimobiledevice/idevicerestore). It overrides one declared size, and only when you set an environment variable. Claude read all of it before building anything, along with a dozen success reports on the issue tracker. One was an iPhone 12 with my exact image size.
+The patch is 45 lines in one file of [idevicerestore](https://github.com/libimobiledevice/idevicerestore). It overrides one declared size, and only when you set an environment variable. Claude read all of it before building anything, along with a dozen success reports on the issue tracker. One was an iPhone 12 with exactly the same image size.
 
 The value comes from your own log:
 
@@ -107,7 +107,7 @@ Sealing System Volume (77)
 Status: Restore Finished
 ```
 
-The phone sat on an Apple logo saying it was attempting data recovery for a while, then booted. All my data was still there.
+The phone sat on an Apple logo saying it was attempting data recovery for a while, then booted. All the data was still there.
 
 ## Things that went sideways
 
@@ -126,6 +126,6 @@ The phone sat on an Apple logo saying it was attempting data recovery for a whil
 
 Apple could fix this three ways: reserve the image in chunks, include the 84% limit in the space check, or run the cleanup before deleting the old system. Any one would do.
 
-My part is simpler. The phone was 97% full with no backup, and I let it install an update that way. A backup and a storage clear-out come before the next one.
+The owner's part is simpler. The phone was 97% full with no backup when it installed the update. A backup and a storage clear-out come before the next one.
 
 Thanks to [Senne](https://github.com/3SENN/iphone-stuck-in-recovery-full-storage) for working this out on their own phone and writing it down.
