@@ -1,9 +1,9 @@
 ---
-title: "Finder said erase the iPhone. A 45-line patch finished the update instead."
+title: "Fix iPhone update error 100 (06A6.0064) without erasing your data"
 date: 2026-11-10
 draft: false
 content_type: "Guide"
-description: "An iOS 27.2.1 update left my iPhone 12 Pro Max in Recovery Mode with error 100 (06A6.0064) and no backup. The phone had the space. Apple's updater just never ran its own cleanup."
+description: "\"The iPhone could not be updated. An unknown error occurred (100)\" on a nearly full iPhone stuck in Recovery Mode after an iOS update. How I finished the update with no backup and kept all my data."
 featuredImage: "/images/posts/iphone-error-100-full-storage-without-erasing.webp"
 image_alt: "A small wooden boat with a glowing amber lantern waits at closed canal lock gates on a misty night, a line of light in the gap, cleared rubble and a shovel on the quay."
 ogImage: "https://www.varyvoda.com/images/posts/iphone-error-100-full-storage-without-erasing.jpg"
